@@ -9,6 +9,11 @@ import SwiftUI
 
 @main
 struct RoosterApp: App {
+    
+    init() {
+        CalendarManager.instance.requestAccess()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

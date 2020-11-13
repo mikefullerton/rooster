@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B236FCD6255EFE0A00A2E58D /* CalenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */; };
+		B236FCD7255EFE0A00A2E58D /* CalenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */; };
+		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
+		B236FCDC255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
+		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
+		B236FCE1255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
 		B2E15133255EED2B002672EC /* RoosterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15120255EED2B002672EC /* RoosterApp.swift */; };
 		B2E15134255EED2B002672EC /* RoosterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15120255EED2B002672EC /* RoosterApp.swift */; };
 		B2E15135255EED2B002672EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15121255EED2B002672EC /* ContentView.swift */; };
@@ -16,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalenderManager.swift; sourceTree = "<group>"; };
+		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
+		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
 		B2E15120255EED2B002672EC /* RoosterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoosterApp.swift; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -44,9 +53,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B236FCE4255F1C9D00A2E58D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B2E15122255EED2B002672EC /* Assets.xcassets */,
+				B236FCDF255F1C2C00A2E58D /* chickens.mp3 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		B2E1511A255EED2A002672EC = {
 			isa = PBXGroup;
 			children = (
+				B236FCE4255F1C9D00A2E58D /* Resources */,
 				B2E1511F255EED2B002672EC /* Shared */,
 				B2E15129255EED2B002672EC /* iOS */,
 				B2E15130255EED2B002672EC /* macOS */,
@@ -59,7 +78,8 @@
 			children = (
 				B2E15120255EED2B002672EC /* RoosterApp.swift */,
 				B2E15121255EED2B002672EC /* ContentView.swift */,
-				B2E15122255EED2B002672EC /* Assets.xcassets */,
+				B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */,
+				B236FCDA255F196E00A2E58D /* AlarmSound.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -168,6 +188,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */,
 				B2E15137255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,6 +197,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B236FCE1255F1C2C00A2E58D /* chickens.mp3 in Resources */,
 				B2E15138255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -188,7 +210,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2E15135255EED2B002672EC /* ContentView.swift in Sources */,
+				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B2E15133255EED2B002672EC /* RoosterApp.swift in Sources */,
+				B236FCD6255EFE0A00A2E58D /* CalenderManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,7 +221,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2E15136255EED2B002672EC /* ContentView.swift in Sources */,
+				B236FCDC255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B2E15134255EED2B002672EC /* RoosterApp.swift in Sources */,
+				B236FCD7255EFE0A00A2E58D /* CalenderManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +346,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -330,7 +356,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
 				PRODUCT_NAME = Rooster;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos.internal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -341,7 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -351,7 +377,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
 				PRODUCT_NAME = Rooster;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos.internal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -364,7 +390,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = macOS/Info.plist;
@@ -375,7 +401,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
 				PRODUCT_NAME = Rooster;
-				SDKROOT = macosx;
+				SDKROOT = macosx.internal;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -386,7 +412,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = macOS/Info.plist;
@@ -397,7 +423,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
 				PRODUCT_NAME = Rooster;
-				SDKROOT = macosx;
+				SDKROOT = macosx.internal;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

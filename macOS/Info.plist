@@ -22,5 +22,7 @@
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>We want to make alarms to rock your socks off!</string>
 </dict>
 </plist>

@@ -46,5 +46,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSCalendarsUsageDescription</key>
+    <string>We want to make alarms to rock your socks off!</string>
 </dict>
 </plist>

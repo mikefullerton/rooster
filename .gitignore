@@ -1,0 +1,21 @@
+.DS_Store
+ChatKit.xcscmblueprint
+ChatKit.xccheckout
+ChatKit.xcodeproj/*.pbxuser
+ChatKit.xcodeproj/*.perspectivev3
+html/
+xcuserdata/
+.reviewboardrc
+UserDebug.xcconfig
+
+*.orig
+
+# mac specific stuff
+*last_build_setup.log
+StringsFiles
+*.pyc
+*_osx.tar.gz
+.zsh_*
+
+
+
