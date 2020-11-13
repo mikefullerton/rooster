@@ -1,10 +1,11 @@
 .DS_Store
-ChatKit.xcscmblueprint
-ChatKit.xccheckout
-ChatKit.xcodeproj/*.pbxuser
-ChatKit.xcodeproj/*.perspectivev3
+*.xcscmblueprint
+*.xccheckout
+*.xcodeproj/*.pbxuser
+*.xcodeproj/*.perspectivev3
 html/
-xcuserdata/
+.xcodeproj/xcuserdata
+*xcuserdata/
 .reviewboardrc
 UserDebug.xcconfig
 
