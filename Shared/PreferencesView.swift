@@ -1,13 +1,13 @@
 //
-//  ContentView.swift
-//  Shared
+//  PreferencesView.swift
+//  Rooster
 //
-//  Created by Mike Fullerton on 11/13/20.
+//  Created by Mike Fullerton on 11/14/20.
 //
 
 import SwiftUI
 
-struct ContentView: View {
+struct PreferencesView: View {
     var body: some View {
     
         
@@ -23,8 +23,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        PreferencesView()
     }
 }
