@@ -14,6 +14,7 @@
 		B2742C7225604E030087E4B6 /* PreferencesSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */; };
 		B2742C7A25604EEA0087E4B6 /* DefaultSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C7925604EEA0087E4B6 /* DefaultSceneDelegate.swift */; };
 		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
+		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
 		B2E15135255EED2B002672EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15121255EED2B002672EC /* ContentView.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -27,6 +28,7 @@
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesSceneDelegate.swift; sourceTree = "<group>"; };
 		B2742C7925604EEA0087E4B6 /* DefaultSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultSceneDelegate.swift; sourceTree = "<group>"; };
+		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +51,7 @@
 			children = (
 				B2E15122255EED2B002672EC /* Assets.xcassets */,
 				B236FCDF255F1C2C00A2E58D /* chickens.mp3 */,
+				B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
 				B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */,
 				B2E15137255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
@@ -174,6 +178,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2742CA8256065310087E4B6 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B2E15139255EED2B002672EC /* Debug */ = {
@@ -302,7 +317,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.rooster;
 				PRODUCT_NAME = Rooster;
 				SDKROOT = iphoneos.internal;
 				SUPPORTS_MACCATALYST = YES;
@@ -326,7 +341,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.rooster;
 				PRODUCT_NAME = Rooster;
 				SDKROOT = iphoneos.internal;
 				SUPPORTS_MACCATALYST = YES;
