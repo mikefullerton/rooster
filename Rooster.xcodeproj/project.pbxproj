@@ -8,19 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		B236FCD6255EFE0A00A2E58D /* CalenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */; };
-		B236FCD7255EFE0A00A2E58D /* CalenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
-		B236FCDC255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
-		B236FCE1255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
 		B2742C3E25603B0A0087E4B6 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */; };
-		B2742C3F25603B0A0087E4B6 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */; };
-		B2742C4D256044B70087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C4C256044B70087E4B6 /* AppDelegate.swift */; };
-		B2742C542560452E0087E4B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742C562560452E0087E4B6 /* Main.storyboard */; };
+		B2742C7225604E030087E4B6 /* PreferencesSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */; };
+		B2742C7A25604EEA0087E4B6 /* DefaultSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C7925604EEA0087E4B6 /* DefaultSceneDelegate.swift */; };
+		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
 		B2E15135255EED2B002672EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15121255EED2B002672EC /* ContentView.swift */; };
-		B2E15136255EED2B002672EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15121255EED2B002672EC /* ContentView.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
-		B2E15138255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,28 +23,18 @@
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
 		B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
-		B2742C4C256044B70087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B2742C552560452E0087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B2742C5E256047940087E4B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
-		B2E15120255EED2B002672EC /* RoosterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoosterApp.swift; sourceTree = "<group>"; };
+		B2742C63256048CE0087E4B6 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster.entitlements; sourceTree = "<group>"; };
+		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesSceneDelegate.swift; sourceTree = "<group>"; };
+		B2742C7925604EEA0087E4B6 /* DefaultSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultSceneDelegate.swift; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2E1512A255EED2B002672EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2E1512F255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2E15131255EED2B002672EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2E15132255EED2B002672EC /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B2E15124255EED2B002672EC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2E1512C255EED2B002672EC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -64,59 +49,49 @@
 			children = (
 				B2E15122255EED2B002672EC /* Assets.xcassets */,
 				B236FCDF255F1C2C00A2E58D /* chickens.mp3 */,
-				B2742C562560452E0087E4B6 /* Main.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B2742C9F25605D6C0087E4B6 /* Other Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2E1512A255EED2B002672EC /* Info.plist */,
+				B2742C63256048CE0087E4B6 /* Rooster.entitlements */,
+			);
+			path = "Other Files";
 			sourceTree = "<group>";
 		};
 		B2E1511A255EED2A002672EC = {
 			isa = PBXGroup;
 			children = (
 				B236FCE4255F1C9D00A2E58D /* Resources */,
-				B2E1511F255EED2B002672EC /* Shared */,
-				B2E15129255EED2B002672EC /* iOS */,
-				B2E15130255EED2B002672EC /* macOS */,
+				B2E1511F255EED2B002672EC /* Source */,
+				B2742C9F25605D6C0087E4B6 /* Other Files */,
 				B2E15128255EED2B002672EC /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		B2E1511F255EED2B002672EC /* Shared */ = {
+		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B2E15120255EED2B002672EC /* RoosterApp.swift */,
 				B2E15121255EED2B002672EC /* ContentView.swift */,
 				B236FCD5255EFE0A00A2E58D /* CalenderManager.swift */,
 				B236FCDA255F196E00A2E58D /* AlarmSound.swift */,
 				B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */,
-				B2742C4C256044B70087E4B6 /* AppDelegate.swift */,
+				B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */,
+				B2742C7925604EEA0087E4B6 /* DefaultSceneDelegate.swift */,
+				B2742C6925604A9B0087E4B6 /* AppDelegate.swift */,
 			);
-			path = Shared;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		B2E15128255EED2B002672EC /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				B2E15127255EED2B002672EC /* Rooster.app */,
-				B2E1512F255EED2B002672EC /* Rooster.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B2E15129255EED2B002672EC /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				B2E1512A255EED2B002672EC /* Info.plist */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		B2E15130255EED2B002672EC /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				B2E15131255EED2B002672EC /* Info.plist */,
-				B2E15132255EED2B002672EC /* macOS.entitlements */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,23 +114,6 @@
 			productReference = B2E15127255EED2B002672EC /* Rooster.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B2E1512E255EED2B002672EC /* Rooster (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B2E1513E255EED2B002672EC /* Build configuration list for PBXNativeTarget "Rooster (macOS)" */;
-			buildPhases = (
-				B2E1512B255EED2B002672EC /* Sources */,
-				B2E1512C255EED2B002672EC /* Frameworks */,
-				B2E1512D255EED2B002672EC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Rooster (macOS)";
-			productName = "Rooster (macOS)";
-			productReference = B2E1512F255EED2B002672EC /* Rooster.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -166,9 +124,6 @@
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
 					B2E15126255EED2B002672EC = {
-						CreatedOnToolsVersion = 12.2;
-					};
-					B2E1512E255EED2B002672EC = {
 						CreatedOnToolsVersion = 12.2;
 					};
 				};
@@ -187,7 +142,6 @@
 			projectRoot = "";
 			targets = (
 				B2E15126255EED2B002672EC /* Rooster (iOS) */,
-				B2E1512E255EED2B002672EC /* Rooster (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -202,16 +156,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2E1512D255EED2B002672EC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B2742C542560452E0087E4B6 /* Main.storyboard in Resources */,
-				B236FCE1255F1C2C00A2E58D /* chickens.mp3 in Resources */,
-				B2E15138255EED2B002672EC /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -223,34 +167,13 @@
 				B2E15135255EED2B002672EC /* ContentView.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B236FCD6255EFE0A00A2E58D /* CalenderManager.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B2E1512B255EED2B002672EC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B2742C4D256044B70087E4B6 /* AppDelegate.swift in Sources */,
-				B2742C3F25603B0A0087E4B6 /* PreferencesView.swift in Sources */,
-				B2E15136255EED2B002672EC /* ContentView.swift in Sources */,
-				B236FCDC255F196E00A2E58D /* AlarmSound.swift in Sources */,
-				B236FCD7255EFE0A00A2E58D /* CalenderManager.swift in Sources */,
+				B2742C7225604E030087E4B6 /* PreferencesSceneDelegate.swift in Sources */,
+				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
+				B2742C7A25604EEA0087E4B6 /* DefaultSceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		B2742C562560452E0087E4B6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B2742C552560452E0087E4B6 /* Base */,
-				B2742C5E256047940087E4B6 /* en */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B2E15139255EED2B002672EC /* Debug */ = {
@@ -369,9 +292,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Rooster.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = "Other Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -380,8 +305,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
 				PRODUCT_NAME = Rooster;
 				SDKROOT = iphoneos.internal;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Debug;
 		};
@@ -390,9 +316,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Rooster.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = "Other Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -401,53 +329,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
 				PRODUCT_NAME = Rooster;
 				SDKROOT = iphoneos.internal;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		B2E1513F255EED2B002672EC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
-				PRODUCT_NAME = Rooster;
-				SDKROOT = macosx.internal;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		B2E15140255EED2B002672EC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apple.Rooster;
-				PRODUCT_NAME = Rooster;
-				SDKROOT = macosx.internal;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -468,15 +353,6 @@
 			buildConfigurations = (
 				B2E1513C255EED2B002672EC /* Debug */,
 				B2E1513D255EED2B002672EC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B2E1513E255EED2B002672EC /* Build configuration list for PBXNativeTarget "Rooster (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B2E1513F255EED2B002672EC /* Debug */,
-				B2E15140255EED2B002672EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

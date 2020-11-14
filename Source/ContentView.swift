@@ -21,6 +21,10 @@ struct ContentView: View {
         
 //        List(<#T##data: RandomAccessCollection##RandomAccessCollection#>, children: <#T##KeyPath<Identifiable, RandomAccessCollection?>#>, rowContent: <#T##(Identifiable) -> View#>)
     }
+    
+    func buildMenu(with builder: UIMenuBuilder) {
+        print("hello")
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
