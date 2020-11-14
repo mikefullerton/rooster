@@ -12,6 +12,10 @@ import SwiftUI
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static var instance: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
     enum UserActivities: String {
         case preferences = "com.apple.rooster.preferences"
     }
@@ -56,9 +60,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         builder.insertSibling(preferencesMenu, afterMenu: .about)
     }
     
-    @objc private func showPreferences(_ sender: AppDelegate) {
+    func showPreferences () {
         let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+    }
+    
+    @objc private func showPreferences(_ sender: AppDelegate) {
+        self.showPreferences()
     }
 
 }

@@ -19,6 +19,10 @@ struct ContentView: View {
             CalendarManager.instance.silenceAlarmSound()
         }.padding()
         
+        Button("preferences") {
+            AppDelegate.instance.showPreferences()
+        }
+        
 //        List(<#T##data: RandomAccessCollection##RandomAccessCollection#>, children: <#T##KeyPath<Identifiable, RandomAccessCollection?>#>, rowContent: <#T##(Identifiable) -> View#>)
     }
     
