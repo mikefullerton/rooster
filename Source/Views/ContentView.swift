@@ -8,20 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
     
+    var body: some View {
+  
+        Text("hello world")
         
-        Button("cluck") {
-            CalendarManager.instance.playAlarmSound()
-        }.padding()
-        
-        Button("quiet") {
-            CalendarManager.instance.silenceAlarmSound()
-        }.padding()
-        
-        Button("preferences") {
-            AppDelegate.instance.showPreferences()
-        }
+//        Button("cluck") {
+//            CalendarManager.instance.playAlarmSound()
+//        }.padding()
+//
+//        Button("quiet") {
+//            CalendarManager.instance.silenceAlarmSound()
+//        }.padding()
+//
+//        Button("preferences") {
+//            AppDelegate.instance.showPreferences()
+//        }
         
 //        List(<#T##data: RandomAccessCollection##RandomAccessCollection#>, children: <#T##KeyPath<Identifiable, RandomAccessCollection?>#>, rowContent: <#T##(Identifiable) -> View#>)
     }

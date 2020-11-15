@@ -23,8 +23,10 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
-	<string>We want to make alarms to rock your socks off!</string>
-	<key>UIApplicationSceneManifest</key>
+	<string>We want to make alarms tracking your events</string>
+    <key>NSRemindersUsageDescription</key>
+    <string>We want to make alarms tracking your reminders with due dates</string>
+    <key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<true/>
@@ -50,5 +52,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSUserActivityTypes</key>
+    <array>
+        <string>com.apple.rooster.staterestore.main</string>
+        <string>com.apple.rooster.staterestore.preferences</string>
+    </array>
+
 </dict>
 </plist>

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B2E1512E255EED2B002672EC"
+               BlueprintIdentifier = "B2E15126255EED2B002672EC"
                BuildableName = "Rooster.app"
-               BlueprintName = "Rooster (macOS)"
+               BlueprintName = "Rooster (iOS)"
                ReferencedContainer = "container:Rooster.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B2E1512E255EED2B002672EC"
+            BlueprintIdentifier = "B2E15126255EED2B002672EC"
             BuildableName = "Rooster.app"
-            BlueprintName = "Rooster (macOS)"
+            BlueprintName = "Rooster (iOS)"
             ReferencedContainer = "container:Rooster.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B2E1512E255EED2B002672EC"
+            BlueprintIdentifier = "B2E15126255EED2B002672EC"
             BuildableName = "Rooster.app"
-            BlueprintName = "Rooster (macOS)"
+            BlueprintName = "Rooster (iOS)"
             ReferencedContainer = "container:Rooster.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

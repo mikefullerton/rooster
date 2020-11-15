@@ -10,20 +10,17 @@ import UIKit
 import SwiftUI
 
 
-class DefaultSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
-
+class LaunchingSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow? 
+    
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let scene = (scene as? UIWindowScene) else { return }
 
-        let navController = UINavigationController(rootViewController: UIHostingController(rootView: ContentView()))
-//        navController.navigationBar.prefersLargeTitles = true
-        
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = navController
+        window?.rootViewController = UIHostingController(rootView: LaunchingView())
         window?.makeKeyAndVisible()
     }
     
@@ -42,10 +39,5 @@ class DefaultSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
     }
 
-    func windowScene(_ windowScene: UIWindowScene,
-                     didUpdate previousCoordinateSpace: UICoordinateSpace,
-                     interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation,
-                     traitCollection previousTraitCollection: UITraitCollection) {
-        print("Old: \(previousCoordinateSpace.bounds), new: \(windowScene.coordinateSpace.bounds)")
-    }
+
 }
