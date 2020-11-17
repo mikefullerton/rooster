@@ -1,38 +1,25 @@
 //
-//  AlarmSound.swift
-//  Rooster
+//  BundleAlarmSound.swift
+//  Rooster (iOS)
 //
-//  Created by Mike Fullerton on 11/13/20.
+//  Created by Mike Fullerton on 11/17/20.
 //
 
 import Foundation
+
 import AVFoundation
 
-var player: AVAudioPlayer?
+//var player: AVAudioPlayer?
 
-protocol AlarmSound {
-    var isPlaying: Bool { get }
+class BundleAlarmSound : AlarmSound {
     
-    var duration: TimeInterval { get }
+    weak static var delegate: AlarmSoundDelegate?
     
-    var currentTime: TimeInterval { get }
+    var name: String
     
-    var numberOfLoops: Int { get }
-    
-    var volume: Float { get }
-
-    func set(volume: Float, fadeDuration: TimeInterval)
-    
-    func play()
-    
-    func stop()
-}
-
-struct BundleAlarmSound : AlarmSound {
-    
-    let url: URL
+    private let url: URL
     private let player: AVAudioPlayer
-    
+
     init?(withName name: String,
           extension fileExtension: String = "mp3") {
         
@@ -59,6 +46,7 @@ struct BundleAlarmSound : AlarmSound {
 
         self.url = url
         self.player = player!
+        self.name = name
     }
     
     var isPlaying: Bool {
@@ -86,42 +74,21 @@ struct BundleAlarmSound : AlarmSound {
     }
     
     func play() {
+        if BundleAlarmSound.delegate != nil {
+            BundleAlarmSound.delegate!.soundWillStartPlaying(self)
+        }
         self.player.numberOfLoops = -1
         self.player.play()
     }
     
     func stop() {
         self.player.stop()
-    }
-}
-
-struct EmptyAlarmSound : AlarmSound {
-    var isPlaying: Bool {
-        return false
+        if BundleAlarmSound.delegate != nil {
+            BundleAlarmSound.delegate!.soundDidStopPlaying(self)
+        }
     }
     
-    func play() {
-    }
-    
-    func stop() {
-    }
-    
-    var duration: TimeInterval {
-        return 0
-    }
-    
-    var numberOfLoops: Int {
-        return 0
-    }
-    
-    var volume: Float {
-        return 0
-    }
-    
-    func set(volume: Float, fadeDuration: TimeInterval) {
-    }
-    
-    var currentTime: TimeInterval {
-        return 0
+    static func == (lhs: BundleAlarmSound, rhs: BundleAlarmSound) -> Bool {
+        return lhs === rhs
     }
 }

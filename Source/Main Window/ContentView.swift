@@ -12,18 +12,8 @@ struct ContentView: View {
 //    @ObservedObject var calendarData: CalendarData
     
     @EnvironmentObject var calendarData: CalendarData
-    
-//    init(withCalendarData data: CalendarData) {
-//        self.calendarData = data
-//    }
-//
-    func printList() {
-        print("eventList: \(CalendarManager.instance.data.events)")
         
-    }
-    
     var body: some View {
-        
         let events = self.calendarData.events
         
         List {

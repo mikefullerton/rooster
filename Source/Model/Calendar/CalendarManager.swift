@@ -32,19 +32,17 @@ class CalendarData : ObservableObject {
 }
 
 class CalendarManager: ObservableObject {
-    let store: EKEventStore
+    private let store: EKEventStore
+    private let preferences: Preferences
     
     @Published public var data: CalendarData
         
     weak var delegate: CalendarManagerDelegate?
-
-    static var instance: CalendarManager = {
-        return CalendarManager()
-    }()
         
-    private init() {
+    init(withPreferences preferences: Preferences) {
         self.store = EKEventStore()
         self.data = CalendarData()
+        self.preferences = preferences
     }
 
     private func findEvents(withCalendars calendars: [EventKitCalendar]) -> [Event] {
@@ -73,7 +71,7 @@ class CalendarManager: ObservableObject {
                                                       end: tomorrow,
                                                       calendars: subscribedCalendars.map { $0.EKCalendar })
 
-        let unsubscribedEvents = Preferences.instance.unsubscribedEvents.identifiers
+        let unsubscribedEvents = self.preferences.unsubscribedEvents.identifiers
         
         let now = Date()
         
@@ -118,7 +116,7 @@ class CalendarManager: ObservableObject {
     }
 
     private func findCalendars() -> [EventKitCalendar] {
-        let subscribedCalenderIdentifiers = Preferences.instance.calendarIdentifers.identifiers
+        let subscribedCalenderIdentifiers = self.preferences.calendarIdentifers.identifiers
         
         let ekCalendars = self.store.calendars(for: .event)
 
@@ -148,6 +146,36 @@ class CalendarManager: ObservableObject {
         }
     }
     
+    private func merge(oldEvents: [Event], withNewEvents newEvents: [Event]) -> [Event] {
+        
+        var mergedEvents: [Event] = []
+
+        for newEvent in newEvents {
+            var foundEvent = false
+            
+            for oldEvent in oldEvents {
+                if  newEvent.id == oldEvent.id {
+                    foundEvent = true
+                    if  newEvent.title == oldEvent.title &&
+                        newEvent.startDate == oldEvent.startDate &&
+                        newEvent.endDate == oldEvent.endDate {
+                        
+                        mergedEvents.append(oldEvent)
+                    } else {
+                        mergedEvents.append(newEvent)
+                    }
+                    continue
+                }
+            }
+            
+            if !foundEvent {
+                mergedEvents.append(newEvent)
+            }
+        }
+
+        return mergedEvents
+    }
+    
     public func reloadData() {
         
         
@@ -158,7 +186,7 @@ class CalendarManager: ObservableObject {
         self.stopAllAlarms()
         
         self.data.calendars = calendars
-        self.data.events = events
+        self.data.events = self.merge(oldEvents: self.data.events, withNewEvents: events)
         self.data.reminders = reminders
         self.data.objectWillChange.send()
 

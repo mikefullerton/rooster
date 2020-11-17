@@ -30,6 +30,10 @@
 		B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */; };
 		B2F6B50F2562F2CE000BC78E /* ContentViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */; };
 		B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51225632AE8000BC78E /* Date+Utilities.swift */; };
+		B2F6B51625642F48000BC78E /* Rooster-crowing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F6B51525642F48000BC78E /* Rooster-crowing.mp3 */; };
+		B2F6B51A256433DA000BC78E /* AlarmSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B519256433DA000BC78E /* AlarmSounds.swift */; };
+		B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51D256433F3000BC78E /* BundleAlarmSound.swift */; };
+		B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B52025643434000BC78E /* EmptyAlarmSound.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +64,10 @@
 		B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCalendars.swift; sourceTree = "<group>"; };
 		B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewRow.swift; sourceTree = "<group>"; };
 		B2F6B51225632AE8000BC78E /* Date+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utilities.swift"; sourceTree = "<group>"; };
+		B2F6B51525642F48000BC78E /* Rooster-crowing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Rooster-crowing.mp3"; sourceTree = "<group>"; };
+		B2F6B519256433DA000BC78E /* AlarmSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSounds.swift; sourceTree = "<group>"; };
+		B2F6B51D256433F3000BC78E /* BundleAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleAlarmSound.swift; sourceTree = "<group>"; };
+		B2F6B52025643434000BC78E /* EmptyAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyAlarmSound.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +86,7 @@
 			children = (
 				B2E15122255EED2B002672EC /* Assets.xcassets */,
 				B236FCDF255F1C2C00A2E58D /* chickens.mp3 */,
+				B2F6B51525642F48000BC78E /* Rooster-crowing.mp3 */,
 				B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
@@ -134,13 +143,9 @@
 		B2F6B4872561879D000BC78E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B2F6B488256187CC000BC78E /* Calendar.swift */,
-				B2F6B49A25619A34000BC78E /* Event.swift */,
-				B2F6B49D25619A43000BC78E /* Reminder.swift */,
-				B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */,
+				B2F6B52325643C4A000BC78E /* Calendar */,
+				B2F6B518256433C8000BC78E /* Sounds */,
 				B2F6B48C256188FA000BC78E /* Preferences.swift */,
-				B236FCDA255F196E00A2E58D /* AlarmSound.swift */,
-				B2F6B48F25618EC5000BC78E /* AlarmSoundManager.swift */,
 				B2F6B49625619705000BC78E /* AlarmController.swift */,
 				B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */,
 			);
@@ -184,6 +189,29 @@
 				B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */,
 			);
 			path = "Main Window";
+			sourceTree = "<group>";
+		};
+		B2F6B518256433C8000BC78E /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				B236FCDA255F196E00A2E58D /* AlarmSound.swift */,
+				B2F6B48F25618EC5000BC78E /* AlarmSoundManager.swift */,
+				B2F6B519256433DA000BC78E /* AlarmSounds.swift */,
+				B2F6B51D256433F3000BC78E /* BundleAlarmSound.swift */,
+				B2F6B52025643434000BC78E /* EmptyAlarmSound.swift */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		B2F6B52325643C4A000BC78E /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				B2F6B488256187CC000BC78E /* Calendar.swift */,
+				B2F6B49A25619A34000BC78E /* Event.swift */,
+				B2F6B49D25619A43000BC78E /* Reminder.swift */,
+				B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
+				B2F6B51625642F48000BC78E /* Rooster-crowing.mp3 in Resources */,
 				B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */,
 				B2E15137255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
@@ -262,9 +291,11 @@
 				B2F6B49725619705000BC78E /* AlarmController.swift in Sources */,
 				B2F6B50F2562F2CE000BC78E /* ContentViewRow.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
+				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */,
+				B2F6B51A256433DA000BC78E /* AlarmSounds.swift in Sources */,
 				B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */,
 				B2F6B49B25619A34000BC78E /* Event.swift in Sources */,
 				B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */,
@@ -276,6 +307,7 @@
 				B2F6B489256187CC000BC78E /* Calendar.swift in Sources */,
 				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
+				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B2F6B5042562E1B1000BC78E /* PreferenceRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

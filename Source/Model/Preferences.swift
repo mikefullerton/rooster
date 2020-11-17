@@ -55,12 +55,9 @@ struct Preferences {
         }
     }
     
-    
     let calendarIdentifers: IdentifierList
     let unsubscribedEvents: IdentifierList
     let unsubscribedReminders: IdentifierList
-    
-    static var instance = Preferences()
     
     init() {
         self.calendarIdentifers = IdentifierList(withPreferencesKey: "calendars")

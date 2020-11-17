@@ -15,6 +15,7 @@ class Event: Identifiable, Equatable, ObservableObject, CustomStringConvertible 
     @Published var isFiring: Bool
     @Published private(set) var startDate: Date
     @Published private(set) var endDate: Date
+    @Published var alarmSound: AlarmSound?
     
     init(withEvent EKEvent: EKEvent,
          subscribed: Bool,

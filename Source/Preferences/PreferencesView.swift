@@ -10,7 +10,7 @@ import SwiftUI
 struct PreferencesView: View {
     
     var body: some View {
-        List(CalendarManager.instance.data.calendars) { calendar in
+        List(AlarmController.instance.calendarManager.data.calendars) { calendar in
             PreferenceRow(calendar: calendar)
         }
     }

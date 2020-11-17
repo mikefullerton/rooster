@@ -11,27 +11,35 @@ protocol AlarmControllerDelegate : AnyObject {
     func alarmControllerDidRequestCalendarAccess(_ alarmController: AlarmController, success:Bool, error: Error?)
 }
 
-class AlarmController : CalendarManagerDelegate {
+class AlarmController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
     static let instance = AlarmController()
     
     weak var delegate: AlarmControllerDelegate?
     
-    var calendarAccessError: Error?
-    var hasCalendarAccess: Bool
+    let alarmSoundManager: AlarmSoundManager
+    let calendarManager: CalendarManager
+    let preferences: Preferences
     
     private weak var timer: Timer?
     
     init() {
-        self.calendarAccessError = nil
-        self.hasCalendarAccess = false
-        CalendarManager.instance.delegate = self
+        let prefs = Preferences()
+        
+        self.preferences = prefs
+        
+        self.calendarManager = CalendarManager(withPreferences: prefs)
+        
+        self.alarmSoundManager = AlarmSoundManager()
+        
+        self.calendarManager.delegate = self
+        self.alarmSoundManager.delegate = self
     }
     
     func startTimer() {
         print("timer stopped")
         self.stopTimer()
         
-        if let nextEventTime = CalendarManager.instance.nextEventTime {
+        if let nextEventTime = self.calendarManager.nextEventTime {
             self.startTimer(withDate: nextEventTime)
         }
     }
@@ -44,17 +52,19 @@ class AlarmController : CalendarManagerDelegate {
     }
 
     func fireAlarm(forEvent event: Event) {
-        AlarmSoundManager.instance.playAlarmSound()
-        CalendarManager.instance.setEventIsFiring(event)
+        event.alarmSound = RoosterCrowingAlarmSound()
+        event.alarmSound?.play()
+        self.calendarManager.setEventIsFiring(event)
     }
 
     func stopAlarm(forEvent event: Event) {
-        AlarmSoundManager.instance.silenceAlarmSound()
-        CalendarManager.instance.setEventHasFired(event)
+        event.alarmSound?.stop()
+        event.alarmSound = nil
+        self.calendarManager.setEventHasFired(event)
     }
     
     func fireAlarmsIfNeeded() {
-        if let events = CalendarManager.instance.eventsNeedingAlarms() {
+        if let events = self.calendarManager.eventsNeedingAlarms() {
             for event in events {
                 self.fireAlarm(forEvent: event)
             }
@@ -79,10 +89,8 @@ class AlarmController : CalendarManagerDelegate {
     
     
     func start() {
-        CalendarManager.instance.requestAccess { (success, error) in
+        self.calendarManager.requestAccess { (success, error) in
             DispatchQueue.main.async {
-                self.hasCalendarAccess = success
-                self.calendarAccessError = error
                 if success {
                     self.fireAlarmsIfNeeded()
                 }
@@ -97,6 +105,15 @@ class AlarmController : CalendarManagerDelegate {
     func calendarManagerDidUpdate(_ calendarManager: CalendarManager) {
         self.fireAlarmsIfNeeded()
     }
+    
+    func alarmSoundManager(_ manager: AlarmSoundManager, soundWillStartPlaying sound: AlarmSound) {
+        
+    }
+    
+    func alarmSoundManager(_ manager: AlarmSoundManager, soundDidStopPlaying sound: AlarmSound) {
+        
+    }
+
     
 }
 
