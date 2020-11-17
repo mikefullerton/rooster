@@ -25,6 +25,7 @@ struct AlarmSoundManager  {
     }
     
     func playAlarmSound() {
+        self.chickens.stop()
         self.chickens.play()
     }
 

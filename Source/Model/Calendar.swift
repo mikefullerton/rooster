@@ -8,16 +8,40 @@
 import Foundation
 import EventKit
 
-struct Calendar {
-    
+protocol Calendar {
+    var isSubscribed: Bool { get }
+    var title: String { get }
+    var id: String { get }
+    var sourceTitle: String { get }
+    var sourceIdentifier: String { get }
+}
+
+struct EventKitCalendar: Calendar, Identifiable  {
     let EKCalendar: EKCalendar
-    let identifier: String
-    let isSubscribed: Bool
+    var isSubscribed: Bool
     
     init(withCalendar EKCalendar: EKCalendar,
          subscribed: Bool) {
-        self.identifier = EKCalendar.calendarIdentifier
         self.EKCalendar = EKCalendar
         self.isSubscribed = subscribed
     }
+    
+    var id: String {
+        return self.EKCalendar.calendarIdentifier
+    }
+    
+    var title: String {
+        return self.EKCalendar.title
+    }
+    
+    var sourceTitle: String {
+        return self.EKCalendar.source.title
+    }
+
+    var sourceIdentifier: String {
+        return self.EKCalendar.source.sourceIdentifier
+    }
+
 }
+
+
