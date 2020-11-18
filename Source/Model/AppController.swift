@@ -8,11 +8,14 @@
 import Foundation
 
 protocol AlarmControllerDelegate : AnyObject {
-    func alarmControllerDidRequestCalendarAccess(_ alarmController: AlarmController, success:Bool, error: Error?)
+    func alarmControllerDidRequestCalendarAccess(_ alarmController: AppController, success:Bool, error: Error?)
 }
 
-class AlarmController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
-    static let instance = AlarmController()
+class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
+
+    static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
+
+    static let instance = AppController()
     
     weak var delegate: AlarmControllerDelegate?
     
@@ -21,18 +24,21 @@ class AlarmController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
     let preferences: Preferences
     
     private weak var timer: Timer?
-    
+    private(set) var isAuthenticating : Bool = false
+    private(set) var isAuthenticated: Bool = false
+
     init() {
         let prefs = Preferences()
-        
         self.preferences = prefs
-        
         self.calendarManager = CalendarManager(withPreferences: prefs)
-        
         self.alarmSoundManager = AlarmSoundManager()
-        
         self.calendarManager.delegate = self
         self.alarmSoundManager.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: Preferences.PreferencesDidChangeEvent, object: nil)
+    }
+    
+    @objc func preferencesDidChange(_ notif: Notification) {
+        self.calendarManager.reloadData()
     }
     
     func startTimer() {
@@ -51,13 +57,13 @@ class AlarmController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
         }
     }
 
-    func fireAlarm(forEvent event: Event) {
+    func fireAlarm(forEvent event: EventKitEvent) {
         event.alarmSound = RoosterCrowingAlarmSound()
         event.alarmSound?.play()
         self.calendarManager.setEventIsFiring(event)
     }
 
-    func stopAlarm(forEvent event: Event) {
+    func stopAlarm(forEvent event: EventKitEvent) {
         event.alarmSound?.stop()
         event.alarmSound = nil
         self.calendarManager.setEventHasFired(event)
@@ -87,17 +93,21 @@ class AlarmController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
         print("started timer: \(timer) for time interval \(fireInterval)")
     }
     
-    
     func start() {
+        self.isAuthenticating = true
         self.calendarManager.requestAccess { (success, error) in
             DispatchQueue.main.async {
+                self.isAuthenticating = false
                 if success {
+                    self.isAuthenticated = true
                     self.fireAlarmsIfNeeded()
                 }
                 
                 if self.delegate != nil {
                     self.delegate!.alarmControllerDidRequestCalendarAccess(self, success: success, error: error)
                 }
+                
+                NotificationCenter.default.post(name: AppController.CalendarDidAuthenticateEvent, object: self)
             }
         }
     }
@@ -114,11 +124,71 @@ class AlarmController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
         
     }
 
+    var calendarData: CalendarData {
+        return self.calendarManager.data
+    }
+    
+    var events: [EventKitEvent] {
+        return self.calendarData.events
+    }
+
+    var calendars: [String: [EventKitCalendar]] {
+        return self.calendarData.calendars
+    }
+
+    var reminders: [EventKitReminder] {
+        return self.calendarData.reminders
+    }
+
+    
     
 }
 
-extension Event {
+extension EventKitEvent {
     func stopAlarm() {
-        AlarmController.instance.stopAlarm(forEvent: self)
+        AppController.instance.stopAlarm(forEvent: self)
+    }
+}
+
+
+
+class Notifier {
+    let name: Notification.Name
+
+    init(withName name: Notification.Name, object: AnyObject? = nil) {
+        self.name = name
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(notificationReceived(_:)),
+                                               name: AppController.CalendarDidAuthenticateEvent, object: object)
+    }
+    
+    @objc func notificationReceived(_ notif: Notification) {
+        
+    }
+    
+}
+
+protocol Reloadable {
+    func reload()
+}
+
+class Reloader : Notifier {
+    
+    let reloadable: Reloadable
+    
+    init(withName name: Notification.Name, reloadable: Reloadable) {
+        self.reloadable = reloadable
+        super.init(withName: name)
+    }
+
+    @objc override func notificationReceived(_ notif: Notification) {
+        print("got reload event")
+        self.reloadable.reload()
+    }
+}
+
+class AuthenticationReloader : Reloader {
+    init(for reloadable:Reloadable) {
+        super.init(withName: AppController.CalendarDidAuthenticateEvent, reloadable: reloadable)
     }
 }

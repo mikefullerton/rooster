@@ -8,7 +8,7 @@
 import Foundation
 import EventKit
 
-class Event: Identifiable, Equatable, ObservableObject, CustomStringConvertible {
+class EventKitEvent: Identifiable, Equatable, ObservableObject, CustomStringConvertible {
     @Published private(set) var EKEvent: EKEvent
     @Published var isSubscribed: Bool
     @Published var hasFired: Bool
@@ -16,6 +16,8 @@ class Event: Identifiable, Equatable, ObservableObject, CustomStringConvertible 
     @Published private(set) var startDate: Date
     @Published private(set) var endDate: Date
     @Published var alarmSound: AlarmSound?
+    @Published var title: String
+    @Published var id: String
     
     init(withEvent EKEvent: EKEvent,
          subscribed: Bool,
@@ -27,14 +29,8 @@ class Event: Identifiable, Equatable, ObservableObject, CustomStringConvertible 
         self.isFiring = isFiring
         self.startDate = EKEvent.startDate
         self.endDate = EKEvent.endDate
-    }
-    
-    var id: String {
-        return self.EKEvent.eventIdentifier
-    }
-
-    var title: String {
-        return self.EKEvent.title
+        self.title = EKEvent.title
+        self.id = EKEvent.eventIdentifier
     }
     
     var isInProgress: Bool {
@@ -62,11 +58,11 @@ class Event: Identifiable, Equatable, ObservableObject, CustomStringConvertible 
         self.isFiring = isFiring
     }
     
-    static func == (lhs: Event, rhs: Event) -> Bool {
+    static func == (lhs: EventKitEvent, rhs: EventKitEvent) -> Bool {
         return lhs.id == rhs.id
     }
     
     var description: String {
-        return ("title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), isFiring: \(self.isFiring), hasFired: \(self.hasFired)")
+        return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), isFiring: \(self.isFiring), hasFired: \(self.hasFired)")
     }
 }

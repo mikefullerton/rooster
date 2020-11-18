@@ -8,18 +8,37 @@
 import SwiftUI
 
 struct PreferenceRow: View {
-    var calendar: Calendar
+    @ObservedObject var calendar: EventKitCalendar
+    @State var isChecked: Bool = false
+    
+    func toggle() {
+        self.calendar.isSubscribed = !self.calendar.isSubscribed
+        self.isChecked = !isChecked
+    }
     
     var body: some View {
-        Text("\(calendar.sourceTitle): \(calendar.title)")
+        Button(action: {
+            self.toggle()
+        }, label: {
+            HStack {
+                Image(systemName: self.isChecked ? "checkmark.square" : "square")
+                Text(calendar.title)
+            }
+        })
+        
+        .onAppear(perform: {
+            self.isChecked = self.calendar.isSubscribed
+        })
+        
+//        Text("\(calendar.sourceTitle): \(calendar.title)")
     }
 }
 
-struct PreferencesRow_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        ForEach(testCalendars, id: \.id) { calendar in
-            PreferenceRow(calendar: calendar)
-        }
-    }
-}
+//struct PreferencesRow_Previews: PreviewProvider {
+//    static var previews: some View {
+//
+//        ForEach(testCalendars, id: \.id) { calendar in
+//            PreferenceRow(calendar: calendar)
+//        }
+//    }
+//}

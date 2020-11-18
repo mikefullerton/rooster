@@ -9,8 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     
-//    @ObservedObject var calendarData: CalendarData
-    
     @EnvironmentObject var calendarData: CalendarData
         
     var body: some View {

@@ -13,24 +13,6 @@ protocol CalendarManagerDelegate : AnyObject {
     func calendarManagerDidUpdate(_ calendarManager: CalendarManager)
 }
 
-class CalendarData : ObservableObject {
-    @Published var calendars: [EventKitCalendar] = []
-    @Published var events: [Event] = []
-    @Published var reminders: [Reminder] = []
-    
-    init(withCalendars calendars: [EventKitCalendar],
-         events: [Event],
-         reminders: [Reminder]) {
-        self.calendars = calendars
-        self.events = events
-        self.reminders = reminders
-    }
-    
-    convenience init() {
-        self.init(withCalendars:[], events:[], reminders:[])
-    }
-}
-
 class CalendarManager: ObservableObject {
     private let store: EKEventStore
     private let preferences: Preferences
@@ -45,7 +27,7 @@ class CalendarManager: ObservableObject {
         self.preferences = preferences
     }
 
-    private func findEvents(withCalendars calendars: [EventKitCalendar]) -> [Event] {
+    private func findEvents(withCalendars calendars: [EventKitCalendar]) -> [EventKitEvent] {
         
         let currentCalendar = NSCalendar.current
         
@@ -75,7 +57,7 @@ class CalendarManager: ObservableObject {
         
         let now = Date()
         
-        var events: [Event] = []
+        var events: [EventKitEvent] = []
         
         for event in self.store.events(matching: predicate) {
             
@@ -95,7 +77,7 @@ class CalendarManager: ObservableObject {
                 print("\(title)")
                 
                 let subscribed = unsubscribedEvents.contains(event.calendarItemIdentifier) == false
-                let newEvent = Event(withEvent: event, subscribed: subscribed)
+                let newEvent = EventKitEvent(withEvent: event, subscribed: subscribed)
                 events.append(newEvent)
             }
         }
@@ -104,14 +86,6 @@ class CalendarManager: ObservableObject {
     }
     
     private func wantsCalendar(calendar: EKCalendar, subscribedIdentifiers: [String]) -> Bool {
-        if calendar.source.title == "apple.com" && calendar.title == "Apple" {
-            return true
-        }
-
-        if calendar.source.title == "Google" && calendar.title == "Mike Fullerton" {
-            return true
-        }
-        
         return subscribedIdentifiers.contains(calendar.calendarIdentifier)
     }
 
@@ -132,7 +106,7 @@ class CalendarManager: ObservableObject {
         return calendars
     }
     
-    private func findReminders() -> [Reminder] {
+    private func findReminders() -> [EventKitReminder] {
         return []
     }
 
@@ -146,9 +120,9 @@ class CalendarManager: ObservableObject {
         }
     }
     
-    private func merge(oldEvents: [Event], withNewEvents newEvents: [Event]) -> [Event] {
+    private func merge(oldEvents: [EventKitEvent], withNewEvents newEvents: [EventKitEvent]) -> [EventKitEvent] {
         
-        var mergedEvents: [Event] = []
+        var mergedEvents: [EventKitEvent] = []
 
         for newEvent in newEvents {
             var foundEvent = false
@@ -180,15 +154,30 @@ class CalendarManager: ObservableObject {
         
         
         let calendars = self.findCalendars()
-        let events = self.findEvents(withCalendars: self.data.calendars)
+        
+        var groups: [String: [EventKitCalendar]] = [:]
+        let events = self.findEvents(withCalendars: calendars)
         let reminders = self.findReminders()
         
         self.stopAllAlarms()
+
+        for calendar in calendars {
+            var groupList: [EventKitCalendar]? = groups[calendar.sourceTitle]
+            if groupList == nil {
+                groupList = []
+            }
+            groupList!.append(calendar)
+            groups[calendar.sourceTitle] = groupList
+        }
         
-        self.data.calendars = calendars
+        self.data.calendars = groups
+        
+//        self.data.calendars.removeAll()
+//        self.data.calendars.append(contentsOf: calendars)
+            
         self.data.events = self.merge(oldEvents: self.data.events, withNewEvents: events)
         self.data.reminders = reminders
-        self.data.objectWillChange.send()
+        self.data.forceUpdate()
 
 //            = CalendarData(withCalendars: calendars, events: events, reminders: reminders)
     }
@@ -282,9 +271,9 @@ class CalendarManager: ObservableObject {
         return nil
     }
     
-    func eventsNeedingAlarms() -> [Event]? {
+    func eventsNeedingAlarms() -> [EventKitEvent]? {
         let now = Date()
-        var events: [Event] = []
+        var events: [EventKitEvent] = []
         
         for event in self.data.events {
             if event.startDate.isBeforeDate(now) &&
@@ -297,7 +286,7 @@ class CalendarManager: ObservableObject {
         return events
     }
     
-    func updateEvent(_ event: Event) {
+    func updateEvent(_ event: EventKitEvent) {
         var newEvents = self.data.events
         
         if let index = newEvents.firstIndex(of: event) {
@@ -308,12 +297,12 @@ class CalendarManager: ObservableObject {
         self.data.events = newEvents
     }
     
-    func setEventHasFired(_ inEvent: Event) {
+    func setEventHasFired(_ inEvent: EventKitEvent) {
         inEvent.setHasFired()
 //        self.updateEvent(newEvent)
     }
     
-    func setEventIsFiring(_ inEvent: Event) {
+    func setEventIsFiring(_ inEvent: EventKitEvent) {
 //        var newEvent = inEvent
         inEvent.setIsFiring(true)
 //        self.updateEvent(newEvent)

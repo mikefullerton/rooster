@@ -10,7 +10,14 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class PreferencesSceneDelegate: WindowSceneDelegate {
+class PreferencesSceneDelegate: WindowSceneDelegate, Reloadable {
+    
+    private var reloader: AuthenticationReloader?
+ 
+    override init() {
+        super.init()
+        self.reloader = AuthenticationReloader(for: self)
+    }
     
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -26,11 +33,19 @@ class PreferencesSceneDelegate: WindowSceneDelegate {
         
         scene.title = "Rooster Preferences"
         
+        print("calenderData: \(AppController.instance.calendarData)")
+        
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = UIHostingController(rootView: PreferencesView())
+        window.rootViewController = UIHostingController(rootView: PreferencesView().environmentObject(AppController.instance.calendarData))
         
         // "preferencesWindowBounds"
         self.set(window: window, restoreKey:nil)
     }
+    
+    func reload() {
+//        self.window?.rootViewController = UIHostingController(rootView: PreferencesView().environmentObject(AppController.instance.calendarData))
+//
+    }
+    
 
 }

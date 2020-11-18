@@ -30,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AlarmControllerDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        AlarmController.instance.delegate = self;
-        AlarmController.instance.start()
+        AppController.instance.delegate = self;
+        AppController.instance.start()
         
         return true
     }
@@ -40,7 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AlarmControllerDelegate {
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
 
-        if let activity = options.userActivities.first {
+        if  AppController.instance.isAuthenticated,
+            let activity = options.userActivities.first {
             if activity.activityType == UserActivities.preferences.rawValue {
                 let configuration = UISceneConfiguration(name: SceneNames.preferences.rawValue, sessionRole: connectingSceneSession.role)
                 configuration.delegateClass = PreferencesSceneDelegate.self
@@ -131,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AlarmControllerDelegate {
         return nil
     }
     
-    func alarmControllerDidRequestCalendarAccess(_ alarmController: AlarmController, success: Bool, error: Error?) {
+    func alarmControllerDidRequestCalendarAccess(_ alarmController: AppController, success: Bool, error: Error?) {
         if success {
             if let mainSceneDelegate = self.findMainScene() {
                 mainSceneDelegate.didReceiveCalendarAccess()

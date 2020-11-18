@@ -31,7 +31,7 @@ class MainSceneDelegate: WindowSceneDelegate {
     
     func didReceiveCalendarAccess() {
         if self.window != nil {
-            let data = AlarmController.instance.calendarManager.data
+            let data = AppController.instance.calendarManager.data
             let viewController = UIHostingController(rootView: ContentView().environmentObject(data))
             self.window?.rootViewController = viewController
         }

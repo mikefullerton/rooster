@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TestCalendar: Calendar, Identifiable {
+struct TestCalendar: Identifiable {
     var id: String
     
     var isSubscribed: Bool

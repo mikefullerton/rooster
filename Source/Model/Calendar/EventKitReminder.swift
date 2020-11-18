@@ -8,7 +8,7 @@
 import Foundation
 import EventKit
 
-struct Reminder: Hashable, Identifiable {
+struct EventKitReminder: Hashable, Identifiable {
     
     let EKReminder: EKReminder
     let isSubscribed: Bool
@@ -21,5 +21,13 @@ struct Reminder: Hashable, Identifiable {
     
     var id: String {
         return self.EKReminder.calendarItemIdentifier
+    }
+    
+    var title: String {
+        return self.EKReminder.title
+    }
+    
+    var description: String {
+        return "Reminder: \(self.title)"
     }
 }

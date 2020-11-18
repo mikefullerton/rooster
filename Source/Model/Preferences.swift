@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Preferences {
+class Preferences {
     
     static let PreferencesDidChangeEvent = Notification.Name(rawValue: "PreferencesDidChangeEvent")
 
-    struct IdentifierList {
+    class IdentifierList {
         private let preferencesKey: String
         
         var identifiers: [String]
@@ -37,19 +37,29 @@ struct Preferences {
 
         }
         
-        mutating func add(identifier: String) {
-            self.identifiers.append(identifier)
-            self.save()
+        func add(identifier: String) {
+            if !self.identifiers.contains(identifier) {
+                self.identifiers.append(identifier)
+                self.save()
+            }
         }
 
-        mutating func remove(identifier: String) {
+        func remove(identifier: String) {
             if let index = self.identifiers.firstIndex(of: identifier) {
                 self.identifiers.remove(at: index)
                 self.save()
             }
         }
 
-        mutating func removeAll() {
+        func set(isIncluded included: Bool, forKey key: String) {
+            if included {
+                self.add(identifier: key)
+            } else {
+                self.remove(identifier: key)
+            }
+        }
+        
+        func removeAll() {
             self.identifiers.removeAll()
             self.save()
         }

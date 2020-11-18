@@ -17,15 +17,19 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.windowBoundsKey = restoreKey
 
         #if targetEnvironment(macCatalyst)
-        DispatchQueue.main.async {
-            if  let key = self.windowBoundsKey,
-                let windowBoundsString = UserDefaults.standard.object(forKey: key) as? String {
-                let frame = NSRectFromString(windowBoundsString)
-                window.makeKey()
-                window.setFrameAndBecomeVisible(newFrame: frame)
-                
-                print("restored window frame: \(frame) for key: \(key)")
+        if self.windowBoundsKey != nil {
+            DispatchQueue.main.async {
+                if  let key = self.windowBoundsKey,
+                    let windowBoundsString = UserDefaults.standard.object(forKey: key) as? String {
+                    let frame = NSRectFromString(windowBoundsString)
+                    window.makeKey()
+                    window.setFrameAndBecomeVisible(newFrame: frame)
+                    
+                    print("restored window frame: \(frame) for key: \(key)")
+                }
             }
+        } else {
+            self.window?.makeKeyAndVisible()
         }
         #else
         self.window?.makeKeyAndVisible()

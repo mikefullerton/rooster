@@ -19,14 +19,26 @@ extension String {
     }
 }
 
+struct ButtonModifier : ViewModifier {
+    func body(content: Content) -> some View {
+            content
+                .frame(width: 80, height: 40, alignment: .center)
+                .foregroundColor(.red)
+                .background(Color.gray)
+                .cornerRadius(40)
+                .buttonStyle(BorderlessButtonStyle())
+        }
+}
+
+
 struct ContentViewRow: View {
-    @ObservedObject var event: Event
+    @ObservedObject var event: EventKitEvent
     var startDate: Date
     var endDate: Date
 //    var isFiring: Bool
 //    var isInProgress: Bool
     
-    init(event: Event) {
+    init(event: EventKitEvent) {
         self.event = event
         self.startDate = event.startDate
         self.endDate = event.endDate
@@ -70,11 +82,7 @@ struct ContentViewRow: View {
                 }) {
                     Text("Stop")
                 }
-                .frame(width: 80, height: self.height / 2, alignment: .center)
-                .foregroundColor(.red)
-                .background(Color.gray)
-                .cornerRadius(40)
-                .buttonStyle(BorderlessButtonStyle())
+                .modifier(ButtonModifier())
                 .disabled(false)
                 
                 Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing).foregroundColor(.red)
@@ -86,15 +94,11 @@ struct ContentViewRow: View {
             HStack{
                 Button(action: {
                     print("Stop button pressed")
-                    AlarmController.instance.stopAlarm(forEvent: self.event)
+                    AppController.instance.stopAlarm(forEvent: self.event)
                 }) {
                     Text("Stop")
                 }
-                .frame(width: 80, height: self.height / 2, alignment: .center)
-                .foregroundColor(Color(UIColor.lightGray))
-                .background(Color.gray)
-                .cornerRadius(40)
-                .buttonStyle(BorderlessButtonStyle())
+                .modifier(ButtonModifier())
                 .disabled(true)
                 Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing).foregroundColor(.red)
                 Text("-").foregroundColor(.red)
@@ -104,11 +108,68 @@ struct ContentViewRow: View {
         } else {
             HStack{
                 Text("").frame(width:self.buttonSpaceWidth, height:self.height, alignment: .trailing)
-                Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing)
-                Text("-")
-                Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading)
-                Text(self.event.title)
+                DateContentView(event: self.event) {
+                    
+                }
+
+                
+//                Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing)
+//                Text("-")
+//                Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading)
+//                Text(self.event.title)
             }
+        }
+    }
+}
+
+struct NotificationView<Content: View>: View {
+    let content: Content
+
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    var body: some View {
+        content
+            .padding()
+            .background(Color(.tertiarySystemBackground))
+            .cornerRadius(16)
+            .transition(.move(edge: .top))
+            .animation(.spring())
+    }
+}
+
+struct DateContentView<Content: View> : View {
+    let content: Content
+//    @ObservedObject var event: EventKitEvent
+
+    let height: CGFloat = 80.0
+    let buttonSpaceWidth: CGFloat = 80.0
+    var startDate: Date
+    var endDate: Date
+    var title: String
+
+    init(event: EventKitEvent,
+        @ViewBuilder content: () -> Content) {
+//        self.event = event
+        self.content = content()
+        self.startDate = event.startDate
+        self.endDate = event.endDate
+        self.title = event.title
+        
+        print(title)
+    }
+    
+    func shortDateString(_ date: Date) -> String {
+        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
+    }
+
+    var body: some View {
+        HStack {
+            Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing)
+            Text("-")
+            Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading)
+            Text(self.title)
         }
     }
 }
