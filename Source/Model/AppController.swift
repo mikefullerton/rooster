@@ -58,15 +58,20 @@ class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
     }
 
     func fireAlarm(forEvent event: EventKitEvent) {
+        event.setIsFiring(true)
         event.alarmSound = RoosterCrowingAlarmSound()
         event.alarmSound?.play()
-        self.calendarManager.setEventIsFiring(event)
+        
+        self.calendarData.forceUpdate()
     }
 
     func stopAlarm(forEvent event: EventKitEvent) {
+        event.setIsFiring(false)
+        event.setHasFired()
         event.alarmSound?.stop()
         event.alarmSound = nil
-        self.calendarManager.setEventHasFired(event)
+
+        self.calendarData.forceUpdate()
     }
     
     func fireAlarmsIfNeeded() {

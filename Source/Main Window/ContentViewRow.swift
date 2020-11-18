@@ -20,51 +20,68 @@ extension String {
 }
 
 struct ButtonModifier : ViewModifier {
+    
+    let buttonTextColor: Color
+    
+    init(withButtonTextColor buttonTextColor: Color) {
+        self.buttonTextColor = buttonTextColor
+    }
+    
     func body(content: Content) -> some View {
             content
                 .frame(width: 80, height: 40, alignment: .center)
-                .foregroundColor(.red)
+                .foregroundColor(self.buttonTextColor)
                 .background(Color.gray)
                 .cornerRadius(40)
                 .buttonStyle(BorderlessButtonStyle())
         }
 }
 
+func shortDateString(_ date: Date) -> String {
+    return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
+}
+
 
 struct ContentViewRow: View {
-    @ObservedObject var event: EventKitEvent
-    var startDate: Date
-    var endDate: Date
-//    var isFiring: Bool
-//    var isInProgress: Bool
+//    @ObservedObject var event: EventKitEvent
+//
+//    @State var startDate: String = ""
+//    @State var endDate: String = ""
+//    @State var title: String = ""
+//    @State var isFiring: Bool = false
+//    @State var isInProgress: Bool = false
+
+    var event: EventKitEvent
+    var startDate: String = ""
+    var endDate: String = ""
+    var title: String = ""
+    var isFiring: Bool = false
+    var isInProgress: Bool = false
     
     init(event: EventKitEvent) {
         self.event = event
-        self.startDate = event.startDate
-        self.endDate = event.endDate
-//        self.isFiring = event.isFiring
-//        self.isInProgress = event.isInProgress
-        
+        self.title = event.title
+        self.startDate = shortDateString(event.startDate)
+        self.endDate = shortDateString(event.endDate)
+        self.isFiring = event.isFiring
+        self.isInProgress = event.isInProgress
         print("got new event: \(event)")
     }
     
-    func shortDateString(_ date: Date) -> String {
-        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-    }
-
+  
     let height: CGFloat = 80.0
     let buttonSpaceWidth: CGFloat = 80.0
 
     // these seem to be cached ?
     
-    var isFiring: Bool {
-        return self.event.isFiring
-    }
-    
-    var isInProgress: Bool  {
-        return self.event.isInProgress
-    }
-    
+//    var isFiring: Bool {
+//        return self.event.isFiring
+//    }
+//
+//    var isInProgress: Bool  {
+//        return self.event.isInProgress
+//    }
+//
 //    var startDate: Date {
 //        return self.event.startDate
 //    }
@@ -74,68 +91,50 @@ struct ContentViewRow: View {
 //    }
     
     var body: some View {
-        if self.isFiring {
-            HStack{
+        HStack{
+            if self.isFiring {
                 Button(action: {
                     print("Stop button pressed")
                     self.event.stopAlarm()
                 }) {
                     Text("Stop")
                 }
-                .modifier(ButtonModifier())
+                .modifier(ButtonModifier(withButtonTextColor: Color.red))
                 .disabled(false)
                 
-                Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing).foregroundColor(.red)
-                Text("-").foregroundColor(.red)
-                Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading).foregroundColor(.red)
-                Text(self.event.title).foregroundColor(.red)
-            }
-        } else if self.isInProgress {
-            HStack{
+            } else if self.isInProgress {
                 Button(action: {
-                    print("Stop button pressed")
-                    AppController.instance.stopAlarm(forEvent: self.event)
+                    print("Disabled top button pressed")
                 }) {
                     Text("Stop")
                 }
-                .modifier(ButtonModifier())
+                .modifier(ButtonModifier(withButtonTextColor:Color(UIColor.lightGray)))
                 .disabled(true)
-                Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing).foregroundColor(.red)
-                Text("-").foregroundColor(.red)
-                Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading).foregroundColor(.red)
-                Text(self.event.title).foregroundColor(.red)
-            }
-        } else {
-            HStack{
+            } else {
                 Text("").frame(width:self.buttonSpaceWidth, height:self.height, alignment: .trailing)
-                DateContentView(event: self.event) {
-                    
-                }
-
-                
-//                Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing)
-//                Text("-")
-//                Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading)
-//                Text(self.event.title)
             }
+             
+            Text(self.startDate).frame(width: 60, height: self.height, alignment: .trailing).foregroundColor(.red)
+            Text("-").foregroundColor(.red)
+            Text(self.endDate).frame(width: 60, height: self.height, alignment: .leading).foregroundColor(.red)
+            Text(self.title).foregroundColor(.red)
         }
-    }
-}
-
-struct NotificationView<Content: View>: View {
-    let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-
-    var body: some View {
-        content
-            .padding()
-            .background(Color(.tertiarySystemBackground))
-            .cornerRadius(16)
-            .transition(.move(edge: .top))
-            .animation(.spring())
+//        .onAppear(perform: {
+//            self.title = self.event.title
+//            self.startDate = self.shortDateString(self.event.startDate)
+//            self.endDate = self.shortDateString(self.event.endDate)
+//            self.isFiring = self.event.isFiring
+//            self.isInProgress = self.event.isInProgress
+//        })
+//        .onReceive(event.objectWillChange, perform: { newEvent in
+//            print("\(newEvent)")
+//            self.title = self.event.title
+//            self.startDate = self.shortDateString(self.event.startDate)
+//            self.endDate = self.shortDateString(self.event.endDate)
+//            self.isFiring = self.event.isFiring
+//            self.isInProgress = self.event.isInProgress
+//        })
+//
     }
 }
 

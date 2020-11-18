@@ -297,15 +297,15 @@ class CalendarManager: ObservableObject {
         self.data.events = newEvents
     }
     
-    func setEventHasFired(_ inEvent: EventKitEvent) {
-        inEvent.setHasFired()
-//        self.updateEvent(newEvent)
-    }
-    
-    func setEventIsFiring(_ inEvent: EventKitEvent) {
-//        var newEvent = inEvent
-        inEvent.setIsFiring(true)
-//        self.updateEvent(newEvent)
-    }
-    
+//    func setEventHasFired(_ inEvent: EventKitEvent) {
+//        inEvent.setHasFired()
+////        self.updateEvent(newEvent)
+//    }
+//    
+//    func setEventIsFiring(_ inEvent: EventKitEvent) {
+////        var newEvent = inEvent
+//        inEvent.setIsFiring(true)
+////        self.updateEvent(newEvent)
+//    }
+//    
 }

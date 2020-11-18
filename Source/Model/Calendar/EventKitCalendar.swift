@@ -47,6 +47,9 @@ class EventKitCalendar: Identifiable, ObservableObject, CustomStringConvertible,
         return lhs.id == rhs.id
     }
     
+    public func forceUpdate() {
+        self.objectWillChange.send()
+    }
 }
 
 

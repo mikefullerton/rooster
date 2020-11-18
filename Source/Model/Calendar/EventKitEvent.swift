@@ -65,4 +65,9 @@ class EventKitEvent: Identifiable, Equatable, ObservableObject, CustomStringConv
     var description: String {
         return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), isFiring: \(self.isFiring), hasFired: \(self.hasFired)")
     }
+    
+    func forceUpdate() {
+        self.objectWillChange.send()
+    }
+
 }
