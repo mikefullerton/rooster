@@ -96,11 +96,8 @@ class CalendarManager: ObservableObject {
         return events
     }
     
-    private func findCalendars() -> [EventKitCalendar] {
+    private func calendars(fromEKCalendars ekCalendars: [EKCalendar]) -> [EventKitCalendar] {
         let subscribedCalendars = self.preferences.calendarIdentifers
-        
-        let ekCalendars = self.store.calendars(for: .event)
-
         var calendars: [EventKitCalendar] = []
         for ekCalendar in ekCalendars {
             
@@ -114,6 +111,28 @@ class CalendarManager: ObservableObject {
 
         return calendars
     }
+    
+    
+    private func findCalendars() -> [EventKitCalendar] {
+        let ekCalendars = self.store.calendars(for: .event)
+        return self.calendars(fromEKCalendars: ekCalendars)
+    }
+    
+    private func findDelegateCalendars() -> [EventKitCalendar] {
+        
+        var ekCalendars:[EKCalendar] = []
+        let sources = self.store.delegateSources
+        for source in sources {
+            let calendars = source.calendars(for: .event)
+            print("\(source.title): calendars: \(calendars.count)")
+            for calendar in calendars {
+                ekCalendars.append(calendar)
+            }
+        }
+            
+        return self.calendars(fromEKCalendars: ekCalendars)
+    }
+    
     
     private func findReminders() -> [EventKitReminder] {
         return []
@@ -177,13 +196,16 @@ class CalendarManager: ObservableObject {
     }
     
     public func reloadData() {
-        let calendars = self.findCalendars()
+        let personalCalendars = self.findCalendars()
+        let delegateCalendars = self.findDelegateCalendars()
+        
+        let allCalendars = personalCalendars + delegateCalendars
         
         var groups: [String: [EventKitCalendar]] = [:]
-        let events = self.findEvents(withCalendars: calendars)
+        let events = self.findEvents(withCalendars: allCalendars)
         let reminders = self.findReminders()
         
-        for calendar in calendars {
+        for calendar in allCalendars {
             var groupList: [EventKitCalendar]? = groups[calendar.sourceTitle]
             if groupList == nil {
                 groupList = []
