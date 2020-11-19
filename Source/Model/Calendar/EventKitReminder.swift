@@ -8,9 +8,9 @@
 import Foundation
 import EventKit
 
-class EventKitReminder: Identifiable, ObservableObject, Equatable {
+struct EventKitReminder: Identifiable, Equatable {
     let EKReminder: EKReminder
-    @Published var isSubscribed: Bool
+    let isSubscribed: Bool
     
     init(withEvent EKReminder: EKReminder,
          subscribed: Bool) {
@@ -30,11 +30,7 @@ class EventKitReminder: Identifiable, ObservableObject, Equatable {
         return "Reminder: \(self.title)"
     }
     
-    public func forceUpdate() {
-        self.objectWillChange.send()
-    }
-
     static func == (lhs: EventKitReminder, rhs: EventKitReminder) -> Bool {
-        return lhs === rhs
+        return lhs.id == rhs.id
     }
 }

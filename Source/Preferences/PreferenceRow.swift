@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct PreferenceRow: View {
-    @ObservedObject var calendar: EventKitCalendar
-    @State var isChecked: Bool = false
-    
+    @State var calendar: EventKitCalendar
+    @State var isSubscribed: Bool = false
+        
     func toggle() {
-        self.calendar.isSubscribed = !self.calendar.isSubscribed
-        self.isChecked = !isChecked
+        self.isSubscribed = !self.isSubscribed
+        self.calendar.set(subscribed: self.isSubscribed)
     }
     
     var body: some View {
@@ -21,16 +21,13 @@ struct PreferenceRow: View {
             self.toggle()
         }, label: {
             HStack {
-                Image(systemName: self.isChecked ? "checkmark.square" : "square")
+                Image(systemName: self.isSubscribed ? "checkmark.square" : "square")
                 Text(calendar.title)
             }
         })
-        
         .onAppear(perform: {
-            self.isChecked = self.calendar.isSubscribed
+            self.isSubscribed = self.calendar.isSubscribed
         })
-        
-//        Text("\(calendar.sourceTitle): \(calendar.title)")
     }
 }
 

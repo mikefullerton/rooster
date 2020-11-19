@@ -19,8 +19,15 @@ extension String {
     }
 }
 
+
+func shortDateString(_ date: Date) -> String {
+    return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
+}
+
 struct ButtonModifier : ViewModifier {
-    
+    let kButtonWidth: CGFloat = 80.0
+    let kButtonHeight: CGFloat = 40.0
+
     let buttonTextColor: Color
     
     init(withButtonTextColor buttonTextColor: Color) {
@@ -29,7 +36,7 @@ struct ButtonModifier : ViewModifier {
     
     func body(content: Content) -> some View {
             content
-                .frame(width: 80, height: 40, alignment: .center)
+                .frame(width: kButtonWidth, height: kButtonHeight, alignment: .center)
                 .foregroundColor(self.buttonTextColor)
                 .background(Color.gray)
                 .cornerRadius(40)
@@ -37,26 +44,16 @@ struct ButtonModifier : ViewModifier {
         }
 }
 
-func shortDateString(_ date: Date) -> String {
-    return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-}
-
-
 struct ContentViewRow: View {
-//    @ObservedObject var event: EventKitEvent
-//
-//    @State var startDate: String = ""
-//    @State var endDate: String = ""
-//    @State var title: String = ""
-//    @State var isFiring: Bool = false
-//    @State var isInProgress: Bool = false
-
     var event: EventKitEvent
     var startDate: String = ""
     var endDate: String = ""
     var title: String = ""
     var isFiring: Bool = false
     var isInProgress: Bool = false
+    var color = Color.primary
+    var calendar: String
+    var calendarSource: String
     
     init(event: EventKitEvent) {
         self.event = event
@@ -65,30 +62,23 @@ struct ContentViewRow: View {
         self.endDate = shortDateString(event.endDate)
         self.isFiring = event.isFiring
         self.isInProgress = event.isInProgress
+        self.calendar = event.calendar.title
+        self.calendarSource = event.calendar.sourceTitle
+        
+        if event.isInProgress {
+            self.color = Color.red
+        }
         print("got new event: \(event)")
     }
     
   
-    let height: CGFloat = 80.0
+    let kRowHeight: CGFloat = 80.0
     let buttonSpaceWidth: CGFloat = 80.0
 
-    // these seem to be cached ?
+    let kTimeWidth: CGFloat = 60.0
+    let kTimeHeight: CGFloat = 20.0
     
-//    var isFiring: Bool {
-//        return self.event.isFiring
-//    }
-//
-//    var isInProgress: Bool  {
-//        return self.event.isInProgress
-//    }
-//
-//    var startDate: Date {
-//        return self.event.startDate
-//    }
-//    
-//    var endDate : Date {
-//        return self.event.endDate
-//    }
+
     
     var body: some View {
         HStack{
@@ -111,67 +101,25 @@ struct ContentViewRow: View {
                 .modifier(ButtonModifier(withButtonTextColor:Color(UIColor.lightGray)))
                 .disabled(true)
             } else {
-                Text("").frame(width:self.buttonSpaceWidth, height:self.height, alignment: .trailing)
+                Text("").frame(width:self.buttonSpaceWidth, height:kRowHeight, alignment: .trailing)
             }
-             
-            Text(self.startDate).frame(width: 60, height: self.height, alignment: .trailing).foregroundColor(.red)
-            Text("-").foregroundColor(.red)
-            Text(self.endDate).frame(width: 60, height: self.height, alignment: .leading).foregroundColor(.red)
-            Text(self.title).foregroundColor(.red)
-        }
-//        .onAppear(perform: {
-//            self.title = self.event.title
-//            self.startDate = self.shortDateString(self.event.startDate)
-//            self.endDate = self.shortDateString(self.event.endDate)
-//            self.isFiring = self.event.isFiring
-//            self.isInProgress = self.event.isInProgress
-//        })
-//        .onReceive(event.objectWillChange, perform: { newEvent in
-//            print("\(newEvent)")
-//            self.title = self.event.title
-//            self.startDate = self.shortDateString(self.event.startDate)
-//            self.endDate = self.shortDateString(self.event.endDate)
-//            self.isFiring = self.event.isFiring
-//            self.isInProgress = self.event.isInProgress
-//        })
-//
-    }
-}
-
-struct DateContentView<Content: View> : View {
-    let content: Content
-//    @ObservedObject var event: EventKitEvent
-
-    let height: CGFloat = 80.0
-    let buttonSpaceWidth: CGFloat = 80.0
-    var startDate: Date
-    var endDate: Date
-    var title: String
-
-    init(event: EventKitEvent,
-        @ViewBuilder content: () -> Content) {
-//        self.event = event
-        self.content = content()
-        self.startDate = event.startDate
-        self.endDate = event.endDate
-        self.title = event.title
-        
-        print(title)
-    }
-    
-    func shortDateString(_ date: Date) -> String {
-        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-    }
-
-    var body: some View {
-        HStack {
-            Text(self.shortDateString(self.startDate)).frame(width: 60, height: self.height, alignment: .trailing)
-            Text("-")
-            Text(self.shortDateString(self.endDate)).frame(width: 60, height: self.height, alignment: .leading)
-            Text(self.title)
+            
+            VStack(alignment: .leading) {
+                Text("\(self.calendarSource): \(self.calendar)").foregroundColor(.gray)
+                Text(self.title)
+                Text("\(self.startDate) - \(self.endDate)").foregroundColor(self.color)
+//                HStack {
+//                    Text(self.startDate).frame(width: kTimeWidth, height: kTimeHeight, alignment: .trailing).foregroundColor(self.color)
+//                    Text("-").foregroundColor(self.color)
+//                    Text(self.endDate).frame(width: kTimeWidth, height: kTimeHeight, alignment: .leading).foregroundColor(self.color)
+//                }
+            }
+            
         }
     }
 }
+
+
 
 //struct ContentViewRow: PreviewProvider {
 //    static var previews: some View {

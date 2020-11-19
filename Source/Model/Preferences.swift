@@ -9,19 +9,19 @@ import Foundation
 
 class Preferences {
     
-    static let PreferencesDidChangeEvent = Notification.Name(rawValue: "PreferencesDidChangeEvent")
+    static let DidChangeEvent = Notification.Name(rawValue: "PreferencesDidChangeEvent")
 
     class IdentifierList {
         private let preferencesKey: String
         
-        var identifiers: [String]
+        private var identifiers: [String]
 
         init(withPreferencesKey key: String) {
             self.preferencesKey = key
             self.identifiers = UserDefaults.standard.stringArray(forKey: preferencesKey) ?? []
         }
 
-        private func save() {
+        private func save(notifyListeners notify: Bool) {
             if let oldIdentifiers = UserDefaults.standard.stringArray(forKey: preferencesKey) {
                if self.identifiers == oldIdentifiers {
                     return
@@ -31,53 +31,60 @@ class Preferences {
             UserDefaults.standard.set(self.identifiers, forKey: self.preferencesKey)
             UserDefaults.standard.synchronize()
 
-            NotificationCenter.default.post(name: Preferences.PreferencesDidChangeEvent,
-                                            object: self,
-                                            userInfo: nil)
-
-        }
+            if notify {
+                NotificationCenter.default.post(name: Preferences.DidChangeEvent,
+                                                object: self,
+                                                userInfo: nil)
+            }
+}
         
-        func add(identifier: String) {
+        func add(identifier: String, notifyListeners notify: Bool = true) {
             if !self.identifiers.contains(identifier) {
                 self.identifiers.append(identifier)
-                self.save()
+                self.save(notifyListeners: notify)
             }
         }
 
-        func remove(identifier: String) {
+        func remove(identifier: String, notifyListeners notify: Bool = true) {
             if let index = self.identifiers.firstIndex(of: identifier) {
                 self.identifiers.remove(at: index)
-                self.save()
+                self.save(notifyListeners: notify)
             }
         }
 
-        func set(isIncluded included: Bool, forKey key: String) {
+        func set(isIncluded included: Bool, forKey key: String, notifyListeners notify: Bool = true) {
             if included {
-                self.add(identifier: key)
+                self.add(identifier: key, notifyListeners: notify)
             } else {
-                self.remove(identifier: key)
+                self.remove(identifier: key, notifyListeners: notify)
             }
         }
         
-        func removeAll() {
+        func removeAll(notifyListeners notify: Bool = true) {
             self.identifiers.removeAll()
-            self.save()
+            self.save(notifyListeners: notify)
+        }
+        
+        func replaceAll(withIdentifiers newIdentifiers: [String], notifyListeners notify: Bool = true) {
+            self.identifiers = newIdentifiers
+            self.save(notifyListeners: notify)
+        }
+        
+        func contains(_ id: String) -> Bool {
+            return self.identifiers.contains(id)
         }
     }
     
     let calendarIdentifers: IdentifierList
     let unsubscribedEvents: IdentifierList
     let unsubscribedReminders: IdentifierList
+    let firedEvents: IdentifierList
     
     init() {
         self.calendarIdentifers = IdentifierList(withPreferencesKey: "calendars")
         self.unsubscribedEvents = IdentifierList(withPreferencesKey: "events")
         self.unsubscribedReminders = IdentifierList(withPreferencesKey: "reminders")
+        self.firedEvents = IdentifierList(withPreferencesKey: "fired-events")
     }
-    
-    
-    
-    
-    
 }
 

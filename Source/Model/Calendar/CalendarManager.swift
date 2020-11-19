@@ -10,7 +10,8 @@ import EventKit
 import UIKit
 
 protocol CalendarManagerDelegate : AnyObject {
-    func calendarManagerDidUpdate(_ calendarManager: CalendarManager)
+    func calendarManagerCalendarStoreDidUpdate(_ calendarManager: CalendarManager)
+    func calendarManagerDidReload(_ calendarManager: CalendarManager)
 }
 
 class CalendarManager: ObservableObject {
@@ -27,6 +28,10 @@ class CalendarManager: ObservableObject {
         self.preferences = preferences
     }
 
+    private func calendar(forEKCalander ekCalendar: EKCalendar, inCalendars calendars: [EventKitCalendar]) -> EventKitCalendar? {
+        return calendars.first(where: { $0.id == ekCalendar.calendarIdentifier })
+    }
+    
     private func findEvents(withCalendars calendars: [EventKitCalendar]) -> [EventKitEvent] {
         
         let currentCalendar = NSCalendar.current
@@ -53,7 +58,7 @@ class CalendarManager: ObservableObject {
                                                       end: tomorrow,
                                                       calendars: subscribedCalendars.map { $0.EKCalendar })
 
-        let unsubscribedEvents = self.preferences.unsubscribedEvents.identifiers
+        let unsubscribedEvents = self.preferences.unsubscribedEvents
         
         let now = Date()
         
@@ -75,31 +80,35 @@ class CalendarManager: ObservableObject {
 
             if endDate.isAfterDate(now) {
                 print("\(title)")
+                if let calendar = self.calendar(forEKCalander: event.calendar, inCalendars: subscribedCalendars) {
+                    let subscribed = unsubscribedEvents.contains(event.calendarItemIdentifier) == false
+                    let newEvent = EventKitEvent(withEvent: event,
+                                                 calendar: calendar,
+                                                 subscribed: subscribed,
+                                                 isFiring: false,
+                                                 hasFired: false)
+                    events.append(newEvent)
+                }
                 
-                let subscribed = unsubscribedEvents.contains(event.calendarItemIdentifier) == false
-                let newEvent = EventKitEvent(withEvent: event, subscribed: subscribed)
-                events.append(newEvent)
             }
         }
         
         return events
     }
     
-    private func wantsCalendar(calendar: EKCalendar, subscribedIdentifiers: [String]) -> Bool {
-        return subscribedIdentifiers.contains(calendar.calendarIdentifier)
-    }
-
     private func findCalendars() -> [EventKitCalendar] {
-        let subscribedCalenderIdentifiers = self.preferences.calendarIdentifers.identifiers
+        let subscribedCalendars = self.preferences.calendarIdentifers
         
         let ekCalendars = self.store.calendars(for: .event)
 
         var calendars: [EventKitCalendar] = []
         for ekCalendar in ekCalendars {
             
-            let subscribed = self.wantsCalendar(calendar: ekCalendar, subscribedIdentifiers: subscribedCalenderIdentifiers)
+            let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
             
-            let calendar = EventKitCalendar(withCalendar: ekCalendar, subscribed:subscribed)
+            let calendar = EventKitCalendar(withCalendar: ekCalendar,
+                                            events: [], // TODO: populate this
+                                            subscribed:subscribed)
             calendars.append(calendar)
         }
 
@@ -109,41 +118,58 @@ class CalendarManager: ObservableObject {
     private func findReminders() -> [EventKitReminder] {
         return []
     }
-
-    private func stopAllAlarms() {
-        for event in self.data.events {
-            if event.isFiring {
-                event.stopAlarm()
-                event.isFiring = false
-                event.hasFired = false
-            }
-        }
-    }
     
-    private func merge(oldEvents: [EventKitEvent], withNewEvents newEvents: [EventKitEvent]) -> [EventKitEvent] {
+    private func merge(oldEvents: [EventKitEvent],
+                       withNewEvents newEvents: [EventKitEvent]) -> [EventKitEvent] {
         
         var mergedEvents: [EventKitEvent] = []
-
+        let firedIdentifiers = self.preferences.firedEvents
+        
+        let now = Date()
+        
         for newEvent in newEvents {
             var foundEvent = false
             
             for oldEvent in oldEvents {
                 if  newEvent.id == oldEvent.id {
                     foundEvent = true
-                    if  newEvent.title == oldEvent.title &&
-                        newEvent.startDate == oldEvent.startDate &&
-                        newEvent.endDate == oldEvent.endDate {
-                        
-                        mergedEvents.append(oldEvent)
-                    } else {
-                        mergedEvents.append(newEvent)
+                    
+                    var hasFired = oldEvent.hasFired
+                    
+                    if newEvent.startDate.isAfterDate(now) {
+                        hasFired = false
+                    } else if oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now) {
+                        hasFired = false
+                    } else if newEvent.isInProgress && firedIdentifiers.contains(newEvent.id) {
+                        hasFired = true
                     }
+                    
+                    let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
+                                                    calendar: newEvent.calendar,
+                                                    subscribed: newEvent.isSubscribed,
+                                                    isFiring: oldEvent.isFiring,
+                                                    hasFired: hasFired)
+
+                    mergedEvents.append(mergedEvent)
                     continue
                 }
             }
             
             if !foundEvent {
-                mergedEvents.append(newEvent)
+                
+                var hasFired = newEvent.hasFired
+                
+                if newEvent.isInProgress && firedIdentifiers.contains(newEvent.id) {
+                    hasFired = true
+                }
+                
+                let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
+                                                calendar: newEvent.calendar,
+                                                subscribed: newEvent.isSubscribed,
+                                                isFiring: newEvent.isFiring,
+                                                hasFired: hasFired)
+                
+                mergedEvents.append(mergedEvent)
             }
         }
 
@@ -151,16 +177,12 @@ class CalendarManager: ObservableObject {
     }
     
     public func reloadData() {
-        
-        
         let calendars = self.findCalendars()
         
         var groups: [String: [EventKitCalendar]] = [:]
         let events = self.findEvents(withCalendars: calendars)
         let reminders = self.findReminders()
         
-        self.stopAllAlarms()
-
         for calendar in calendars {
             var groupList: [EventKitCalendar]? = groups[calendar.sourceTitle]
             if groupList == nil {
@@ -171,22 +193,20 @@ class CalendarManager: ObservableObject {
         }
         
         self.data.calendars = groups
-        
-//        self.data.calendars.removeAll()
-//        self.data.calendars.append(contentsOf: calendars)
-            
         self.data.events = self.merge(oldEvents: self.data.events, withNewEvents: events)
         self.data.reminders = reminders
         self.data.forceUpdate()
 
-//            = CalendarData(withCalendars: calendars, events: events, reminders: reminders)
+        if self.delegate != nil {
+            self.delegate!.calendarManagerDidReload(self)
+        }
     }
     
     @objc private func storeChanged(_ notification: Notification) {
         self.reloadData()
         
         if self.delegate != nil {
-            self.delegate!.calendarManagerDidUpdate(self)
+            self.delegate!.calendarManagerCalendarStoreDidUpdate(self)
         }
     }
     
@@ -244,47 +264,7 @@ class CalendarManager: ObservableObject {
         self.requestAccess(to: EKEntityType.reminder, completion: completion)
     }
     
-    var nextEventTime: Date? {
-        
-        let now = Date()
-        
-        for event in self.data.events {
-            if event.startDate.isAfterDate(now) {
-                return event.startDate
-            }
 
-            if event.startDate.isAfterDate(now) {
-                return event.endDate
-            }
-        }
-        
-        let currentCalendar = NSCalendar.current
-        
-        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
-        
-        if let today = currentCalendar.date(from: dateComponents),
-           let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) {
-            
-            return tomorrow
-        }
-        
-        return nil
-    }
-    
-    func eventsNeedingAlarms() -> [EventKitEvent]? {
-        let now = Date()
-        var events: [EventKitEvent] = []
-        
-        for event in self.data.events {
-            if event.startDate.isBeforeDate(now) &&
-                event.endDate.isAfterDate(now) &&
-                event.hasFired == false &&
-                event.isFiring == false {
-                events.append(event)
-            }
-        }
-        return events
-    }
     
     func updateEvent(_ event: EventKitEvent) {
         var newEvents = self.data.events
@@ -295,17 +275,20 @@ class CalendarManager: ObservableObject {
         }
 
         self.data.events = newEvents
+
+        if self.delegate != nil {
+            self.delegate!.calendarManagerDidReload(self)
+        }
     }
     
-//    func setEventHasFired(_ inEvent: EventKitEvent) {
-//        inEvent.setHasFired()
-////        self.updateEvent(newEvent)
-//    }
-//    
-//    func setEventIsFiring(_ inEvent: EventKitEvent) {
-////        var newEvent = inEvent
-//        inEvent.setIsFiring(true)
-////        self.updateEvent(newEvent)
-//    }
-//    
+    func setEventHasFired(_ inEvent: EventKitEvent) {
+        self.updateEvent(inEvent.updatedEvent(isFiring: false, hasFired: true))
+    }
+    
+    func setEventIsFiring(_ inEvent: EventKitEvent) {
+        self.updateEvent(inEvent.updatedEvent(isFiring: true, hasFired: false))
+    }
+    
+    
+
 }

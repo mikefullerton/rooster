@@ -16,15 +16,14 @@ class AlarmSoundManager: AlarmSoundDelegate  {
 
     weak var delegate: AlarmSoundManagerDelegate?
     
-    private var queue: [AlarmSound]
+    private var playing: [AnyHashable: AlarmSound] = [:]
     
     init() {
-        self.queue = []
         BundleAlarmSound.delegate = self
     }
         
-    func soundWillStartPlaying(_ sound: AlarmSound) {
-        self.queue.append(sound)
+    func soundWillStartPlaying<T>(_ sound: AlarmSound, object: T) where T: Identifiable {
+        self.playing[object.id] = sound
         if self.delegate != nil {
             self.delegate!.alarmSoundManager(self, soundWillStartPlaying: sound)
         }
@@ -32,10 +31,10 @@ class AlarmSoundManager: AlarmSoundDelegate  {
     
     func soundDidStopPlaying(_ sound: AlarmSound) {
         var index = -1
-        for queuedSound in self.queue {
+        for (objectID, queuedSound) in self.playing {
             index += 1
             if queuedSound === sound {
-                self.queue.remove(at: index)
+                self.playing.removeValue(forKey: objectID)
                 if self.delegate != nil {
                     self.delegate!.alarmSoundManager(self, soundDidStopPlaying: sound)
                 }
@@ -43,6 +42,11 @@ class AlarmSoundManager: AlarmSoundDelegate  {
             }
         }
     }
+    
+    func sound<T>(forObject object: T)  -> AlarmSound? where T: Identifiable {
+        return self.playing[object.id]
+    }
+    
 }
 
 

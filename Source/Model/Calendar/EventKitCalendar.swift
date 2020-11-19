@@ -16,20 +16,17 @@ import EventKit
 //    var sourceIdentifier: String { get }
 //}
 
-class EventKitCalendar: Identifiable, ObservableObject, CustomStringConvertible, Equatable  {
-    @Published private(set) var EKCalendar: EKCalendar
-    @Published private(set) var title: String
-    @Published private(set) var id: String
-    @Published private(set) var sourceTitle: String
-    @Published private(set) var sourceIdentifier: String
-    
-    @Published var isSubscribed: Bool {
-        didSet {
-            AppController.instance.preferences.calendarIdentifers.set(isIncluded: self.isSubscribed, forKey: self.id)
-        }
-    }
+struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable  {
+    let EKCalendar: EKCalendar
+    let title: String
+    let id: String
+    let sourceTitle: String
+    let sourceIdentifier: String
+    let events: [EventKitEvent]
+    private(set) var isSubscribed: Bool
     
     init(withCalendar EKCalendar: EKCalendar,
+         events: [EventKitEvent],
          subscribed: Bool) {
         self.EKCalendar = EKCalendar
         self.isSubscribed = subscribed
@@ -37,6 +34,7 @@ class EventKitCalendar: Identifiable, ObservableObject, CustomStringConvertible,
         self.id = EKCalendar.calendarIdentifier
         self.sourceTitle = EKCalendar.source.title
         self.sourceIdentifier = EKCalendar.source.sourceIdentifier
+        self.events = events
     }
     
     var description: String {
@@ -47,9 +45,14 @@ class EventKitCalendar: Identifiable, ObservableObject, CustomStringConvertible,
         return lhs.id == rhs.id
     }
     
-    public func forceUpdate() {
-        self.objectWillChange.send()
+    mutating func set(subscribed: Bool) {
+        self.isSubscribed = subscribed
+        AppController.instance.preferences.calendarIdentifers.set(isIncluded: self.isSubscribed, forKey: self.id)
     }
+    
+//    public func forceUpdate() {
+//        self.objectWillChange.send()
+//    }
 }
 
 

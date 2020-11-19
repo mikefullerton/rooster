@@ -8,7 +8,7 @@
 import Foundation
 
 protocol AlarmSoundDelegate : AnyObject {
-    func soundWillStartPlaying(_ sound: AlarmSound)
+    func soundWillStartPlaying<T>(_ sound: AlarmSound, object: T) where T: Identifiable
     func soundDidStopPlaying(_ sound: AlarmSound)
 }
 
@@ -28,7 +28,7 @@ protocol AlarmSound : AnyObject {
 
     func set(volume: Float, fadeDuration: TimeInterval)
     
-    func play()
+    func play<T>(for object: T) where T: Identifiable
     
     func stop()
 }

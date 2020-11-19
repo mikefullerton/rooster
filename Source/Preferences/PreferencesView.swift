@@ -8,16 +8,10 @@
 import SwiftUI
 
 
-struct PreferencesView: View, Reloadable {
+struct PreferencesView: View {
 
     @State private var calendars: [String: [EventKitCalendar]] = AppController.instance.calendars
     @EnvironmentObject private var calendarData: CalendarData
-
-    private var reloader: AuthenticationReloader?
-
-    init() {
-        self.reloader = AuthenticationReloader(for: self)
-    }
 
     var sortedGroupNames: [String] {
         let names:[String] = Array(self.calendars.keys)
@@ -49,13 +43,7 @@ struct PreferencesView: View, Reloadable {
         })
         .onReceive(calendarData.objectWillChange, perform: { _ in
             self.calendars = AppController.instance.calendars
-
         })
-    }
-
-    func reload() {
-        self.calendars = AppController.instance.calendars
-        print("got reload: \(self.calendars), \(AppController.instance.calendars)")
     }
 }
 

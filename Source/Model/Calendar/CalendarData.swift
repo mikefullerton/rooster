@@ -29,18 +29,7 @@ class CalendarData : ObservableObject, CustomStringConvertible {
     }
     
     func forceUpdate() {
-        for (_, calendars) in self.calendars {
-            for calendar in calendars {
-                calendar.forceUpdate()
-            }
-        }
-        for event in self.events {
-            event.forceUpdate()
-        }
-        for reminder in self.reminders {
-            reminder.forceUpdate()
-        }
-
         self.objectWillChange.send()
     }
 }
+//
