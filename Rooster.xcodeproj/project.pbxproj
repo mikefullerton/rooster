@@ -16,8 +16,8 @@
 		B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
-		B2742C3E25603B0A0087E4B6 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */; };
-		B2742C7225604E030087E4B6 /* PreferencesSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */; };
+		B2742C3E25603B0A0087E4B6 /* CalendarPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */; };
+		B2742C7225604E030087E4B6 /* CalendarPreferencesSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C7125604E030087E4B6 /* CalendarPreferencesSceneDelegate.swift */; };
 		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
 		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
 		B2E15135255EED2B002672EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E15121255EED2B002672EC /* ContentView.swift */; };
@@ -32,7 +32,7 @@
 		B2F6B4AA2561B50F000BC78E /* LaunchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4A92561B50F000BC78E /* LaunchingView.swift */; };
 		B2F6B4FA2562DD64000BC78E /* UIWindow+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4F92562DD64000BC78E /* UIWindow+Utilities.swift */; };
 		B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */; };
-		B2F6B5042562E1B1000BC78E /* PreferenceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B5032562E1B1000BC78E /* PreferenceRow.swift */; };
+		B2F6B5042562E1B1000BC78E /* CalendarPreferenceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B5032562E1B1000BC78E /* CalendarPreferenceRow.swift */; };
 		B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */; };
 		B2F6B50F2562F2CE000BC78E /* ContentViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */; };
 		B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51225632AE8000BC78E /* Date+Utilities.swift */; };
@@ -77,10 +77,10 @@
 		B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
-		B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPreferencesView.swift; sourceTree = "<group>"; };
 		B2742C63256048CE0087E4B6 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster.entitlements; sourceTree = "<group>"; };
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesSceneDelegate.swift; sourceTree = "<group>"; };
+		B2742C7125604E030087E4B6 /* CalendarPreferencesSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPreferencesSceneDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		B2F6B4B12561DAA5000BC78E /* Rooster (iOS)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rooster (iOS)-Bridging-Header.h"; sourceTree = "<group>"; };
 		B2F6B4F92562DD64000BC78E /* UIWindow+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Utilities.swift"; sourceTree = "<group>"; };
 		B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSceneDelegate.swift; sourceTree = "<group>"; };
-		B2F6B5032562E1B1000BC78E /* PreferenceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceRow.swift; sourceTree = "<group>"; };
+		B2F6B5032562E1B1000BC78E /* CalendarPreferenceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPreferenceRow.swift; sourceTree = "<group>"; };
 		B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCalendars.swift; sourceTree = "<group>"; };
 		B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewRow.swift; sourceTree = "<group>"; };
 		B2F6B51225632AE8000BC78E /* Date+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utilities.swift"; sourceTree = "<group>"; };
@@ -231,9 +231,9 @@
 		B2F6B5072562E2C5000BC78E /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				B2742C7125604E030087E4B6 /* PreferencesSceneDelegate.swift */,
-				B2F6B5032562E1B1000BC78E /* PreferenceRow.swift */,
-				B2742C3D25603B0A0087E4B6 /* PreferencesView.swift */,
+				B2742C7125604E030087E4B6 /* CalendarPreferencesSceneDelegate.swift */,
+				B2F6B5032562E1B1000BC78E /* CalendarPreferenceRow.swift */,
+				B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -386,7 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B227DE2825658D200002C127 /* CalendarGroup.swift in Sources */,
-				B2742C3E25603B0A0087E4B6 /* PreferencesView.swift in Sources */,
+				B2742C3E25603B0A0087E4B6 /* CalendarPreferencesView.swift in Sources */,
 				B227DE21256573630002C127 /* CalendarData.swift in Sources */,
 				B2E15135255EED2B002672EC /* ContentView.swift in Sources */,
 				B2F6B49725619705000BC78E /* AppController.swift in Sources */,
@@ -402,7 +402,7 @@
 				B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */,
 				B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */,
 				B2F6B4FA2562DD64000BC78E /* UIWindow+Utilities.swift in Sources */,
-				B2742C7225604E030087E4B6 /* PreferencesSceneDelegate.swift in Sources */,
+				B2742C7225604E030087E4B6 /* CalendarPreferencesSceneDelegate.swift in Sources */,
 				B2F6B4AA2561B50F000BC78E /* LaunchingView.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
 				B2F6B49E25619A43000BC78E /* EventKitReminder.swift in Sources */,
@@ -410,7 +410,7 @@
 				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
-				B2F6B5042562E1B1000BC78E /* PreferenceRow.swift in Sources */,
+				B2F6B5042562E1B1000BC78E /* CalendarPreferenceRow.swift in Sources */,
 				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

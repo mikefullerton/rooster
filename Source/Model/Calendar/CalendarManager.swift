@@ -17,6 +17,7 @@ protocol CalendarManagerDelegate : AnyObject {
 class CalendarManager: ObservableObject {
     private let store: EKEventStore
     private let preferences: Preferences
+    private var delegateEventStore: EKEventStore?
     
     @Published public var data: CalendarData
         
@@ -26,6 +27,7 @@ class CalendarManager: ObservableObject {
         self.store = EKEventStore()
         self.data = CalendarData()
         self.preferences = preferences
+        self.delegateEventStore = nil
     }
 
     private func calendar(forEKCalander ekCalendar: EKCalendar, inCalendars calendars: [EventKitCalendar]) -> EventKitCalendar? {
@@ -119,17 +121,11 @@ class CalendarManager: ObservableObject {
     }
     
     private func findDelegateCalendars() -> [EventKitCalendar] {
-        
-        var ekCalendars:[EKCalendar] = []
-        let sources = self.store.delegateSources
-        for source in sources {
-            let calendars = source.calendars(for: .event)
-            print("\(source.title): calendars: \(calendars.count)")
-            for calendar in calendars {
-                ekCalendars.append(calendar)
-            }
+        if self.delegateEventStore == nil {
+            return []
         }
-            
+        
+        let ekCalendars = self.delegateEventStore!.calendars(for: .event)
         return self.calendars(fromEKCalendars: ekCalendars)
     }
     
@@ -233,11 +229,19 @@ class CalendarManager: ObservableObject {
     }
     
     private func handleAccessGranted() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.storeChanged(_:)),
-                                               name: .EKEventStoreChanged,
-                                               object: self.store)
-        self.reloadData()
+        
+        AppDelegate.instance.appKitBundle?.requestPermissionToDelegateCalendars(for: self.store, completion: { (success, delegateEventStore, error) in
+            
+            if success && delegateEventStore != nil {
+                self.delegateEventStore = delegateEventStore!
+            }
+            
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.storeChanged(_:)),
+                                                   name: .EKEventStoreChanged,
+                                                   object: self.store)
+            self.reloadData()
+        })
     }
     
     private func handleAccessDenied(error: Error?) {
@@ -284,6 +288,7 @@ class CalendarManager: ObservableObject {
         
         self.requestAccess(to: EKEntityType.event, completion: completion)
         self.requestAccess(to: EKEntityType.reminder, completion: completion)
+        
     }
     
 

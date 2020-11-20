@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PreferenceRow: View {
+struct CalendarPreferenceRow: View {
     @State var calendar: EventKitCalendar
     @State var isSubscribed: Bool = false
         

@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct PreferencesView: View {
+struct CalendarPreferencesView: View {
 
     @State private var calendars: [String: [EventKitCalendar]] = AppController.instance.calendars
     @EnvironmentObject private var calendarData: CalendarData
@@ -22,7 +22,6 @@ struct PreferencesView: View {
     }
     
     var body: some View {
-        Text("Calendars")
         let groupNames = self.sortedGroupNames
         List {
             ForEach(groupNames, id: \.self) { groupName in
@@ -32,7 +31,7 @@ struct PreferencesView: View {
                             $0.title.localizedCaseInsensitiveCompare($1.title) == ComparisonResult.orderedAscending
                         }
                         ForEach(sortedList, id: \.id) { calendar in
-                            PreferenceRow(calendar: calendar)
+                            CalendarPreferenceRow(calendar: calendar)
                         }
                     }
                 }
@@ -49,6 +48,6 @@ struct PreferencesView: View {
 
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
-        PreferencesView()
+        CalendarPreferencesView()
     }
 }
