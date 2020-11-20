@@ -183,10 +183,6 @@ class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
         }
     }
     
-    func calendarManagerCalendarStoreDidUpdate(_ calendarManager: CalendarManager) {
-//        self.updateAlarms()
-    }
-
     func calendarManagerDidReload(_ calendarManager: CalendarManager) {
         self.updateAlarms()
     }

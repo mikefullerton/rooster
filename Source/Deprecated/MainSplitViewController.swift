@@ -20,6 +20,8 @@ class MainSplitViewController : UISplitViewController {
         self.rightViewController = rightViewController
     
         self.viewControllers = [ leftViewController, rightViewController ]
+        
+        self.primaryBackgroundStyle = .sidebar
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

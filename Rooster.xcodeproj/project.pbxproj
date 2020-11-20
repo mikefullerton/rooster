@@ -15,6 +15,7 @@
 		B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */ = {isa = PBXBuildFile; fileRef = B227DF18256743C80002C127 /* AppKitPluginProtocol.h */; };
 		B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF242568096C0002C127 /* MainSplitViewController.swift */; };
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
+		B227DFAC256873620002C127 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DFAB256873620002C127 /* MainView.swift */; };
 		B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
@@ -77,6 +78,7 @@
 		B227DF18256743C80002C127 /* AppKitPluginProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitPluginProtocol.h; sourceTree = "<group>"; };
 		B227DF242568096C0002C127 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		B227DF2825680C970002C127 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		B227DFAB256873620002C127 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
@@ -137,6 +139,15 @@
 			path = RoosterAppKitPlugin;
 			sourceTree = "<group>";
 		};
+		B227DFAF256874150002C127 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				B227DF242568096C0002C127 /* MainSplitViewController.swift */,
+				B227DF2825680C970002C127 /* MainViewController.swift */,
+			);
+			path = Deprecated;
+			sourceTree = "<group>";
+		};
 		B236FCE4255F1C9D00A2E58D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +183,7 @@
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B227DFAF256874150002C127 /* Deprecated */,
 				B2F6B50D2562F20E000BC78E /* Main Window */,
 				B2F6B5072562E2C5000BC78E /* Preferences */,
 				B2F6B4F52562DD01000BC78E /* Utilities */,
@@ -246,8 +258,7 @@
 				B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */,
 				B2E15121255EED2B002672EC /* ContentView.swift */,
 				B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */,
-				B227DF242568096C0002C127 /* MainSplitViewController.swift */,
-				B227DF2825680C970002C127 /* MainViewController.swift */,
+				B227DFAB256873620002C127 /* MainView.swift */,
 			);
 			path = "Main Window";
 			sourceTree = "<group>";
@@ -413,6 +424,7 @@
 				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
+				B227DFAC256873620002C127 /* MainView.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B2F6B5042562E1B1000BC78E /* CalendarPreferenceRow.swift in Sources */,
 				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,

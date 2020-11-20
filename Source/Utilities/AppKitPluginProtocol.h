@@ -9,6 +9,7 @@
 
 @class EKCalendar;
 @class EKEventStore;
+@class EKEvent;
 
 // not sure how to do this with swift protocol
 
@@ -16,6 +17,10 @@
 
 - (void)requestPermissionToDelegateCalendarsForEventStore:(EKEventStore *)eventStore
                                                completion:(void (^)(BOOL success, EKEventStore* delegateEventStore, NSError *error)) completion;
+
+
+- (NSArray<EKEvent *> *)findEventsWithCalendars:(NSArray<EKCalendar *> *)calendars
+                                          store:(EKEventStore *)store;
 
 @end
 

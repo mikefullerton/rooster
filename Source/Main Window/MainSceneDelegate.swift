@@ -25,7 +25,7 @@ class MainSceneDelegate: WindowSceneDelegate {
         )
         
         let window = UIWindow(windowScene: scene)
-        let viewController = MainViewController()
+        let viewController = UIHostingController(rootView: MainView().environmentObject(AppController.instance.calendarData))
         window.rootViewController = viewController
         
         self.set(window: window, restoreKey: "mainWindowBounds")

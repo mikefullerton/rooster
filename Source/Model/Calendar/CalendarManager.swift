@@ -10,7 +10,6 @@ import EventKit
 import UIKit
 
 protocol CalendarManagerDelegate : AnyObject {
-    func calendarManagerCalendarStoreDidUpdate(_ calendarManager: CalendarManager)
     func calendarManagerDidReload(_ calendarManager: CalendarManager)
 }
 
@@ -48,41 +47,50 @@ class CalendarManager: ObservableObject {
         return subscribedCalendars
     }
     
-    private func findEvents(withEKCalendars calendars: [EKCalendar]) -> [EKEvent] {
-        
-        let currentCalendar = NSCalendar.current
-        
-        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
-        
-        guard let today = currentCalendar.date(from: dateComponents) else {
-            return []
-        }
-        
-        guard let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) else {
-            return []
-        }
+    private func findEvents(withEKCalendars calendars: [EKCalendar],
+                            store: EKEventStore) -> [EKEvent] {
         
         let subscribedCalendars = self.subscribedCalendars(calendars)
         
-        let predicate = self.store.predicateForEvents(withStart: today,
-                                                      end: tomorrow,
-                                                      calendars: subscribedCalendars)
+        if subscribedCalendars.count == 0 {
+            return []
+        }
+        
+        let currentCalendar = NSCalendar.current
 
-    
+        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
+
+        guard let today = currentCalendar.date(from: dateComponents) else {
+            return []
+        }
+
+        guard let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) else {
+            return []
+        }
+
+        let predicate = store.predicateForEvents(withStart: today,
+                                                 end: tomorrow,
+                                                 calendars: subscribedCalendars)
+
+
         let now = Date()
-        
+
         var events:[EKEvent] = []
-        
-        for event in self.store.events(matching: predicate) {
-            
+
+        for event in store.events(matching: predicate) {
+
             if event.isAllDay {
                 continue
             }
-            
+
             guard let endDate = event.endDate else {
                 continue
             }
-            
+
+            if event.status == .canceled {
+                continue
+            }
+
 //            guard let title = event.title else {
 //                continue
 //            }
@@ -91,7 +99,7 @@ class CalendarManager: ObservableObject {
                 events.append(event)
             }
         }
-        
+
         return events
     }
     
@@ -248,17 +256,33 @@ class CalendarManager: ObservableObject {
         return lookup
     }
     
+    
     public func reloadData() {
-        
+        DispatchQueue.main.async {
+            self.actuallyReloadData()
+        }
+    }
+    
+    private func actuallyReloadData() {
+            
         let personalEKCalendars = self.findCalendars()
         
         let delegateEKCalendars = self.findDelegateCalendars()
         
-        let allCalendars = personalEKCalendars + delegateEKCalendars
+        let ekPersonalEvents = self.findEvents(withEKCalendars: personalEKCalendars,
+                                               store: self.store)
         
-        let ekEvents = self.findEvents(withEKCalendars: allCalendars)
+        let ekDelegateEvents = self.delegateEventStore != nil ?
+                                    self.findEvents(withEKCalendars: delegateEKCalendars,
+                                                    store:self.delegateEventStore!) : []
         
-        let events = self.createEvents(fromEKEvents: ekEvents)
+        let ekEvents = ekPersonalEvents + ekDelegateEvents
+        
+        let sortedEKEvents = ekEvents.sorted { (lhs, rhs) -> Bool in
+            return lhs.startDate.isBeforeDate(rhs.startDate)
+        }
+        
+        let events = self.createEvents(fromEKEvents: sortedEKEvents)
         
         self.data.events = self.merge(oldEvents: self.data.events, withNewEvents: events)
 
@@ -284,25 +308,22 @@ class CalendarManager: ObservableObject {
     
     @objc private func storeChanged(_ notification: Notification) {
         self.reloadData()
-        
-        if self.delegate != nil {
-            self.delegate!.calendarManagerCalendarStoreDidUpdate(self)
-        }
     }
     
     private func handleAccessGranted() {
         
         AppDelegate.instance.appKitBundle?.requestPermissionToDelegateCalendars(for: self.store, completion: { (success, delegateEventStore, error) in
-            
-            if success && delegateEventStore != nil {
-                self.delegateEventStore = delegateEventStore!
+            DispatchQueue.main.async {
+                if success && delegateEventStore != nil {
+                    self.delegateEventStore = delegateEventStore!
+                }
+                
+                NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(self.storeChanged(_:)),
+                                                       name: .EKEventStoreChanged,
+                                                       object: self.store)
+                self.reloadData()
             }
-            
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(self.storeChanged(_:)),
-                                                   name: .EKEventStoreChanged,
-                                                   object: self.store)
-            self.reloadData()
         })
     }
     
