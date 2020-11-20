@@ -34,7 +34,21 @@ class CalendarManager: ObservableObject {
         return calendars.first(where: { $0.id == ekCalendar.calendarIdentifier })
     }
     
-    private func findEvents(withCalendars calendars: [EventKitCalendar]) -> [EventKitEvent] {
+    private func subscribedCalendars(_ calendars:[EKCalendar]) -> [EKCalendar] {
+        let subscribedCalendarIdentifiers = self.preferences.calendarIdentifers
+        
+        var subscribedCalendars: [EKCalendar] = []
+        for calendar in calendars {
+            let subscribed = subscribedCalendarIdentifiers.contains(calendar.calendarIdentifier)
+            if subscribed {
+                subscribedCalendars.append(calendar)
+            }
+        }
+
+        return subscribedCalendars
+    }
+    
+    private func findEvents(withEKCalendars calendars: [EKCalendar]) -> [EKEvent] {
         
         let currentCalendar = NSCalendar.current
         
@@ -48,23 +62,16 @@ class CalendarManager: ObservableObject {
             return []
         }
         
-        var subscribedCalendars: [EventKitCalendar] = []
+        let subscribedCalendars = self.subscribedCalendars(calendars)
         
-        for calendar in calendars {
-            if calendar.isSubscribed {
-                subscribedCalendars.append(calendar)
-            }
-        }
-
         let predicate = self.store.predicateForEvents(withStart: today,
                                                       end: tomorrow,
-                                                      calendars: subscribedCalendars.map { $0.EKCalendar })
+                                                      calendars: subscribedCalendars)
 
-        let unsubscribedEvents = self.preferences.unsubscribedEvents
-        
+    
         let now = Date()
         
-        var events: [EventKitEvent] = []
+        var events:[EKEvent] = []
         
         for event in self.store.events(matching: predicate) {
             
@@ -76,57 +83,28 @@ class CalendarManager: ObservableObject {
                 continue
             }
             
-            guard let title = event.title else {
-                continue
-            }
+//            guard let title = event.title else {
+//                continue
+//            }
 
             if endDate.isAfterDate(now) {
-                print("\(title)")
-                if let calendar = self.calendar(forEKCalander: event.calendar, inCalendars: subscribedCalendars) {
-                    let subscribed = unsubscribedEvents.contains(event.calendarItemIdentifier) == false
-                    let newEvent = EventKitEvent(withEvent: event,
-                                                 calendar: calendar,
-                                                 subscribed: subscribed,
-                                                 isFiring: false,
-                                                 hasFired: false)
-                    events.append(newEvent)
-                }
-                
+                events.append(event)
             }
         }
         
         return events
     }
     
-    private func calendars(fromEKCalendars ekCalendars: [EKCalendar]) -> [EventKitCalendar] {
-        let subscribedCalendars = self.preferences.calendarIdentifers
-        var calendars: [EventKitCalendar] = []
-        for ekCalendar in ekCalendars {
-            
-            let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
-            
-            let calendar = EventKitCalendar(withCalendar: ekCalendar,
-                                            events: [], // TODO: populate this
-                                            subscribed:subscribed)
-            calendars.append(calendar)
-        }
-
-        return calendars
+    private func findCalendars() -> [EKCalendar] {
+        return self.store.calendars(for: .event)
     }
     
-    
-    private func findCalendars() -> [EventKitCalendar] {
-        let ekCalendars = self.store.calendars(for: .event)
-        return self.calendars(fromEKCalendars: ekCalendars)
-    }
-    
-    private func findDelegateCalendars() -> [EventKitCalendar] {
+    private func findDelegateCalendars() -> [EKCalendar] {
         if self.delegateEventStore == nil {
             return []
         }
         
-        let ekCalendars = self.delegateEventStore!.calendars(for: .event)
-        return self.calendars(fromEKCalendars: ekCalendars)
+        return self.delegateEventStore!.calendars(for: .event)
     }
     
     
@@ -160,7 +138,7 @@ class CalendarManager: ObservableObject {
                     }
                     
                     let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
-                                                    calendar: newEvent.calendar,
+                                                    calendarIdentifer: newEvent.calendarIdentifier,
                                                     subscribed: newEvent.isSubscribed,
                                                     isFiring: oldEvent.isFiring,
                                                     hasFired: hasFired)
@@ -179,7 +157,7 @@ class CalendarManager: ObservableObject {
                 }
                 
                 let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
-                                                calendar: newEvent.calendar,
+                                                calendarIdentifer: newEvent.calendarIdentifier,
                                                 subscribed: newEvent.isSubscribed,
                                                 isFiring: newEvent.isFiring,
                                                 hasFired: hasFired)
@@ -191,17 +169,10 @@ class CalendarManager: ObservableObject {
         return mergedEvents
     }
     
-    public func reloadData() {
-        let personalCalendars = self.findCalendars()
-        let delegateCalendars = self.findDelegateCalendars()
-        
-        let allCalendars = personalCalendars + delegateCalendars
-        
+    public func groupedCalendars(fromCalendars calendars: [EventKitCalendar]) -> [String: [EventKitCalendar]] {
         var groups: [String: [EventKitCalendar]] = [:]
-        let events = self.findEvents(withCalendars: allCalendars)
-        let reminders = self.findReminders()
-        
-        for calendar in allCalendars {
+
+        for calendar in calendars {
             var groupList: [EventKitCalendar]? = groups[calendar.sourceTitle]
             if groupList == nil {
                 groupList = []
@@ -210,9 +181,100 @@ class CalendarManager: ObservableObject {
             groups[calendar.sourceTitle] = groupList
         }
         
-        self.data.calendars = groups
+        return groups
+    }
+
+    private func createEvents(fromEKEvents ekEvents:[EKEvent]) -> [EventKitEvent] {
+       
+        let unsubscribedEvents = self.preferences.unsubscribedEvents
+
+        var events:[EventKitEvent] = []
+        
+        for ekEvent in ekEvents {
+            let subscribed = unsubscribedEvents.contains(ekEvent.calendarItemIdentifier) == false
+            let newEvent = EventKitEvent(withEvent: ekEvent,
+                                         calendarIdentifer: ekEvent.calendar.calendarIdentifier,
+                                         subscribed: subscribed,
+                                         isFiring: false,
+                                         hasFired: false)
+            events.append(newEvent)
+        }
+        
+        return events
+    }
+    
+    public func createCalendars(withEKCalendars ekCalendars: [EKCalendar],
+                                events:[EventKitEvent]) -> [EventKitCalendar] {
+     
+        var calendars:[EventKitCalendar] = []
+        
+        let subscribedCalendars = self.preferences.calendarIdentifers
+        
+        for ekCalendar in ekCalendars {
+        
+            var calendarEvents:[EventKitEvent] = []
+            
+            for event in events {
+                if event.id == ekCalendar.calendarIdentifier {
+                    calendarEvents.append(event)
+                }
+            }
+        
+            let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
+            
+            let calendar = EventKitCalendar(withCalendar: ekCalendar,
+                                            events: calendarEvents,
+                                            subscribed:subscribed)
+            
+            calendars.append(calendar)
+        }
+
+        return calendars
+    }
+    
+    func createCalendarLookup(withPersonalCalendars personalCalendars: [EventKitCalendar],
+                              delegateCalendars: [EventKitCalendar]) -> [String: EventKitCalendar]{
+        
+        var lookup: [String: EventKitCalendar] = [:]
+        
+        for calendar in personalCalendars {
+            lookup[calendar.id] = calendar
+        }
+        
+        for calendar in delegateCalendars {
+            lookup[calendar.id] = calendar
+        }
+        
+        return lookup
+    }
+    
+    public func reloadData() {
+        
+        let personalEKCalendars = self.findCalendars()
+        
+        let delegateEKCalendars = self.findDelegateCalendars()
+        
+        let allCalendars = personalEKCalendars + delegateEKCalendars
+        
+        let ekEvents = self.findEvents(withEKCalendars: allCalendars)
+        
+        let events = self.createEvents(fromEKEvents: ekEvents)
+        
         self.data.events = self.merge(oldEvents: self.data.events, withNewEvents: events)
-        self.data.reminders = reminders
+
+        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars, events: self.data.events)
+
+        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars, events: self.data.events)
+        
+        self.data.calendars = self.groupedCalendars(fromCalendars: personalCalendars)
+        
+        self.data.delegateCalendars = self.groupedCalendars(fromCalendars: delegateCalendars)
+
+        self.data.calenderLookup = self.createCalendarLookup(withPersonalCalendars: personalCalendars,
+                                                             delegateCalendars: delegateCalendars)
+        
+        self.data.reminders = self.findReminders()
+        
         self.data.forceUpdate()
 
         if self.delegate != nil {

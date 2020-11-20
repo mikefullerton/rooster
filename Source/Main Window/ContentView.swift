@@ -13,10 +13,12 @@ struct ContentView: View {
         
     var body: some View {
         let events = self.calendarData.events
-        
+
         List {
             ForEach(events, id: \.id) { event in
-                ContentViewRow(event: event)
+                if let calendar = self.calendarData.calenderLookup[event.calendarIdentifier] {
+                    ContentViewRow(event: event, calendar: calendar)
+                }
             }
         }
     }

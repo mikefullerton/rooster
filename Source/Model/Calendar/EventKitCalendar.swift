@@ -49,10 +49,6 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable  {
         self.isSubscribed = subscribed
         AppController.instance.preferences.calendarIdentifers.set(isIncluded: self.isSubscribed, forKey: self.id)
     }
-    
-//    public func forceUpdate() {
-//        self.objectWillChange.send()
-//    }
 }
 
 

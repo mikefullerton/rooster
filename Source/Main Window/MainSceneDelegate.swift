@@ -25,17 +25,12 @@ class MainSceneDelegate: WindowSceneDelegate {
         )
         
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = UIHostingController(rootView: LaunchingView())
+        let viewController = MainViewController()
+        window.rootViewController = viewController
+        
         self.set(window: window, restoreKey: "mainWindowBounds")
     }
     
-    func didReceiveCalendarAccess() {
-        if self.window != nil {
-            let data = AppController.instance.calendarManager.data
-            let viewController = UIHostingController(rootView: ContentView().environmentObject(data))
-            self.window?.rootViewController = viewController
-        }
-    }
     
     func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
     }

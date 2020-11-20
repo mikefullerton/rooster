@@ -11,17 +11,17 @@ import EventKit
 struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible {
     let EKEvent: EKEvent
     let isSubscribed: Bool
-    let calendar: EventKitCalendar
+    let calendarIdentifier: String
     let hasFired: Bool
     let isFiring: Bool
 
     init(withEvent EKEvent: EKEvent,
-         calendar: EventKitCalendar,
+         calendarIdentifer: String,
          subscribed: Bool,
          isFiring: Bool,
          hasFired: Bool) {
         self.EKEvent = EKEvent
-        self.calendar = calendar
+        self.calendarIdentifier = calendarIdentifer
         self.isSubscribed = subscribed
         self.hasFired = hasFired
         self.isFiring = isFiring
@@ -58,7 +58,7 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible {
     
     func updatedEvent(isFiring: Bool, hasFired: Bool) -> EventKitEvent {
         return EventKitEvent(withEvent: self.EKEvent,
-                             calendar: self.calendar,
+                             calendarIdentifer: self.calendarIdentifier,
                              subscribed: self.isSubscribed,
                              isFiring: isFiring,
                              hasFired: hasFired)

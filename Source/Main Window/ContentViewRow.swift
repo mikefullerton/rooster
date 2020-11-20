@@ -55,15 +55,15 @@ struct ContentViewRow: View {
     var calendar: String
     var calendarSource: String
     
-    init(event: EventKitEvent) {
+    init(event: EventKitEvent, calendar: EventKitCalendar) {
         self.event = event
         self.title = event.title
         self.startDate = shortDateString(event.startDate)
         self.endDate = shortDateString(event.endDate)
         self.isFiring = event.isFiring
         self.isInProgress = event.isInProgress
-        self.calendar = event.calendar.title
-        self.calendarSource = event.calendar.sourceTitle
+        self.calendar = calendar.title
+        self.calendarSource = calendar.sourceTitle
         
         if event.isInProgress {
             self.color = Color.red

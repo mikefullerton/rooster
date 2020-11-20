@@ -202,18 +202,20 @@ class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
     var calendarData: CalendarData {
         return self.calendarManager.data
     }
-    
-    var events: [EventKitEvent] {
-        return self.calendarData.events
-    }
-
-    var calendars: [String: [EventKitCalendar]] {
-        return self.calendarData.calendars
-    }
-
-    var reminders: [EventKitReminder] {
-        return self.calendarData.reminders
-    }
+//    
+//    var events: [EventKitEvent] {
+//        return self.calendarData.events
+//    }
+//
+//    var calendars: [String: [EventKitCalendar]] {
+//        return self.calendarData.calendars
+//    }
+//
+//    var reminders: [EventKitReminder] {
+//        return self.calendarData.reminders
+//    }
+//    
+//    var delegate
 }
 
 class Notifier {
