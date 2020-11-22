@@ -8,19 +8,16 @@
 import Foundation
 import UIKit
 
-class EventListViewController : UITableViewController {
+class EventListViewController : TableViewController {
     
-    init() {
-        super.init(style: .plain)
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required public init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleModelReloadEvent(_:)), name: DataModel.DidChangeEvent, object: nil)
+   }
 
-    
+    override func updatedViewModel() -> TableViewModelProtocol {
+        let events = DataModel.instance.events.map { EventRow(withEvent: $0) }
+        let section = TableViewSection(withRows: events)
+        return TableViewModel(withSections: [ section ])
+    }
 }

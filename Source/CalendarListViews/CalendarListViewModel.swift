@@ -32,11 +32,11 @@ struct CalendarSection : TableViewSectionProtocol {
     }
     
     var header: TableViewSectionAdornmentProtocol? {
-        return TableViewSectionAdornment(withTitle: self.source, height: 26)
+        return TableViewSectionAdornment(withTitle: self.source, height: 20)
     }
     
     var footer: TableViewSectionAdornmentProtocol? {
-        return TableViewSectionAdornment(withHeight: 120)
+        return TableViewSectionAdornment(withHeight: 20)
     }
 }
 

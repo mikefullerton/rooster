@@ -136,7 +136,7 @@ struct TableViewSection : TableViewSectionProtocol {
     }
 
     func row(forIndex index: Int) -> TableViewRowProtocol? {
-        guard index >= 0 && index < 1 else {
+        guard index >= 0 && index < self.rows.count else {
             return nil
         }
             
