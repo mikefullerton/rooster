@@ -10,14 +10,34 @@ import UIKit
 
 class TableViewController : UITableViewController {
     private(set) var viewModel: TableViewModelProtocol = TableViewModel()
-        
+    private var reloader: TableViewReloader? {
+        didSet {
+            if reloader != nil {
+                reloader!.tableViewController = self // weak reference
+            }
+        }
+    }
+    
     func updatedViewModel() -> TableViewModelProtocol {
         return TableViewModel()
     }
     
-    @objc func handleModelReloadEvent(_ notif: Notification) {
+    func updateViewModel() {
         self.viewModel = self.updatedViewModel()
         self.tableView.reloadData()
+    }
+    
+    func createViewReloader() -> TableViewReloader? {
+        return nil
+    }
+    
+    @objc func handleModelReloadEvent(_ notif: Notification) {
+        self.updateViewModel()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.reloader = self.createViewReloader()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,17 +54,11 @@ class TableViewController : UITableViewController {
         
         return row.height
     }
-
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let header = self.viewModel.header(forSection:section) else {
             return 0
         }
-
-//        guard let height = header.height else {
-//            return UITableView.automaticDimension
-//        }
-        
         return header.height
     }
 
@@ -53,11 +67,6 @@ class TableViewController : UITableViewController {
         guard let footer = self.viewModel.footer(forSection:section) else {
             return 0
         }
-        
-//        guard let height = footer.height else {
-//            return UITableView.automaticDimension
-//        }
-        
         return footer.height
     }
     
@@ -121,5 +130,30 @@ class TableViewController : UITableViewController {
         }
 
         return footer.title
+    }
+}
+
+class TableViewReloader : EventNotifier {
+    
+    weak var tableViewController: TableViewController?
+    
+    init(withName name: Notification.Name,
+         object: AnyObject?,
+         tableViewController: TableViewController? = nil) {
+        
+        self.tableViewController = tableViewController
+        super.init(withName: name,
+                   object: object)
+    }
+    
+    convenience init(withName name: Notification.Name,
+                     tableViewController: TableViewController? = nil) {
+        self.init(withName: name, object: nil, tableViewController: tableViewController)
+    }
+    
+    @objc override func notificationReceived(_ notif: Notification) {
+        if self.tableViewController != nil {
+            self.tableViewController!.updateViewModel()
+        }
     }
 }

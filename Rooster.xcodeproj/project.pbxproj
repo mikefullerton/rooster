@@ -29,6 +29,7 @@
 		B2AFE6AA256ADA6E006B3C58 /* TableViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6A9256ADA6E006B3C58 /* TableViewController+ViewModel.swift */; };
 		B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */; };
 		B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */; };
+		B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6E0256B2571006B3C58 /* EventNotification.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 		B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B488256187CC000BC78E /* EventKitCalendar.swift */; };
 		B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48C256188FA000BC78E /* Preferences.swift */; };
@@ -99,6 +100,7 @@
 		B2AFE6A9256ADA6E006B3C58 /* TableViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewModel.swift; sourceTree = "<group>"; };
 		B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListTableViewCell.swift; sourceTree = "<group>"; };
+		B2AFE6E0256B2571006B3C58 /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -276,6 +278,7 @@
 				B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */,
 				B227DF18256743C80002C127 /* AppKitPluginProtocol.h */,
 				B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */,
+				B2AFE6E0256B2571006B3C58 /* EventNotification.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
 				B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
+				B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */,
 				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */,

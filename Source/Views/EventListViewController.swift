@@ -10,10 +10,9 @@ import UIKit
 
 class EventListViewController : TableViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleModelReloadEvent(_:)), name: DataModel.DidChangeEvent, object: nil)
-   }
+    override func createViewReloader() -> TableViewReloader? {
+        return TableViewReloader(withName: DataModel.DidChangeEvent)
+    }
 
     override func updatedViewModel() -> TableViewModelProtocol {
         let events = DataModel.instance.events.map { EventRow(withEvent: $0) }
