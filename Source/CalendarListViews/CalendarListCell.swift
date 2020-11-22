@@ -11,31 +11,30 @@ import UIKit
 class CalendarListCell : UITableViewCell {
     
     private var calendar: EventKitCalendar?
+
+    private lazy var checkBox: UISwitch = {
+        let cb = UISwitch()
+        cb.preferredStyle = .checkbox
+        cb.addTarget(self, action: #selector(checkBoxChecked(_:)), for: .valueChanged)
+        self.contentView.addSubview(cb)
+        return cb
+    }()
     
-//    convenience init() {
-//        self.init(style: .default, reuseIdentifier: CalendarListCell.reuseIdentifier)
-//    }
-//    
-//    init(style: CellStyle, reuseIdentifier: String) {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//    }
-//    
-//    required public init?(coder: NSCoder) {
-//        super.init(coder: coder)
-//    }
-//    
     override func prepareForReuse() {
         self.calendar = nil
     }
     
     func setCalendar(_ calendar: EventKitCalendar) {
         self.calendar = calendar
-        
-        if let text = self.calendar?.title {
-            self.textLabel?.text = text
-        }
+        self.checkBox.title = calendar.title
+        self.checkBox.setOn(calendar.isSubscribed, animated:false)
+        self.checkBox.sizeToFit()
     }
     
-    
+    @objc func checkBoxChecked(_ checkbox: UISwitch) {
+        if let calendar = self.calendar {
+            calendar.set(subscribed: !calendar.isSubscribed)
+        }
+    }
 
 }

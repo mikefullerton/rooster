@@ -19,7 +19,9 @@ class AppController : AlarmSoundManagerDelegate {
     private weak var timer: Timer?
     private(set) var isAuthenticating : Bool = false
     private(set) var isAuthenticated: Bool = false
-
+    
+    var firingEvents:Set<String> = Set()
+    
     init() {
         self.calendarManager = CalendarManager(withDataModel: DataModel.instance, preferences: DataModel.instance.preferences)
         self.alarmSoundManager = AlarmSoundManager()
@@ -65,23 +67,51 @@ class AppController : AlarmSoundManagerDelegate {
         }
     }
 
-    private func updateAlarmState(forEvent event: EventKitEvent) {
-        if event.isFiring {
-            guard self.alarmSoundManager.sound(forObject: event) == nil else {
-                // already firing
-                return
-            }
-            
-            let alarmSound = RoosterCrowingAlarmSound()
-            alarmSound?.play(for: event)
-        } else if let alarmSound = self.alarmSoundManager.sound(forObject: event) {
+    private func stopAlarm(forIdentifier identifer: String) {
+        if let alarmSound = self.alarmSoundManager.sound(forIdentifier: identifer) {
+            self.firingEvents.remove(identifer)
             alarmSound.stop()
         }
     }
     
-    func updateAlarmStates() {
-        for event in DataModel.instance.events {
-            self.updateAlarmState(forEvent: event)
+    private func startAlarm(forIdentifier identifer: String) {
+        self.firingEvents.insert(identifer)
+        
+        guard self.alarmSoundManager.sound(forIdentifier: identifer) == nil else {
+            // already firing
+            return
+        }
+        
+        let alarmSound = RoosterCrowingAlarmSound()
+        alarmSound?.play(forIdentifier: identifer)
+    }
+    
+    private func updateAlarmState(forEvent event: EventKitEvent) {
+        if event.isFiring {
+            self.startAlarm(forIdentifier: event.id)
+        } else {
+            self.stopAlarm(forIdentifier: event.id)
+        }
+    }
+    
+    private func updateAlarmStates() {
+        DataModel.instance.events.forEach {
+            self.updateAlarmState(forEvent: $0)
+        }
+        
+        let identifiers = DataModel.instance.events.map {
+            $0.id
+        }
+        
+        var alarmsToStop: [String] = []
+        self.firingEvents.forEach {
+            if !identifiers.contains($0) {
+                alarmsToStop.append($0)
+            }
+        }
+        
+        alarmsToStop.forEach {
+            self.stopAlarm(forIdentifier: $0)
         }
     }
     

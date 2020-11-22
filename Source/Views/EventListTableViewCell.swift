@@ -12,18 +12,6 @@ class EventListTableViewCell : UITableViewCell {
     
     private var event: EventKitEvent?
     
-//    convenience init() {
-//        self.init(style: .default, reuseIdentifier: CalendarListCell.reuseIdentifier)
-//    }
-//
-//    init(style: CellStyle, reuseIdentifier: String) {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//    }
-//
-//    required public init?(coder: NSCoder) {
-//        super.init(coder: coder)
-//    }
-//
     override func prepareForReuse() {
         self.event = nil
     }
@@ -35,7 +23,4 @@ class EventListTableViewCell : UITableViewCell {
             self.textLabel?.text = text
         }
     }
-    
-    
-
 }

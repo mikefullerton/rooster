@@ -10,49 +10,46 @@ import Foundation
 typealias SourceToCalendarMap       = [String: [EventKitCalendar]]
 typealias CalendarIDToCalendarMap   = [String: EventKitCalendar]
 
-class DataModel : ObservableObject, CustomStringConvertible {
+class DataModel : CustomStringConvertible {
 
     static let DidChangeEvent = Notification.Name("DataModelDidChangeEvent")
+    static let NeedsReloadEvent = Notification.Name("NeedsReloadEvent")
 
     // key: source
-    @Published private(set) var calendars: SourceToCalendarMap {
+    private(set) var calendars: SourceToCalendarMap {
         didSet {
             calendars.forEach { (source, innerCalendars) in
                 innerCalendars.forEach { (calendar) in
                     self.didUpdate(calendar: calendar)
                 }
             }
-            self.notify()
         }
     }
     
     // key: source
-    @Published private(set) var delegateCalendars: SourceToCalendarMap {
+    private(set) var delegateCalendars: SourceToCalendarMap {
         didSet {
             delegateCalendars.forEach { (source, innerCalendars) in
                 innerCalendars.forEach { (calendar) in
                     self.didUpdate(calendar: calendar)
                 }
             }
-            self.notify()
         }
     }
     
-    @Published private(set) var events: [EventKitEvent] {
+    private(set) var events: [EventKitEvent] {
         didSet {
             events.forEach { (event) in
                 self.didUpdate(event: event)
             }
-            self.notify()
         }
     }
     
-    @Published private(set) var reminders: [EventKitReminder] {
+    private(set) var reminders: [EventKitReminder] {
         didSet {
             reminders.forEach { (reminder) in
                 self.didUpdate(reminder: reminder)
             }
-            self.notify()
         }
     }
 
@@ -87,53 +84,33 @@ class DataModel : ObservableObject, CustomStringConvertible {
     }
     
     func calendar(forIdentifier id: String) -> EventKitCalendar? {
-
-//        var map: CalendarIDToCalendarMap = [:]
-//        self.addCalendars(toMap: &map, from:self.calendars)
-//        self.addCalendars(toMap: &map, from:self.delegateCalendars)
-//
         if let calendar = self.calendarLookup[id] {
             return calendar
         }
-        
-//        for (_, calendars) in self.calendars {
-//            for calendar in calendars {
-//                if calendar.id == id {
-//                    return calendar
-//                }
-//            }
-//        }
-//
-//        for (_, calendars) in self.delegateCalendars {
-//            for calendar in calendars {
-//                if calendar.id == id {
-//                    return calendar
-//                }
-//            }
-//        }
-
         return nil;
-//        
-//        let foundCalendar = self.calendarLookup[id]
-//        return foundCalendar
     }
+    
+
     
     func update(calendars: SourceToCalendarMap,
                 delegateCalendars: SourceToCalendarMap,
                 events: [EventKitEvent],
                 reminders: [EventKitReminder]) {
+       
         self.calendarLookup = [:]
         self.delegateCalendars = delegateCalendars
         self.calendars = calendars
         self.events = events
         self.reminders = reminders
-
         self.notify()
     }
     
     private func notify() {
         NotificationCenter.default.post(name: DataModel.DidChangeEvent, object: self)
-//        self.objectWillChange.send()
+    }
+    
+    private func notifyNeedsReload() {
+        NotificationCenter.default.post(name: DataModel.NeedsReloadEvent, object: self)
     }
     
     private func didUpdate(calendar: EventKitCalendar) {
@@ -155,7 +132,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
     
     func replace(allEvents: [EventKitEvent]) {
         self.events = allEvents
-        self.notify()
+        self.notifyNeedsReload()
     }
     
     func update(someEvents: [EventKitEvent]) {
@@ -172,6 +149,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
         
         if didMakeChange {
             self.events = newEvents
+            self.notifyNeedsReload()
         }
     }
     
@@ -193,6 +171,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
             newEvents[index] = event
             self.events = newEvents
             print("updated event: \(event)")
+            self.notifyNeedsReload()
         }
     }
     
@@ -222,8 +201,11 @@ class DataModel : ObservableObject, CustomStringConvertible {
     func update(calendar: EventKitCalendar) {
         if let newCalendars = self.update(calendar: calendar, inSourceToCalendarMap: self.calendars) {
             self.calendars = newCalendars
+            self.notifyNeedsReload()
+
         } else if let newDelegateCalendars = self.update(calendar: calendar, inSourceToCalendarMap: self.delegateCalendars) {
             self.delegateCalendars = newDelegateCalendars
+            self.notifyNeedsReload()
         } else {
             print("DataModel: calendar not found: \(calendar)")
         }

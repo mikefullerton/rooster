@@ -8,7 +8,7 @@
 import Foundation
 import EventKit
 
-struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible {
+struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable {
     let EKEvent: EKEvent
     let isSubscribed: Bool
     let calendarIdentifier: String

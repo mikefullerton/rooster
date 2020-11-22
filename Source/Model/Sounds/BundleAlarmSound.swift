@@ -73,9 +73,9 @@ class BundleAlarmSound : AlarmSound {
         return self.player.currentTime
     }
     
-    func play<T>(for object: T) where T: Identifiable {
+    func play(forIdentifier identifier: String) {
         if BundleAlarmSound.delegate != nil {
-            BundleAlarmSound.delegate!.soundWillStartPlaying(self, object: object)
+            BundleAlarmSound.delegate!.soundWillStartPlaying(self, forIdentifier: identifier)
         }
         self.player.numberOfLoops = -1
         self.player.play()

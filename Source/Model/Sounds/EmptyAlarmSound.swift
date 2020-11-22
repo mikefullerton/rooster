@@ -16,7 +16,7 @@ class EmptyAlarmSound : AlarmSound {
         return false
     }
     
-    func play<T>(for object: T) where T: Identifiable {
+    func play(forIdentifier identifier: String) {
     }
     
     func stop() {

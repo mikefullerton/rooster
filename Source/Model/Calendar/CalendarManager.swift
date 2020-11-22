@@ -21,10 +21,15 @@ class CalendarManager {
         self.dataModel = dataModel
 
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: Preferences.DidChangeEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dataModelUpdated(_:)), name: DataModel.NeedsReloadEvent, object: nil)
 
     }
     
     @objc private func preferencesDidChange(_ notif: Notification) {
+        self.self.reloadDataModel()
+    }
+
+    @objc private func dataModelUpdated(_ notif: Notification) {
         self.self.reloadDataModel()
     }
 
