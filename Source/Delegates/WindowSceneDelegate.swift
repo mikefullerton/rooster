@@ -25,7 +25,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window.makeKey()
                     window.setFrameAndBecomeVisible(newFrame: frame)
                     
-                    print("restored window frame: \(frame) for key: \(key)")
+//                    print("restored window frame: \(frame) for key: \(key)")
                 }
             }
         } else {
@@ -43,7 +43,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             UserDefaults.standard.set(NSStringFromRect(frame), forKey: key)
             UserDefaults.standard.synchronize()
     
-            print("saved window frame: \(frame), for key: \(key)")
+//            print("saved window frame: \(frame), for key: \(key)")
         }
         #endif
         return nil

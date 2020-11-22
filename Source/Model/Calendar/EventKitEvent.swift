@@ -14,6 +14,11 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible {
     let calendarIdentifier: String
     let hasFired: Bool
     let isFiring: Bool
+    let startDate: Date
+    let endDate: Date
+    let title: String
+    let id: String
+    
 
     init(withEvent EKEvent: EKEvent,
          calendarIdentifer: String,
@@ -21,31 +26,19 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible {
          isFiring: Bool,
          hasFired: Bool) {
         self.EKEvent = EKEvent
+        self.id = EKEvent.eventIdentifier
         self.calendarIdentifier = calendarIdentifer
+        self.title = EKEvent.title
         self.isSubscribed = subscribed
         self.hasFired = hasFired
         self.isFiring = isFiring
+        self.startDate = EKEvent.startDate
+        self.endDate = EKEvent.endDate
     }
     
     var isInProgress: Bool {
         let now = Date()
         return self.startDate.isBeforeDate(now) && self.endDate.isAfterDate(now)
-    }
-    
-    var title: String {
-        return self.EKEvent.title
-    }
-    
-    var startDate: Date {
-        self.EKEvent.startDate
-    }
-
-    var endDate: Date {
-        self.EKEvent.endDate
-    }
-
-    var id: String {
-        return self.EKEvent.eventIdentifier
     }
     
     static func == (lhs: EventKitEvent, rhs: EventKitEvent) -> Bool {
@@ -56,17 +49,17 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible {
         return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), isFiring: \(self.isFiring), hasFired: \(self.hasFired)")
     }
     
-    func updatedEvent(isFiring: Bool, hasFired: Bool) -> EventKitEvent {
-        return EventKitEvent(withEvent: self.EKEvent,
-                             calendarIdentifer: self.calendarIdentifier,
-                             subscribed: self.isSubscribed,
-                             isFiring: isFiring,
-                             hasFired: hasFired)
+    func isEqual(to anotherEvent: EventKitEvent) -> Bool {
+        return  self.id == anotherEvent.id &&
+                self.calendarIdentifier == anotherEvent.calendarIdentifier &&
+                self.title == anotherEvent.title &&
+                self.isSubscribed == anotherEvent.isSubscribed &&
+                self.hasFired == anotherEvent.hasFired &&
+                self.isFiring == anotherEvent.isFiring &&
+                self.startDate == anotherEvent.startDate &&
+                self.endDate == anotherEvent.endDate
     }
+
 }
 
-extension EventKitEvent {
-    func stopAlarm() {
-        AppController.instance.stopAlarm(forEvent: self)
-    }
-}
+

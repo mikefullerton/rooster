@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import SwiftUI
-
 
 class MainSceneDelegate: WindowSceneDelegate {
 
@@ -25,7 +23,8 @@ class MainSceneDelegate: WindowSceneDelegate {
         )
         
         let window = UIWindow(windowScene: scene)
-        let viewController = UIHostingController(rootView: MainView().environmentObject(AppController.instance.calendarData))
+//        let viewController = UIHostingController(rootView: MainView().environmentObject(DataModel.instance))
+        let viewController = MainViewController()
         window.rootViewController = viewController
         
         self.set(window: window, restoreKey: "mainWindowBounds")
@@ -54,14 +53,14 @@ class MainSceneDelegate: WindowSceneDelegate {
                      didUpdate previousCoordinateSpace: UICoordinateSpace,
                      interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation,
                      traitCollection previousTraitCollection: UITraitCollection) {
-        print("Old: \(previousCoordinateSpace.bounds), new: \(windowScene.coordinateSpace.bounds)")
-        
-        var frameStr = "nil"
-        if let frame = self.window?.frame {
-            frameStr = "\(frame)"
-        }
-        
-        print("New frame: \(frameStr)")
+//        print("Old: \(previousCoordinateSpace.bounds), new: \(windowScene.coordinateSpace.bounds)")
+//        
+//        var frameStr = "nil"
+//        if let frame = self.window?.frame {
+//            frameStr = "\(frame)"
+//        }
+//        
+//        print("New frame: \(frameStr)")
     }
     
 

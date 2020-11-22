@@ -11,7 +11,8 @@ import EventKit
 struct EventKitReminder: Identifiable, Equatable {
     let EKReminder: EKReminder
     let isSubscribed: Bool
-    
+    weak var dataModel: DataModel?
+
     init(withEvent EKReminder: EKReminder,
          subscribed: Bool) {
         self.EKReminder = EKReminder

@@ -22,11 +22,9 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable  {
     let id: String
     let sourceTitle: String
     let sourceIdentifier: String
-    let events: [EventKitEvent]
-    private(set) var isSubscribed: Bool
+    let isSubscribed: Bool
     
     init(withCalendar EKCalendar: EKCalendar,
-         events: [EventKitEvent],
          subscribed: Bool) {
         self.EKCalendar = EKCalendar
         self.isSubscribed = subscribed
@@ -34,21 +32,24 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable  {
         self.id = EKCalendar.calendarIdentifier
         self.sourceTitle = EKCalendar.source.title
         self.sourceIdentifier = EKCalendar.source.sourceIdentifier
-        self.events = events
     }
     
     var description: String {
-        return "Calendar: \(self.sourceTitle): \(self.title)"
+        return "Calendar: \(self.sourceTitle): \(self.title), isSubscribed: \(self.isSubscribed)"
     }
     
     static func == (lhs: EventKitCalendar, rhs: EventKitCalendar) -> Bool {
         return lhs.id == rhs.id
     }
     
-    mutating func set(subscribed: Bool) {
-        self.isSubscribed = subscribed
-        AppController.instance.preferences.calendarIdentifers.set(isIncluded: self.isSubscribed, forKey: self.id)
+    func isEqual(to anotherCalendar: EventKitCalendar) -> Bool {
+        return  self.id == anotherCalendar.id &&
+                self.title == anotherCalendar.title &&
+                self.isSubscribed == anotherCalendar.isSubscribed &&
+                self.sourceTitle == anotherCalendar.sourceTitle &&
+                self.sourceIdentifier == anotherCalendar.sourceIdentifier
     }
+    
 }
 
 

@@ -13,7 +13,7 @@ struct AppKitBundleLoader {
         if let bundle = Bundle(path: pluginPath) {
             
             if let principleClass = bundle.principalClass as? NSObject.Type {
-                print("\(String(describing: principleClass))")
+//                print("\(String(describing: principleClass))")
 
                 if let plugin = principleClass.init() as? AppKitPluginProtocol {
                     return plugin;

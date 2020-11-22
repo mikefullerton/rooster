@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 class MainSplitViewController : UISplitViewController {
     var leftViewController: UIViewController?
     var rightViewController: UIViewController?
@@ -31,4 +32,6 @@ class MainSplitViewController : UISplitViewController {
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+  
 }

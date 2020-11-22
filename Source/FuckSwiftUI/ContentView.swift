@@ -25,13 +25,13 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @EnvironmentObject var calendarData: CalendarData
+    @EnvironmentObject var dataModel: DataModel
         
     var body: some View {
-        let events = self.calendarData.events
+        let events = self.dataModel.events
         List {
             ForEach(events, id: \.id) { event in
-                if let calendar = self.calendarData.calenderLookup[event.calendarIdentifier] {
+                if let calendar = self.dataModel.calendar(forIdentifier: event.calendarIdentifier) {
                     ContentViewRow(event: event, calendar: calendar)
                 }
             }

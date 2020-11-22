@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftUI
 
 class MainViewController : UIViewController {
     
@@ -17,6 +16,9 @@ class MainViewController : UIViewController {
     
     func configure() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleCalenderAuthentication(_:)), name: AppController.CalendarDidAuthenticateEvent, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDataModelUpdated(_:)), name: DataModel.DidChangeEvent, object: nil)
+
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -35,10 +37,11 @@ class MainViewController : UIViewController {
     
     func createMainViewsIfNeeded() {
         if self.mainSplitViewController == nil {
-            let data = AppController.instance.calendarManager.data
-           
-            let leftViewController = UIHostingController(rootView: CalendarPreferencesView().environmentObject(data))
-            let rightViewController = UIHostingController(rootView: ContentView().environmentObject(data))
+            
+            let leftViewController = PreferencesListViewController()
+            
+            let rightViewController = EventListViewController()
+            
             self.mainSplitViewController = MainSplitViewController(withLeftViewController: leftViewController,
                                                                    rightViewController: rightViewController)
             
@@ -108,4 +111,9 @@ class MainViewController : UIViewController {
             self.present(alertController, animated: true)
         }
     }
+    
+    @objc func handleDataModelUpdated(_ notif: Notification) {
+    }
+    
+    
 }

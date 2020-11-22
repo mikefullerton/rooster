@@ -68,7 +68,7 @@ struct ContentViewRow: View {
         if event.isInProgress {
             self.color = Color.red
         }
-        print("got new event: \(event)")
+//        print("got new event: \(event)")
     }
     
   

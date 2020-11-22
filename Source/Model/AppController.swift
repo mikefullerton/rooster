@@ -7,50 +7,42 @@
 
 import Foundation
 
-protocol AlarmControllerDelegate : AnyObject {
-    func alarmControllerDidRequestCalendarAccess(_ alarmController: AppController, success:Bool, error: Error?)
-}
-
-class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
+class AppController : AlarmSoundManagerDelegate {
 
     static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
 
     static let instance = AppController()
     
-    weak var delegate: AlarmControllerDelegate?
-    
     let alarmSoundManager: AlarmSoundManager
     let calendarManager: CalendarManager
-    let preferences: Preferences
     
     private weak var timer: Timer?
     private(set) var isAuthenticating : Bool = false
     private(set) var isAuthenticated: Bool = false
 
     init() {
-        let prefs = Preferences()
-        self.preferences = prefs
-        self.calendarManager = CalendarManager(withPreferences: prefs)
+        self.calendarManager = CalendarManager(withDataModel: DataModel.instance, preferences: DataModel.instance.preferences)
         self.alarmSoundManager = AlarmSoundManager()
-        self.calendarManager.delegate = self
         self.alarmSoundManager.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: Preferences.DidChangeEvent, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(dataModelDidChange(_:)), name: DataModel.DidChangeEvent, object: nil)
     }
     
-    @objc func preferencesDidChange(_ notif: Notification) {
-        self.calendarManager.reloadData()
+    @objc private func dataModelDidChange(_ notif: Notification) {
+        self.handleDataModelChanged()
     }
-    
-    func startTimerForNextEventTime() {
-        print("timer stopped")
+
+    private func startTimerForNextEventTime() {
+//        print("timer stopped")
         self.stopTimer()
         
-        if let nextEventTime = self.nextEventTime {
+        if let nextEventTime = DataModel.instance.nextEventTime {
             self.startTimer(withDate: nextEventTime)
         }
     }
     
-    func startTimer(withDate date: Date) {
+    private func startTimer(withDate date: Date) {
+        self.stopTimer()
         
         let fireTime = date.timeIntervalSinceReferenceDate
         let now = Date().timeIntervalSinceReferenceDate
@@ -58,112 +50,52 @@ class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
         let fireInterval = fireTime - now
         
         let timer = Timer.scheduledTimer(withTimeInterval: fireInterval, repeats: false) { (timer) in
-            print("timer fired after: \(fireInterval)")
-            self.updateAlarms()
+//            print("timer fired after: \(fireInterval)")
+            self.timerDidFire()
         }
+        self.timer = timer
         
-        print("started timer: \(timer) for time interval \(fireInterval)")
+//        print("started timer: \(timer) for time interval \(fireInterval)")
     }
     
-    func stopTimer() {
+    private func stopTimer() {
         if self.timer != nil {
             self.timer?.invalidate()
             self.timer = nil
         }
     }
 
-    func fireAlarm(forEvent event: EventKitEvent) {
-        self.calendarManager.setEventIsFiring(event)
-
-        let alarmSound = RoosterCrowingAlarmSound()
-        alarmSound?.play(for: event)
-    }
-
-    func stopAlarm(forEvent event: EventKitEvent) {
-        self.calendarManager.setEventHasFired(event)
-
-        if let alarmSound = self.alarmSoundManager.sound(forObject: event) {
+    private func updateAlarmState(forEvent event: EventKitEvent) {
+        if event.isFiring {
+            guard self.alarmSoundManager.sound(forObject: event) == nil else {
+                // already firing
+                return
+            }
+            
+            let alarmSound = RoosterCrowingAlarmSound()
+            alarmSound?.play(for: event)
+        } else if let alarmSound = self.alarmSoundManager.sound(forObject: event) {
             alarmSound.stop()
         }
     }
     
-    var nextEventTime: Date? {
-        
-        let now = Date()
-        
-        for event in self.calendarData.events {
-            if event.startDate.isAfterDate(now) {
-                return event.startDate
-            }
-
-            if event.startDate.isAfterDate(now) {
-                return event.endDate
-            }
-        }
-        
-        let currentCalendar = NSCalendar.current
-        
-        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
-        
-        if let today = currentCalendar.date(from: dateComponents),
-           let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) {
-            
-            return tomorrow
-        }
-        
-        return nil
-    }
-    
-    func stopAlarmsIfNeeded() {
-        var events:[EventKitEvent] = []
-        
-        for event in self.calendarData.events {
-            if event.isFiring && (!event.isInProgress || event.hasFired) {
-                events.append(event)
-            }
-        }
-
-        for event in events {
-            self.stopAlarm(forEvent: event)
+    func updateAlarmStates() {
+        for event in DataModel.instance.events {
+            self.updateAlarmState(forEvent: event)
         }
     }
     
-    func fireAlarmsIfNeeded() {
-        
-        var events: [EventKitEvent] = []
-        
-        for event in self.calendarData.events {
-            if event.isInProgress &&
-                event.hasFired == false &&
-                event.isFiring == false {
-                events.append(event)
-            }
-        }
-   
-        for event in events {
-            self.fireAlarm(forEvent: event)
-        }
-    }
-    
-    func updateFiredAlarmsInPrefs() {
-        var eventIdentifiers: [String] = []
-        
-        for event in self.calendarData.events {
-            if event.hasFired {
-                eventIdentifiers.append(event.id)
-            }
-        }
-        
-        self.preferences.firedEvents.replaceAll(withIdentifiers: eventIdentifiers, notifyListeners: false)
-    }
-    
-    func updateAlarms() {
-        self.stopAlarmsIfNeeded()
-        self.fireAlarmsIfNeeded()
-        self.updateFiredAlarmsInPrefs()
+    private func handleDataModelChanged() {
+        DataModel.instance.stopAlarmsIfNeeded()
+        DataModel.instance.fireAlarmsIfNeeded()
+        self.updateAlarmStates()
         self.startTimerForNextEventTime()
     }
-        
+    
+    private func timerDidFire() {
+        self.handleDataModelChanged()
+    }
+    
     func start() {
         self.isAuthenticating = true
         self.calendarManager.requestAccess { (success, error) in
@@ -171,20 +103,10 @@ class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
                 self.isAuthenticating = false
                 if success {
                     self.isAuthenticated = true
-                    self.updateAlarms()
                 }
-                
-                if self.delegate != nil {
-                    self.delegate!.alarmControllerDidRequestCalendarAccess(self, success: success, error: error)
-                }
-                
                 NotificationCenter.default.post(name: AppController.CalendarDidAuthenticateEvent, object: self)
             }
         }
-    }
-    
-    func calendarManagerDidReload(_ calendarManager: CalendarManager) {
-        self.updateAlarms()
     }
     
     func alarmSoundManager(_ manager: AlarmSoundManager, soundWillStartPlaying sound: AlarmSound) {
@@ -195,23 +117,6 @@ class AppController : CalendarManagerDelegate, AlarmSoundManagerDelegate {
         
     }
 
-    var calendarData: CalendarData {
-        return self.calendarManager.data
-    }
-//    
-//    var events: [EventKitEvent] {
-//        return self.calendarData.events
-//    }
-//
-//    var calendars: [String: [EventKitCalendar]] {
-//        return self.calendarData.calendars
-//    }
-//
-//    var reminders: [EventKitReminder] {
-//        return self.calendarData.reminders
-//    }
-//    
-//    var delegate
 }
 
 class Notifier {

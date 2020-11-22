@@ -7,26 +7,25 @@
 
 import Foundation
 import EventKit
-import UIKit
 
-protocol CalendarManagerDelegate : AnyObject {
-    func calendarManagerDidReload(_ calendarManager: CalendarManager)
-}
-
-class CalendarManager: ObservableObject {
+class CalendarManager {
     private let store: EKEventStore
-    private let preferences: Preferences
     private var delegateEventStore: EKEventStore?
+    private let preferences: Preferences
+    private let dataModel: DataModel
     
-    @Published public var data: CalendarData
-        
-    weak var delegate: CalendarManagerDelegate?
-        
-    init(withPreferences preferences: Preferences) {
+    init(withDataModel dataModel: DataModel, preferences: Preferences) {
         self.store = EKEventStore()
-        self.data = CalendarData()
-        self.preferences = preferences
         self.delegateEventStore = nil
+        self.preferences = preferences
+        self.dataModel = dataModel
+
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: Preferences.DidChangeEvent, object: nil)
+
+    }
+    
+    @objc private func preferencesDidChange(_ notif: Notification) {
+        self.self.reloadDataModel()
     }
 
     private func calendar(forEKCalander ekCalendar: EKCalendar, inCalendars calendars: [EventKitCalendar]) -> EventKitCalendar? {
@@ -189,6 +188,15 @@ class CalendarManager: ObservableObject {
             groups[calendar.sourceTitle] = groupList
         }
         
+        for (source, calendars) in groups {
+            let sortedList = calendars.sorted {
+                $0.title.localizedCaseInsensitiveCompare($1.title) == ComparisonResult.orderedAscending
+            }
+            
+            groups[source] = sortedList
+        }
+        
+        
         return groups
     }
 
@@ -211,8 +219,7 @@ class CalendarManager: ObservableObject {
         return events
     }
     
-    public func createCalendars(withEKCalendars ekCalendars: [EKCalendar],
-                                events:[EventKitEvent]) -> [EventKitCalendar] {
+    public func createCalendars(withEKCalendars ekCalendars: [EKCalendar]) -> [EventKitCalendar] {
      
         var calendars:[EventKitCalendar] = []
         
@@ -220,18 +227,9 @@ class CalendarManager: ObservableObject {
         
         for ekCalendar in ekCalendars {
         
-            var calendarEvents:[EventKitEvent] = []
-            
-            for event in events {
-                if event.id == ekCalendar.calendarIdentifier {
-                    calendarEvents.append(event)
-                }
-            }
-        
             let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
             
             let calendar = EventKitCalendar(withCalendar: ekCalendar,
-                                            events: calendarEvents,
                                             subscribed:subscribed)
             
             calendars.append(calendar)
@@ -239,31 +237,14 @@ class CalendarManager: ObservableObject {
 
         return calendars
     }
-    
-    func createCalendarLookup(withPersonalCalendars personalCalendars: [EventKitCalendar],
-                              delegateCalendars: [EventKitCalendar]) -> [String: EventKitCalendar]{
-        
-        var lookup: [String: EventKitCalendar] = [:]
-        
-        for calendar in personalCalendars {
-            lookup[calendar.id] = calendar
-        }
-        
-        for calendar in delegateCalendars {
-            lookup[calendar.id] = calendar
-        }
-        
-        return lookup
-    }
-    
-    
-    public func reloadData() {
+
+    public func reloadDataModel() {
         DispatchQueue.main.async {
-            self.actuallyReloadData()
+            self.actuallyReloadDataModel()
         }
     }
     
-    private func actuallyReloadData() {
+    private func actuallyReloadDataModel() {
             
         let personalEKCalendars = self.findCalendars()
         
@@ -284,30 +265,28 @@ class CalendarManager: ObservableObject {
         
         let events = self.createEvents(fromEKEvents: sortedEKEvents)
         
-        self.data.events = self.merge(oldEvents: self.data.events, withNewEvents: events)
-
-        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars, events: self.data.events)
-
-        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars, events: self.data.events)
+        let previousEvents = self.dataModel.events
         
-        self.data.calendars = self.groupedCalendars(fromCalendars: personalCalendars)
-        
-        self.data.delegateCalendars = self.groupedCalendars(fromCalendars: delegateCalendars)
+        let finalEvents = self.merge(oldEvents: previousEvents, withNewEvents: events)
 
-        self.data.calenderLookup = self.createCalendarLookup(withPersonalCalendars: personalCalendars,
-                                                             delegateCalendars: delegateCalendars)
-        
-        self.data.reminders = self.findReminders()
-        
-        self.data.forceUpdate()
+        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars)
 
-        if self.delegate != nil {
-            self.delegate!.calendarManagerDidReload(self)
-        }
+        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars)
+        
+        let finalCalendars = self.groupedCalendars(fromCalendars: personalCalendars)
+        
+        let finalDelegateCalendars = self.groupedCalendars(fromCalendars: delegateCalendars)
+        
+        let finalReminders = self.findReminders()
+        
+        self.dataModel.update(calendars: finalCalendars,
+                              delegateCalendars: finalDelegateCalendars,
+                              events: finalEvents,
+                              reminders: finalReminders)
     }
     
     @objc private func storeChanged(_ notification: Notification) {
-        self.reloadData()
+        self.reloadDataModel()
     }
     
     private func handleAccessGranted() {
@@ -322,7 +301,7 @@ class CalendarManager: ObservableObject {
                                                        selector: #selector(self.storeChanged(_:)),
                                                        name: .EKEventStoreChanged,
                                                        object: self.store)
-                self.reloadData()
+                self.reloadDataModel()
             }
         })
     }
@@ -373,32 +352,4 @@ class CalendarManager: ObservableObject {
         self.requestAccess(to: EKEntityType.reminder, completion: completion)
         
     }
-    
-
-    
-    func updateEvent(_ event: EventKitEvent) {
-        var newEvents = self.data.events
-        
-        if let index = newEvents.firstIndex(of: event) {
-            newEvents[index] = event
-            print("updated event: \(event)")
-        }
-
-        self.data.events = newEvents
-
-        if self.delegate != nil {
-            self.delegate!.calendarManagerDidReload(self)
-        }
-    }
-    
-    func setEventHasFired(_ inEvent: EventKitEvent) {
-        self.updateEvent(inEvent.updatedEvent(isFiring: false, hasFired: true))
-    }
-    
-    func setEventIsFiring(_ inEvent: EventKitEvent) {
-        self.updateEvent(inEvent.updatedEvent(isFiring: true, hasFired: false))
-    }
-    
-    
-
 }
