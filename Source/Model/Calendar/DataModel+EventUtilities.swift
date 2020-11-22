@@ -36,38 +36,6 @@ extension DataModel {
         return nil
     }
     
-    func stopAlarmsIfNeeded() {
-        var events:[EventKitEvent] = []
 
-        for event in self.events {
-            if event.isFiring && (!event.isInProgress || event.hasFired) {
-                events.append(event.updatedEvent(isFiring: false, hasFired: true))
-            }
-        }
-
-        if events.count > 0 {
-            DispatchQueue.main.async {
-                self.update(someEvents: events)
-            }
-        }
-    }
-
-    func fireAlarmsIfNeeded() {
-        var events: [EventKitEvent] = []
-
-        for event in self.events {
-            if event.isInProgress &&
-                event.hasFired == false &&
-                event.isFiring == false {
-                events.append(event.updatedEvent(isFiring: true, hasFired: false))
-            }
-        }
-
-        if events.count > 0 {
-            DispatchQueue.main.async {
-                self.update(someEvents: events)
-            }
-        }
-    }
 
 }

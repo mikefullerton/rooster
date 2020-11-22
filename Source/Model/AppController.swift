@@ -94,11 +94,29 @@ class AppController : AlarmSoundManagerDelegate {
         }
     }
     
-    private func updateAlarmStates() {
+    private func updateAlarmStatesForChangedEvents() {
         DataModel.instance.events.forEach {
             self.updateAlarmState(forEvent: $0)
         }
-        
+    }
+    
+    func stopAlarmsForFinishedEvents() {
+        var events:[EventKitEvent] = []
+
+        for event in DataModel.instance.events {
+            if event.isFiring && (!event.isInProgress || event.hasFired) {
+                events.append(event.updatedEvent(isFiring: false, hasFired: true))
+            }
+        }
+
+        if events.count > 0 {
+            DispatchQueue.main.async {
+                DataModel.instance.update(someEvents: events)
+            }
+        }
+    }
+    
+    func stopAlarmsForMissingEvents() {
         let identifiers = DataModel.instance.events.map {
             $0.id
         }
@@ -114,11 +132,30 @@ class AppController : AlarmSoundManagerDelegate {
             self.stopAlarm(forIdentifier: $0)
         }
     }
+
+    func fireAlarmsIfNeeded() {
+        var events: [EventKitEvent] = []
+
+        for event in DataModel.instance.events {
+            if event.isInProgress &&
+                event.hasFired == false &&
+                event.isFiring == false {
+                events.append(event.updatedEvent(isFiring: true, hasFired: false))
+            }
+        }
+
+        if events.count > 0 {
+            DispatchQueue.main.async {
+                DataModel.instance.update(someEvents: events)
+            }
+        }
+    }
     
     private func handleDataModelChanged() {
-        DataModel.instance.stopAlarmsIfNeeded()
-        DataModel.instance.fireAlarmsIfNeeded()
-        self.updateAlarmStates()
+        self.stopAlarmsForFinishedEvents()
+        self.stopAlarmsForMissingEvents()
+        self.fireAlarmsIfNeeded()
+        self.updateAlarmStatesForChangedEvents()
         self.startTimerForNextEventTime()
     }
     
