@@ -12,8 +12,6 @@ class CalendarListCell : UITableViewCell {
     
     private var calendar: EventKitCalendar?
     
-    static let reuseIdentifier: String = "CalendarListCell"
-    
 //    convenience init() {
 //        self.init(style: .default, reuseIdentifier: CalendarListCell.reuseIdentifier)
 //    }

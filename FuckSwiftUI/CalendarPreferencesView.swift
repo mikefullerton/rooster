@@ -12,11 +12,11 @@ struct CalendarPreferencesView: View {
 
     @ObservedObject var dataModel: DataModel = DataModel.instance
     
-    @State var calendars: SourceToCalandarMap
-    @State var delegateCalendars: SourceToCalandarMap
+    @State var calendars: SourceToCalendarMap
+    @State var delegateCalendars: SourceToCalendarMap
     
-//    init(calendars: SourceToCalandarMap,
-//         delegateCalendars: SourceToCalandarMap) {
+//    init(calendars: SourceToCalendarMap,
+//         delegateCalendars: SourceToCalendarMap) {
 //        self.calendars = calendars
 //        self.delegateCalendars = delegateCalendars
 //

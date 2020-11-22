@@ -21,10 +21,15 @@
 		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
 		B2AFE6642569B1B0006B3C58 /* DataModel+EventUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6632569B1B0006B3C58 /* DataModel+EventUtilities.swift */; };
-		B2AFE6712569E00C006B3C58 /* PrefencesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6702569E00C006B3C58 /* PrefencesListViewController.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
 		B2AFE6892569E286006B3C58 /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6882569E286006B3C58 /* CalendarListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
+		B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE690256ACC05006B3C58 /* TableViewController.swift */; };
+		B2AFE69A256AD3D1006B3C58 /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE699256AD3D1006B3C58 /* CalendarListViewModel.swift */; };
+		B2AFE6AA256ADA6E006B3C58 /* TableViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6A9256ADA6E006B3C58 /* TableViewController+ViewModel.swift */; };
+		B2AFE6C7256AFA3F006B3C58 /* TableViewControllerAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6C6256AFA3F006B3C58 /* TableViewControllerAware.swift */; };
+		B2AFE6CB256AFA4E006B3C58 /* TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6CA256AFA4E006B3C58 /* TableViewDelegate.swift */; };
+		B2AFE6CF256AFA5B006B3C58 /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6CE256AFA5B006B3C58 /* TableViewDataSource.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 		B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B488256187CC000BC78E /* EventKitCalendar.swift */; };
 		B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48C256188FA000BC78E /* Preferences.swift */; };
@@ -87,10 +92,15 @@
 		B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utiities.swift"; sourceTree = "<group>"; };
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		B2AFE6632569B1B0006B3C58 /* DataModel+EventUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataModel+EventUtilities.swift"; sourceTree = "<group>"; };
-		B2AFE6702569E00C006B3C58 /* PrefencesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefencesListViewController.swift; sourceTree = "<group>"; };
 		B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		B2AFE6882569E286006B3C58 /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
+		B2AFE690256ACC05006B3C58 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		B2AFE699256AD3D1006B3C58 /* CalendarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewModel.swift; sourceTree = "<group>"; };
+		B2AFE6A9256ADA6E006B3C58 /* TableViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableViewController+ViewModel.swift"; sourceTree = "<group>"; };
+		B2AFE6C6256AFA3F006B3C58 /* TableViewControllerAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewControllerAware.swift; sourceTree = "<group>"; };
+		B2AFE6CA256AFA4E006B3C58 /* TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDelegate.swift; sourceTree = "<group>"; };
+		B2AFE6CE256AFA5B006B3C58 /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,11 +185,34 @@
 			path = FuckSwiftUI;
 			sourceTree = "<group>";
 		};
+		B2AFE696256AD0C1006B3C58 /* CalendarListViews */ = {
+			isa = PBXGroup;
+			children = (
+				B2AFE6882569E286006B3C58 /* CalendarListViewController.swift */,
+				B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */,
+				B2AFE699256AD3D1006B3C58 /* CalendarListViewModel.swift */,
+			);
+			path = CalendarListViews;
+			sourceTree = "<group>";
+		};
+		B2AFE6B9256AE400006B3C58 /* TableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B2AFE690256ACC05006B3C58 /* TableViewController.swift */,
+				B2AFE6A9256ADA6E006B3C58 /* TableViewController+ViewModel.swift */,
+				B2AFE6C6256AFA3F006B3C58 /* TableViewControllerAware.swift */,
+				B2AFE6CA256AFA4E006B3C58 /* TableViewDelegate.swift */,
+				B2AFE6CE256AFA5B006B3C58 /* TableViewDataSource.swift */,
+			);
+			path = TableViewController;
+			sourceTree = "<group>";
+		};
 		B2E1511A255EED2A002672EC = {
 			isa = PBXGroup;
 			children = (
 				B236FCE4255F1C9D00A2E58D /* Resources */,
 				B2E1511F255EED2B002672EC /* Source */,
+				B2AFE66F2569DFD6006B3C58 /* FuckSwiftUI */,
 				B2742C9F25605D6C0087E4B6 /* Other Files */,
 				B227DEF1256738860002C127 /* RoosterAppKitPlugin */,
 				B2E15128255EED2B002672EC /* Products */,
@@ -189,9 +222,10 @@
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B2AFE66F2569DFD6006B3C58 /* FuckSwiftUI */,
+				B2AFE696256AD0C1006B3C58 /* CalendarListViews */,
 				B2F6B48625618787000BC78E /* Views */,
 				B2F6B50D2562F20E000BC78E /* Main Window */,
+				B2AFE6B9256AE400006B3C58 /* TableViewController */,
 				B2F6B4F52562DD01000BC78E /* Utilities */,
 				B2F6B4872561879D000BC78E /* Model */,
 				B2F6B4A72561B447000BC78E /* Delegates */,
@@ -211,10 +245,7 @@
 		B2F6B48625618787000BC78E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B2AFE6702569E00C006B3C58 /* PrefencesListViewController.swift */,
 				B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */,
-				B2AFE6882569E286006B3C58 /* CalendarListViewController.swift */,
-				B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -399,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B227DE21256573630002C127 /* DataModel.swift in Sources */,
+				B2AFE69A256AD3D1006B3C58 /* CalendarListViewModel.swift in Sources */,
 				B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */,
 				B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */,
 				B2F6B49725619705000BC78E /* AppController.swift in Sources */,
@@ -407,25 +439,29 @@
 				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
 				B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
+				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
+				B2AFE6CF256AFA5B006B3C58 /* TableViewDataSource.swift in Sources */,
 				B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */,
 				B2F6B51A256433DA000BC78E /* AlarmSounds.swift in Sources */,
 				B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */,
 				B227DF2925680C970002C127 /* MainViewController.swift in Sources */,
+				B2AFE6CB256AFA4E006B3C58 /* TableViewDelegate.swift in Sources */,
 				B2AFE6642569B1B0006B3C58 /* DataModel+EventUtilities.swift in Sources */,
 				B2F6B49B25619A34000BC78E /* EventKitEvent.swift in Sources */,
 				B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */,
 				B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */,
 				B2F6B4FA2562DD64000BC78E /* UIWindow+Utilities.swift in Sources */,
-				B2AFE6712569E00C006B3C58 /* PrefencesListViewController.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
 				B2F6B49E25619A43000BC78E /* EventKitReminder.swift in Sources */,
 				B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */,
 				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
+				B2AFE6C7256AFA3F006B3C58 /* TableViewControllerAware.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,
+				B2AFE6AA256ADA6E006B3C58 /* TableViewController+ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

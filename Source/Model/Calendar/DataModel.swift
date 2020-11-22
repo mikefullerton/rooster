@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias SourceToCalandarMap       = [String: [EventKitCalendar]]
+typealias SourceToCalendarMap       = [String: [EventKitCalendar]]
 typealias CalendarIDToCalendarMap   = [String: EventKitCalendar]
 
 class DataModel : ObservableObject, CustomStringConvertible {
@@ -15,7 +15,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
     static let DidChangeEvent = Notification.Name("DataModelDidChangeEvent")
 
     // key: source
-    @Published private(set) var calendars: SourceToCalandarMap {
+    @Published private(set) var calendars: SourceToCalendarMap {
         didSet {
             calendars.forEach { (source, innerCalendars) in
                 innerCalendars.forEach { (calendar) in
@@ -27,7 +27,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
     }
     
     // key: source
-    @Published private(set) var delegateCalendars: SourceToCalandarMap {
+    @Published private(set) var delegateCalendars: SourceToCalendarMap {
         didSet {
             delegateCalendars.forEach { (source, innerCalendars) in
                 innerCalendars.forEach { (calendar) in
@@ -75,7 +75,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
         return "calenders: \(self.calendars)\ndelegate calendars: \(self.delegateCalendars)\nevents: \(self.events)\nreminders: \(self.reminders)"
     }
     
-    private func addCalendars(toMap newMap: inout CalendarIDToCalendarMap, from: SourceToCalandarMap) {
+    private func addCalendars(toMap newMap: inout CalendarIDToCalendarMap, from: SourceToCalendarMap) {
         for (_, calendars) in from {
             for calendar in calendars {
                 if newMap[calendar.id] != nil {
@@ -118,8 +118,8 @@ class DataModel : ObservableObject, CustomStringConvertible {
 //        return foundCalendar
     }
     
-    func update(calendars: SourceToCalandarMap,
-                delegateCalendars: SourceToCalandarMap,
+    func update(calendars: SourceToCalendarMap,
+                delegateCalendars: SourceToCalendarMap,
                 events: [EventKitEvent],
                 reminders: [EventKitReminder]) {
         self.calendarLookup = [:]
@@ -197,7 +197,7 @@ class DataModel : ObservableObject, CustomStringConvertible {
     }
     
     private func update(calendar: EventKitCalendar,
-                        inSourceToCalendarMap sourceToCalendarMap: SourceToCalandarMap) -> SourceToCalandarMap? {
+                        inSourceToCalendarMap sourceToCalendarMap: SourceToCalendarMap) -> SourceToCalendarMap? {
         
         var newCalendarMap = sourceToCalendarMap
         

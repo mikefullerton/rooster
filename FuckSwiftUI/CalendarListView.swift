@@ -11,9 +11,9 @@ import SwiftUI
 struct CalendarListView: View {
     @ObservedObject var dataModel: DataModel = DataModel.instance
     
-    @Binding var calendars: SourceToCalandarMap
+    @Binding var calendars: SourceToCalendarMap
     
-//    init(calendars: SourceToCalandarMap) {
+//    init(calendars: SourceToCalendarMap) {
 //        self.calendars = calendars
 //
 //        for (source, calendars) in self.calendars {
