@@ -15,8 +15,6 @@ class EventListViewController : TableViewController {
     }
 
     override func updatedViewModel() -> TableViewModelProtocol {
-        let events = DataModel.instance.events.map { EventRow(withEvent: $0) }
-        let section = TableViewSection(withRows: events)
-        return TableViewModel(withSections: [ section ])
+        return EventListViewModel(withEvents: DataModel.instance.events)
     }
 }

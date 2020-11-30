@@ -36,7 +36,7 @@ struct CalendarSection : TableViewSectionProtocol {
     }
     
     var footer: TableViewSectionAdornmentProtocol? {
-        return TableViewSectionAdornment(withHeight: 20)
+        return SpacerAdornment(withHeight: 20)
     }
 }
 
@@ -103,11 +103,30 @@ struct DelegateDividerRow : TableViewRowProtocol {
     }
     
     var height: CGFloat {
-        return 100
+        return 24
     }
     
     func willDisplay(cell: UITableViewCell) {
         cell.textLabel?.text = self.title
+    }
+}
+
+struct DelegateHeaderSection : TableViewSectionProtocol {
+    
+    var rowCount: Int {
+        return 1
+    }
+    
+    func row(forIndex index: Int) -> TableViewRowProtocol? {
+        return DelegateDividerRow(withTitle: "Delegate Calendars")
+    }
+    
+    var header: TableViewSectionAdornmentProtocol? {
+        return DividerAdornment(withHeight: 20)
+    }
+    
+    var footer: TableViewSectionAdornmentProtocol? {
+        return DividerAdornment(withHeight: 20)
     }
 }
 
@@ -128,7 +147,7 @@ struct CalenderListViewModel : TableViewModelProtocol {
         
         CalenderListViewModel.add(calendars: calendars, to: &sections)
 
-        sections.append(TableViewSection(withRows: [ DelegateDividerRow(withTitle: "Delegate Calendars") ]))
+        sections.append(DelegateHeaderSection())
 
         CalenderListViewModel.add(calendars: delegateCalendars, to: &sections)
         

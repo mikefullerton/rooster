@@ -31,6 +31,10 @@
 		B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */; };
 		B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6E0256B2571006B3C58 /* EventNotification.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
+		B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1545D2575B5F3008BE604 /* DividerView.swift */; };
+		B2E154622575B67C008BE604 /* SpacerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154612575B67C008BE604 /* SpacerView.swift */; };
+		B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154672575B7A8008BE604 /* DividerAdornment.swift */; };
+		B2E1546C2575B7CF008BE604 /* SpacerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1546B2575B7CF008BE604 /* SpacerAdornment.swift */; };
 		B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B488256187CC000BC78E /* EventKitCalendar.swift */; };
 		B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48C256188FA000BC78E /* Preferences.swift */; };
 		B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48F25618EC5000BC78E /* AlarmSoundManager.swift */; };
@@ -105,6 +109,10 @@
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2E1512A255EED2B002672EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B2E1545D2575B5F3008BE604 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
+		B2E154612575B67C008BE604 /* SpacerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacerView.swift; sourceTree = "<group>"; };
+		B2E154672575B7A8008BE604 /* DividerAdornment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerAdornment.swift; sourceTree = "<group>"; };
+		B2E1546B2575B7CF008BE604 /* SpacerAdornment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacerAdornment.swift; sourceTree = "<group>"; };
 		B2F6B488256187CC000BC78E /* EventKitCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitCalendar.swift; sourceTree = "<group>"; };
 		B2F6B48C256188FA000BC78E /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		B2F6B48F25618EC5000BC78E /* AlarmSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundManager.swift; sourceTree = "<group>"; };
@@ -198,8 +206,12 @@
 		B2AFE6B9256AE400006B3C58 /* TableViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B2E1545D2575B5F3008BE604 /* DividerView.swift */,
+				B2E154612575B67C008BE604 /* SpacerView.swift */,
 				B2AFE690256ACC05006B3C58 /* TableViewController.swift */,
 				B2AFE6A9256ADA6E006B3C58 /* TableViewController+ViewModel.swift */,
+				B2E154672575B7A8008BE604 /* DividerAdornment.swift */,
+				B2E1546B2575B7CF008BE604 /* SpacerAdornment.swift */,
 			);
 			path = TableViewController;
 			sourceTree = "<group>";
@@ -439,6 +451,7 @@
 				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
 				B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
+				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,
 				B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */,
 				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
@@ -450,15 +463,18 @@
 				B2F6B49B25619A34000BC78E /* EventKitEvent.swift in Sources */,
 				B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */,
 				B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */,
+				B2E1546C2575B7CF008BE604 /* SpacerAdornment.swift in Sources */,
 				B2F6B4FA2562DD64000BC78E /* UIWindow+Utilities.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
 				B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */,
 				B2F6B49E25619A43000BC78E /* EventKitReminder.swift in Sources */,
 				B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */,
 				B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */,
+				B2E154622575B67C008BE604 /* SpacerView.swift in Sources */,
 				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
+				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,
 				B2AFE6AA256ADA6E006B3C58 /* TableViewController+ViewModel.swift in Sources */,
