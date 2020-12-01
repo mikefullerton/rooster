@@ -43,7 +43,19 @@ class MainViewController : UIViewController {
                                                                    rightViewController: rightViewController)
             
             self.addChild(self.mainSplitViewController!)
-            self.view.addSubview(self.mainSplitViewController!.view)
+
+            if let subview = self.mainSplitViewController!.view {
+                self.view.addSubview(subview)
+
+                subview.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    subview.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                    subview.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                    subview.topAnchor.constraint(equalTo: self.view.topAnchor),
+                    subview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+                ])
+            }
         }
     }
     
