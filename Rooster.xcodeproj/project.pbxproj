@@ -65,6 +65,8 @@
 		B2F817E525768E3600B28119 /* TableViewSectionAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817E425768E3600B28119 /* TableViewSectionAdornment.swift */; };
 		B2F817E925768E4300B28119 /* TableViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817E825768E4300B28119 /* TableViewRow.swift */; };
 		B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817EC25768E4F00B28119 /* TableViewSection.swift */; };
+		B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817FB2576ABD900B28119 /* RightSideViewController.swift */; };
+		B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +162,8 @@
 		B2F817E425768E3600B28119 /* TableViewSectionAdornment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSectionAdornment.swift; sourceTree = "<group>"; };
 		B2F817E825768E4300B28119 /* TableViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewRow.swift; sourceTree = "<group>"; };
 		B2F817EC25768E4F00B28119 /* TableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSection.swift; sourceTree = "<group>"; };
+		B2F817FB2576ABD900B28119 /* RightSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightSideViewController.swift; sourceTree = "<group>"; };
+		B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +264,7 @@
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B2F817FF2576ACA100B28119 /* TimeRemaining */,
 				B2E1549225768619008BE604 /* Views */,
 				B2AFE696256AD0C1006B3C58 /* CalendarList */,
 				B2F6B48625618787000BC78E /* EventList */,
@@ -364,6 +369,7 @@
 				B227DF242568096C0002C127 /* MainSplitViewController.swift */,
 				B227DF2825680C970002C127 /* MainViewController.swift */,
 				B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */,
+				B2F817FB2576ABD900B28119 /* RightSideViewController.swift */,
 			);
 			path = "Main Window";
 			sourceTree = "<group>";
@@ -413,6 +419,14 @@
 				B2F817E425768E3600B28119 /* TableViewSectionAdornment.swift */,
 			);
 			path = ViewModelStructs;
+			sourceTree = "<group>";
+		};
+		B2F817FF2576ACA100B28119 /* TimeRemaining */ = {
+			isa = PBXGroup;
+			children = (
+				B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */,
+			);
+			path = TimeRemaining;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -547,6 +561,7 @@
 				B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */,
 				B2F817CF25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift in Sources */,
 				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
+				B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B2F817D925768E0800B28119 /* TableViewSectionProtocol.swift in Sources */,
 				B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */,
@@ -573,6 +588,7 @@
 				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
 				B2E154BE2576881E008BE604 /* EventRow.swift in Sources */,
 				B2E1548F257681B8008BE604 /* VerticalStackView.swift in Sources */,
+				B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,

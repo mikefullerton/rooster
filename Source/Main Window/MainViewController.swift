@@ -37,7 +37,7 @@ class MainViewController : UIViewController {
             
             let leftViewController = CalendarListViewController()
             
-            let rightViewController = EventListViewController()
+            let rightViewController = RightSideViewController()
             
             self.mainSplitViewController = MainSplitViewController(withLeftViewController: leftViewController,
                                                                    rightViewController: rightViewController)

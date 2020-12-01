@@ -36,6 +36,15 @@ extension DataModel {
         return nil
     }
     
-
-
+    var nextEventStartTime: Date? {
+        let now = Date()
+        
+        for event in self.events {
+            if event.startDate.isAfterDate(now) {
+                return event.startDate
+            }
+        }
+        
+        return nil
+    }
 }

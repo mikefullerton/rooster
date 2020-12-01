@@ -40,7 +40,8 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
             stackView.heightAnchor.constraint(equalToConstant: size.height),
             stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: EventListTableViewCell.horizontalInset),
             stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
-            stackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+
         ])
         
         self.stackedView = stackView
@@ -51,7 +52,7 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
     }
     
     static var cellHeight: CGFloat {
-        return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3
+        return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20
     }
     
     override func prepareForReuse() {
@@ -127,5 +128,16 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
         let calendar = event.calendar
       
         self.calendarTitleLabel.text = "Calendar: \(calendar.title) (\(calendar.sourceTitle)) "
+        
+        if event.isInProgress {
+            self.layer.borderWidth = 1.0
+            self.layer.borderColor = UIColor.systemOrange.cgColor
+            self.layer.cornerRadius = 0.0
+//            self.view.layer.border
+        } else {
+            self.layer.borderWidth = 0.0
+            self.layer.borderColor = UIColor.clear.cgColor
+            self.layer.cornerRadius = 0.0
+        }
     }
 }
