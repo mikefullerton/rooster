@@ -15,11 +15,11 @@ struct EventSection : TableViewSectionProtocol {
         self.rows = [ EventRow(withEvent: event) ]
     }
     
-    var header: TableViewSectionAdornmentProtocol? {
-        return SpacerAdornment(withHeight: 10.0)
-    }
-    
-    var footer: TableViewSectionAdornmentProtocol? {
-        return DividerAdornment(withHeight: 20.0)
-    }
+//    var header: TableViewSectionAdornmentProtocol? {
+//        return SpacerAdornment(withHeight: 10.0)
+//    }
+//    
+//    var footer: TableViewSectionAdornmentProtocol? {
+//        return DividerAdornment(withHeight: 20.0)
+//    }
 }

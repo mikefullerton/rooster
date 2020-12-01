@@ -245,8 +245,6 @@
 				B2F817F825768FAE00B28119 /* ViewModelStructs */,
 				B2F817CD25768DCE00B28119 /* ViewModel */,
 				B2AFE690256ACC05006B3C58 /* TableViewController.swift */,
-				B2E154672575B7A8008BE604 /* DividerAdornment.swift */,
-				B2E1546B2575B7CF008BE604 /* SpacerAdornment.swift */,
 			);
 			path = TableViewController;
 			sourceTree = "<group>";
@@ -415,6 +413,8 @@
 		B2F817F825768FAE00B28119 /* ViewModelStructs */ = {
 			isa = PBXGroup;
 			children = (
+				B2E154672575B7A8008BE604 /* DividerAdornment.swift */,
+				B2E1546B2575B7CF008BE604 /* SpacerAdornment.swift */,
 				B2F817E025768E2200B28119 /* TableViewModel.swift */,
 				B2F817E825768E4300B28119 /* TableViewRow.swift */,
 				B2F817EC25768E4F00B28119 /* TableViewSection.swift */,

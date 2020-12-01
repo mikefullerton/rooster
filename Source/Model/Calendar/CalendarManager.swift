@@ -238,7 +238,6 @@ class CalendarManager {
         let subscribedCalendars = self.preferences.calendarIdentifers
         
         for ekCalendar in ekCalendars {
-        
             let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
             
             let calendar = EventKitCalendar(withCalendar: ekCalendar,
