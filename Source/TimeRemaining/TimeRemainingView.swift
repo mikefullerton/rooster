@@ -101,6 +101,8 @@ class TimeRemainingView : UILabel {
                 if shouldDisplaySeconds {
                     text += ", "
                 }
+            } else {
+                shouldDisplaySeconds = true
             }
             
             if shouldDisplaySeconds {
