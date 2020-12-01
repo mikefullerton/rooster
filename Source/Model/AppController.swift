@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AppController : AlarmSoundManagerDelegate {
 
@@ -105,7 +106,9 @@ class AppController : AlarmSoundManagerDelegate {
 
         for event in DataModel.instance.events {
             if event.isFiring && (!event.isInProgress || event.hasFired) {
-                events.append(event.updatedEvent(isFiring: false, hasFired: true))
+                events.append(event.updatedEvent(didStartFiring: true,
+                                                 isFiring: false,
+                                                 hasFired: true))
             }
         }
 
@@ -132,6 +135,39 @@ class AppController : AlarmSoundManagerDelegate {
             self.stopAlarm(forIdentifier: $0)
         }
     }
+    
+    func findURL(inEvent event: EventKitEvent, withString string: String) -> URL? {
+        if let location = event.location,
+           location.contains(string),
+           let url = URL(string: location) {
+            return url
+        }
+        
+        if let url = event.URL,
+           url.absoluteString.contains(string) {
+            return url
+        }
+        
+        if let noteURLs = event.noteURLS {
+            for url in noteURLs {
+                if url.absoluteString.contains(string) {
+                    return url
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    func eventDidStartFiring(event: EventKitEvent) {
+        if let webexURL = self.findURL(inEvent: event, withString: "webex") {
+            UIApplication.shared.open(webexURL,
+                                      options: [:]) { (success) in
+                
+            }
+        }
+    }
 
     func fireAlarmsIfNeeded() {
         var events: [EventKitEvent] = []
@@ -140,7 +176,14 @@ class AppController : AlarmSoundManagerDelegate {
             if event.isInProgress &&
                 event.hasFired == false &&
                 event.isFiring == false {
-                events.append(event.updatedEvent(isFiring: true, hasFired: false))
+                
+                if event.didStartFiring == false {
+                    self.eventDidStartFiring(event: event)
+                }
+                
+                events.append(event.updatedEvent(didStartFiring: true,
+                                                 isFiring: true,
+                                                 hasFired: false))
             }
         }
 

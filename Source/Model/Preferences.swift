@@ -77,6 +77,7 @@ class Preferences {
     
     let calendarIdentifers: IdentifierList
     let unsubscribedEvents: IdentifierList
+    let startedEventAlarms: IdentifierList
     let unsubscribedReminders: IdentifierList
     let firedEvents: IdentifierList
     
@@ -85,6 +86,8 @@ class Preferences {
         self.unsubscribedEvents = IdentifierList(withPreferencesKey: "events")
         self.unsubscribedReminders = IdentifierList(withPreferencesKey: "reminders")
         self.firedEvents = IdentifierList(withPreferencesKey: "fired-events")
+        self.startedEventAlarms = IdentifierList(withPreferencesKey: "started-alarms")
+        
     }
 }
 

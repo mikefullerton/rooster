@@ -119,6 +119,11 @@ class DataModel : CustomStringConvertible {
     }
 
     private func didUpdate(event: EventKitEvent) {
+
+        self.preferences.startedEventAlarms.set(isIncluded: event.didStartFiring,
+                                                forKey: event.id,
+                                                notifyListeners: false)
+
         self.preferences.firedEvents.set(isIncluded: event.hasFired,
                                          forKey: event.id,
                                          notifyListeners: false)
@@ -211,16 +216,22 @@ class DataModel : CustomStringConvertible {
 }
 
 extension EventKitEvent {
-    func updatedEvent(isFiring: Bool, hasFired: Bool) -> EventKitEvent {
+    func updatedEvent(didStartFiring: Bool,
+                      isFiring: Bool,
+                      hasFired: Bool) -> EventKitEvent {
+        
         return EventKitEvent(withEvent: self.EKEvent,
                              calendar: self.calendar,
                              subscribed: self.isSubscribed,
+                             didStartFiring: didStartFiring,
                              isFiring: isFiring,
                              hasFired: hasFired)
     }
     
     func stopAlarm() {
-        DataModel.instance.update(event: self.updatedEvent(isFiring: false, hasFired: true))
+        DataModel.instance.update(event: self.updatedEvent(didStartFiring: true,
+                                                           isFiring: false,
+                                                           hasFired: true))
     }
 }
 

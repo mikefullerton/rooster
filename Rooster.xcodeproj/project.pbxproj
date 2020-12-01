@@ -68,6 +68,7 @@
 		B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817FB2576ABD900B28119 /* RightSideViewController.swift */; };
 		B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */; };
 		B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818062576C05C00B28119 /* TimeRemainingView.swift */; };
+		B2F818292576FB1100B28119 /* String+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818282576FB1100B28119 /* String+Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +167,7 @@
 		B2F817FB2576ABD900B28119 /* RightSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightSideViewController.swift; sourceTree = "<group>"; };
 		B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
 		B2F818062576C05C00B28119 /* TimeRemainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingView.swift; sourceTree = "<group>"; };
+		B2F818282576FB1100B28119 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +361,7 @@
 				B227DF18256743C80002C127 /* AppKitPluginProtocol.h */,
 				B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */,
 				B2AFE6E0256B2571006B3C58 /* EventNotification.swift */,
+				B2F818282576FB1100B28119 /* String+Utilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
 				B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
+				B2F818292576FB1100B28119 /* String+Utilities.swift in Sources */,
 				B2F817D925768E0800B28119 /* TableViewSectionProtocol.swift in Sources */,
 				B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */,
 				B2E154A0257686D0008BE604 /* DelegateDividerSection.swift in Sources */,

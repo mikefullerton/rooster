@@ -12,16 +12,26 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
     let EKEvent: EKEvent
     let isSubscribed: Bool
     let calendar: EventKitCalendar
+    
     let hasFired: Bool
     let isFiring: Bool
+    let didStartFiring: Bool
+    
+    
     let startDate: Date
     let endDate: Date
     let title: String
     let id: String
+    let organizer: String?
+    let location: String?
+    let URL: URL?
+    let notes: String?
+    let noteURLS: [URL]?
     
     init(withEvent EKEvent: EKEvent,
          calendar: EventKitCalendar,
          subscribed: Bool,
+         didStartFiring: Bool,
          isFiring: Bool,
          hasFired: Bool) {
         self.EKEvent = EKEvent
@@ -31,8 +41,18 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
         self.isSubscribed = subscribed
         self.hasFired = hasFired
         self.isFiring = isFiring
+        self.didStartFiring = didStartFiring
         self.startDate = EKEvent.startDate
         self.endDate = EKEvent.endDate
+        self.organizer = EKEvent.organizer?.name
+        self.location = EKEvent.location
+        self.URL = EKEvent.url
+        self.notes = EKEvent.notes
+        if self.notes != nil {
+            self.noteURLS = self.notes!.detectURLs()
+        } else {
+            self.noteURLS = nil
+        }
     }
     
     var isInProgress: Bool {

@@ -140,11 +140,14 @@ class CalendarManager {
                     foundEvent = true
                     
                     var hasFired = oldEvent.hasFired
+                    var didStart = oldEvent.didStartFiring
                     
                     if newEvent.startDate.isAfterDate(now) {
                         hasFired = false
+                        didStart = false
                     } else if oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now) {
                         hasFired = false
+                        didStart = false
                     } else if newEvent.isInProgress && firedIdentifiers.contains(newEvent.id) {
                         hasFired = true
                     }
@@ -152,6 +155,7 @@ class CalendarManager {
                     let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
                                                     calendar: newEvent.calendar,
                                                     subscribed: newEvent.isSubscribed,
+                                                    didStartFiring: didStart,
                                                     isFiring: oldEvent.isFiring,
                                                     hasFired: hasFired)
 
@@ -163,14 +167,17 @@ class CalendarManager {
             if !foundEvent {
                 
                 var hasFired = newEvent.hasFired
+                var didStart = newEvent.didStartFiring
                 
                 if newEvent.isInProgress && firedIdentifiers.contains(newEvent.id) {
                     hasFired = true
+                    didStart = true
                 }
                 
                 let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
                                                 calendar: newEvent.calendar,
                                                 subscribed: newEvent.isSubscribed,
+                                                didStartFiring: didStart,
                                                 isFiring: newEvent.isFiring,
                                                 hasFired: hasFired)
                 
@@ -209,11 +216,15 @@ class CalendarManager {
                               calendars: [String: EventKitCalendar]) -> [EventKitEvent] {
        
         let unsubscribedEvents = self.preferences.unsubscribedEvents
+        let startedEventAlarms = self.preferences.startedEventAlarms
+        let firedAlarms = self.preferences.firedEvents
 
         var events:[EventKitEvent] = []
         
         for ekEvent in ekEvents {
             let subscribed = unsubscribedEvents.contains(ekEvent.calendarItemIdentifier) == false
+            let hasStartedFiring =  startedEventAlarms.contains(ekEvent.calendarItemIdentifier) ||
+                                    firedAlarms.contains(ekEvent.calendarItemIdentifier)
             
             guard let calendar = calendars[ekEvent.calendar.calendarIdentifier] else {
                 print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
@@ -223,6 +234,7 @@ class CalendarManager {
             let newEvent = EventKitEvent(withEvent: ekEvent,
                                          calendar: calendar,
                                          subscribed: subscribed,
+                                         didStartFiring: hasStartedFiring,
                                          isFiring: false,
                                          hasFired: false)
             events.append(newEvent)
