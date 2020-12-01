@@ -157,3 +157,33 @@ class TableViewReloader : EventNotifier {
         }
     }
 }
+
+protocol Reloadable : AnyObject {
+    func reload()
+}
+
+class Reloader : EventNotifier {
+    
+    weak var reloadable: Reloadable?
+    
+    init(withName name: Notification.Name,
+         object: AnyObject?,
+         reloadable: Reloadable? = nil) {
+        
+        self.reloadable = reloadable
+        super.init(withName: name,
+                   object: object)
+    }
+    
+    convenience init(withName name: Notification.Name,
+                     reloadable: Reloadable? = nil) {
+        self.init(withName: name, object: nil, reloadable: reloadable)
+    }
+    
+    @objc override func notificationReceived(_ notif: Notification) {
+        if self.reloadable != nil {
+            self.reloadable!.reload()
+        }
+    }
+}
+

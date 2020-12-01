@@ -67,6 +67,7 @@
 		B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817EC25768E4F00B28119 /* TableViewSection.swift */; };
 		B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817FB2576ABD900B28119 /* RightSideViewController.swift */; };
 		B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */; };
+		B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818062576C05C00B28119 /* TimeRemainingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,6 +165,7 @@
 		B2F817EC25768E4F00B28119 /* TableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSection.swift; sourceTree = "<group>"; };
 		B2F817FB2576ABD900B28119 /* RightSideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightSideViewController.swift; sourceTree = "<group>"; };
 		B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
+		B2F818062576C05C00B28119 /* TimeRemainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -425,6 +427,7 @@
 			isa = PBXGroup;
 			children = (
 				B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */,
+				B2F818062576C05C00B28119 /* TimeRemainingView.swift */,
 			);
 			path = TimeRemaining;
 			sourceTree = "<group>";
@@ -591,6 +594,7 @@
 				B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
+				B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,

@@ -22,9 +22,9 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         let views = [
-            self.calendarTitleLabel,
+            self.timeLabel,
             self.eventTitleLabel,
-            self.timeLabel
+            self.calendarTitleLabel
           ]
         
         let stackView = VerticalStackView(frame: CGRect(x: 0, y: 0, width: 0, height: 0),
@@ -57,6 +57,7 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
     
     override func prepareForReuse() {
         self.event = nil
+        self.countDownLabel.stopTimer()
     }
     
     @objc func handleButtonClick(_ sender: UIButton) {
@@ -89,8 +90,28 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
         return label
     }()
     
+    lazy var countDownLabel: TimeRemainingView = {
+        let label = TimeRemainingView()
+//        label.frame = CGRect(x: 0, y: 0, width: 100, height: EventListTableViewCell.labelHeight)
+        label.textColor = UIColor.secondaryLabel
+        label.textAlignment = .right
+        
+        self.contentView.addSubview(label)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            label.widthAnchor.constraint(equalToConstant: 250),
+            label.heightAnchor.constraint(equalToConstant: 20),
+            label.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
+            label.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+        ])
+
+        return label
+    }()
     
-    lazy var button: UIButton = {
+    
+    lazy var stopButton: UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(handleButtonClick(_:)), for: .touchUpInside)
         button.setTitle("Stop", for: .normal)
@@ -114,22 +135,33 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
     
     func setEvent(_ event: EventKitEvent) {
 
-        
         self.event = event
     
-        self.button.isEnabled = event.isFiring
         
         let startTime = self.shortDateString(event.startDate)
         let endTime = self.shortDateString(event.endDate)
         
-        self.timeLabel.text = "\(startTime) - \(endTime)"
+        self.timeLabel.text = "\(startTime) - \(endTime): "
         self.eventTitleLabel.text = event.title
+        
+        let now = Date()
+        if now.isBeforeDate(event.startDate) {
+            self.stopButton.isHidden = true
+            self.countDownLabel.isHidden = false
+            self.countDownLabel.startTimer(fireDate: event.startDate)
+            self.countDownLabel.prefixString = "Alarm will fire in "
+        }
         
         let calendar = event.calendar
       
         self.calendarTitleLabel.text = "Calendar: \(calendar.title) (\(calendar.sourceTitle)) "
         
         if event.isInProgress {
+            self.stopButton.isHidden = false
+            self.stopButton.isEnabled = event.isFiring
+            self.countDownLabel.isHidden = true
+            self.countDownLabel.stopTimer()
+        
             self.layer.borderWidth = 1.0
             self.layer.borderColor = UIColor.systemOrange.cgColor
             self.layer.cornerRadius = 0.0
