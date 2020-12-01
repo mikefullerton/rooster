@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class CalendarListCell : UITableViewCell {
-    
+class CalendarListCell : UITableViewCell, TableViewRowCell {
     private var calendar: EventKitCalendar?
 
     private lazy var checkBox: UISwitch = {
@@ -36,5 +35,11 @@ class CalendarListCell : UITableViewCell {
             calendar.set(subscribed: !calendar.isSubscribed)
         }
     }
-
+    
+    static var cellHeight: CGFloat {
+        return 24
+    }
+    
+    
+    
 }

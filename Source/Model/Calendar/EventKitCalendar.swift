@@ -8,15 +8,7 @@
 import Foundation
 import EventKit
 
-//protocol Calendar {
-//    var isSubscribed: Bool { get }
-//    var title: String { get }
-//    var id: String { get }
-//    var sourceTitle: String { get }
-//    var sourceIdentifier: String { get }
-//}
-
-struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable  {
+struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hashable  {
     let EKCalendar: EKCalendar
     let title: String
     let id: String

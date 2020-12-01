@@ -23,8 +23,6 @@ class DividerView : UIView {
         
         let indent:CGFloat = 0
         
-        
-        
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(indent * 2)),
             view.heightAnchor.constraint(equalToConstant: 1),
@@ -37,8 +35,5 @@ class DividerView : UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
 }
-
+ 

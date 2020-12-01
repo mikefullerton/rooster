@@ -53,7 +53,7 @@ class DataModel : CustomStringConvertible {
         }
     }
 
-    private var calendarLookup: CalendarIDToCalendarMap
+    private(set) var calendarLookup: [String: EventKitCalendar]
     
     let preferences: Preferences
     
@@ -90,14 +90,13 @@ class DataModel : CustomStringConvertible {
         return nil;
     }
     
-
-    
     func update(calendars: SourceToCalendarMap,
                 delegateCalendars: SourceToCalendarMap,
                 events: [EventKitEvent],
-                reminders: [EventKitReminder]) {
+                reminders: [EventKitReminder],
+                calendarLookup: [String: EventKitCalendar]) {
        
-        self.calendarLookup = [:]
+        self.calendarLookup = calendarLookup
         self.delegateCalendars = delegateCalendars
         self.calendars = calendars
         self.events = events
@@ -114,7 +113,6 @@ class DataModel : CustomStringConvertible {
     }
     
     private func didUpdate(calendar: EventKitCalendar) {
-        self.calendarLookup[calendar.id] = calendar
         self.preferences.calendarIdentifers.set(isIncluded: calendar.isSubscribed,
                                                 forKey: calendar.id,
                                                 notifyListeners: false)
@@ -156,7 +154,7 @@ class DataModel : CustomStringConvertible {
     func findEvents(forCalendar calendar: EventKitCalendar) -> [EventKitEvent] {
         var outEvents: [EventKitEvent] = []
         for event in self.events {
-            if event.calendarIdentifier == calendar.id {
+            if event.calendar.id == calendar.id {
                 outEvents.append(event)
             }
         }
@@ -215,7 +213,7 @@ class DataModel : CustomStringConvertible {
 extension EventKitEvent {
     func updatedEvent(isFiring: Bool, hasFired: Bool) -> EventKitEvent {
         return EventKitEvent(withEvent: self.EKEvent,
-                             calendarIdentifer: self.calendarIdentifier,
+                             calendar: self.calendar,
                              subscribed: self.isSubscribed,
                              isFiring: isFiring,
                              hasFired: hasFired)

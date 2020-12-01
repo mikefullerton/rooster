@@ -150,7 +150,7 @@ class CalendarManager {
                     }
                     
                     let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
-                                                    calendarIdentifer: newEvent.calendarIdentifier,
+                                                    calendar: newEvent.calendar,
                                                     subscribed: newEvent.isSubscribed,
                                                     isFiring: oldEvent.isFiring,
                                                     hasFired: hasFired)
@@ -169,7 +169,7 @@ class CalendarManager {
                 }
                 
                 let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
-                                                calendarIdentifer: newEvent.calendarIdentifier,
+                                                calendar: newEvent.calendar,
                                                 subscribed: newEvent.isSubscribed,
                                                 isFiring: newEvent.isFiring,
                                                 hasFired: hasFired)
@@ -205,7 +205,8 @@ class CalendarManager {
         return groups
     }
 
-    private func createEvents(fromEKEvents ekEvents:[EKEvent]) -> [EventKitEvent] {
+    private func createEvents(fromEKEvents ekEvents:[EKEvent],
+                              calendars: [String: EventKitCalendar]) -> [EventKitEvent] {
        
         let unsubscribedEvents = self.preferences.unsubscribedEvents
 
@@ -213,8 +214,14 @@ class CalendarManager {
         
         for ekEvent in ekEvents {
             let subscribed = unsubscribedEvents.contains(ekEvent.calendarItemIdentifier) == false
+            
+            guard let calendar = calendars[ekEvent.calendar.calendarIdentifier] else {
+                print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
+                continue
+            }
+            
             let newEvent = EventKitEvent(withEvent: ekEvent,
-                                         calendarIdentifer: ekEvent.calendar.calendarIdentifier,
+                                         calendar: calendar,
                                          subscribed: subscribed,
                                          isFiring: false,
                                          hasFired: false)
@@ -243,6 +250,17 @@ class CalendarManager {
         return calendars
     }
 
+    public func createCalendarLookup(calendars: [EventKitCalendar],
+                                     delegateCalendars: [EventKitCalendar]) -> [String: EventKitCalendar] {
+        
+        var lookup: [String: EventKitCalendar] = [:]
+        
+        calendars.forEach { lookup[$0.id] = $0 }
+        delegateCalendars.forEach { lookup[$0.id] = $0 }
+        
+        return lookup
+    }
+    
     public func reloadDataModel() {
         DispatchQueue.main.async {
             self.actuallyReloadDataModel()
@@ -267,17 +285,21 @@ class CalendarManager {
         let sortedEKEvents = ekEvents.sorted { (lhs, rhs) -> Bool in
             return lhs.startDate.isBeforeDate(rhs.startDate)
         }
+
+        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars)
+
+        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars)
+
+        let calendarLookup = self.createCalendarLookup(calendars: personalCalendars,
+                                                       delegateCalendars: delegateCalendars)
         
-        let events = self.createEvents(fromEKEvents: sortedEKEvents)
+        let events = self.createEvents(fromEKEvents: sortedEKEvents,
+                                       calendars:calendarLookup)
         
         let previousEvents = self.dataModel.events
         
         let finalEvents = self.merge(oldEvents: previousEvents, withNewEvents: events)
 
-        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars)
-
-        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars)
-        
         let finalCalendars = self.groupedCalendars(fromCalendars: personalCalendars)
         
         let finalDelegateCalendars = self.groupedCalendars(fromCalendars: delegateCalendars)
@@ -287,7 +309,8 @@ class CalendarManager {
         self.dataModel.update(calendars: finalCalendars,
                               delegateCalendars: finalDelegateCalendars,
                               events: finalEvents,
-                              reminders: finalReminders)
+                              reminders: finalReminders,
+                              calendarLookup: calendarLookup)
     }
     
     @objc private func storeChanged(_ notification: Notification) {

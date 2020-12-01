@@ -11,7 +11,7 @@ import EventKit
 struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable {
     let EKEvent: EKEvent
     let isSubscribed: Bool
-    let calendarIdentifier: String
+    let calendar: EventKitCalendar
     let hasFired: Bool
     let isFiring: Bool
     let startDate: Date
@@ -19,15 +19,14 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
     let title: String
     let id: String
     
-
     init(withEvent EKEvent: EKEvent,
-         calendarIdentifer: String,
+         calendar: EventKitCalendar,
          subscribed: Bool,
          isFiring: Bool,
          hasFired: Bool) {
         self.EKEvent = EKEvent
         self.id = EKEvent.eventIdentifier
-        self.calendarIdentifier = calendarIdentifer
+        self.calendar = calendar
         self.title = EKEvent.title
         self.isSubscribed = subscribed
         self.hasFired = hasFired
@@ -51,7 +50,7 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
     
     func isEqual(to anotherEvent: EventKitEvent) -> Bool {
         return  self.id == anotherEvent.id &&
-                self.calendarIdentifier == anotherEvent.calendarIdentifier &&
+                self.calendar.id == anotherEvent.calendar.id &&
                 self.title == anotherEvent.title &&
                 self.isSubscribed == anotherEvent.isSubscribed &&
                 self.hasFired == anotherEvent.hasFired &&
