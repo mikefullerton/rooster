@@ -222,22 +222,26 @@ class CalendarManager {
         var events:[EventKitEvent] = []
         
         for ekEvent in ekEvents {
-            let subscribed = unsubscribedEvents.contains(ekEvent.calendarItemIdentifier) == false
-            let hasStartedFiring =  startedEventAlarms.contains(ekEvent.calendarItemIdentifier) ||
-                                    firedAlarms.contains(ekEvent.calendarItemIdentifier)
             
-            guard let calendar = calendars[ekEvent.calendar.calendarIdentifier] else {
-                print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
-                continue
+            if ekEvent.refresh() {
+            
+                let subscribed = unsubscribedEvents.contains(ekEvent.calendarItemIdentifier) == false
+                let hasStartedFiring =  startedEventAlarms.contains(ekEvent.calendarItemIdentifier) ||
+                                        firedAlarms.contains(ekEvent.calendarItemIdentifier)
+                
+                guard let calendar = calendars[ekEvent.calendar.calendarIdentifier] else {
+                    print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
+                    continue
+                }
+                
+                let newEvent = EventKitEvent(withEvent: ekEvent,
+                                             calendar: calendar,
+                                             subscribed: subscribed,
+                                             didStartFiring: hasStartedFiring,
+                                             isFiring: false,
+                                             hasFired: false)
+                events.append(newEvent)
             }
-            
-            let newEvent = EventKitEvent(withEvent: ekEvent,
-                                         calendar: calendar,
-                                         subscribed: subscribed,
-                                         didStartFiring: hasStartedFiring,
-                                         isFiring: false,
-                                         hasFired: false)
-            events.append(newEvent)
         }
         
         return events
@@ -250,12 +254,15 @@ class CalendarManager {
         let subscribedCalendars = self.preferences.calendarIdentifers
         
         for ekCalendar in ekCalendars {
-            let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
             
-            let calendar = EventKitCalendar(withCalendar: ekCalendar,
-                                            subscribed:subscribed)
-            
-            calendars.append(calendar)
+            if ekCalendar.refresh() {
+                let subscribed = subscribedCalendars.contains(ekCalendar.calendarIdentifier)
+                
+                let calendar = EventKitCalendar(withCalendar: ekCalendar,
+                                                subscribed:subscribed)
+                
+                calendars.append(calendar)
+            }
         }
 
         return calendars

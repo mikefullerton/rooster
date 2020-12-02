@@ -38,7 +38,7 @@ class TimeRemainingViewController : UIViewController, Reloadable {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.systemBackground
         
-        self.timeRemainingLabel.prefixString = "Next alarm will fire in "
+        self.timeRemainingLabel.prefixString = "Your next alarm will fire in "
         self.timeRemainingLabel.showSecondsWithMinutes = true
         self.timeRemainingLabel.outOfRangeString = "No more meetings today! 🎉"
     }
