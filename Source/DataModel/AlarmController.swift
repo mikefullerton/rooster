@@ -86,7 +86,7 @@ class AlarmController : AlarmSoundManagerDelegate {
     }
     
     private func updateAlarmState(forEvent event: EventKitEvent) {
-        if event.isFiring {
+        if event.alarmState == .firing {
             self.startAlarm(forIdentifier: event.id)
         } else {
             self.stopAlarm(forIdentifier: event.id)
@@ -103,10 +103,8 @@ class AlarmController : AlarmSoundManagerDelegate {
         var events:[EventKitEvent] = []
 
         for event in EventKitDataModelController.dataModel.events {
-            if event.isFiring && (!event.isInProgress || event.hasFired) {
-                events.append(event.updatedEvent(didStartFiring: true,
-                                                 isFiring: false,
-                                                 hasFired: true))
+            if event.alarmState == .firing && !event.isHappeningNow {
+                events.append(event.updateAlarmState(.finished))
             }
         }
 
@@ -139,23 +137,22 @@ class AlarmController : AlarmSoundManagerDelegate {
                 
             }
         }
+        
+        self.startAlarm(forIdentifier: event.id)
     }
 
     func fireAlarmsIfNeeded() {
         var events: [EventKitEvent] = []
 
         for event in EventKitDataModelController.dataModel.events {
-            if event.isInProgress &&
-                event.hasFired == false &&
-                event.isFiring == false {
+            if event.isHappeningNow &&
+                event.alarmState != .finished {
                 
-                if event.didStartFiring == false {
+                if event.alarmState == .neverFired {
                     self.eventDidStartFiring(event: event)
                 }
-                
-                events.append(event.updatedEvent(didStartFiring: true,
-                                                 isFiring: true,
-                                                 hasFired: false))
+
+                events.append(event.updateAlarmState(.firing))
             }
         }
 

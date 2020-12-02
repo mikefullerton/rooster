@@ -50,7 +50,7 @@ struct ContentViewRow: View {
     var endDate: String = ""
     var title: String = ""
     var isFiring: Bool = false
-    var isInProgress: Bool = false
+    var isHappeningNow: Bool = false
     var color = Color.primary
     var calendar: String
     var calendarSource: String
@@ -61,11 +61,11 @@ struct ContentViewRow: View {
         self.startDate = shortDateString(event.startDate)
         self.endDate = shortDateString(event.endDate)
         self.isFiring = event.isFiring
-        self.isInProgress = event.isInProgress
+        self.isHappeningNow = event.isHappeningNow
         self.calendar = calendar.title
         self.calendarSource = calendar.sourceTitle
         
-        if event.isInProgress {
+        if event.isHappeningNow {
             self.color = Color.red
         }
 //        print("got new event: \(event)")
@@ -92,7 +92,7 @@ struct ContentViewRow: View {
                 .modifier(ButtonModifier(withButtonTextColor: Color.red))
                 .disabled(false)
                 
-            } else if self.isInProgress {
+            } else if self.isHappeningNow {
                 Button(action: {
                     print("Disabled top button pressed")
                 }) {

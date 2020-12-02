@@ -130,53 +130,58 @@ class EventKitManager : Reloadable {
         for newEvent in newEvents {
             var foundEvent = false
             
+            let isSubscribed = self.preferences.isEventSubscribed(newEvent.id)
+
             for oldEvent in oldEvents {
                 if  newEvent.id == oldEvent.id {
                     foundEvent = true
-                    
-                    var hasFired = oldEvent.hasFired
-                    var didStart = oldEvent.didStartFiring
-                    
-                    if newEvent.startDate.isAfterDate(now) {
-                        hasFired = false
-                        didStart = false
-                    } else if oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now) {
-                        hasFired = false
-                        didStart = false
-                    } else if newEvent.isInProgress && preferences.alarmHasFired(eventID: newEvent.id) {
-                        hasFired = true
+                                        
+                    if  newEvent.startDate.isAfterDate(now) ||
+                        (oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now)) {
+                        
+                        mergedEvents.append(EventKitEvent(withEvent: newEvent.EKEvent,
+                                                          calendar: newEvent.calendar,
+                                                          subscribed: isSubscribed,
+                                                          alarmState: .neverFired))
+
+                    } else if newEvent.isHappeningNow {
+                        
+                        let alarmState = self.preferences.alarmState(forEventID: newEvent.id)
+                        
+                        mergedEvents.append(EventKitEvent(withEvent: newEvent.EKEvent,
+                                                          calendar: newEvent.calendar,
+                                                          subscribed: isSubscribed,
+                                                          alarmState: alarmState == nil ? .neverFired : alarmState!))
+                    } else {
+                        mergedEvents.append(EventKitEvent(withEvent: newEvent.EKEvent,
+                                                          calendar: newEvent.calendar,
+                                                          subscribed: isSubscribed,
+                                                          alarmState: .finished))
                     }
                     
-                    let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
-                                                    calendar: newEvent.calendar,
-                                                    subscribed: newEvent.isSubscribed,
-                                                    didStartFiring: didStart,
-                                                    isFiring: oldEvent.isFiring,
-                                                    hasFired: hasFired)
-
-                    mergedEvents.append(mergedEvent)
                     continue
                 }
             }
             
             if !foundEvent {
-                
-                var hasFired = newEvent.hasFired
-                var didStart = newEvent.didStartFiring
-                
-                if newEvent.isInProgress && preferences.alarmHasFired(eventID: newEvent.id) {
-                    hasFired = true
-                    didStart = true
+                if newEvent.isHappeningNow {
+                   if let alarmState = self.preferences.alarmState(forEventID: newEvent.id) {
+                        mergedEvents.append(EventKitEvent(withEvent: newEvent.EKEvent,
+                                                          calendar: newEvent.calendar,
+                                                          subscribed: isSubscribed,
+                                                          alarmState: alarmState))
+                   } else {
+                        mergedEvents.append(EventKitEvent(withEvent: newEvent.EKEvent,
+                                                          calendar: newEvent.calendar,
+                                                          subscribed: isSubscribed,
+                                                          alarmState: .neverFired))
+                    }
+                } else {
+                    mergedEvents.append(EventKitEvent(withEvent: newEvent.EKEvent,
+                                                      calendar: newEvent.calendar,
+                                                      subscribed: isSubscribed,
+                                                      alarmState: .neverFired))
                 }
-                
-                let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
-                                                calendar: newEvent.calendar,
-                                                subscribed: newEvent.isSubscribed,
-                                                didStartFiring: didStart,
-                                                isFiring: newEvent.isFiring,
-                                                hasFired: hasFired)
-                
-                mergedEvents.append(mergedEvent)
             }
         }
 
@@ -213,13 +218,7 @@ class EventKitManager : Reloadable {
         var events:[EventKitEvent] = []
         
         for ekEvent in ekEvents {
-            
             if ekEvent.refresh() {
-            
-                let subscribed = self.preferences.isEventSubscribed(ekEvent.calendarItemIdentifier) == false
-                let hasStartedFiring =  self.preferences.alarmHasStarted(eventID: ekEvent.calendarItemIdentifier) ||
-                                        self.preferences.alarmHasFired(eventID: ekEvent.calendarItemIdentifier)
-                
                 guard let calendar = calendars[ekEvent.calendar.calendarIdentifier] else {
                     print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
                     continue
@@ -227,10 +226,8 @@ class EventKitManager : Reloadable {
                 
                 let newEvent = EventKitEvent(withEvent: ekEvent,
                                              calendar: calendar,
-                                             subscribed: subscribed,
-                                             didStartFiring: hasStartedFiring,
-                                             isFiring: false,
-                                             hasFired: false)
+                                             subscribed: false,
+                                             alarmState: .neverFired)
                 events.append(newEvent)
             }
         }

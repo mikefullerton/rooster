@@ -228,9 +228,9 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
       
         self.calendarTitleLabel.text = "Calendar: \(calendar.title) (\(calendar.sourceTitle)) "
         
-        if event.isInProgress {
+        if event.isHappeningNow {
             self.stopButton.isHidden = false
-            self.stopButton.isEnabled = event.isFiring
+            self.stopButton.isEnabled = event.alarmState == .firing
             self.countDownLabel.isHidden = true
             self.countDownLabel.stopTimer()
             self.alarmIcon.isHidden = false

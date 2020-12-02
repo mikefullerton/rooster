@@ -113,8 +113,8 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
                                            calendarLookup: newCalendarLookup)
 
         Preferences.instance.update(newCalendar)
-        self.setNeedsReloadData()
-        
+        self.notify()
+
         print("EventKitDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
     }
     
@@ -132,7 +132,7 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
                                              reminders: dataModel.reminders,
                                              calendarLookup: dataModel.calendarLookup)
         
-        self.setNeedsReloadData()
+        self.notify()
     }
     
     func update(someEvents: [EventKitEvent]) {
@@ -167,7 +167,7 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
                                              reminders: dataModel.reminders,
                                              calendarLookup: dataModel.calendarLookup)
 
-        self.setNeedsReloadData()
+        self.notify()
     }
     
     func authenticate(_ completion: ((_ success: Bool) -> Void)? ) {
@@ -188,23 +188,8 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
 }
 
 extension EventKitEvent {
-    func updatedEvent(didStartFiring: Bool,
-                      isFiring: Bool,
-                      hasFired: Bool) -> EventKitEvent {
-        
-        return EventKitEvent(withEvent: self.EKEvent,
-                             calendar: self.calendar,
-                             subscribed: self.isSubscribed,
-                             didStartFiring: didStartFiring,
-                             isFiring: isFiring,
-                             hasFired: hasFired)
-    }
-    
     func stopAlarm() {
-        
-        let updatedEvent = self.updatedEvent(didStartFiring: true,
-                                             isFiring: false,
-                                             hasFired: true)
+        let updatedEvent = self.event(withUpdatedAlarm: .finished)
         
         EventKitDataModelController.instance.update(updatedEvent)
     }

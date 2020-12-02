@@ -51,7 +51,7 @@ class PreferencesDataStore {
             }
         }
         
-        func removeAll(notifyListeners notify: Bool = true) {
+        func removeAll() {
             self.identifiers.removeAll()
             self.save()
         }
@@ -66,18 +66,70 @@ class PreferencesDataStore {
         }
     }
     
-    let calendarIdentifers: IdentifierList
+    class IdentifierDictionary {
+        private let preferencesKey: String
+        private var dictionary: [String: Any]
+
+        init(withPreferencesKey key: String) {
+            self.preferencesKey = key
+            self.dictionary = UserDefaults.standard.dictionary(forKey: key) ?? [:]
+        }
+
+        private func save() {
+//            if let oldDictionary = UserDefaults.standard.dictionary(forKey: self.preferencesKey) {
+////               if self.dictionary == oldDictionary {
+////                    return
+////               }
+//            }
+
+            UserDefaults.standard.set(self.dictionary, forKey: self.preferencesKey)
+            UserDefaults.standard.synchronize()
+        }
+        
+        func set(value: Any?, forKey key: String) {
+            
+            if value != nil {
+                self.dictionary[key] = value
+            } else {
+                self.dictionary.removeValue(forKey: key)
+            }
+            
+            self.save()
+        }
+        
+        func value(forKey key: String) -> Any? {
+            return self.dictionary[key]
+        }
+        
+        func removeValue(forKey key: String) {
+            self.dictionary.removeValue(forKey: key)
+            self.save()
+        }
+
+        func removeAll() {
+            self.dictionary.removeAll()
+            self.save()
+        }
+        
+        func replaceAll(with dictionary: [String: Any]) {
+            self.dictionary = dictionary
+            self.save()
+        }
+    }
+    
+    let subscribedCalendars: IdentifierList
+
     let unsubscribedEvents: IdentifierList
-    let startedEventAlarms: IdentifierList
+    
     let unsubscribedReminders: IdentifierList
-    let firedEvents: IdentifierList
+
+    let alarmStates: IdentifierDictionary
     
     init() {
-        self.calendarIdentifers = IdentifierList(withPreferencesKey: "calendars")
+        self.subscribedCalendars = IdentifierList(withPreferencesKey: "calendars")
         self.unsubscribedEvents = IdentifierList(withPreferencesKey: "events")
         self.unsubscribedReminders = IdentifierList(withPreferencesKey: "reminders")
-        self.firedEvents = IdentifierList(withPreferencesKey: "fired-events")
-        self.startedEventAlarms = IdentifierList(withPreferencesKey: "started-alarms")
+        self.alarmStates = IdentifierDictionary(withPreferencesKey: "alarm-states")
     }
 }
 

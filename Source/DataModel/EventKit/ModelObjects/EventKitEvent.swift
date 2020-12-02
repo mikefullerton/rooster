@@ -9,13 +9,19 @@ import Foundation
 import EventKit
 
 struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable {
-    let EKEvent: EKEvent
+
+    enum AlarmState: String{
+        case neverFired = "neverFired"
+        case firing = "firing"
+        case finished = "finishe"
+    }
+
+    private let EKEvent: EKEvent
+    
     let calendar: EventKitCalendar
     
     let isSubscribed: Bool
-    let hasFired: Bool
-    let isFiring: Bool
-    let didStartFiring: Bool
+    let alarmState: AlarmState
     
     let startDate: Date
     let endDate: Date
@@ -30,17 +36,13 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
     init(withEvent EKEvent: EKEvent,
          calendar: EventKitCalendar,
          subscribed: Bool,
-         didStartFiring: Bool,
-         isFiring: Bool,
-         hasFired: Bool) {
+         alarmState: AlarmState) {
         self.EKEvent = EKEvent
         self.id = EKEvent.eventIdentifier
         self.calendar = calendar
         self.title = EKEvent.title
         self.isSubscribed = subscribed
-        self.hasFired = hasFired
-        self.isFiring = isFiring
-        self.didStartFiring = didStartFiring
+        self.alarmState = alarmState
         self.startDate = EKEvent.startDate
         self.endDate = EKEvent.endDate
         self.organizer = EKEvent.organizer?.name
@@ -54,17 +56,12 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
         }
     }
     
-    var isInProgress: Bool {
-        let now = Date()
-        return self.startDate.isBeforeDate(now) && self.endDate.isAfterDate(now)
-    }
-    
     static func == (lhs: EventKitEvent, rhs: EventKitEvent) -> Bool {
         return lhs.id == rhs.id
     }
     
     var description: String {
-        return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), isFiring: \(self.isFiring), hasFired: \(self.hasFired)")
+        return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), alarmState: \(self.alarmState)")
     }
     
     func isEqual(to anotherEvent: EventKitEvent) -> Bool {
@@ -72,17 +69,43 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
                 self.calendar.id == anotherEvent.calendar.id &&
                 self.title == anotherEvent.title &&
                 self.isSubscribed == anotherEvent.isSubscribed &&
-                self.hasFired == anotherEvent.hasFired &&
-                self.isFiring == anotherEvent.isFiring &&
+                self.alarmState == anotherEvent.alarmState &&
                 self.startDate == anotherEvent.startDate &&
                 self.endDate == anotherEvent.endDate &&
-                self.didStartFiring == anotherEvent.didStartFiring &&
                 self.location == anotherEvent.location &&
                 self.eventURL == anotherEvent.eventURL &&
                 self.notes == anotherEvent.notes &&
                 self.organizer == anotherEvent.organizer
     }
 
+    var isHappeningNow: Bool {
+        let now = Date()
+        return self.startDate.isBeforeDate(now) && self.endDate.isAfterDate(now)
+    }
+    
+    var alarmShouldStop: Bool {
+        return !self.isHappeningNow && self.alarmState != .finished
+    }
+    
+    var alarmShouldFire: Bool {
+        return self.isHappeningNow && self.alarmState == .neverFired
+    }
+    
+    var alarmIsFiring: Bool {
+        return self.alarmState == .firing
+    }
+    
+    func event(withUpdatedAlarm alarmState: AlarmState) -> EventKitEvent {
+        return EventKitEvent(withEvent: self.EKEvent,
+                             calendar: self.calendar,
+                             subscribed: self.isSubscribed,
+                             alarmState: alarmState)
+    }
+
+    
+    
 }
+
+
 
 
