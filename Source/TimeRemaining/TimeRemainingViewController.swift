@@ -40,7 +40,7 @@ class TimeRemainingViewController : UIViewController, Reloadable {
         
         self.timeRemainingLabel.prefixString = "Next alarm will fire in "
         self.timeRemainingLabel.showSecondsWithMinutes = true
-        self.timeRemainingLabel.outOfRangeString = "Next alarm will fire tomorrow"
+        self.timeRemainingLabel.outOfRangeString = "No more meetings today! 🎉"
     }
     
     var viewHeight: CGFloat {
