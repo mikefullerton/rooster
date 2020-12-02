@@ -111,9 +111,7 @@ class AlarmController : AlarmSoundManagerDelegate {
         }
 
         if events.count > 0 {
-            DispatchQueue.main.async {
-                EventKitDataModelController.instance.update(someEvents: events)
-            }
+            EventKitDataModelController.instance.update(someEvents: events)
         }
     }
     
@@ -162,9 +160,7 @@ class AlarmController : AlarmSoundManagerDelegate {
         }
 
         if events.count > 0 {
-            DispatchQueue.main.async {
-                EventKitDataModelController.instance.update(someEvents: events)
-            }
+            EventKitDataModelController.instance.update(someEvents: events)
         }
     }
     

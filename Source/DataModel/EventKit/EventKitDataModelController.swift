@@ -32,11 +32,23 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
 
         self.preferencesReloader = PreferencesReloader(for: self)
         self.eventKitManager.delegate = self
-        
     }
     
     func reloadData() {
         self.eventKitManager.reloadData()
+        self.needsReload = false
+    }
+    
+    private var needsReload: Bool = false
+    
+    func setNeedsReloadData() {
+        self.needsReload = true
+        
+        DispatchQueue.main.async {
+            if self.needsReload {
+                self.reloadData()
+            }
+        }
     }
     
     static var dataModel: EventKitDataModel {
@@ -52,15 +64,58 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
     }
 
     func update(_ event: EventKitEvent) {
-        Preferences.instance.update(event)
-        self.reloadData()
-        print("updated event: \(event)")
+        self.update(someEvents: [event])
     }
     
-    func update(_ calendar: EventKitCalendar) {
-        Preferences.instance.update(calendar)
-        self.reloadData()
-        print("EventKitDataModel: updated calendar: \(calendar.sourceTitle): \(calendar.title)")
+    private func newCalendars(for newCalendar: EventKitCalendar,
+                      calendarMap: [CalendarSource: [EventKitCalendar]],
+                      newCalendarLookup: inout [CalendarID: EventKitCalendar] ) -> [CalendarSource: [EventKitCalendar]] {
+        
+        var newCalendarMap: [CalendarSource: [EventKitCalendar]] = [:]
+        
+        for (source, calendars) in self.dataModel.calendars {
+            var newCalendarList: [EventKitCalendar] = []
+            
+            for calendar in calendars {
+                if calendar.id == newCalendar.id {
+                    newCalendarList.append(newCalendar)
+                    newCalendarLookup[source] = newCalendar
+                } else {
+                    newCalendarList.append(calendar)
+                    newCalendarLookup[source] = calendar
+                }
+            }
+            
+            newCalendarMap[source] = newCalendarList
+        }
+        
+        return newCalendarMap
+    }
+    
+    func update(_ newCalendar: EventKitCalendar) {
+        
+        var newCalendarLookup: [CalendarID: EventKitCalendar] = [:]
+        
+        let dataModel = self.dataModel
+        
+        let newCalendarList = self.newCalendars(for: newCalendar,
+                                                calendarMap: dataModel.calendars,
+                                                newCalendarLookup: &newCalendarLookup)
+
+        let newDelegateCalendarList = self.newCalendars(for: newCalendar,
+                                                calendarMap: dataModel.delegateCalendars,
+                                                newCalendarLookup: &newCalendarLookup)
+
+        self.dataModel = EventKitDataModel(calendars: newCalendarList,
+                                           delegateCalendars: newDelegateCalendarList,
+                                           events: dataModel.events,
+                                           reminders: dataModel.reminders,
+                                           calendarLookup: newCalendarLookup)
+
+        Preferences.instance.update(newCalendar)
+        self.setNeedsReloadData()
+        
+        print("EventKitDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
     }
     
     private func notify() {
@@ -69,16 +124,50 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
     
     func replace(allEvents: [EventKitEvent]) {
         allEvents.forEach { Preferences.instance.update($0) }
-        self.reloadData()
+        
+        let dataModel = self.dataModel
+        self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
+                                             delegateCalendars: dataModel.delegateCalendars,
+                                             events: allEvents,
+                                             reminders: dataModel.reminders,
+                                             calendarLookup: dataModel.calendarLookup)
+        
+        self.setNeedsReloadData()
     }
     
     func update(someEvents: [EventKitEvent]) {
+        
+        var newEventsList: [EventKitEvent] = []
 
         someEvents.forEach {
             Preferences.instance.update($0)
-            print("updated event: \($0)")
         }
-        self.reloadData()
+
+        for event in self.dataModel.events {
+            
+            var didAdd = false
+            someEvents.forEach {
+                if $0.id == event.id {
+                    newEventsList.append($0)
+                    didAdd = true
+                }
+            }
+            
+            if !didAdd {
+                newEventsList.append(event)
+            }
+
+            print("updated event: \(event)")
+        }
+
+
+        self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
+                                             delegateCalendars: dataModel.delegateCalendars,
+                                             events: newEventsList,
+                                             reminders: dataModel.reminders,
+                                             calendarLookup: dataModel.calendarLookup)
+
+        self.setNeedsReloadData()
     }
     
     func authenticate(_ completion: ((_ success: Bool) -> Void)? ) {
