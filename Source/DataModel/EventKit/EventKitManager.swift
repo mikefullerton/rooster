@@ -1,0 +1,392 @@
+//
+//  CalenderManager.swift
+//  Rooster
+//
+//  Created by Mike Fullerton on 11/13/20.
+//
+
+import Foundation
+import EventKit
+
+protocol EventKitManagerDelegate: AnyObject {
+    func eventKitManager(_ manager: EventKitManager,
+                         didReloadDataModel dataModel: EventKitDataModel)
+}
+
+// needs to be class to recieve NSNotifications
+class EventKitManager : Reloadable {
+    
+    weak var delegate: EventKitManagerDelegate?
+    
+    private let store: EKEventStore
+    private var delegateEventStore: EKEventStore?
+    private let preferences: Preferences
+    private var dataModel: EventKitDataModel
+    private var eventStoreReloader: Reloader?
+    
+    init(preferences: Preferences) {
+        self.store = EKEventStore()
+        self.delegateEventStore = nil
+        self.preferences = preferences
+        self.dataModel = EventKitDataModel()
+    }
+    
+    private func calendar(forEKCalander ekCalendar: EKCalendar, inCalendars calendars: [EventKitCalendar]) -> EventKitCalendar? {
+        return calendars.first(where: { $0.id == ekCalendar.calendarIdentifier })
+    }
+    
+    private func subscribedCalendars(_ calendars:[EKCalendar]) -> [EKCalendar] {
+        
+        var subscribedCalendars: [EKCalendar] = []
+        for calendar in calendars {
+            let subscribed = Preferences.instance.isCalendarSubscribed(calendar.calendarIdentifier)
+            if subscribed {
+                subscribedCalendars.append(calendar)
+            }
+        }
+
+        return subscribedCalendars
+    }
+    
+    private func findEvents(withEKCalendars calendars: [EKCalendar],
+                            store: EKEventStore) -> [EKEvent] {
+        
+        let subscribedCalendars = self.subscribedCalendars(calendars)
+        
+        if subscribedCalendars.count == 0 {
+            return []
+        }
+        
+        let currentCalendar = NSCalendar.current
+
+        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
+
+        guard let today = currentCalendar.date(from: dateComponents) else {
+            return []
+        }
+
+        guard let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) else {
+            return []
+        }
+
+        let predicate = store.predicateForEvents(withStart: today,
+                                                 end: tomorrow,
+                                                 calendars: subscribedCalendars)
+
+        let now = Date()
+
+        var events:[EKEvent] = []
+
+        for event in store.events(matching: predicate) {
+
+            if event.isAllDay {
+                continue
+            }
+
+            guard let endDate = event.endDate else {
+                continue
+            }
+
+            if event.status == .canceled {
+                continue
+            }
+
+//            guard let title = event.title else {
+//                continue
+//            }
+
+            if endDate.isAfterDate(now) {
+                events.append(event)
+            }
+        }
+
+        return events
+    }
+    
+    private func findCalendars() -> [EKCalendar] {
+        return self.store.calendars(for: .event)
+    }
+    
+    private func findDelegateCalendars() -> [EKCalendar] {
+        if self.delegateEventStore == nil {
+            return []
+        }
+        
+        return self.delegateEventStore!.calendars(for: .event)
+    }
+    
+    
+    private func findReminders() -> [EventKitReminder] {
+        return []
+    }
+    
+    private func merge(oldEvents: [EventKitEvent],
+                       withNewEvents newEvents: [EventKitEvent]) -> [EventKitEvent] {
+        
+        var mergedEvents: [EventKitEvent] = []
+        
+        let now = Date()
+        
+        for newEvent in newEvents {
+            var foundEvent = false
+            
+            for oldEvent in oldEvents {
+                if  newEvent.id == oldEvent.id {
+                    foundEvent = true
+                    
+                    var hasFired = oldEvent.hasFired
+                    var didStart = oldEvent.didStartFiring
+                    
+                    if newEvent.startDate.isAfterDate(now) {
+                        hasFired = false
+                        didStart = false
+                    } else if oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now) {
+                        hasFired = false
+                        didStart = false
+                    } else if newEvent.isInProgress && preferences.alarmHasFired(eventID: newEvent.id) {
+                        hasFired = true
+                    }
+                    
+                    let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
+                                                    calendar: newEvent.calendar,
+                                                    subscribed: newEvent.isSubscribed,
+                                                    didStartFiring: didStart,
+                                                    isFiring: oldEvent.isFiring,
+                                                    hasFired: hasFired)
+
+                    mergedEvents.append(mergedEvent)
+                    continue
+                }
+            }
+            
+            if !foundEvent {
+                
+                var hasFired = newEvent.hasFired
+                var didStart = newEvent.didStartFiring
+                
+                if newEvent.isInProgress && preferences.alarmHasFired(eventID: newEvent.id) {
+                    hasFired = true
+                    didStart = true
+                }
+                
+                let mergedEvent = EventKitEvent(withEvent: newEvent.EKEvent,
+                                                calendar: newEvent.calendar,
+                                                subscribed: newEvent.isSubscribed,
+                                                didStartFiring: didStart,
+                                                isFiring: newEvent.isFiring,
+                                                hasFired: hasFired)
+                
+                mergedEvents.append(mergedEvent)
+            }
+        }
+
+        return mergedEvents
+    }
+    
+    public func groupedCalendars(fromCalendars calendars: [EventKitCalendar]) -> [String: [EventKitCalendar]] {
+        var groups: [String: [EventKitCalendar]] = [:]
+
+        for calendar in calendars {
+            var groupList: [EventKitCalendar]? = groups[calendar.sourceTitle]
+            if groupList == nil {
+                groupList = []
+            }
+            groupList!.append(calendar)
+            groups[calendar.sourceTitle] = groupList
+        }
+        
+        for (source, calendars) in groups {
+            let sortedList = calendars.sorted {
+                $0.title.localizedCaseInsensitiveCompare($1.title) == ComparisonResult.orderedAscending
+            }
+            
+            groups[source] = sortedList
+        }
+        
+        
+        return groups
+    }
+
+    private func createEvents(fromEKEvents ekEvents:[EKEvent],
+                              calendars: [String: EventKitCalendar]) -> [EventKitEvent] {
+       
+        var events:[EventKitEvent] = []
+        
+        for ekEvent in ekEvents {
+            
+            if ekEvent.refresh() {
+            
+                let subscribed = self.preferences.isEventSubscribed(ekEvent.calendarItemIdentifier) == false
+                let hasStartedFiring =  self.preferences.alarmHasStarted(eventID: ekEvent.calendarItemIdentifier) ||
+                                        self.preferences.alarmHasFired(eventID: ekEvent.calendarItemIdentifier)
+                
+                guard let calendar = calendars[ekEvent.calendar.calendarIdentifier] else {
+                    print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
+                    continue
+                }
+                
+                let newEvent = EventKitEvent(withEvent: ekEvent,
+                                             calendar: calendar,
+                                             subscribed: subscribed,
+                                             didStartFiring: hasStartedFiring,
+                                             isFiring: false,
+                                             hasFired: false)
+                events.append(newEvent)
+            }
+        }
+        
+        return events
+    }
+    
+    public func createCalendars(withEKCalendars ekCalendars: [EKCalendar]) -> [EventKitCalendar] {
+     
+        var calendars:[EventKitCalendar] = []
+        
+        for ekCalendar in ekCalendars {
+            
+            if ekCalendar.refresh() {
+                let subscribed = self.preferences.isCalendarSubscribed(ekCalendar.calendarIdentifier)
+                
+                let calendar = EventKitCalendar(withCalendar: ekCalendar,
+                                                subscribed:subscribed)
+                
+                calendars.append(calendar)
+            }
+        }
+
+        return calendars
+    }
+
+    public func createCalendarLookup(calendars: [EventKitCalendar],
+                                     delegateCalendars: [EventKitCalendar]) -> [String: EventKitCalendar] {
+        
+        var lookup: [String: EventKitCalendar] = [:]
+        
+        calendars.forEach { lookup[$0.id] = $0 }
+        delegateCalendars.forEach { lookup[$0.id] = $0 }
+        
+        return lookup
+    }
+    
+    public func reloadData() {
+        DispatchQueue.main.async {
+            self.reloadDataModel()
+        }
+    }
+    
+    private func reloadDataModel() {
+        
+        let previousDataModel = self.dataModel
+        
+        let personalEKCalendars = self.findCalendars()
+        
+        let delegateEKCalendars = self.findDelegateCalendars()
+        
+        let ekPersonalEvents = self.findEvents(withEKCalendars: personalEKCalendars,
+                                               store: self.store)
+        
+        let ekDelegateEvents = self.delegateEventStore != nil ?
+                                    self.findEvents(withEKCalendars: delegateEKCalendars,
+                                                    store:self.delegateEventStore!) : []
+        
+        let ekEvents = ekPersonalEvents + ekDelegateEvents
+        
+        let sortedEKEvents = ekEvents.sorted { (lhs, rhs) -> Bool in
+            return lhs.startDate.isBeforeDate(rhs.startDate)
+        }
+
+        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars)
+
+        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars)
+
+        let calendarLookup = self.createCalendarLookup(calendars: personalCalendars,
+                                                       delegateCalendars: delegateCalendars)
+        
+        let events = self.createEvents(fromEKEvents: sortedEKEvents,
+                                       calendars:calendarLookup)
+        
+        let finalEvents = self.merge(oldEvents: previousDataModel.events, withNewEvents: events)
+
+        let finalCalendars = self.groupedCalendars(fromCalendars: personalCalendars)
+        
+        let finalDelegateCalendars = self.groupedCalendars(fromCalendars: delegateCalendars)
+        
+        let finalReminders = self.findReminders()
+        
+        let dataModel = EventKitDataModel(calendars: finalCalendars,
+                                          delegateCalendars: finalDelegateCalendars,
+                                          events: finalEvents,
+                                          reminders: finalReminders,
+                                          calendarLookup: calendarLookup)
+        
+        self.dataModel = dataModel
+        
+        if let delegate = self.delegate {
+            delegate.eventKitManager(self, didReloadDataModel: dataModel)
+        }
+    }
+    
+    private func handleAccessGranted() {
+        
+        AppDelegate.instance.appKitBundle?.requestPermissionToDelegateCalendars(for: self.store, completion: { (success, delegateEventStore, error) in
+            DispatchQueue.main.async {
+                if success && delegateEventStore != nil {
+                    self.delegateEventStore = delegateEventStore!
+                }
+                
+                self.eventStoreReloader = Reloader(withNotificationName:.EKEventStoreChanged,
+                                                   object: self.store,
+                                                   for: self)
+                
+                self.reloadData()
+            }
+        })
+    }
+    
+    private func handleAccessDenied(error: Error?) {
+        
+    }
+    
+    public typealias CalendarManagerCompletionBlock = (_ success: Bool, _ error: Error?) -> Void
+    
+    private func requestAccess(to entityType: EKEntityType, completion: @escaping CalendarManagerCompletionBlock) {
+        self.store.requestAccess(to: entityType, completion: { (success: Bool, error: Error?) in
+            completion(success, error)
+        })
+    }
+    
+    public func requestAccess(completion: @escaping CalendarManagerCompletionBlock) {
+        
+        var count = 0
+        var errorResults: [Error?] = [ nil, nil ]
+        var successResults: [Bool] = [ false, false ]
+        
+        let completion: CalendarManagerCompletionBlock = { (success, error) in
+            
+            count += 1
+            
+            if count == 1 {
+                successResults[0] = success
+                errorResults[0] = error
+            } else {
+                successResults[1] = success
+                errorResults[1] = error
+            
+                DispatchQueue.main.async {
+                    
+                    if success {
+                        self.handleAccessGranted()
+                    } else {
+                        self.handleAccessDenied(error: error)
+                    }
+                    
+                    completion(success, error)
+                }
+            }
+        }
+        
+        self.requestAccess(to: EKEntityType.event, completion: completion)
+        self.requestAccess(to: EKEntityType.reminder, completion: completion)
+        
+    }
+}

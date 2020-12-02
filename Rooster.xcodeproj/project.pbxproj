@@ -7,20 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B227DE21256573630002C127 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DE20256573630002C127 /* DataModel.swift */; };
+		B2020A9A2577D83D00F478CC /* PreferencesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020A992577D83D00F478CC /* PreferencesTableViewController.swift */; };
+		B2020A9E2577D88600F478CC /* Reloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020A9D2577D88600F478CC /* Reloader.swift */; };
+		B2020ABD2577D99800F478CC /* PreferencesTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AB72577D99800F478CC /* PreferencesTableViewModel.swift */; };
+		B2020ABE2577D99800F478CC /* PreferencesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AB82577D99800F478CC /* PreferencesRow.swift */; };
+		B2020ABF2577D99800F478CC /* PreferencesSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AB92577D99800F478CC /* PreferencesSectionHeader.swift */; };
+		B2020AC02577D99800F478CC /* PreferencesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ABA2577D99800F478CC /* PreferencesSection.swift */; };
+		B2020AC12577D99800F478CC /* PreferencesDividerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ABB2577D99800F478CC /* PreferencesDividerSection.swift */; };
+		B2020AC22577D99800F478CC /* PreferencesDividerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ABC2577D99800F478CC /* PreferencesDividerRow.swift */; };
+		B2020AD72577DAC600F478CC /* EventKitTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AD62577DAC600F478CC /* EventKitTableViewController.swift */; };
+		B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */; };
+		B2020AE72577E84500F478CC /* EventKitDataModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AE62577E84500F478CC /* EventKitDataModelController.swift */; };
+		B2020AF02577EA6900F478CC /* PreferencesReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AEF2577EA6900F478CC /* PreferencesReloader.swift */; };
+		B2020AF82577FCFD00F478CC /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AF72577FCFD00F478CC /* Preferences.swift */; };
+		B2020B072578028D00F478CC /* EventKitEvent+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020B062578028D00F478CC /* EventKitEvent+Utilities.swift */; };
+		B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DE20256573630002C127 /* EventKitDataModel.swift */; };
 		B227DEFA256738C50002C127 /* AppKitPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEF9256738C50002C127 /* AppKitPlugin.swift */; };
 		B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */; };
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */ = {isa = PBXBuildFile; fileRef = B227DF18256743C80002C127 /* AppKitPluginProtocol.h */; };
 		B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF242568096C0002C127 /* MainSplitViewController.swift */; };
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
-		B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */; };
+		B236FCD6255EFE0A00A2E58D /* EventKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
 		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
 		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
-		B2AFE6642569B1B0006B3C58 /* DataModel+EventUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6632569B1B0006B3C58 /* DataModel+EventUtilities.swift */; };
+		B2AFE6642569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6632569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
 		B2AFE6892569E286006B3C58 /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6882569E286006B3C58 /* CalendarListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
@@ -29,6 +43,8 @@
 		B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */; };
 		B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */; };
 		B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6E0256B2571006B3C58 /* EventNotification.swift */; };
+		B2C7423F257723FD006645A0 /* PreferenceSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C7423E257723FD006645A0 /* PreferenceSceneDelegate.swift */; };
+		B2C7424325772435006645A0 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C7424225772435006645A0 /* PreferencesViewController.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 		B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1545D2575B5F3008BE604 /* DividerView.swift */; };
 		B2E154622575B67C008BE604 /* SpacerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154612575B67C008BE604 /* SpacerView.swift */; };
@@ -43,9 +59,9 @@
 		B2E154B82576880A008BE604 /* EventSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154B72576880A008BE604 /* EventSection.swift */; };
 		B2E154BE2576881E008BE604 /* EventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154BD2576881E008BE604 /* EventRow.swift */; };
 		B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B488256187CC000BC78E /* EventKitCalendar.swift */; };
-		B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48C256188FA000BC78E /* Preferences.swift */; };
+		B2F6B48D256188FA000BC78E /* PreferencesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48C256188FA000BC78E /* PreferencesDataStore.swift */; };
 		B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B48F25618EC5000BC78E /* AlarmSoundManager.swift */; };
-		B2F6B49725619705000BC78E /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B49625619705000BC78E /* AppController.swift */; };
+		B2F6B49725619705000BC78E /* AlarmController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B49625619705000BC78E /* AlarmController.swift */; };
 		B2F6B49B25619A34000BC78E /* EventKitEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B49A25619A34000BC78E /* EventKitEvent.swift */; };
 		B2F6B49E25619A43000BC78E /* EventKitReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B49D25619A43000BC78E /* EventKitReminder.swift */; };
 		B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */; };
@@ -95,7 +111,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B227DE20256573630002C127 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		B2020A992577D83D00F478CC /* PreferencesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTableViewController.swift; sourceTree = "<group>"; };
+		B2020A9D2577D88600F478CC /* Reloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reloader.swift; sourceTree = "<group>"; };
+		B2020AB72577D99800F478CC /* PreferencesTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesTableViewModel.swift; sourceTree = "<group>"; };
+		B2020AB82577D99800F478CC /* PreferencesRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesRow.swift; sourceTree = "<group>"; };
+		B2020AB92577D99800F478CC /* PreferencesSectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesSectionHeader.swift; sourceTree = "<group>"; };
+		B2020ABA2577D99800F478CC /* PreferencesSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesSection.swift; sourceTree = "<group>"; };
+		B2020ABB2577D99800F478CC /* PreferencesDividerSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesDividerSection.swift; sourceTree = "<group>"; };
+		B2020ABC2577D99800F478CC /* PreferencesDividerRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesDividerRow.swift; sourceTree = "<group>"; };
+		B2020AD62577DAC600F478CC /* EventKitTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitTableViewController.swift; sourceTree = "<group>"; };
+		B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelReloader.swift; sourceTree = "<group>"; };
+		B2020AE62577E84500F478CC /* EventKitDataModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModelController.swift; sourceTree = "<group>"; };
+		B2020AEF2577EA6900F478CC /* PreferencesReloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesReloader.swift; sourceTree = "<group>"; };
+		B2020AF72577FCFD00F478CC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		B2020B062578028D00F478CC /* EventKitEvent+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitEvent+Utilities.swift"; sourceTree = "<group>"; };
+		B227DE20256573630002C127 /* EventKitDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModel.swift; sourceTree = "<group>"; };
 		B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoosterAppKitPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227DEF2256738860002C127 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RoosterAppKitPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -104,7 +134,7 @@
 		B227DF18256743C80002C127 /* AppKitPluginProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitPluginProtocol.h; sourceTree = "<group>"; };
 		B227DF242568096C0002C127 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		B227DF2825680C970002C127 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitManager.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
 		B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPreferencesView.swift; sourceTree = "<group>"; };
@@ -114,7 +144,7 @@
 		B2AFE64E2569782D006B3C58 /* CalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
 		B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utiities.swift"; sourceTree = "<group>"; };
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
-		B2AFE6632569B1B0006B3C58 /* DataModel+EventUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataModel+EventUtilities.swift"; sourceTree = "<group>"; };
+		B2AFE6632569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitDataModel+EventUtilities.swift"; sourceTree = "<group>"; };
 		B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		B2AFE6882569E286006B3C58 /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
@@ -123,6 +153,8 @@
 		B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewModel.swift; sourceTree = "<group>"; };
 		B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListTableViewCell.swift; sourceTree = "<group>"; };
 		B2AFE6E0256B2571006B3C58 /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
+		B2C7423E257723FD006645A0 /* PreferenceSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceSceneDelegate.swift; sourceTree = "<group>"; };
+		B2C7424225772435006645A0 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,9 +172,9 @@
 		B2E154B72576880A008BE604 /* EventSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSection.swift; sourceTree = "<group>"; };
 		B2E154BD2576881E008BE604 /* EventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRow.swift; sourceTree = "<group>"; };
 		B2F6B488256187CC000BC78E /* EventKitCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitCalendar.swift; sourceTree = "<group>"; };
-		B2F6B48C256188FA000BC78E /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		B2F6B48C256188FA000BC78E /* PreferencesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesDataStore.swift; sourceTree = "<group>"; };
 		B2F6B48F25618EC5000BC78E /* AlarmSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundManager.swift; sourceTree = "<group>"; };
-		B2F6B49625619705000BC78E /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		B2F6B49625619705000BC78E /* AlarmController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmController.swift; sourceTree = "<group>"; };
 		B2F6B49A25619A34000BC78E /* EventKitEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitEvent.swift; sourceTree = "<group>"; };
 		B2F6B49D25619A43000BC78E /* EventKitReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitReminder.swift; sourceTree = "<group>"; };
 		B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSceneDelegate.swift; sourceTree = "<group>"; };
@@ -188,6 +220,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B2020AB62577D99800F478CC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B2020AB72577D99800F478CC /* PreferencesTableViewModel.swift */,
+				B2020AB82577D99800F478CC /* PreferencesRow.swift */,
+				B2020AB92577D99800F478CC /* PreferencesSectionHeader.swift */,
+				B2020ABA2577D99800F478CC /* PreferencesSection.swift */,
+				B2020ABB2577D99800F478CC /* PreferencesDividerSection.swift */,
+				B2020ABC2577D99800F478CC /* PreferencesDividerRow.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B2020AD52577DA3C00F478CC /* PreferencesTableView */ = {
+			isa = PBXGroup;
+			children = (
+				B2020AB62577D99800F478CC /* ViewModel */,
+				B2020A992577D83D00F478CC /* PreferencesTableViewController.swift */,
+			);
+			path = PreferencesTableView;
+			sourceTree = "<group>";
+		};
+		B2020AEE2577E9F000F478CC /* EventKit */ = {
+			isa = PBXGroup;
+			children = (
+				B2F6B52325643C4A000BC78E /* ModelObjects */,
+				B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */,
+				B2020AE62577E84500F478CC /* EventKitDataModelController.swift */,
+				B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */,
+			);
+			path = EventKit;
+			sourceTree = "<group>";
+		};
+		B2020AFB2577FD0600F478CC /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				B2F6B48C256188FA000BC78E /* PreferencesDataStore.swift */,
+				B2020AF72577FCFD00F478CC /* Preferences.swift */,
+				B2020AEF2577EA6900F478CC /* PreferencesReloader.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
 		B227DEF1256738860002C127 /* RoosterAppKitPlugin */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +326,16 @@
 			path = TableViewController;
 			sourceTree = "<group>";
 		};
+		B2C7423D2577225E006645A0 /* PreferencesWindow */ = {
+			isa = PBXGroup;
+			children = (
+				B2C7423E257723FD006645A0 /* PreferenceSceneDelegate.swift */,
+				B2C7424225772435006645A0 /* PreferencesViewController.swift */,
+				B2020AD52577DA3C00F478CC /* PreferencesTableView */,
+			);
+			path = PreferencesWindow;
+			sourceTree = "<group>";
+		};
 		B2E1511A255EED2A002672EC = {
 			isa = PBXGroup;
 			children = (
@@ -266,14 +351,12 @@
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B2F817FF2576ACA100B28119 /* TimeRemaining */,
+				B2020AFB2577FD0600F478CC /* Preferences */,
+				B2C7423D2577225E006645A0 /* PreferencesWindow */,
 				B2E1549225768619008BE604 /* Views */,
-				B2AFE696256AD0C1006B3C58 /* CalendarList */,
-				B2F6B48625618787000BC78E /* EventList */,
-				B2F6B50D2562F20E000BC78E /* Main Window */,
-				B2AFE6B9256AE400006B3C58 /* TableViewController */,
+				B2F6B50D2562F20E000BC78E /* MainWindow */,
 				B2F6B4F52562DD01000BC78E /* Utilities */,
-				B2F6B4872561879D000BC78E /* Model */,
+				B2F6B4872561879D000BC78E /* DataModel */,
 				B2F6B4A72561B447000BC78E /* Delegates */,
 			);
 			path = Source;
@@ -291,9 +374,12 @@
 		B2E1549225768619008BE604 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B2AFE6B9256AE400006B3C58 /* TableViewController */,
+				B2F817FF2576ACA100B28119 /* TimeRemaining */,
 				B2E1545D2575B5F3008BE604 /* DividerView.swift */,
 				B2E154612575B67C008BE604 /* SpacerView.swift */,
 				B2E1548E257681B8008BE604 /* VerticalStackView.swift */,
+				B2020AD62577DAC600F478CC /* EventKitTableViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -331,16 +417,15 @@
 			path = EventList;
 			sourceTree = "<group>";
 		};
-		B2F6B4872561879D000BC78E /* Model */ = {
+		B2F6B4872561879D000BC78E /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				B2F6B52325643C4A000BC78E /* Calendar */,
+				B2020AEE2577E9F000F478CC /* EventKit */,
 				B2F6B518256433C8000BC78E /* Sounds */,
-				B2F6B48C256188FA000BC78E /* Preferences.swift */,
-				B2F6B49625619705000BC78E /* AppController.swift */,
+				B2F6B49625619705000BC78E /* AlarmController.swift */,
 				B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */,
 			);
-			path = Model;
+			path = DataModel;
 			sourceTree = "<group>";
 		};
 		B2F6B4A72561B447000BC78E /* Delegates */ = {
@@ -362,19 +447,22 @@
 				B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */,
 				B2AFE6E0256B2571006B3C58 /* EventNotification.swift */,
 				B2F818282576FB1100B28119 /* String+Utilities.swift */,
+				B2020A9D2577D88600F478CC /* Reloader.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		B2F6B50D2562F20E000BC78E /* Main Window */ = {
+		B2F6B50D2562F20E000BC78E /* MainWindow */ = {
 			isa = PBXGroup;
 			children = (
+				B2AFE696256AD0C1006B3C58 /* CalendarList */,
+				B2F6B48625618787000BC78E /* EventList */,
 				B227DF242568096C0002C127 /* MainSplitViewController.swift */,
 				B227DF2825680C970002C127 /* MainViewController.swift */,
 				B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */,
 				B2F817FB2576ABD900B28119 /* RightSideViewController.swift */,
 			);
-			path = "Main Window";
+			path = MainWindow;
 			sourceTree = "<group>";
 		};
 		B2F6B518256433C8000BC78E /* Sounds */ = {
@@ -389,17 +477,17 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
-		B2F6B52325643C4A000BC78E /* Calendar */ = {
+		B2F6B52325643C4A000BC78E /* ModelObjects */ = {
 			isa = PBXGroup;
 			children = (
-				B227DE20256573630002C127 /* DataModel.swift */,
-				B2AFE6632569B1B0006B3C58 /* DataModel+EventUtilities.swift */,
+				B227DE20256573630002C127 /* EventKitDataModel.swift */,
 				B2F6B488256187CC000BC78E /* EventKitCalendar.swift */,
 				B2F6B49A25619A34000BC78E /* EventKitEvent.swift */,
 				B2F6B49D25619A43000BC78E /* EventKitReminder.swift */,
-				B236FCD5255EFE0A00A2E58D /* CalendarManager.swift */,
+				B2AFE6632569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift */,
+				B2020B062578028D00F478CC /* EventKitEvent+Utilities.swift */,
 			);
-			path = Calendar;
+			path = ModelObjects;
 			sourceTree = "<group>";
 		};
 		B2F817CD25768DCE00B28119 /* ViewModel */ = {
@@ -547,15 +635,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2E154B82576880A008BE604 /* EventSection.swift in Sources */,
+				B2C7423F257723FD006645A0 /* PreferenceSceneDelegate.swift in Sources */,
+				B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */,
 				B2F817E125768E2200B28119 /* TableViewModel.swift in Sources */,
-				B227DE21256573630002C127 /* DataModel.swift in Sources */,
+				B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */,
 				B2AFE69A256AD3D1006B3C58 /* CalendarListViewModel.swift in Sources */,
 				B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */,
 				B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */,
 				B2E154AE2576877E008BE604 /* CalendarSectionHeader.swift in Sources */,
+				B2020AE72577E84500F478CC /* EventKitDataModelController.swift in Sources */,
 				B2F817E525768E3600B28119 /* TableViewSectionAdornment.swift in Sources */,
+				B2020B072578028D00F478CC /* EventKitEvent+Utilities.swift in Sources */,
 				B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */,
-				B2F6B49725619705000BC78E /* AppController.swift in Sources */,
+				B2F6B49725619705000BC78E /* AlarmController.swift in Sources */,
 				B2AFE6892569E286006B3C58 /* CalendarListViewController.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
 				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
@@ -564,24 +656,29 @@
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2E154A625768745008BE604 /* DelegateDividerRow.swift in Sources */,
 				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,
+				B2020A9E2577D88600F478CC /* Reloader.swift in Sources */,
 				B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */,
 				B2F817CF25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift in Sources */,
+				B2020AC12577D99800F478CC /* PreferencesDividerSection.swift in Sources */,
+				B2020AD72577DAC600F478CC /* EventKitTableViewController.swift in Sources */,
 				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
 				B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */,
 				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
 				B2F818292576FB1100B28119 /* String+Utilities.swift in Sources */,
+				B2020ABF2577D99800F478CC /* PreferencesSectionHeader.swift in Sources */,
 				B2F817D925768E0800B28119 /* TableViewSectionProtocol.swift in Sources */,
 				B2F6B50B2562EBE5000BC78E /* TestCalendars.swift in Sources */,
 				B2E154A0257686D0008BE604 /* DelegateDividerSection.swift in Sources */,
 				B2F6B51A256433DA000BC78E /* AlarmSounds.swift in Sources */,
 				B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */,
 				B227DF2925680C970002C127 /* MainViewController.swift in Sources */,
-				B2AFE6642569B1B0006B3C58 /* DataModel+EventUtilities.swift in Sources */,
+				B2020AC22577D99800F478CC /* PreferencesDividerRow.swift in Sources */,
+				B2AFE6642569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift in Sources */,
 				B2F817E925768E4300B28119 /* TableViewRow.swift in Sources */,
 				B2F817DD25768E1700B28119 /* TableViewModelProtocol.swift in Sources */,
 				B2F6B49B25619A34000BC78E /* EventKitEvent.swift in Sources */,
 				B2F817D525768DFD00B28119 /* TableViewRowProtocol.swift in Sources */,
-				B236FCD6255EFE0A00A2E58D /* CalendarManager.swift in Sources */,
+				B236FCD6255EFE0A00A2E58D /* EventKitManager.swift in Sources */,
 				B2E154AA25768768008BE604 /* CalendarRow.swift in Sources */,
 				B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */,
 				B2E1546C2575B7CF008BE604 /* SpacerAdornment.swift in Sources */,
@@ -591,15 +688,22 @@
 				B2F6B49E25619A43000BC78E /* EventKitReminder.swift in Sources */,
 				B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */,
 				B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */,
+				B2020AC02577D99800F478CC /* PreferencesSection.swift in Sources */,
 				B2E154622575B67C008BE604 /* SpacerView.swift in Sources */,
-				B2F6B48D256188FA000BC78E /* Preferences.swift in Sources */,
+				B2020AF82577FCFD00F478CC /* Preferences.swift in Sources */,
+				B2F6B48D256188FA000BC78E /* PreferencesDataStore.swift in Sources */,
 				B2E154BE2576881E008BE604 /* EventRow.swift in Sources */,
 				B2E1548F257681B8008BE604 /* VerticalStackView.swift in Sources */,
 				B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
+				B2020ABE2577D99800F478CC /* PreferencesRow.swift in Sources */,
+				B2C7424325772435006645A0 /* PreferencesViewController.swift in Sources */,
+				B2020A9A2577D83D00F478CC /* PreferencesTableViewController.swift in Sources */,
+				B2020AF02577EA6900F478CC /* PreferencesReloader.swift in Sources */,
 				B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,
+				B2020ABD2577D99800F478CC /* PreferencesTableViewModel.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,
 			);

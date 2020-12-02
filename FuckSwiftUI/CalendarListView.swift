@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct CalendarListView: View {
-    @ObservedObject var dataModel: DataModel = DataModel.instance
+    @ObservedObject var dataModel: EventKitDataModel = EventKitDataModel.instance
     
     @Binding var calendars: SourceToCalendarMap
     

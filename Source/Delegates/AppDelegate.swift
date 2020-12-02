@@ -19,12 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     enum UserActivities: String {
-        case calendarPreferences = "com.apple.rooster.calendar-preferences"
+        case preferences = "com.apple.rooster.preferences"
         case main = "com.apple.rooster.main"
     }
     
     enum SceneNames: String {
-        case calendarPreferences = "calendarPreferences"
+        case preferences = "preferences"
         case main = "main"
     }
     
@@ -33,59 +33,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let bundleLoader = AppKitBundleLoader()
         self.appKitBundle = bundleLoader.load()
-        AppController.instance.start()
+        AlarmController.instance.start()
         
         return true
     }
-
-//    var hasLaunched: Bool = false
     
     func application(_ application: UIApplication,
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
 
-//        if self.hasLaunched {
-//            if  let activity = options.userActivities.first {
-//                if activity.activityType == UserActivities.calendarPreferences.rawValue {
-//                    let configuration = UISceneConfiguration(name: UserActivities.calendarPreferences.rawValue, sessionRole: connectingSceneSession.role)
-//                    configuration.delegateClass = CalendarPreferencesSceneDelegate.self
-//                    return configuration
-//                }
-//            }
-//        }
-//
-//        self.hasLaunched = true
+        if  let activity = options.userActivities.first {
+            if activity.activityType == UserActivities.preferences.rawValue {
+                let configuration = UISceneConfiguration(name: UserActivities.preferences.rawValue, sessionRole: connectingSceneSession.role)
+                configuration.delegateClass = PreferencesSceneDelegate.self
+                return configuration
+            }
+        }
 
         let configuration = UISceneConfiguration(name: UserActivities.main.rawValue, sessionRole: connectingSceneSession.role)
         configuration.delegateClass = MainSceneDelegate.self
         return configuration
     }
 
-//    override func buildMenu(with builder: UIMenuBuilder) {
-//        super.buildMenu(with: builder)
-//
-//        let preferencesCommand = UICommand(title: "Calendars…",
-//                                    image: nil,
-//                                    action: #selector(self.showCalendarPreferences(_:)),
-//                                    propertyList: nil)
-//
-//        let calendarPreferencesMenu = UIMenu(title: "",
-//                                     image: nil,
-//                                     identifier: UIMenu.Identifier(UserActivities.calendarPreferences.rawValue),
-//                                     options: [ UIMenu.Options.displayInline ],
-//                                     children: [ preferencesCommand ])
-//
-//        builder.insertSibling(calendarPreferencesMenu, afterMenu: .about)
-//    }
+    override func buildMenu(with builder: UIMenuBuilder) {
+        super.buildMenu(with: builder)
+
+        let preferencesCommand = UICommand(title: "Preferences…",
+                                    image: nil,
+                                    action: #selector(self.showPreferences(_:)),
+                                    propertyList: nil)
+
+        let calendarPreferencesMenu = UIMenu(title: "",
+                                     image: nil,
+                                     identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
+                                     options: [ UIMenu.Options.displayInline ],
+                                     children: [ preferencesCommand ])
+
+        builder.insertSibling(calendarPreferencesMenu, afterMenu: .about)
+    }
     
-//    func showCalendarPreferences () {
-//        let activity = NSUserActivity(activityType: UserActivities.calendarPreferences.rawValue)
-//        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
-//    }
-//
-//    @objc private func showCalendarPreferences(_ sender: AppDelegate) {
-//        self.showCalendarPreferences()
-//    }
+    func showPreferences () {
+        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
+        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+    }
+
+    @objc private func showPreferences(_ sender: AppDelegate) {
+        self.showPreferences()
+    }
     
 //    func findMainScene() -> MainSceneDelegate? {
 //        let connectedSessions = UIApplication.shared.openSessions

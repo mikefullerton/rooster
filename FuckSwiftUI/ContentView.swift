@@ -25,7 +25,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @EnvironmentObject var dataModel: DataModel
+    @EnvironmentObject var dataModel: EventKitDataModel
         
     var body: some View {
         let events = self.dataModel.events
