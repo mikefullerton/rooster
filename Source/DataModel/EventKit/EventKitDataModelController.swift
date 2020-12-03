@@ -68,12 +68,12 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
     }
     
     private func newCalendars(for newCalendar: EventKitCalendar,
-                      calendarMap: [CalendarSource: [EventKitCalendar]],
-                      newCalendarLookup: inout [CalendarID: EventKitCalendar] ) -> [CalendarSource: [EventKitCalendar]] {
+                              calendarMap: [CalendarSource: [EventKitCalendar]],
+                              newCalendarLookup: inout [CalendarID: EventKitCalendar] ) -> [CalendarSource: [EventKitCalendar]] {
         
         var newCalendarMap: [CalendarSource: [EventKitCalendar]] = [:]
         
-        for (source, calendars) in self.dataModel.calendars {
+        for (source, calendars) in calendarMap {
             var newCalendarList: [EventKitCalendar] = []
             
             for calendar in calendars {
@@ -109,13 +109,14 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
         self.dataModel = EventKitDataModel(calendars: newCalendarList,
                                            delegateCalendars: newDelegateCalendarList,
                                            events: dataModel.events,
-                                           reminders: dataModel.reminders,
-                                           calendarLookup: newCalendarLookup)
+                                           reminders: dataModel.reminders)
 
         Preferences.instance.update(newCalendar)
         self.notify()
 
         print("EventKitDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
+        
+        self.eventKitManager.reloadData()
     }
     
     private func notify() {
@@ -129,8 +130,7 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
         self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
                                              delegateCalendars: dataModel.delegateCalendars,
                                              events: allEvents,
-                                             reminders: dataModel.reminders,
-                                             calendarLookup: dataModel.calendarLookup)
+                                             reminders: dataModel.reminders)
         
         self.notify()
     }
@@ -164,10 +164,10 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
         self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
                                              delegateCalendars: dataModel.delegateCalendars,
                                              events: newEventsList,
-                                             reminders: dataModel.reminders,
-                                             calendarLookup: dataModel.calendarLookup)
+                                             reminders: dataModel.reminders)
 
         self.notify()
+        
     }
     
     func authenticate(_ completion: ((_ success: Bool) -> Void)? ) {

@@ -52,6 +52,11 @@ class Preferences {
     func isEventSubscribed(_ eventID: String) -> Bool {
         return self.dataStore.unsubscribedEvents.contains(eventID) == false
     }
-    
+
+    func isReminderSubscribed(_ eventID: String) -> Bool {
+        return true
+//        return self.dataStore.unsubscribedEvents.contains(eventID) == false
+    }
+
 
 }

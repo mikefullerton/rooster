@@ -21,13 +21,13 @@ struct EventKitDataModel : CustomStringConvertible {
     init(calendars: [CalendarSource: [EventKitCalendar]],
          delegateCalendars: [CalendarSource: [EventKitCalendar]],
          events: [EventKitEvent],
-         reminders: [EventKitReminder],
-         calendarLookup: [CalendarID: EventKitCalendar]) {
+         reminders: [EventKitReminder]) {
         self.calendars = calendars
         self.delegateCalendars = delegateCalendars
         self.events = events
         self.reminders = reminders
-        self.calendarLookup = calendarLookup
+        self.calendarLookup = EventKitDataModel.createCalendarLookup(calendars: calendars,
+                                                                     delegateCalendars: delegateCalendars)
     }
     
     init() {
@@ -38,6 +38,17 @@ struct EventKitDataModel : CustomStringConvertible {
         self.calendarLookup = [:]
     }
     
+    private static func createCalendarLookup(calendars: [CalendarSource: [EventKitCalendar]],
+                                     delegateCalendars: [CalendarSource: [EventKitCalendar]]) -> [String: EventKitCalendar] {
+        
+        var lookup: [String: EventKitCalendar] = [:]
+        
+        calendars.forEach { $1.forEach { lookup[$0.id] = $0 } }
+        delegateCalendars.forEach { $1.forEach { lookup[$0.id] = $0 } }
+        
+        return lookup
+    }
+
     var description: String {
         return "calenders: \(self.calendars)\ndelegate calendars: \(self.delegateCalendars)\nevents: \(self.events)\nreminders: \(self.reminders)"
     }

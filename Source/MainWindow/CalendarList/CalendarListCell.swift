@@ -55,9 +55,11 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         self.checkBox.setOn(calendar.isSubscribed, animated:false)
         self.checkBox.sizeToFit()
         if let calendarColor = calendar.color {
+            self.checkBox.thumbTintColor = calendarColor
             self.calendarColorBar.backgroundColor = calendarColor
             self.calendarColorBar.isHidden = false
         } else {
+            self.checkBox.thumbTintColor = nil
             self.calendarColorBar.isHidden = true
         }
     }

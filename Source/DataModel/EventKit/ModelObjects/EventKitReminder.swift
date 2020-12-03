@@ -11,11 +11,14 @@ import EventKit
 struct EventKitReminder: Identifiable, Equatable {
     let EKReminder: EKReminder
     let isSubscribed: Bool
+    let calendar: EventKitCalendar
 
-    init(withEvent EKReminder: EKReminder,
+    init(withReminder EKReminder: EKReminder,
+         calendar: EventKitCalendar,
          subscribed: Bool) {
         self.EKReminder = EKReminder
         self.isSubscribed = subscribed
+        self.calendar = calendar
     }
     
     var id: String {
