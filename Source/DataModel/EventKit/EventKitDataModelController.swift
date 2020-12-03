@@ -189,7 +189,7 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
 
 extension EventKitEvent {
     func stopAlarm() {
-        let updatedEvent = self.event(withUpdatedAlarm: .finished)
+        let updatedEvent = self.eventWithUpdatedAlarmState(.finished)
         
         EventKitDataModelController.instance.update(updatedEvent)
     }

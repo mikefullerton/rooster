@@ -104,7 +104,7 @@ class AlarmController : AlarmSoundManagerDelegate {
 
         for event in EventKitDataModelController.dataModel.events {
             if event.alarmState == .firing && !event.isHappeningNow {
-                events.append(event.updateAlarmState(.finished))
+                events.append(event.eventWithUpdatedAlarmState(.finished))
             }
         }
 
@@ -152,7 +152,7 @@ class AlarmController : AlarmSoundManagerDelegate {
                     self.eventDidStartFiring(event: event)
                 }
 
-                events.append(event.updateAlarmState(.firing))
+                events.append(event.eventWithUpdatedAlarmState(.firing))
             }
         }
 

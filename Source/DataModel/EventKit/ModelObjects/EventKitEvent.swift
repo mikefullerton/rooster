@@ -16,7 +16,7 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
         case finished = "finishe"
     }
 
-    private let EKEvent: EKEvent
+    let EKEvent: EKEvent
     
     let calendar: EventKitCalendar
     
@@ -95,7 +95,7 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
         return self.alarmState == .firing
     }
     
-    func event(withUpdatedAlarm alarmState: AlarmState) -> EventKitEvent {
+    func eventWithUpdatedAlarmState(_ alarmState: AlarmState) -> EventKitEvent {
         return EventKitEvent(withEvent: self.EKEvent,
                              calendar: self.calendar,
                              subscribed: self.isSubscribed,
