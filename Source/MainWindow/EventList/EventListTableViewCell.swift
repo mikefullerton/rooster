@@ -8,56 +8,72 @@
 import Foundation
 import UIKit
 
-class EventListTableViewCell : UITableViewCell, TableViewRowCell {
-    private var event: EventKitEvent?
-    private var stackedView: VerticalStackView?
-    private var dividerView: DividerView
+class EventListTableViewCell : UITableViewCell, TableViewRowCell, UITextViewDelegate {
+    private var event: EventKitEvent? = nil
+    private var leftView: LeftSideStack? = nil
+    private var rightView: RightSideStack? = nil
+    private var dividerView: DividerView? = nil
     
-    private static let horizontalInset: CGFloat = 20
-    private static let labelHeight:CGFloat = 20
-    private static let verticalPadding:CGFloat = 4
+    public static let horizontalInset: CGFloat = 20
+    public static let verticalInset: CGFloat = 10
+    public static let labelHeight:CGFloat = 20
+    public static let verticalPadding:CGFloat = 4
 
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        self.event = nil
-        self.stackedView = nil
-        self.dividerView = DividerView()
-        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        let views = [
-            self.timeLabel,
-            self.eventTitleLabel,
-            self.calendarTitleLabel
-          ]
+        self.addDividerView()
+        self.addRightView()
+        self.addLeftView()
+    }
+    
+    func addLeftView() {
+        let view = LeftSideStack()
+        self.contentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
         
-        let stackView = VerticalStackView(frame: CGRect(x: 0, y: 0, width: 0, height: 0),
-                                          views: views,
-                                          padding:EventListTableViewCell.verticalPadding)
-        self.contentView.addSubview(stackView)
-        
-        let size = stackView.sizeThatFits(CGSize(width:100, height:CGFloat.greatestFiniteMagnitude))
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            stackView.heightAnchor.constraint(equalToConstant: size.height),
-            stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: EventListTableViewCell.horizontalInset),
-            stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
-            stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+        NSLayoutConstraint.activate( [
+            view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: EventListTableViewCell.verticalInset),
+            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
 
+            view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: EventListTableViewCell.horizontalInset),
+            view.trailingAnchor.constraint(equalTo: self.rightView!.leadingAnchor, constant: 0),
+
+            //            view.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
         ])
-        
-        self.stackedView = stackView
-        
-        self.addSubview(self.dividerView)
-        self.dividerView.translatesAutoresizingMaskIntoConstraints = false
+       
+        self.leftView = view
+    }
+
+    func addRightView() {
+        let view = RightSideStack()
+        self.contentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.dividerView.heightAnchor.constraint(equalToConstant: 1),
-            self.dividerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.dividerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.dividerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: EventListTableViewCell.verticalInset),
+            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
+            
+            view.widthAnchor.constraint(equalToConstant: 250),
+            view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
         ])
+        
+        self.rightView = view
+    }
+    
+    func addDividerView() {
+        let dividerView = DividerView()
+        self.addSubview(dividerView)
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            dividerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            dividerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+        
+        self.dividerView = dividerView
     }
     
     required init?(coder: NSCoder) {
@@ -65,85 +81,15 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
     }
     
     static var cellHeight: CGFloat {
-        return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 40
+        return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20
     }
     
     override func prepareForReuse() {
         self.event = nil
-        self.countDownLabel.stopTimer()
+    
+        self.leftView?.prepareForReuse()
+        self.rightView?.prepareForReuse()
     }
-    
-    @objc func handleButtonClick(_ sender: UIButton) {
-        self.event?.stopAlarm()
-    }
-    
-    func shortDateString(_ date: Date) -> String {
-        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-    }
-    
-    lazy var timeLabel: UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 0, y: 0, width: 100, height: EventListTableViewCell.labelHeight)
-        self.contentView.addSubview(label)
-        label.textColor = UIColor.secondaryLabel
-        return label
-    }()
-    
-    lazy var eventTitleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.label
-        label.frame = CGRect(x: 0, y: 0, width: 100, height: EventListTableViewCell.labelHeight)
-        return label
-    }()
-    
-    lazy var calendarTitleLabel: UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 0, y: 0, width: 100, height: EventListTableViewCell.labelHeight)
-        label.textColor = UIColor.secondaryLabel
-        return label
-    }()
-    
-    lazy var countDownLabel: TimeRemainingView = {
-        let label = TimeRemainingView()
-        label.textColor = UIColor.secondaryLabel
-        label.textAlignment = .right
-        
-        self.contentView.addSubview(label)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            label.widthAnchor.constraint(equalToConstant: 250),
-            label.heightAnchor.constraint(equalToConstant: 20),
-            label.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
-            label.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-        ])
-
-        return label
-    }()
-    
-    
-    lazy var stopButton: UIButton = {
-        let view = UIButton(type: .system)
-        view.addTarget(self, action: #selector(handleButtonClick(_:)), for: .touchUpInside)
-        view.setTitle("Mute", for: .normal)
-        view.role = .destructive
-
-        self.contentView.addSubview(view)
-
-        view.frame = CGRect(x: 0, y: 0, width: 60, height: 20)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 60),
-            view.heightAnchor.constraint(equalToConstant: 20),
-            view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
-            view.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-        ])
-        
-        return view
-    }()
     
     lazy var calendarColorBar: UIView = {
         let view = UIView()
@@ -161,44 +107,6 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
         return view
     }()
     
-    lazy var alarmIcon: UIImageView = {
-        let image = UIImage(systemName: "alarm")
-        
-        let view = UIImageView(image:image)
-        self.addSubview(view)
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 20),
-            view.heightAnchor.constraint(equalToConstant: 20),
-            view.bottomAnchor.constraint(equalTo: self.stopButton.topAnchor, constant: -8),
-            view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
-        ])
-        
-        let pulseAnimation = CABasicAnimation(keyPath: "opacity")
-        pulseAnimation.duration = 0.4
-        pulseAnimation.fromValue = 0.5
-        pulseAnimation.toValue = 1.0
-        pulseAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        pulseAnimation.autoreverses = true
-        pulseAnimation.repeatCount = .greatestFiniteMagnitude
-        view.layer.add(pulseAnimation, forKey: nil)
-        
-        let pulse = CASpringAnimation(keyPath: "transform.scale")
-        pulse.duration = 0.4
-        pulse.fromValue = 1.0
-        pulse.toValue = 1.12
-        pulse.autoreverses = true
-        pulse.repeatCount = .infinity
-        pulse.initialVelocity = 0.5
-        pulse.damping = 0.8
-        view.layer.add(pulse, forKey: nil)
-        
-        return view
-    }()
-    
-    
     func setEvent(_ event: EventKitEvent) {
 
         self.event = event
@@ -210,55 +118,10 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell {
             self.calendarColorBar.isHidden = true
         }
         
-        let startTime = self.shortDateString(event.startDate)
-        let endTime = self.shortDateString(event.endDate)
+        self.leftView?.setEvent(event)
+        self.rightView?.setEvent(event)
         
-        self.timeLabel.text = "\(startTime) - \(endTime)"
-        self.eventTitleLabel.text = event.title
+        self.setNeedsLayout()
         
-        let now = Date()
-        if now.isBeforeDate(event.startDate) {
-            self.stopButton.isHidden = true
-            self.countDownLabel.isHidden = false
-            self.countDownLabel.startTimer(fireDate: event.startDate)
-            self.countDownLabel.prefixString = "Alarm will fire in "
-        }
-        
-        let calendar = event.calendar
-      
-        self.calendarTitleLabel.text = "Calendar: \(calendar.title) (\(calendar.sourceTitle)) "
-        
-        if event.isHappeningNow {
-            self.stopButton.isHidden = false
-            self.stopButton.isEnabled = event.alarmState == .firing
-            self.countDownLabel.isHidden = true
-            self.countDownLabel.stopTimer()
-            self.alarmIcon.isHidden = false
-            self.alarmIcon.tintColor = event.calendar.color!
-
-            
-//            self.backgroundColorTint.isHidden = false
-//            self.backgroundColorTint.backgroundColor = UIColor.red
-//            self.backgroundColorTint.alpha = 0.1
-//            self.backgroundColorTint.isOpaque = false
-//
-//            self.layer.borderWidth = 1.0
-//            if let calendarColor = event.calendar.color {
-//                self.layer.borderColor = calendarColor.cgColor
-//            } else {
-//                self.layer.borderColor = UIColor.systemOrange.cgColor
-//            }
-//
-//            self.layer.cornerRadius = 0.0
-//            self.view.layer.border
-        } else {
-
-            self.alarmIcon.isHidden = true
-//            self.backgroundColorTint.isHidden = true
-
-            //            self.layer.borderWidth = 0.0
-//            self.layer.borderColor = UIColor.clear.cgColor
-//            self.layer.cornerRadius = 0.0
-        }
     }
 }

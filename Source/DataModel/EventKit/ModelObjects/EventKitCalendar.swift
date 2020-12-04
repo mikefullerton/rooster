@@ -35,7 +35,7 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
     }
     
     static func == (lhs: EventKitCalendar, rhs: EventKitCalendar) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.isEqual(to: rhs)
     }
     
     func isEqual(to anotherCalendar: EventKitCalendar) -> Bool {

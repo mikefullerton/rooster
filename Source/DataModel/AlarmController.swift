@@ -131,12 +131,7 @@ class AlarmController : AlarmSoundManagerDelegate {
     }
     
     func eventDidStartFiring(event: EventKitEvent) {
-        if let webexURL = event.findURL(containing: "webex") {
-            UIApplication.shared.open(webexURL,
-                                      options: [:]) { (success) in
-                
-            }
-        }
+        self.openEventLocationURL(event)
         
         self.startAlarm(forIdentifier: event.id)
     }
@@ -186,5 +181,20 @@ class AlarmController : AlarmSoundManagerDelegate {
     func alarmSoundManager(_ manager: AlarmSoundManager, soundDidStopPlaying sound: AlarmSound) {
         
     }
+    
+    func openEventLocationURL(_ event: EventKitEvent?) {
+        if let webexURL = event?.bestLocationURL {
+            UIApplication.shared.open(webexURL,
+                                      options: [:]) { (success) in
+                
+            }
+        }
+    }
 
+}
+
+extension EventKitEvent {
+    var bestLocationURL: URL? {
+        return self.findURL(containing: "webex")
+    }
 }

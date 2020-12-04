@@ -19,6 +19,18 @@ class TimeRemainingView : UILabel {
     
     private weak var timer: Timer?
     
+    convenience init() {
+        self.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func startTimer(fireDate: Date?,
                     completion: (() -> Date? )? = nil) {
         
@@ -31,6 +43,7 @@ class TimeRemainingView : UILabel {
                 self.timerDidFire()
             }
             self.timer = timer
+            self.updateCountDown()
         } else {
             self.stop()
         }

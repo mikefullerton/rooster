@@ -23,21 +23,33 @@ class EventKitManager : Reloadable {
     private let preferences: Preferences
     private var dataModel: EventKitDataModel
     private var eventStoreReloader: Reloader?
+    private var needsReload: Bool
     
     init(preferences: Preferences) {
         self.store = EKEventStore()
         self.delegateEventStore = nil
         self.preferences = preferences
         self.dataModel = EventKitDataModel()
+        self.needsReload = false
     }
 
-    public func reloadData() {
+    func reloadData() {
+        print("EventKitManager asked to reloadData")
+        self.reloadDataModel()
+    }
+    
+    public func reloadDataModel() {
+        print("EventKitManager asked to reloadDataModel")
+        self.needsReload = true
         DispatchQueue.main.async {
-            self.reloadDataModel()
+            if self.needsReload {
+                self.needsReload = false
+                self.actuallyReloadDataModel()
+            }
         }
     }
     
-    private func reloadDataModel() {
+    private func actuallyReloadDataModel() {
         
         let previousDataModel = self.dataModel
         
@@ -45,49 +57,39 @@ class EventKitManager : Reloadable {
                                                   delegateCalendarModel: EKDataModel(store: self.delegateEventStore),
                                                   previousEvents: previousDataModel.events)
         
-//        let personalEKCalendars = self.findCalendars()
-//
-//        let delegateEKCalendars = self.findDelegateCalendars()
-//
-//        let ekPersonalEvents = self.findEvents(withEKCalendars: personalEKCalendars,
-//                                               store: self.store)
-//
-//        let ekDelegateEvents = self.delegateEventStore != nil ?
-//                                    self.findEvents(withEKCalendars: delegateEKCalendars,
-//                                                    store:self.delegateEventStore!) : []
-//
-//        let ekEvents = ekPersonalEvents + ekDelegateEvents
-//
-//        let sortedEKEvents = ekEvents.sorted { (lhs, rhs) -> Bool in
-//            return lhs.startDate.isBeforeDate(rhs.startDate)
-//        }
-//
-//        let personalCalendars = self.createCalendars(withEKCalendars: personalEKCalendars)
-//
-//        let delegateCalendars = self.createCalendars(withEKCalendars: delegateEKCalendars)
-//
-//        let events = self.createEvents(fromEKEvents: sortedEKEvents,
-//                                       calendars: personalCalendars,
-//                                       delegateCalendars: delegateCalendars)
-//
-//        // create final data model collections
-//
-//        let finalEvents = self.merge(oldEvents: previousDataModel.events, withNewEvents: events)
-//
-//        let finalCalendars = self.groupedCalendars(fromCalendars: personalCalendars)
-//
-//        let finalDelegateCalendars = self.groupedCalendars(fromCalendars: delegateCalendars)
-//
-//        let finalReminders = self.findReminders()
-//
         let dataModel = EventKitDataModel(withIntermediateModel: intermediateModel)
         
         self.dataModel = dataModel
+        
+        print("EventKitManager did reload dataModel")
         
         if let delegate = self.delegate {
             delegate.eventKitManager(self, didReloadDataModel: dataModel)
         }
     }
+    
+    @objc func notificationReceived(_ notif: NSNotification) {
+        print("reload event received from event Store: \(notif)")
+        self.reloadDataModel()
+    }
+    
+    private func registerForEvents() {
+        
+        print("registered for events from EventStore")
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(notificationReceived(_:)),
+                                               name: .EKEventStoreChanged,
+                                               object: self.store)
+        
+        if let delegateStore = self.delegateEventStore {
+            print("registered for events from delegate EventStore")
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(notificationReceived(_:)),
+                                                   name: .EKEventStoreChanged,
+                                                   object: delegateStore)
+        }
+ }
+    
     
     private func handleAccessGranted() {
         
@@ -96,10 +98,9 @@ class EventKitManager : Reloadable {
                 if success && delegateEventStore != nil {
                     self.delegateEventStore = delegateEventStore!
                 }
+                print("EventKitManager did authenticate: \(success), error: \(String(describing: error))")
                 
-                self.eventStoreReloader = Reloader(withNotificationName:.EKEventStoreChanged,
-                                                   for: self)
-                
+                self.registerForEvents()
                 self.reloadData()
             }
         })

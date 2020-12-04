@@ -57,7 +57,7 @@ struct EventKitEvent: Identifiable, Equatable, CustomStringConvertible, Hashable
     }
     
     static func == (lhs: EventKitEvent, rhs: EventKitEvent) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.isEqual(to: rhs)
     }
     
     var description: String {

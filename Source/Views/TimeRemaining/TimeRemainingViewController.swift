@@ -17,7 +17,7 @@ class TimeRemainingViewController : UIViewController, Reloadable {
     lazy var timeRemainingLabel: TimeRemainingView = {
         let label = TimeRemainingView()
         label.textColor = UIColor.secondaryLabel
-        label.font = UIFont.systemFont(ofSize: 16.0)
+        label.font = UIFont.systemFont(ofSize: 14.0)
         label.textAlignment = .center
         
         self.view.addSubview(label)
