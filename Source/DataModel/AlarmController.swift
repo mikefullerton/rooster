@@ -183,9 +183,9 @@ class AlarmController : AlarmSoundManagerDelegate {
     }
     
     func openEventLocationURL(_ event: EventKitEvent?) {
-        if let webexURL = event?.bestLocationURL {
-            UIApplication.shared.open(webexURL,
-                                      options: [:]) { (success) in
+        if let locationURL = event?.bestLocationURL {
+            UIApplication.shared.open(locationURL,
+                                      options: [:]) { (innerSuccess) in
                 
             }
         }

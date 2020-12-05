@@ -308,7 +308,7 @@
 			path = "Other Files";
 			sourceTree = "<group>";
 		};
-		B2AFE66F2569DFD6006B3C58 /* FuckSwiftUI */ = {
+		B2AFE66F2569DFD6006B3C58 /* F SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
 				B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */,
@@ -317,7 +317,7 @@
 				B2E15121255EED2B002672EC /* ContentView.swift */,
 				B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */,
 			);
-			path = FuckSwiftUI;
+			path = "F SwiftUI";
 			sourceTree = "<group>";
 		};
 		B2AFE696256AD0C1006B3C58 /* CalendarList */ = {
@@ -366,7 +366,7 @@
 			children = (
 				B236FCE4255F1C9D00A2E58D /* Resources */,
 				B2E1511F255EED2B002672EC /* Source */,
-				B2AFE66F2569DFD6006B3C58 /* FuckSwiftUI */,
+				B2AFE66F2569DFD6006B3C58 /* F SwiftUI */,
 				B2742C9F25605D6C0087E4B6 /* Other Files */,
 				B227DEF1256738860002C127 /* RoosterAppKitPlugin */,
 				B2E15128255EED2B002672EC /* Products */,

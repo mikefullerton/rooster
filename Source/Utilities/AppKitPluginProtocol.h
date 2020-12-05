@@ -12,15 +12,18 @@
 @class EKEvent;
 
 // not sure how to do this with swift protocol
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol AppKitPluginProtocol <NSObject>
 
 - (void)requestPermissionToDelegateCalendarsForEventStore:(EKEventStore *)eventStore
-                                               completion:(void (^)(BOOL success, EKEventStore* delegateEventStore, NSError *error)) completion;
+                                               completion:(nullable void (^)(BOOL success, EKEventStore* _Nullable delegateEventStore, NSError * _Nullable error)) completion;
 
 
-- (NSArray<EKEvent *> *)findEventsWithCalendars:(NSArray<EKCalendar *> *)calendars
-                                          store:(EKEventStore *)store;
-
+//- (NSArray<EKEvent *> *)findEventsWithCalendars:(NSArray<EKCalendar *>  *)calendars
+//                                          store:(EKEventStore *)store;
+//
+- (void)openURLDirectlyInAppIfPossible:(NSURL *)url completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
 @end
 
+NS_ASSUME_NONNULL_END
