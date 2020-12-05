@@ -210,6 +210,7 @@ extension EventListTableViewCell {
         func prepareForReuse() {
             self.event = nil
             self.countDownLabel.stopTimer()
+            self.setLocationURL(nil)
         }
     }
     
