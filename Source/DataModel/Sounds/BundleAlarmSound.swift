@@ -77,6 +77,8 @@ class BundleAlarmSound : AlarmSound {
         if BundleAlarmSound.delegate != nil {
             BundleAlarmSound.delegate!.soundWillStartPlaying(self, forIdentifier: identifier)
         }
+        
+        print("playing sound: \(self.name): for: \(identifier)")
         self.player.numberOfLoops = -1
         self.player.play()
     }

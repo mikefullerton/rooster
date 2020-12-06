@@ -69,24 +69,24 @@ extension EventKitManager {
                         if  newEvent.startDate.isAfterDate(now) ||
                             (oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now)) {
                             
+                            // reset if event moved up in time
+                            
                             self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
                                                               calendar: newEvent.calendar,
                                                               subscribed: newEvent.isSubscribed,
-                                                              alarmState: .neverFired))
+                                                              alarm: oldEvent.alarm.updatedAlarm(.neverFired)))
 
                         } else if newEvent.isHappeningNow {
-                            
-                            let alarmState = Preferences.instance.alarmState(forEventID: newEvent.id)
-                            
-                            self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
-                                                              calendar: newEvent.calendar,
-                                                              subscribed: newEvent.isSubscribed,
-                                                              alarmState: alarmState == nil ? .neverFired : alarmState!))
+                            // already load preferences for this event
+                            self.events.append(newEvent)
+                        
                         } else {
+                            
+                            // shut it off
                             self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
                                                               calendar: newEvent.calendar,
                                                               subscribed: newEvent.isSubscribed,
-                                                              alarmState: .finished))
+                                                              alarm: oldEvent.alarm.updatedAlarm(.finished)))
                         }
                         
                         continue
@@ -94,21 +94,7 @@ extension EventKitManager {
                 }
                 
                 if !foundEvent {
-                    if newEvent.isHappeningNow {
-                       if let alarmState = Preferences.instance.alarmState(forEventID: newEvent.id) {
-                            self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
-                                                              calendar: newEvent.calendar,
-                                                              subscribed: newEvent.isSubscribed,
-                                                              alarmState: alarmState))
-                       } else {
-                            self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
-                                                              calendar: newEvent.calendar,
-                                                              subscribed: newEvent.isSubscribed,
-                                                              alarmState: .neverFired))
-                        }
-                    } else {
-                        self.events.append(newEvent)
-                    }
+                    self.events.append(newEvent)
                 }
             }
         }
@@ -126,7 +112,9 @@ extension EventKitManager {
         }
         
         private mutating func sortReminders() {
-            
+            self.reminders = self.reminders.sorted { (lhs, rhs) -> Bool in
+                return lhs.dueDate.isBeforeDate(rhs.dueDate)
+            }
         }
 
     }

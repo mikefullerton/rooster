@@ -1,34 +1,40 @@
 //
-//  EventListTableViewCell.swift
+//  EventKitItemTableViewCell.swift
 //  Rooster (iOS)
 //
-//  Created by Mike Fullerton on 11/22/20.
+//  Created by Mike Fullerton on 12/5/20.
 //
 
 import Foundation
 import UIKit
 
-class EventListTableViewCell : UITableViewCell, TableViewRowCell, UITextViewDelegate {
-    private var event: EventKitEvent? = nil
-    private var leftView: LeftSideStack? = nil
-    private var rightView: RightSideStack? = nil
-    private var dividerView: DividerView? = nil
+class EventKitItemTableViewCell : UITableViewCell {
     
     public static let horizontalInset: CGFloat = 20
     public static let verticalInset: CGFloat = 10
     public static let labelHeight:CGFloat = 20
     public static let verticalPadding:CGFloat = 4
 
+    var dividerView: DividerView
+    var leftContentView : UIView?
+    var rightContentView: UIView?
+    
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        
+        self.leftContentView = nil
+        self.rightContentView = nil
+        self.dividerView = DividerView()
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         self.addDividerView()
-        self.addRightView()
-        self.addLeftView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    func addLeftView() {
-        let view = LeftSideStack()
+    func addLeftView(_ view: UIView) {
         self.contentView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -37,16 +43,15 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell, UITextViewDele
             view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
 
             view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: EventListTableViewCell.horizontalInset),
-            view.trailingAnchor.constraint(equalTo: self.rightView!.leadingAnchor, constant: 0),
+            view.trailingAnchor.constraint(equalTo: self.rightContentView!.leadingAnchor, constant: 0),
 
             //            view.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
         ])
-       
-        self.leftView = view
+        
+        self.leftContentView = view
     }
 
-    func addRightView() {
-        let view = RightSideStack()
+    func addRightView(_ view: UIView) {
         self.contentView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -58,39 +63,9 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell, UITextViewDele
             view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
         ])
         
-        self.rightView = view
+        self.rightContentView = view
     }
-    
-    func addDividerView() {
-        let dividerView = DividerView()
-        self.addSubview(dividerView)
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            dividerView.heightAnchor.constraint(equalToConstant: 1),
-            dividerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            dividerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        ])
-        
-        self.dividerView = dividerView
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    static var cellHeight: CGFloat {
-        return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20
-    }
-    
-    override func prepareForReuse() {
-        self.event = nil
-    
-        self.leftView?.prepareForReuse()
-        self.rightView?.prepareForReuse()
-    }
-    
+
     lazy var calendarColorBar: UIView = {
         let view = UIView()
         self.addSubview(view)
@@ -107,21 +82,28 @@ class EventListTableViewCell : UITableViewCell, TableViewRowCell, UITextViewDele
         return view
     }()
     
-    func setEvent(_ event: EventKitEvent) {
-
-        self.event = event
+    func addDividerView() {
+        let dividerView = self.dividerView
+        self.addSubview(dividerView)
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
         
-        if let calendarColor = event.calendar.color {
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            dividerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            dividerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+        
+        self.dividerView = dividerView
+    }
+    
+    func updateCalendarBar(withCalendar calendar: EventKitCalendar) {
+        if let calendarColor = calendar.color {
             self.calendarColorBar.isHidden = false
             self.calendarColorBar.backgroundColor = calendarColor
         } else {
             self.calendarColorBar.isHidden = true
         }
-        
-        self.leftView?.setEvent(event)
-        self.rightView?.setEvent(event)
-        
-        self.setNeedsLayout()
-        
+
     }
 }

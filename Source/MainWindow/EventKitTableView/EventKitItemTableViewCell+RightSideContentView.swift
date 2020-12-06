@@ -1,19 +1,17 @@
 //
-//  EventListTableViewCell+RightSideStack.swift
+//  EventKitItemRightSideCellContentView.swift
 //  Rooster (iOS)
 //
-//  Created by Mike Fullerton on 12/4/20.
+//  Created by Mike Fullerton on 12/5/20.
 //
 
 import Foundation
 import UIKit
 
-extension EventListTableViewCell {
-    
-    class RightSideStack : UIView {
-        
-        private var event: EventKitEvent?
+extension EventKitItemTableViewCell {
 
+    class AbstractRightSideContentView : UIView {
+        
         init() {
             super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 
@@ -74,13 +72,12 @@ extension EventListTableViewCell {
             ])
         }
         
-        @objc func handleButtonClick(_ sender: UIButton) {
-            self.event?.stopAlarm()
+        @objc func handleMuteButtonClick(_ sender: UIButton) {
         }
         
         lazy var stopButton: UIButton = {
             let view = UIButton(type: .system)
-            view.addTarget(self, action: #selector(handleButtonClick(_:)), for: .touchUpInside)
+            view.addTarget(self, action: #selector(handleMuteButtonClick(_:)), for: .touchUpInside)
             view.setTitle("Mute", for: .normal)
             view.role = .destructive
             view.frame = CGRect(x: 0, y: 0, width: 60, height: 20)
@@ -127,7 +124,6 @@ extension EventListTableViewCell {
         }
 
         @objc func handleLocationButtonClick(_ sender: UIButton) {
-            AlarmController.instance.openEventLocationURL(self.event)
         }
         
         lazy var locationButton: UIButton = {
@@ -185,33 +181,10 @@ extension EventListTableViewCell {
             }
         }
         
-        func setEvent(_ event: EventKitEvent) {
-            self.event = event
-            
-            self.setLocationURL(event.bestLocationURL)
-
-            if event.isHappeningNow {
-                self.countDownLabel.stopTimer()
-                self.alarmIcon.tintColor = event.calendar.color!
-                self.stopButton.isEnabled = event.alarmState == .firing
-                
-                self.alarmIcon.isHidden = false
-                self.stopButton.isHidden = false
-                self.countDownLabel.isHidden = true
-            } else {
-                self.countDownLabel.startTimer(fireDate: event.startDate)
-
-                self.alarmIcon.isHidden = true
-                self.stopButton.isHidden = true
-                self.countDownLabel.isHidden = false
-            }
-        }
-        
         func prepareForReuse() {
-            self.event = nil
             self.countDownLabel.stopTimer()
             self.setLocationURL(nil)
         }
+
     }
-    
 }

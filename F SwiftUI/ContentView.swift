@@ -31,7 +31,7 @@ struct ContentView: View {
         let events = self.dataModel.events
         List {
             ForEach(events, id: \.id) { event in
-                if let calendar = self.dataModel.calendar(forIdentifier: event.calendarIdentifier) {
+                if let calendar = self.dataModel.calendar(forIdentifier: event.uniqueID) {
                     ContentViewRow(event: event, calendar: calendar)
                 }
             }

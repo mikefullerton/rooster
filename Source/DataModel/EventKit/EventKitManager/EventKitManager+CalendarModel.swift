@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import EventKit
 
 extension EventKitManager {
     
@@ -36,18 +37,30 @@ extension EventKitManager {
         private mutating func addEvents() {
             for ekEvent in self.model.events {
                 if ekEvent.refresh() {
-                    guard let calendar = self.calendar(forIdentifier: ekEvent.calendar.calendarIdentifier) else {
-                        print("Error couldn't find calendar for id: \(ekEvent.calendar.calendarIdentifier)")
+                    guard let calendar = self.calendar(forIdentifier: ekEvent.calendar.uniqueID) else {
+                        print("Error couldn't find calendar for id: \(ekEvent.calendar.uniqueID)")
                         continue
                     }
                     
-                    let subscribed = Preferences.instance.isEventSubscribed(ekEvent.calendarItemIdentifier)
+                    if let serializer = Preferences.instance.event(forKey: ekEvent.uniqueID) {
+                        self.events.append(EventKitEvent(withEvent: ekEvent,
+                                                         calendar: calendar,
+                                                         subscribed: serializer.isSubscribed,
+                                                         alarm: serializer.alarm))
+
+                    } else {
+                        
+                        let alarm = EventKitAlarm(withState: .neverFired,
+                                                  date: ekEvent.startDate,
+                                                  isEnabled: true,
+                                                  snoozeInterval: 0)
+                        
+                        self.events.append(EventKitEvent(withEvent: ekEvent,
+                                                         calendar: calendar,
+                                                         subscribed: true,
+                                                         alarm: alarm))
+                    }
                     
-                    let newEvent = EventKitEvent(withEvent: ekEvent,
-                                                 calendar: calendar,
-                                                 subscribed: subscribed,
-                                                 alarmState: .neverFired)
-                    self.events.append(newEvent)
                 }
             }
         }
@@ -55,7 +68,7 @@ extension EventKitManager {
         private mutating func addCalendars() {
             for ekCalendar in self.model.calendars {
                 if ekCalendar.refresh() {
-                    let subscribed = Preferences.instance.isCalendarSubscribed(ekCalendar.calendarIdentifier)
+                    let subscribed = Preferences.instance.isCalendarSubscribed(ekCalendar.uniqueID)
                     
                     let calendar = EventKitCalendar(withCalendar: ekCalendar,
                                                     subscribed:subscribed)
@@ -68,18 +81,33 @@ extension EventKitManager {
         private mutating func addReminders() {
             for ekReminder in self.model.reminders {
                 if ekReminder.refresh() {
-                    guard let calendar = self.calendar(forIdentifier: ekReminder.calendar.calendarIdentifier) else {
-                        print("Error couldn't find calendar for id: \(ekReminder.calendar.calendarIdentifier)")
+                    guard let calendar = self.calendar(forIdentifier: ekReminder.calendar.uniqueID) else {
+                        print("Error couldn't find calendar for id: \(ekReminder.calendar.uniqueID)")
                         continue
                     }
-                    
-                    let subscribed = Preferences.instance.isReminderSubscribed(ekReminder.calendarItemIdentifier)
 
-                    let newReminder = EventKitReminder(withReminder: ekReminder,
-                                                       calendar: calendar,
-                                                       subscribed: subscribed)
-                    
-                    self.reminders.append(newReminder)
+                    if let serializer = Preferences.instance.reminder(forKey: ekReminder.uniqueID) {
+                        self.reminders.append(EventKitReminder(withReminder: ekReminder,
+                                                            calendar: calendar,
+                                                            subscribed: serializer.isSubscribed,
+                                                            alarm: serializer.alarm))
+
+                    } else {
+                        
+                        if let dueDate = ekReminder.alarmDate,
+                           ekReminder.isCompleted == false {
+                        
+                            let alarm = EventKitAlarm(withState: .neverFired,
+                                                  date: dueDate,
+                                                  isEnabled: true,
+                                                  snoozeInterval: 0)
+                        
+                            self.reminders.append(EventKitReminder(withReminder: ekReminder,
+                                                                   calendar: calendar,
+                                                                   subscribed: true,
+                                                                   alarm: alarm))
+                        }
+                    }
                 }
             }
         }
@@ -106,4 +134,15 @@ extension EventKitManager {
         }
     }
     
+}
+
+extension EKReminder {
+ 
+    var alarmDate: Date? {
+        guard let dueDateComponents = self.dueDateComponents else {
+            return nil
+        }
+        
+        return NSCalendar.current.date(from: dueDateComponents)
+    }
 }

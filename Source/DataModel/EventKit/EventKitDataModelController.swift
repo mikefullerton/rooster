@@ -52,10 +52,6 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
         self.notify()
     }
 
-    func update(_ event: EventKitEvent) {
-        self.update(someEvents: [event])
-    }
-    
     private func newCalendars(for newCalendar: EventKitCalendar,
                               calendarMap: [CalendarSource: [EventKitCalendar]],
                               newCalendarLookup: inout [CalendarID: EventKitCalendar] ) -> [CalendarSource: [EventKitCalendar]]? {
@@ -89,7 +85,7 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
         return foundChange ? newCalendarMap : nil
     }
     
-    func update(_ newCalendar: EventKitCalendar) {
+    func update(calendar newCalendar: EventKitCalendar) {
         
         var newCalendarLookup: [CalendarID: EventKitCalendar] = [:]
         
@@ -112,7 +108,7 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
                                                delegateCalendars: updatedDelegateList,
                                                events: dataModel.events,
                                                reminders: dataModel.reminders)
-            Preferences.instance.update(newCalendar)
+            Preferences.instance.update(calendar: newCalendar)
             
             print("EventKitDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
             
@@ -143,45 +139,80 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
 //
 //        self.notify()
 //    }
-    
-    func update(someEvents: [EventKitEvent]) {
-        
-        var newEventsList: [EventKitEvent] = []
 
-        var foundDifferentEvent = false
+    func update(event: EventKitEvent) {
+        self.update(someEvents: [event])
+    }
+    
+    private func update<T>(someItems: [T], inItems: [T]) -> [T]? where T: EventKitItem {
         
-        for event in self.dataModel.events {
+        var newItemList: [T] = []
+
+        var foundDifferentItem = false
+        
+        for item in inItems {
             
             var didAdd = false
-            someEvents.forEach {
-                if $0.id == event.id {
+            someItems.forEach { (someItem) in
+                if someItem.id == item.id {
                     
-                    if $0 == event {
-                        print("event not changed, ignoring update: \($0)")
+                    if someItem == item {
+                        print("event not changed, ignoring update: \(someItem)")
                     } else {
-                        foundDifferentEvent = true
-                        newEventsList.append($0)
+                        foundDifferentItem = true
+                        newItemList.append(someItem)
                         didAdd = true
-                        print("updated event: \($0)")
+                        print("updated event: \(someItem)")
                     }
                 }
             }
             
             if !didAdd {
-                newEventsList.append(event)
+                newItemList.append(item)
             }
         }
 
-        if foundDifferentEvent {
+        if foundDifferentItem {
+            return newItemList
+        }
+        
+        return nil
+    }
+    
+    func update(someEvents: [EventKitEvent]) {
+
+        if let updatedEvents = self.update(someItems: someEvents,
+                                           inItems: self.dataModel.events) {
             
-            someEvents.forEach {
-                Preferences.instance.update($0)
+            updatedEvents.forEach {
+                Preferences.instance.update(event: $0)
             }
             
             self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
                                                  delegateCalendars: dataModel.delegateCalendars,
-                                                 events: newEventsList,
+                                                 events: updatedEvents,
                                                  reminders: dataModel.reminders)
+
+            self.notify()
+        }
+    }
+    
+    func update(reminder: EventKitReminder) {
+        self.update(someReminders: [reminder] )
+    }
+    
+    func update(someReminders: [EventKitReminder]) {
+        if let updatedReminders = self.update(someItems: someReminders,
+                                              inItems: self.dataModel.reminders) {
+            
+            updatedReminders.forEach {
+                Preferences.instance.update(reminder: $0)
+            }
+            
+            self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
+                                                 delegateCalendars: dataModel.delegateCalendars,
+                                                 events: dataModel.events,
+                                                 reminders: updatedReminders)
 
             self.notify()
         }
@@ -206,9 +237,23 @@ class EventKitDataModelController : EventKitManagerDelegate, Reloadable {
 
 extension EventKitEvent {
     func stopAlarm() {
-        let updatedEvent = self.eventWithUpdatedAlarmState(.finished)
         
-        EventKitDataModelController.instance.update(updatedEvent)
+        let updatedAlarm = self.alarm.updatedAlarm(.finished)
+        
+        let updatedEvent = self.updateAlarm(updatedAlarm)
+        
+        EventKitDataModelController.instance.update(event: updatedEvent)
+    }
+}
+
+extension EventKitReminder {
+    func stopAlarm() {
+        
+        let updatedAlarm = self.alarm.updatedAlarm(.finished)
+        
+        let updatedReminder = self.updateAlarm(updatedAlarm)
+        
+        EventKitDataModelController.instance.update(reminder: updatedReminder)
     }
 }
 
@@ -221,6 +266,6 @@ extension EventKitCalendar {
         
         let updatedCalendar = self.updatedCalendar(isSubscribed: subscribed)
          
-        EventKitDataModelController.instance.update(updatedCalendar)
+        EventKitDataModelController.instance.update(calendar: updatedCalendar)
     }
 }

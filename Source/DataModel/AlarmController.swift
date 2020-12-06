@@ -8,31 +8,25 @@
 import Foundation
 import UIKit
 
-class AlarmController : AlarmSoundManagerDelegate {
+class AlarmController {
 
     static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
 
     static let instance = AlarmController()
     
-    private let alarmSoundManager: AlarmSoundManager
     private weak var timer: Timer?
+    
     private var firingEvents:Set<String>
+    private let alarmSoundManager: AlarmSoundManager
     
     init() {
         self.timer = nil
-        self.firingEvents = Set<String>()
         self.alarmSoundManager = AlarmSoundManager()
-        
-        
-        // finish init
-        self.alarmSoundManager.delegate = self
+        self.firingEvents = Set<String>()
+
         NotificationCenter.default.addObserver(self, selector: #selector(dataModelDidChange(_:)), name: EventKitDataModelController.DidChangeEvent, object: nil)
     }
     
-    @objc private func dataModelDidChange(_ notif: Notification) {
-        self.handleDataModelChanged()
-    }
-
     private func startTimerForNextEventTime() {
 //        print("timer stopped")
         self.stopTimer()
@@ -66,101 +60,114 @@ class AlarmController : AlarmSoundManagerDelegate {
         }
     }
 
-    private func stopAlarm(forIdentifier identifer: String) {
+    private func stopAlarmIfPlaying(forIdentifier identifer: String) {
         if let alarmSound = self.alarmSoundManager.sound(forIdentifier: identifer) {
             self.firingEvents.remove(identifer)
             alarmSound.stop()
         }
     }
     
-    private func startAlarm(forIdentifier identifer: String) {
-        self.firingEvents.insert(identifer)
-        
-        guard self.alarmSoundManager.sound(forIdentifier: identifer) == nil else {
-            // already firing
-            return
-        }
-        
-        let alarmSound = RoosterCrowingAlarmSound()
-        alarmSound?.play(forIdentifier: identifer)
+    private func stopPlayingAlarmIfPlaying<T>(forItem item: T) where T: EventKitItem {
+        self.stopAlarmIfPlaying(forIdentifier: item.id)
     }
     
-    private func updateAlarmState(forEvent event: EventKitEvent) {
-        if event.alarmState == .firing {
-            self.startAlarm(forIdentifier: event.id)
-        } else {
-            self.stopAlarm(forIdentifier: event.id)
+    private func playAlarmSoundIfNeeded<T>(forItem item: T) where T: EventKitItem {
+        
+        if !self.firingEvents.contains(item.id) {
+            self.firingEvents.insert(item.id)
+            
+            guard self.alarmSoundManager.sound(forIdentifier: item.id) == nil else {
+                // already firing
+                return
+            }
+            
+            let alarmSound = RoosterCrowingAlarmSound()
+            alarmSound?.play(forIdentifier: item.id)
         }
     }
     
-    private func updateAlarmStatesForChangedEvents() {
+    @objc private func dataModelDidChange(_ notif: Notification) {
+        AlarmController.instance.handleDataModelChanged()
+    }
+    
+    private func stopAlarmsForMissingItems() {
+        
+        var itemsSet = Set<String>()
+        
         EventKitDataModelController.dataModel.events.forEach {
-            self.updateAlarmState(forEvent: $0)
-        }
-    }
-    
-    func stopAlarmsForFinishedEvents() {
-        var events:[EventKitEvent] = []
-
-        for event in EventKitDataModelController.dataModel.events {
-            if event.alarmState == .firing && !event.isHappeningNow {
-                events.append(event.eventWithUpdatedAlarmState(.finished))
-            }
-        }
-
-        if events.count > 0 {
-            EventKitDataModelController.instance.update(someEvents: events)
-        }
-    }
-    
-    func stopAlarmsForMissingEvents() {
-        let identifiers = EventKitDataModelController.dataModel.events.map {
-            $0.id
+            itemsSet.insert($0.id)
         }
         
-        var alarmsToStop: [String] = []
+        EventKitDataModelController.dataModel.reminders.forEach {
+            itemsSet.insert($0.id)
+        }
+
         self.firingEvents.forEach {
-            if !identifiers.contains($0) {
-                alarmsToStop.append($0)
+            if !itemsSet.contains($0) {
+                self.stopAlarmIfPlaying(forIdentifier: $0)
             }
-        }
-        
-        alarmsToStop.forEach {
-            self.stopAlarm(forIdentifier: $0)
         }
     }
     
-    func eventDidStartFiring(event: EventKitEvent) {
-        self.openEventLocationURL(event)
+    private func updateAlarms<T>(forItems items: [T]) -> [T]? where T: EventKitItem {
+        var outList:[T] = []
+        var madeChange = false
         
-        self.startAlarm(forIdentifier: event.id)
-    }
-
-    func fireAlarmsIfNeeded() {
-        var events: [EventKitEvent] = []
-
-        for event in EventKitDataModelController.dataModel.events {
-            if event.isHappeningNow &&
-                event.alarmState != .finished {
-                
-                if event.alarmState == .neverFired {
-                    self.eventDidStartFiring(event: event)
+        for item in items {
+            
+            var alarmState = item.alarm.state
+            
+            switch(item.alarm.state) {
+            case .neverFired:
+                if item.isTimeForAlarm {
+                    self.openEventLocationURL(forItem: item)
+                    self.playAlarmSoundIfNeeded(forItem:item)
+                    alarmState = .firing
+                } else {
+                    alarmState = .finished
                 }
 
-                events.append(event.eventWithUpdatedAlarmState(.firing))
+            case .firing:
+                
+                if !item.isTimeForAlarm {
+                    alarmState = .finished
+                    self.stopPlayingAlarmIfPlaying(forItem: item)
+                } else {
+                    self.playAlarmSoundIfNeeded(forItem:item)
+                }
+        
+            case .finished:
+                self.stopPlayingAlarmIfPlaying(forItem: item)
+            }
+            
+            if alarmState != item.alarm.state {
+                let updatedAlarm = item.alarm.updatedAlarm(alarmState)
+                
+                let updatedItem = item.updateAlarm(updatedAlarm) as! T
+                
+                outList.append(updatedItem)
+                
+                madeChange = true
+            } else {
+                outList.append(item)
             }
         }
-
-        if events.count > 0 {
-            EventKitDataModelController.instance.update(someEvents: events)
-        }
+        
+        return madeChange ? outList : nil
     }
     
     private func handleDataModelChanged() {
-        self.stopAlarmsForFinishedEvents()
-        self.stopAlarmsForMissingEvents()
-        self.fireAlarmsIfNeeded()
-        self.updateAlarmStatesForChangedEvents()
+
+        self.stopAlarmsForMissingItems()
+
+        if let updatedEvents = self.updateAlarms(forItems: EventKitDataModelController.dataModel.events)  {
+            EventKitDataModelController.instance.update(someEvents: updatedEvents)
+        }
+    
+        if let updatedReminders = self.updateAlarms(forItems: EventKitDataModelController.dataModel.reminders) {
+            EventKitDataModelController.instance.update(someReminders: updatedReminders)
+        }
+    
         self.startTimerForNextEventTime()
     }
     
@@ -181,20 +188,22 @@ class AlarmController : AlarmSoundManagerDelegate {
     func alarmSoundManager(_ manager: AlarmSoundManager, soundDidStopPlaying sound: AlarmSound) {
         
     }
-    
-    func openEventLocationURL(_ event: EventKitEvent?) {
-        if let locationURL = event?.bestLocationURL {
+}
+
+extension AlarmController {
+    func openEventLocationURL<T>(forItem item: T) where T: EventKitItem {
+        if let locationURL = item.bestLocationURL {
             UIApplication.shared.open(locationURL,
                                       options: [:]) { (innerSuccess) in
                 
             }
         }
     }
-
 }
 
-extension EventKitEvent {
+extension EventKitItem {
     var bestLocationURL: URL? {
         return self.findURL(containing: "webex")
     }
 }
+

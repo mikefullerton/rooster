@@ -23,7 +23,7 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
         self.EKCalendar = EKCalendar
         self.isSubscribed = subscribed
         self.title = EKCalendar.title
-        self.id = EKCalendar.calendarIdentifier
+        self.id = EKCalendar.uniqueID
         self.sourceTitle = EKCalendar.source.title
         self.sourceIdentifier = EKCalendar.source.sourceIdentifier
         
@@ -35,17 +35,17 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
     }
     
     static func == (lhs: EventKitCalendar, rhs: EventKitCalendar) -> Bool {
-        return lhs.isEqual(to: rhs)
+        return  lhs.id == rhs.id &&
+                lhs.title == rhs.title &&
+                lhs.isSubscribed == rhs.isSubscribed &&
+                lhs.sourceTitle == rhs.sourceTitle &&
+                lhs.sourceIdentifier == rhs.sourceIdentifier
     }
-    
-    func isEqual(to anotherCalendar: EventKitCalendar) -> Bool {
-        return  self.id == anotherCalendar.id &&
-                self.title == anotherCalendar.title &&
-                self.isSubscribed == anotherCalendar.isSubscribed &&
-                self.sourceTitle == anotherCalendar.sourceTitle &&
-                self.sourceIdentifier == anotherCalendar.sourceIdentifier
+ 
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
-    
+
 }
 
 
