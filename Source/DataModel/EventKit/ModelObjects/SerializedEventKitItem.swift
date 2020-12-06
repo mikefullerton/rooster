@@ -10,7 +10,7 @@ import Foundation
 struct SerializedEventKitItem<T>: DictionaryCodable, Identifiable where T: EventKitItem {
 
     enum CodingKeys: String, CodingKey {
-        case id = "state"
+        case id = "identifier"
         case subscribed = "subscribed"
         case alarm = "alarm"
     }

@@ -182,8 +182,14 @@ extension EKCalendar {
     }
 }
 
-extension EKCalendarItem {
+extension EKReminder {
     var uniqueID: String {
         return "\(self.calendar.uniqueID)+\(self.calendarItemExternalIdentifier ?? self.calendarItemIdentifier)"
+    }
+}
+
+extension EKEvent {
+    var uniqueID: String {
+        return "\(self.calendar.uniqueID)+\(self.eventIdentifier ?? self.calendarItemExternalIdentifier ?? self.calendarItemIdentifier)"
     }
 }

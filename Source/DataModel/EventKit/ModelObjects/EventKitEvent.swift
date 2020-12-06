@@ -32,7 +32,7 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
          subscribed: Bool,
          alarm: EventKitAlarm) {
         self.EKEvent = EKEvent
-        self.id = EKEvent.eventIdentifier
+        self.id = EKEvent.uniqueID
         self.calendar = calendar
         self.title = EKEvent.title
         self.isSubscribed = subscribed
