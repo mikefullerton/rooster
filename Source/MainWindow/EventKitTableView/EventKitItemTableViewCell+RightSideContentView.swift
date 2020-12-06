@@ -75,10 +75,14 @@ extension EventKitItemTableViewCell {
         @objc func handleMuteButtonClick(_ sender: UIButton) {
         }
         
+        var muteButtonTitle : String {
+            return ""
+        }
+        
         lazy var stopButton: UIButton = {
             let view = UIButton(type: .system)
             view.addTarget(self, action: #selector(handleMuteButtonClick(_:)), for: .touchUpInside)
-            view.setTitle("Mute", for: .normal)
+            view.setTitle(self.muteButtonTitle, for: .normal)
             view.role = .destructive
             view.frame = CGRect(x: 0, y: 0, width: 60, height: 20)
             return view

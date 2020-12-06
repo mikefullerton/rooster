@@ -51,6 +51,10 @@ extension EventListTableViewCell {
             self.event?.stopAlarm()
         }
         
+        override var muteButtonTitle : String {
+            return "Mute"
+        }
+
     }
     
 }

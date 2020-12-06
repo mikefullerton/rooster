@@ -48,8 +48,13 @@ extension ReminderTableViewCell {
         }
         
         @objc override func handleMuteButtonClick(_ sender: UIButton) {
-//            self.reminder?.stopAlarm()
+            self.reminder?.snoozeAlarm()
         }
+        
+        override var muteButtonTitle : String {
+            return "Snooze"
+        }
+
         
     }
     

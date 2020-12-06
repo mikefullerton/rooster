@@ -27,7 +27,7 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
          isEnabled: Bool,
          snoozeInterval: TimeInterval) {
         self.state = state
-        self.date = date
+        self.date = snoozeInterval > 0 ? date.addingTimeInterval(snoozeInterval) : date
         self.isEnabled = isEnabled
         self.snoozeInterval = snoozeInterval
     }

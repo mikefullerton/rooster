@@ -255,6 +255,14 @@ extension EventKitReminder {
         
         EventKitDataModelController.instance.update(reminder: updatedReminder)
     }
+    
+    func snoozeAlarm() {
+        let updatedAlarm = self.alarm.snoozeAlarm(60 * 60 * 2)
+        
+        let updatedReminder = self.updateAlarm(updatedAlarm)
+        
+        EventKitDataModelController.instance.update(reminder: updatedReminder)
+    }
 }
 
 extension EventKitCalendar {

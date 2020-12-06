@@ -75,7 +75,7 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     }
     
     var isTimeForAlarm: Bool {
-        return  !self.isCompleted == false && self.alarm.shouldFire
+        return  self.isCompleted == false && self.alarm.shouldFire
     }
     
     func updateAlarm(_ alarm: EventKitAlarm) -> EventKitReminder {
