@@ -19,7 +19,7 @@ extension EventListTableViewCell {
             
             self.setLocationURL(event.bestLocationURL)
 
-            if event.isHappeningNow {
+            if event.alarm.isHappeningNow {
                 self.countDownLabel.stopTimer()
                 self.alarmIcon.tintColor = event.calendar.color!
                 self.stopButton.isEnabled = event.alarm.isFiring

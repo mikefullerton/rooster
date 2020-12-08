@@ -13,8 +13,8 @@ extension EventListTableViewCell {
     class LeftSideContentView : AbstractLeftSideContentView {
 
         func setEvent(_ event: EventKitEvent) {
-            let startTime = self.shortDateString(event.startDate)
-            let endTime = self.shortDateString(event.endDate)
+            let startTime = event.startDate.asShortDateString
+            let endTime = event.endDate.asShortDateString
             
             self.timeLabel.text = "\(startTime) - \(endTime)"
             self.eventTitleLabel.text = event.title

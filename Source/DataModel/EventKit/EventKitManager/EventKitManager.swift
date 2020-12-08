@@ -113,17 +113,14 @@ class EventKitManager {
         }
     }
     
-    private func handleFetched(calendarDataModel: EKDataModel,
-                               delegateCalendarModel: EKDataModel,
-                               completion: @escaping (_ intermediateModel: IntermediateModel)-> Void) {
+    private func handleIntermediateDataModelFetched(calendarDataModel: EKDataModel,
+                                                    delegateCalendarModel: EKDataModel,
+                                                    completion: @escaping (_ intermediateModel: IntermediateModel)-> Void) {
         
         DispatchQueue.main.async {
-            
-            let previousDataModel = self.dataModel
-        
             let intermediateModel = IntermediateModel(personalCalendarModel: calendarDataModel,
                                                       delegateCalendarModel: delegateCalendarModel,
-                                                      previousEvents: previousDataModel.events)
+                                                      previousDataModel: self.dataModel)
 
             completion(intermediateModel)
         }
@@ -172,9 +169,9 @@ class EventKitManager {
             print("EventKitManager received calendar model")
             
             if delegateDataModel != nil {
-                self.handleFetched(calendarDataModel: calendarDataModel!,
-                                   delegateCalendarModel: delegateDataModel!,
-                                   completion: completion)
+                self.handleIntermediateDataModelFetched(calendarDataModel: calendarDataModel!,
+                                                        delegateCalendarModel: delegateDataModel!,
+                                                        completion: completion)
             }
         }
 
@@ -184,9 +181,9 @@ class EventKitManager {
             print("EventKitManager received delegate calendar model")
 
             if calendarDataModel != nil {
-                self.handleFetched(calendarDataModel: calendarDataModel!,
-                                   delegateCalendarModel: delegateDataModel!,
-                                   completion: completion)
+                self.handleIntermediateDataModelFetched(calendarDataModel: calendarDataModel!,
+                                                        delegateCalendarModel: delegateDataModel!,
+                                                        completion: completion)
             }
         }
     }

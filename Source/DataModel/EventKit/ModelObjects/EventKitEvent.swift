@@ -54,10 +54,6 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
         return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), alarm: \(self.alarm)")
     }
     
-    var sortDate: Date {
-        return self.startDate
-    }
-    
     static func == (lhs: EventKitEvent, rhs: EventKitEvent) -> Bool {
         return  lhs.id == rhs.id &&
                 lhs.calendar.id == rhs.calendar.id &&
@@ -70,15 +66,6 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
                 lhs.url == rhs.url &&
                 lhs.notes == rhs.notes &&
                 lhs.organizer == rhs.organizer
-    }
-
-    var isHappeningNow: Bool {
-        let now = Date()
-        return self.startDate.isBeforeDate(now) && self.endDate.isAfterDate(now)
-    }
-    
-    var isTimeForAlarm: Bool {
-        return self.isHappeningNow
     }
 
     func hash(into hasher: inout Hasher) {

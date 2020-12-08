@@ -20,4 +20,14 @@ extension Date {
         return isBefore
     }
     
+    var asShortDateString: String {
+        return DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
+    }
+    
+}
+
+extension DateComponents {
+    var date: Date? {
+        return NSCalendar.current.date(from: self)
+    }
 }

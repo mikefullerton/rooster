@@ -24,42 +24,68 @@ class Preferences {
                                         userInfo: nil)
     }
     
-    // MARK: model objects
+    // MARK: calendars
     
     func update(calendar: EventKitCalendar) {
         self.dataStore.subscribedCalendars.set(isIncluded: calendar.isSubscribed,
                                                 forKey: calendar.id)
     }
-
-    func update(event: EventKitEvent) {
-        let serializer = SerializedEventKitItem(withEventKitItem:event)
-        self.dataStore.events.set(value:serializer.asDictionary, forKey: event.id)
-    }
-
-    func event(forKey key: String) -> SerializedEventKitItem<EventKitEvent>? {
-        if let dictionary = self.dataStore.events.value(forKey: key) as? [AnyHashable: Any] {
-            return SerializedEventKitItem(withDictionary: dictionary)
-        }
-        
-        return nil
-    }
-
-    func update(reminder: EventKitReminder) {
-        let serializer = SerializedEventKitItem(withEventKitItem:reminder)
-        self.dataStore.reminders.set(value:serializer.asDictionary, forKey: reminder.id)
-    }
-
-    func reminder(forKey key: String) -> SerializedEventKitItem<EventKitReminder>? {
-        if let dictionary = self.dataStore.events.value(forKey: key) as? [AnyHashable: Any] {
-            return SerializedEventKitItem(withDictionary: dictionary)
-        }
-        
-        return nil
-    }
-
+    
     func isCalendarSubscribed(_ calendarID: String) -> Bool {
         return self.dataStore.subscribedCalendars.contains(calendarID)
     }
+    
+    // MARK: events
+
+    func update(event: EventKitEvent) {
+        let savedState = EventKitEvent.SavedState(withEvent: event)
+        self.dataStore.events.set(value:savedState.asDictionary, forKey: event.id)
+        
+        self.update(alarm: event.alarm, forIdentifier: event.id)
+    }
+    
+    func eventState(forKey key: String) -> EventKitEvent.SavedState? {
+        if let dictionary = self.dataStore.events.value(forKey: key) as? [AnyHashable: Any] {
+            return EventKitEvent.SavedState(withDictionary: dictionary)
+        }
+
+        return nil
+    }
+
+    // MARK: reminders
+
+    func update(reminder: EventKitReminder) {
+        let savedState = EventKitReminder.SavedState(withReminder: reminder)
+        self.dataStore.reminders.set(value:savedState.asDictionary, forKey: reminder.id)
+
+        self.update(alarm: reminder.alarm, forIdentifier: reminder.id)
+    }
+
+    func reminderState(forKey key: String) -> EventKitReminder.SavedState? {
+        if let dictionary = self.dataStore.events.value(forKey: key) as? [AnyHashable: Any] {
+            return EventKitReminder.SavedState(withDictionary: dictionary)
+        }
+        
+        return nil
+    }
+
+
+    // MARK: alarms
+    
+    private func update(alarm: EventKitAlarm, forIdentifier identifier: String) {
+        let savedState = EventKitAlarm.SavedState(withAlarm: alarm)
+        self.dataStore.alarms.set(value: savedState.asDictionary, forKey: identifier)
+    }
+
+    private func alarmState(forKey key: String) -> EventKitAlarm.SavedState? {
+        if let dictionary = self.dataStore.events.value(forKey: key) as? [AnyHashable: Any] {
+            return EventKitAlarm.SavedState(withDictionary: dictionary)
+        }
+        return nil
+    }
+
+    
+
 
     // MARK: sounds
 

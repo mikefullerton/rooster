@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol DateSortable {
-    var sortDate: Date { get }
+protocol Alarmable {
+    var alarm: EventKitAlarm { get }
 }
 
-protocol EventKitItem: DateSortable, CustomStringConvertible, Hashable {
+protocol EventKitItem: Alarmable, CustomStringConvertible, Hashable {
     
     associatedtype ItemType
     
@@ -23,8 +23,6 @@ protocol EventKitItem: DateSortable, CustomStringConvertible, Hashable {
     var noteURLS: [URL]? { get }
     var calendar: EventKitCalendar { get }
     var isSubscribed: Bool { get }
-    var alarm: EventKitAlarm { get }
-    var isTimeForAlarm: Bool { get }
     
     func updateAlarm(_ alarm: EventKitAlarm) -> ItemType
 }
@@ -54,12 +52,6 @@ extension EventKitItem {
         return nil
     }
     
-    var alarmShouldStop: Bool {
-        return !self.isTimeForAlarm && self.alarm.state != .finished
-    }
     
-    var alarmShouldFire: Bool {
-        return self.isTimeForAlarm && self.alarm.state == .neverFired
-    }
 }
 

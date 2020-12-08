@@ -24,6 +24,8 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     let notes: String?
     let url: URL?
     let noteURLS: [URL]?
+    let dueDate: Date?
+    let startDate: Date?
 
     init(withReminder EKReminder: EKReminder,
          calendar: EventKitCalendar,
@@ -39,21 +41,16 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
         self.location = EKReminder.location
         self.notes = EKReminder.notes
         self.url = EKReminder.url
+        self.dueDate = EKReminder.dueDateComponents?.date
+        self.startDate = EKReminder.startDateComponents?.date
+        
         if self.notes != nil {
             self.noteURLS = self.notes!.detectURLs()
         } else {
             self.noteURLS = nil
         }
     }
-    
-    var sortDate: Date {
-        return self.dueDate
-    }
-    
-    var dueDate: Date {
-        return self.alarm.date
-    }
-    
+
     var description: String {
         return "Reminder: \(self.title), Calendar: \(self.calendar)"
     }
@@ -67,15 +64,13 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
                 lhs.location == rhs.location &&
                 lhs.url == rhs.url &&
                 lhs.notes == rhs.notes &&
-                lhs.isCompleted == rhs.isCompleted
+                lhs.isCompleted == rhs.isCompleted &&
+                lhs.dueDate == rhs.dueDate &&
+                lhs.startDate == rhs.startDate
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
-    }
-    
-    var isTimeForAlarm: Bool {
-        return  self.isCompleted == false && self.alarm.shouldFire
     }
     
     func updateAlarm(_ alarm: EventKitAlarm) -> EventKitReminder {

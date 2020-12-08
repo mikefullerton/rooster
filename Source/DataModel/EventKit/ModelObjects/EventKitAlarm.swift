@@ -10,72 +10,96 @@ import Foundation
 
 struct EventKitAlarm: Equatable, CustomStringConvertible {
     
-    
     enum State: String {
         case neverFired = "neverFired"
         case firing = "firing"
-        case finished = "finishe"
+        case finished = "finished"
+        case willNeverFire = "never"
     }
 
     let state: State
-    let date: Date
+    
+    let originalStartDate: Date
+    let originalEndDate: Date?
+    
+    let snoozedStartDate: Date?
+    let snoozedEndDate: Date?
+
+    let startDate: Date
+    let endDate: Date?
+    
     let isEnabled: Bool
     let snoozeInterval: TimeInterval
     
     init(withState state: State,
-         date: Date,
+         startDate originalStartDate: Date,
+         endDate originalEndDate: Date?,
          isEnabled: Bool,
          snoozeInterval: TimeInterval) {
-        self.state = state
-        self.date = snoozeInterval > 0 ? date.addingTimeInterval(snoozeInterval) : date
+
+        let snoozedStartDate = snoozeInterval > 0 ? originalStartDate.addingTimeInterval(snoozeInterval) : nil
+        let snoozedEndDate = snoozeInterval > 0 && originalEndDate != nil ? originalEndDate!.addingTimeInterval(snoozeInterval) : nil
+
         self.isEnabled = isEnabled
+        self.state = state
+        self.originalStartDate = originalStartDate
+        self.originalEndDate = originalEndDate
         self.snoozeInterval = snoozeInterval
+        self.snoozedStartDate = snoozedStartDate
+        self.snoozedEndDate = snoozedEndDate
+        self.startDate = snoozedStartDate != nil ? snoozedStartDate! : originalStartDate
+        self.endDate = snoozedEndDate != nil ? snoozedEndDate : originalEndDate
     }
 
     static func == (lhs: EventKitAlarm, rhs: EventKitAlarm) -> Bool {
         return  lhs.state == rhs.state &&
-                lhs.date == rhs.date &&
+                lhs.originalStartDate == rhs.originalStartDate &&
+                lhs.originalEndDate == rhs.originalEndDate &&
+                lhs.snoozeInterval == rhs.snoozeInterval &&
                 lhs.isEnabled == rhs.isEnabled
     }
     
     func updatedAlarm(_ state: State) -> EventKitAlarm {
         return EventKitAlarm(withState: state,
-                             date: self.date,
+                             startDate: self.originalStartDate,
+                             endDate: self.originalEndDate,
                              isEnabled: self.isEnabled,
                              snoozeInterval: self.snoozeInterval)
     }
 
     func snoozeAlarm(_ snoozeInterval: TimeInterval) -> EventKitAlarm {
         return EventKitAlarm(withState: .neverFired,
-                             date: self.date,
+                             startDate: self.originalStartDate,
+                             endDate: self.originalEndDate,
                              isEnabled: self.isEnabled,
                              snoozeInterval: self.snoozeInterval + snoozeInterval)
     }
 
     var description: String {
-        return ("EventKitAlarm: Alarm date: \(String(describing: self.date)), state: \(self.state), isEnabled: \(self.isEnabled)")
+        var formatter = StringFormatter(withTitle: "EventKitAlarm")
+        formatter.append("State", self.state)
+        formatter.append("Start Date", self.startDate.asShortDateString)
+        formatter.append("End Date", self.endDate?.asShortDateString)
+        formatter.append("Original Start Date", self.originalStartDate.asShortDateString)
+        formatter.append("Original End Date", self.originalEndDate?.asShortDateString)
+        formatter.append("Snoozed Start Date", self.snoozedStartDate?.asShortDateString)
+        formatter.append("Snoozed End Date", self.snoozedEndDate?.asShortDateString)
+        formatter.append("isEnabled", self.isEnabled)
+        return formatter.string
     }
     
     var isFiring: Bool {
         return self.state == .firing
     }
-    
-    var fireDate: Date {
-        if self.snoozeInterval > 0 {
-            return self.date.addingTimeInterval(self.snoozeInterval)
-        }
-        
-        return self.date
+
+    var isHappeningNow: Bool {
+        let now = Date()
+        return (self.startDate.isBeforeDate(now) && (self.endDate == nil || self.endDate!.isAfterDate(now)))
     }
     
-    var shouldFire: Bool {
-        if self.isEnabled {
-            return self.fireDate.isBeforeDate(Date())
-        }
-        
-        return false
+    var willFireInTheFuture: Bool {
+        return self.startDate.isAfterDate(Date())
     }
-    
 }
 
 

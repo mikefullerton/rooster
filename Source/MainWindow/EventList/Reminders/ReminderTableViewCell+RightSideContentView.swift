@@ -19,7 +19,7 @@ extension ReminderTableViewCell {
             
             self.setLocationURL(reminder.bestLocationURL)
 
-            if reminder.isTimeForAlarm {
+            if reminder.alarm.isHappeningNow {
                 self.countDownLabel.stopTimer()
                 self.alarmIcon.tintColor = reminder.calendar.color!
                 self.stopButton.isEnabled = reminder.alarm.isFiring

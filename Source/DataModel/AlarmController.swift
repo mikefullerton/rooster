@@ -115,21 +115,25 @@ class AlarmController {
         
         for item in items {
             
-            var alarmState = item.alarm.state
+            let alarm = item.alarm
+            var alarmState = alarm.state
+            
+            if !alarm.isEnabled {
+                alarmState = .willNeverFire
+            } else if alarm.willFireInTheFuture {
+                alarmState = .neverFired
+            }
             
             switch(item.alarm.state) {
             case .neverFired:
-                if item.isTimeForAlarm {
+                if alarm.isHappeningNow {
                     self.openEventLocationURL(forItem: item)
                     self.playAlarmSoundIfNeeded(forItem:item)
                     alarmState = .firing
-                } else {
-                    alarmState = .finished
                 }
 
             case .firing:
-                
-                if !item.isTimeForAlarm {
+                if !alarm.isHappeningNow {
                     alarmState = .finished
                     self.stopPlayingAlarmIfPlaying(forItem: item)
                 } else {
@@ -138,12 +142,15 @@ class AlarmController {
         
             case .finished:
                 self.stopPlayingAlarmIfPlaying(forItem: item)
+            
+            case .willNeverFire:
+                self.stopPlayingAlarmIfPlaying(forItem: item)
             }
             
-            if alarmState != item.alarm.state {
-                let updatedAlarm = item.alarm.updatedAlarm(alarmState)
+            if alarmState != alarm.state {
+                let updatedAlarm = alarm.updatedAlarm(alarmState)
                 
-                let updatedItem = item.updateAlarm(updatedAlarm) as! T
+                let updatedItem = item.updateAlarm(updatedAlarm) as! T // wth, why do I need to cast this?
                 
                 outList.append(updatedItem)
                 

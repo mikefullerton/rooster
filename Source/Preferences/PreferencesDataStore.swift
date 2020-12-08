@@ -16,12 +16,15 @@ struct PreferencesDataStore {
     let events: IdentifierDictionary
     
     let reminders: IdentifierDictionary
+    
+    let alarms: IdentifierDictionary
 
     init() {
         self.subscribedCalendars = IdentifierList(withPreferencesKey: "calendars")
         self.events = IdentifierDictionary(withPreferencesKey: "events")
         self.reminders = IdentifierDictionary(withPreferencesKey: "reminders")
         self.sounds = IdentifierDictionary(withPreferencesKey: "sounds")
+        self.alarms = IdentifierDictionary(withPreferencesKey: "alarms")
     }
 }
 

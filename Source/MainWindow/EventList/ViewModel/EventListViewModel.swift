@@ -15,10 +15,10 @@ struct EventListViewModel : TableViewModelProtocol {
     init(withEvents events: [EventKitEvent],
          reminders: [EventKitReminder]) {
         
-        var sortedList:[DateSortable] = events + reminders
+        var sortedList:[Alarmable] = events + reminders
         
         sortedList.sort { lhs, rhs in
-            return lhs.sortDate.isBeforeDate(rhs.sortDate)
+            return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
         }
         
         var sections: [TableViewSectionProtocol] = []

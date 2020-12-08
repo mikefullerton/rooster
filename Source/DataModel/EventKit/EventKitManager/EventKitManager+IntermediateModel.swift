@@ -20,24 +20,24 @@ extension EventKitManager {
         
         init(personalCalendarModel: EKDataModel,
              delegateCalendarModel: EKDataModel,
-             previousEvents: [EventKitEvent]) {
+             previousDataModel: EventKitDataModel) {
             
-            self.personalCalendarModel = CalendarModel(model: personalCalendarModel)
-            self.delegateCalendarModel = CalendarModel(model: delegateCalendarModel)
+            let personalCalendarModel = CalendarModel(model: personalCalendarModel)
+            let delegateCalendarModel = CalendarModel(model: delegateCalendarModel)
             
-            self.personalCalendars = [:]
-            self.delegateCalendars = [:]
-            self.events = []
-            self.reminders = []
+            self.personalCalendarModel = personalCalendarModel
+            self.delegateCalendarModel = delegateCalendarModel
             
-            self.personalCalendars = self.personalCalendarModel.groupedCalendars
-            self.delegateCalendars = self.delegateCalendarModel.groupedCalendars
+            self.personalCalendars = personalCalendarModel.groupedCalendars
+            self.delegateCalendars = delegateCalendarModel.groupedCalendars
             
-            self.addMergedEvents(withOldEvents: previousEvents)
-            self.sortEvents()
+            self.events = IntermediateModel.mergeEvents(personalCalendarModel.events + delegateCalendarModel.events,
+                                                        withOldEvents: previousDataModel.events)
             
-            self.addReminders()
-            self.sortReminders()
+            self.reminders = IntermediateModel.mergeReminders(personalCalendarModel.reminders + delegateCalendarModel.reminders,
+                                                              withOldReminders: previousDataModel.reminders)
+            
+            
         }
         
         private func calendar(forIdentifier identifier: String) -> EventKitCalendar? {
@@ -52,71 +52,61 @@ extension EventKitManager {
             return nil
         }
         
-        
-        private mutating func addMergedEvents(withOldEvents oldEvents: [EventKitEvent]) {
-
-            let newEvents = self.personalCalendarModel.events + self.delegateCalendarModel.events
-
-            let now = Date()
+        private static func mergeItems<Item>(_ newItems:[Item],
+                                      withOldItems oldItems: [Item],
+                                      updateAlarmBlock:(_ item: Item, _ newAlarm: EventKitAlarm) -> Item ) -> [Item] where Item: EventKitItem {
             
-            for newEvent in newEvents {
-                var foundEvent = false
+            var outItems: [Item] = []
+            
+            for newItem in newItems {
+                var foundItem = false
                 
-                for oldEvent in oldEvents {
-                    if  newEvent.id == oldEvent.id {
-                        foundEvent = true
-                                            
-                        if  newEvent.startDate.isAfterDate(now) ||
-                            (oldEvent.startDate.isAfterDate(now) && newEvent.startDate.isBeforeDate(now)) {
-                            
-                            // reset if event moved up in time
-                            
-                            self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
-                                                              calendar: newEvent.calendar,
-                                                              subscribed: newEvent.isSubscribed,
-                                                              alarm: oldEvent.alarm.updatedAlarm(.neverFired)))
-
-                        } else if newEvent.isHappeningNow {
-                            // already load preferences for this event
-                            self.events.append(newEvent)
+                for oldItem in oldItems {
+                    if  newItem.id == oldItem.id {
+                        foundItem = true
                         
+                        let newAlarm = newItem.alarm
+                        let oldAlarm = oldItem.alarm
+                        
+                        if newAlarm.isHappeningNow && oldAlarm.isHappeningNow {
+                            // common case of reload during an alarm.
+                            outItems.append(newItem)
                         } else {
                             
-                            // shut it off
-                            self.events.append(EventKitEvent(withEvent: newEvent.EKEvent,
-                                                              calendar: newEvent.calendar,
-                                                              subscribed: newEvent.isSubscribed,
-                                                              alarm: oldEvent.alarm.updatedAlarm(.finished)))
+                            let updatedItem = updateAlarmBlock(newItem, newAlarm.updatedAlarm(.neverFired))
+                            outItems.append(updatedItem)
                         }
-                        
                         continue
                     }
                 }
                 
-                if !foundEvent {
-                    self.events.append(newEvent)
+                if !foundItem {
+                    outItems.append(newItem)
                 }
             }
-        }
-    
-        private mutating func sortEvents() {
-            self.events = self.events.sorted { (lhs, rhs) -> Bool in
-                return lhs.startDate.isBeforeDate(rhs.startDate)
-            }
-        }
-        
-        private mutating func addReminders() {
-            self.reminders += self.personalCalendarModel.reminders
-            self.reminders += self.delegateCalendarModel.reminders
             
-        }
-        
-        private mutating func sortReminders() {
-            self.reminders = self.reminders.sorted { (lhs, rhs) -> Bool in
-                return lhs.dueDate.isBeforeDate(rhs.dueDate)
+            return outItems.sorted { lhs, rhs in
+                return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
             }
         }
-
+        
+        private static func mergeEvents(_ newEvents:[EventKitEvent], withOldEvents oldEvents: [EventKitEvent]) -> [EventKitEvent] {
+            return self.mergeItems(newEvents, withOldItems: oldEvents) { newEvent, newAlarm in
+                return EventKitEvent(withEvent: newEvent.EKEvent,
+                                     calendar: newEvent.calendar,
+                                     subscribed: newEvent.isSubscribed,
+                                     alarm: newAlarm)
+            }
+        }
+        
+        private static func mergeReminders(_ newReminders:[EventKitReminder], withOldReminders oldReminders: [EventKitReminder]) -> [EventKitReminder] {
+            return self.mergeItems(newReminders, withOldItems: oldReminders) { newReminder, newAlarm in
+                return EventKitReminder(withReminder: newReminder.EKReminder,
+                                        calendar: newReminder.calendar,
+                                        subscribed: newReminder.isSubscribed,
+                                        alarm: newAlarm)
+            }
+        }
     }
 }
 

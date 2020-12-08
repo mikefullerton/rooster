@@ -91,9 +91,7 @@ extension EventKitItemTableViewCell {
             ])
         }
         
-        func shortDateString(_ date: Date) -> String {
-            return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-        }
+       
 
         func prepareForReuse() {
 

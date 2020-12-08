@@ -42,25 +42,25 @@ extension EventKitManager {
                         continue
                     }
                     
-                    if let serializer = Preferences.instance.event(forKey: ekEvent.uniqueID) {
-                        self.events.append(EventKitEvent(withEvent: ekEvent,
-                                                         calendar: calendar,
-                                                         subscribed: serializer.isSubscribed,
-                                                         alarm: serializer.alarm))
-
+                    var eventKitEvent: EventKitEvent? = nil
+                    if let savedState = Preferences.instance.eventState(forKey: ekEvent.uniqueID) {
+                        eventKitEvent = EventKitEvent(withEvent: ekEvent,
+                                                      calendar: calendar,
+                                                      savedState: savedState)
                     } else {
-                        
                         let alarm = EventKitAlarm(withState: .neverFired,
-                                                  date: ekEvent.startDate,
+                                                  startDate: ekEvent.startDate,
+                                                  endDate: ekEvent.endDate,
                                                   isEnabled: true,
                                                   snoozeInterval: 0)
                         
-                        self.events.append(EventKitEvent(withEvent: ekEvent,
-                                                         calendar: calendar,
-                                                         subscribed: true,
-                                                         alarm: alarm))
+                        eventKitEvent = EventKitEvent(withEvent: ekEvent,
+                                                      calendar: calendar,
+                                                      subscribed: true,
+                                                      alarm: alarm)
                     }
                     
+                    self.events.append(eventKitEvent!)
                 }
             }
         }
@@ -86,28 +86,45 @@ extension EventKitManager {
                         continue
                     }
 
-                    if let serializer = Preferences.instance.reminder(forKey: ekReminder.uniqueID) {
-                        self.reminders.append(EventKitReminder(withReminder: ekReminder,
-                                                            calendar: calendar,
-                                                            subscribed: serializer.isSubscribed,
-                                                            alarm: serializer.alarm))
-
+                    var startDate: Date? = nil
+                    var endDate: Date? = nil
+                    
+                    if ekReminder.startDateComponents != nil {
+                        startDate = ekReminder.startDateComponents!.date
+                        
+                        endDate = ekReminder.dueDateComponents?.date ?? nil
+                        
+                    } else if ekReminder.dueDateComponents != nil {
+                        startDate = ekReminder.dueDateComponents!.date
                     } else {
-                        
-                        if let dueDate = ekReminder.alarmDate,
-                           ekReminder.isCompleted == false {
-                        
-                            let alarm = EventKitAlarm(withState: .neverFired,
-                                                  date: dueDate,
+                        // todo check alarms?
+                    }
+                    
+                    if startDate == nil || ekReminder.isCompleted {
+                        continue
+                    }
+                    
+                    var reminder: EventKitReminder? = nil
+                    if let savedState = Preferences.instance.reminderState(forKey: ekReminder.uniqueID) {
+                        reminder = EventKitReminder(withReminder: ekReminder,
+                                                         calendar: calendar,
+                                                         startDate: startDate!,
+                                                         endDate: endDate,
+                                                         savedState: savedState)
+                    } else {
+                        let alarm = EventKitAlarm(withState: .neverFired,
+                                                  startDate: startDate!,
+                                                  endDate: endDate,
                                                   isEnabled: true,
                                                   snoozeInterval: 0)
                         
-                            self.reminders.append(EventKitReminder(withReminder: ekReminder,
-                                                                   calendar: calendar,
-                                                                   subscribed: true,
-                                                                   alarm: alarm))
-                        }
+                        reminder = EventKitReminder(withReminder: ekReminder,
+                                                    calendar: calendar,
+                                                    subscribed: true,
+                                                    alarm: alarm)
                     }
+
+                    self.reminders.append(reminder!)
                 }
             }
         }
@@ -136,13 +153,3 @@ extension EventKitManager {
     
 }
 
-extension EKReminder {
- 
-    var alarmDate: Date? {
-        guard let dueDateComponents = self.dueDateComponents else {
-            return nil
-        }
-        
-        return NSCalendar.current.date(from: dueDateComponents)
-    }
-}
