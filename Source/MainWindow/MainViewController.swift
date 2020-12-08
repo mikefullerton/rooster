@@ -35,12 +35,7 @@ class MainViewController : UIViewController {
     func createMainViewsIfNeeded() {
         if self.mainSplitViewController == nil {
             
-            let leftViewController = CalendarListViewController()
-            
-            let rightViewController = RightSideViewController()
-            
-            self.mainSplitViewController = MainSplitViewController(withLeftViewController: leftViewController,
-                                                                   rightViewController: rightViewController)
+            self.mainSplitViewController = MainSplitViewController()
             
             self.addChild(self.mainSplitViewController!)
 

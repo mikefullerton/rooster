@@ -1,8 +1,8 @@
 //
-//  CalendarSection.swift
+//  CalendarListViewModel.swift
 //  Rooster (iOS)
 //
-//  Created by Mike Fullerton on 11/22/20.
+//  Created by Mike Fullerton on 12/8/20.
 //
 
 import Foundation
@@ -12,23 +12,14 @@ struct CalenderListViewModel : TableViewModelProtocol {
     
     let sections: [TableViewSectionProtocol]
     
-    private static func add(calendars: [CalendarSource: [EventKitCalendar]], to sections: inout [TableViewSectionProtocol]) {
+    init(withCalendars calendars: [CalendarSource: [EventKitCalendar]]) {
+        
+        var sections: [TableViewSectionProtocol] = []
+
         for source in calendars.sortedKeys {
             sections.append(CalendarSection(withSource: source, calendars:calendars[source]!))
         }
-    }
-    
-    init(withCalendars calendars: [CalendarSource: [EventKitCalendar]],
-         delegateCalendars: [CalendarSource: [EventKitCalendar]]) {
-        
-        var sections: [TableViewSectionProtocol] = []
-        
-        CalenderListViewModel.add(calendars: calendars, to: &sections)
 
-        sections.append(DelegateHeaderSection())
-
-        CalenderListViewModel.add(calendars: delegateCalendars, to: &sections)
-        
         self.sections = sections
     }
 }
