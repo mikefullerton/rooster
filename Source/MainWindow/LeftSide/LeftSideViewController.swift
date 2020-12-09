@@ -79,9 +79,6 @@ class LeftSideViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
-//        self.segmentedControl.segmentedControlStyle = .bar
         self.segmentedControl.isMomentary = false
 
         weak var weakSelf = self
@@ -101,10 +98,7 @@ class LeftSideViewController : UIViewController {
         self.segmentedControl.insertSegment(action: rhsAction, at: 0, animated: false)
         self.segmentedControl.insertSegment(action: lhsAction, at: 0, animated: false)
         self.segmentedControl.selectedSegmentIndex = 0
-//
-//        self.segmentedControl.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-//
-        self.segmentedControl.apportionsSegmentWidthsByContent = true
+//        self.segmentedControl.apportionsSegmentWidthsByContent = true
         
         self.view.addSubview(self.segmentedControl)
         
@@ -123,11 +117,6 @@ class LeftSideViewController : UIViewController {
         self.add(controller: self.delegateCalendars)
         
         self.calendars.view.isHidden = false
-
-//        self.tabBar.items = [
-//            UITabBarItem(title: "Calendars", image: nil, tag: 0),
-//            UITabBarItem(title: "Delegate Calendars", image: nil, tag: 0),
-//        ]
     }
     
     

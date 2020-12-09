@@ -397,7 +397,6 @@
 			isa = PBXGroup;
 			children = (
 				B202CBB7257AC2B300D33D8F /* StackViewCell.swift */,
-				B2E1548E257681B8008BE604 /* VerticalStackView.swift */,
 			);
 			path = Abandoned;
 			sourceTree = "<group>";
@@ -483,7 +482,6 @@
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B2020AFB2577FD0600F478CC /* Preferences */,
 				B2C7423D2577225E006645A0 /* PreferencesWindow */,
 				B2E1549225768619008BE604 /* Views */,
 				B2F6B50D2562F20E000BC78E /* MainWindow */,
@@ -510,6 +508,7 @@
 				B2F817FF2576ACA100B28119 /* TimeRemaining */,
 				B2E1545D2575B5F3008BE604 /* DividerView.swift */,
 				B2E154612575B67C008BE604 /* SpacerView.swift */,
+				B2E1548E257681B8008BE604 /* VerticalStackView.swift */,
 				B296556E257C3698008D1858 /* Abandoned */,
 			);
 			path = Views;
@@ -555,6 +554,7 @@
 		B2F6B4872561879D000BC78E /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				B2020AFB2577FD0600F478CC /* Preferences */,
 				B2020AEE2577E9F000F478CC /* EventKit */,
 				B2F6B518256433C8000BC78E /* Sounds */,
 				B2F6B49625619705000BC78E /* AlarmController.swift */,

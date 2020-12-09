@@ -84,9 +84,6 @@ class Preferences {
         return nil
     }
 
-    
-
-
     // MARK: sounds
 
     var sounds: Sounds {
@@ -98,4 +95,21 @@ class Preferences {
         }
     }
 
+    // Mark: bools
+    
+    enum BoolKey : String {
+        case sounds = "sounds"
+        case openLocations = "openLocations"
+    }
+
+    func setBool(_ value: Bool, forKey key: BoolKey) {
+        self.dataStore.setBool(value, forKey:key.rawValue)
+    }
+    
+    func bool(forKey key: BoolKey) -> Bool {
+        return self.dataStore.bool(forKey: key.rawValue)
+    }
+    
+    
+    
 }

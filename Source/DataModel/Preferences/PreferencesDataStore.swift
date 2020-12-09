@@ -26,5 +26,14 @@ struct PreferencesDataStore {
         self.sounds = IdentifierDictionary(withPreferencesKey: "sounds")
         self.alarms = IdentifierDictionary(withPreferencesKey: "alarms")
     }
+    
+    func setBool(_ value: Bool, forKey key: String) {
+        UserDefaults.standard.set(value, forKey: key)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func bool(forKey key: String) -> Bool {
+        return UserDefaults.standard.bool(forKey: key)
+    }
 }
 

@@ -36,7 +36,7 @@ class RightSideViewController : UIViewController {
             timeRemainingView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             timeRemainingView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             timeRemainingView.heightAnchor.constraint(equalToConstant: self.timeRemainingViewController.viewHeight),
-            timeRemainingView.topAnchor.constraint(equalTo: self.view.topAnchor)
+            timeRemainingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10)
         ])
     }
     
