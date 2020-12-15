@@ -25,7 +25,6 @@
 		B227DEFA256738C50002C127 /* AppKitPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEF9256738C50002C127 /* AppKitPlugin.swift */; };
 		B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */; };
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */ = {isa = PBXBuildFile; fileRef = B227DF18256743C80002C127 /* AppKitPluginProtocol.h */; };
 		B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF242568096C0002C127 /* MainSplitViewController.swift */; };
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
 		B236FCD6255EFE0A00A2E58D /* EventKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */; };
@@ -328,6 +327,7 @@
 		B227DEF1256738860002C127 /* RoosterAppKitPlugin */ = {
 			isa = PBXGroup;
 			children = (
+				B227DF18256743C80002C127 /* AppKitPluginProtocol.h */,
 				B227DEF2256738860002C127 /* Info.plist */,
 				B227DEF9256738C50002C127 /* AppKitPlugin.swift */,
 				B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */,
@@ -579,7 +579,6 @@
 				B2F6B4F92562DD64000BC78E /* UIWindow+Utilities.swift */,
 				B2F6B51225632AE8000BC78E /* Date+Utilities.swift */,
 				B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */,
-				B227DF18256743C80002C127 /* AppKitPluginProtocol.h */,
 				B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */,
 				B2AFE6E0256B2571006B3C58 /* EventNotification.swift */,
 				B2F818282576FB1100B28119 /* String+Utilities.swift */,
@@ -873,7 +872,6 @@
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,
 				B296552E257C0B8F008D1858 /* SerializedEventKitItem.swift in Sources */,
 				B2965575257C3706008D1858 /* ReminderTableViewCell+RightSideContentView.swift in Sources */,
-				B227DF19256743C80002C127 /* AppKitPluginProtocol.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

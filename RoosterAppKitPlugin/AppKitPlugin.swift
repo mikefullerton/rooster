@@ -25,7 +25,21 @@ extension Date {
 
 
 class AppKitPlugin : NSObject, AppKitPluginProtocol {
-
+    func bringAppToFront() {
+        let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
+        
+        print("Brought app to front: \(result)")
+    }
+    
+    func bringAnotherApp(toFront bundleIdentier: String) {
+        let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentier)
+        
+        for bundle in apps {
+            let result = bundle.activate(options: .activateIgnoringOtherApps)
+            
+            print("attempted to foreground: \(bundle): \(result)")
+        }
+    }
     
     func findEvents(with calendars: [EKCalendar]!, store: EKEventStore!) -> [EKEvent]! {
         let currentCalendar = NSCalendar.current

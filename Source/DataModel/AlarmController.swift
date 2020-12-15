@@ -109,6 +109,15 @@ class AlarmController {
         }
     }
     
+    private func startAlarm<T>(forItem item: T) where T: EventKitItem {
+        self.openEventLocationURL(forItem: item)
+        self.playAlarmSoundIfNeeded(forItem:item)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
+            AppDelegate.instance.appKitBundle?.bringAppToFront()
+        }
+    }
+    
     private func updateAlarms<T>(forItems items: [T]) -> [T]? where T: EventKitItem {
         var outList:[T] = []
         var madeChange = false
@@ -127,8 +136,7 @@ class AlarmController {
             switch(item.alarm.state) {
             case .neverFired:
                 if alarm.isHappeningNow {
-                    self.openEventLocationURL(forItem: item)
-                    self.playAlarmSoundIfNeeded(forItem:item)
+                    self.startAlarm(forItem: item)
                     alarmState = .firing
                 }
 
@@ -204,6 +212,10 @@ extension AlarmController {
                                       options: [:]) { (innerSuccess) in
                 
             }
+            
+            if let bundleID = item.bestAppBundle {
+                AppDelegate.instance.appKitBundle?.bringAnotherApp(toFront: bundleID)
+            }
         }
     }
 }
@@ -211,6 +223,14 @@ extension AlarmController {
 extension EventKitItem {
     var bestLocationURL: URL? {
         return self.findURL(containing: "webex")
+    }
+    
+    var bestAppBundle: String? {
+        if self.bestLocationURL != nil {
+            return "com.webex.meetingmanager"
+        }
+        
+        return nil
     }
 }
 

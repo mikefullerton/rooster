@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 //                                          store:(EKEventStore *)store;
 //
 - (void)openURLDirectlyInAppIfPossible:(NSURL *)url completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
+
+- (void)bringAppToFront;
+- (void)bringAnotherAppToFront:(NSString*)bundleIdentier;
 @end
 
 NS_ASSUME_NONNULL_END
