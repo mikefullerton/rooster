@@ -43,7 +43,8 @@ class EventKitItemTableViewCell : UITableViewCell {
             view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
 
             view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: EventListTableViewCell.horizontalInset),
-            view.trailingAnchor.constraint(equalTo: self.rightContentView!.leadingAnchor, constant: 0),
+//            view.trailingAnchor.constraint(equalTo: self.rightContentView!.leadingAnchor, constant: 0),
+            view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
 
             //            view.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
         ])

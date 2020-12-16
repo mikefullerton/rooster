@@ -26,7 +26,8 @@ extension EventKitManager {
                 
             self.addCalendars()
             self.addEvents()
-            self.addReminders()
+            // reminders not supported yet
+//            self.addReminders()
             self.addGroupedCalendars()
         }
         

@@ -112,6 +112,23 @@ extension EventKitManager {
                     continue
                 }
 
+                if let participants = event.attendees {
+                    var iDeclined = false
+                    for participant in participants {
+//                        print("\(String(describing: participant.name)): \(participant.participantStatus): \(participant.isCurrentUser)")
+                        
+                        if participant.isCurrentUser && participant.participantStatus == .declined {
+                            iDeclined = true
+                            print("Found an event I declined, skipping it: \(event)")
+                            break
+                        }
+                    }
+                
+                    if iDeclined {
+                        continue
+                    }
+                }
+                    
     //            guard let title = event.title else {
     //                continue
     //            }
