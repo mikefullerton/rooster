@@ -21,8 +21,8 @@ class ReminderTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        self.addRightView(self.rightView)
         self.addLeftView(self.leftView)
+        self.addRightView(self.rightView)
     }
     
     required init?(coder: NSCoder) {
