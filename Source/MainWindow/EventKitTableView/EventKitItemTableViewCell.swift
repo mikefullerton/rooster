@@ -71,13 +71,19 @@ class EventKitItemTableViewCell : UITableViewCell {
         let view = UIView()
         self.addSubview(view)
 
+        let width:CGFloat = 6.0
+        let heightInset:CGFloat = 10.0
+        let leftInset:CGFloat = 4.0
+        
+        view.layer.cornerRadius = width / 2.0;
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 6),
-            view.topAnchor.constraint(equalTo: self.topAnchor),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            view.widthAnchor.constraint(equalToConstant: width),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leftInset),
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: heightInset),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -heightInset),
         ])
         
         return view
