@@ -1,11 +1,11 @@
 //
-//  SceneDelegate.swift
-//  UIKitForMacPlayground
+//  MainSceneDelegate.m
+//  Rooster (iOS)
 //
-//  Created by Noah Gilmore on 6/27/19.
-//  Copyright © 2019 Noah Gilmore. All rights reserved.
+//  Created by Mike Fullerton on 11/19/20.
 //
 
+import Foundation
 import UIKit
 
 //#if targetEnvironment(macCatalyst)

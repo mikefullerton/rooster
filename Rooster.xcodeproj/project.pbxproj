@@ -21,9 +21,9 @@
 		B2020AF02577EA6900F478CC /* PreferencesReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AEF2577EA6900F478CC /* PreferencesReloader.swift */; };
 		B2020AF82577FCFD00F478CC /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AF72577FCFD00F478CC /* Preferences.swift */; };
 		B202CBB8257AC2B300D33D8F /* StackViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B202CBB7257AC2B300D33D8F /* StackViewCell.swift */; };
+		B20955E3258CF14F00753C7B /* MenuBarPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20955E2258CF14F00753C7B /* MenuBarPopover.swift */; };
 		B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DE20256573630002C127 /* EventKitDataModel.swift */; };
 		B227DEFA256738C50002C127 /* AppKitPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEF9256738C50002C127 /* AppKitPlugin.swift */; };
-		B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */; };
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF242568096C0002C127 /* MainSplitViewController.swift */; };
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
@@ -35,6 +35,11 @@
 		B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */; };
 		B256BC16258028BD00FA67DC /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC15258028BD00FA67DC /* CalendarListViewController.swift */; };
 		B256BC1C25802A0000FA67DC /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */; };
+		B25B65D1258CF3760006B771 /* MenuBarPopover+ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65D0258CF3760006B771 /* MenuBarPopover+ContentView.swift */; };
+		B25B65DB258CF7AF0006B771 /* MenuBarPopoverProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */; };
+		B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */; };
+		B25B65EB258CFDB20006B771 /* AppKitPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65E3258CFA6C0006B771 /* AppKitPlugin.swift */; };
+		B25B6600258D03550006B771 /* MenuBarPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65F6258D01BB0006B771 /* MenuBarPopover.swift */; };
 		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
 		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
 		B296550A257BD227008D1858 /* Preferences+Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965509257BD227008D1858 /* Preferences+Sounds.swift */; };
@@ -115,7 +120,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B227DF0325673C490002C127 /* PBXContainerItemProxy */ = {
+		B25B6605258D04F40006B771 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2E1511B255EED2A002672EC /* Project object */;
 			proxyType = 1;
@@ -152,12 +157,12 @@
 		B2020AEF2577EA6900F478CC /* PreferencesReloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesReloader.swift; sourceTree = "<group>"; };
 		B2020AF72577FCFD00F478CC /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		B202CBB7257AC2B300D33D8F /* StackViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewCell.swift; sourceTree = "<group>"; };
+		B20955E2258CF14F00753C7B /* MenuBarPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopover.swift; sourceTree = "<group>"; };
 		B227DE20256573630002C127 /* EventKitDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModel.swift; sourceTree = "<group>"; };
 		B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoosterAppKitPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227DEF2256738860002C127 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RoosterAppKitPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
 		B227DEF9256738C50002C127 /* AppKitPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPlugin.swift; sourceTree = "<group>"; };
-		B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitBundleLoader.swift; sourceTree = "<group>"; };
 		B227DF18256743C80002C127 /* AppKitPluginProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitPluginProtocol.h; sourceTree = "<group>"; };
 		B227DF242568096C0002C127 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		B227DF2825680C970002C127 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +174,12 @@
 		B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC15258028BD00FA67DC /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewModel.swift; sourceTree = "<group>"; };
+		B25B65CD258CF2A60006B771 /* RoosterAppKitPlugin.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = RoosterAppKitPlugin.modulemap; sourceTree = "<group>"; };
+		B25B65D0258CF3760006B771 /* MenuBarPopover+ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuBarPopover+ContentView.swift"; sourceTree = "<group>"; };
+		B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverProcotol.swift; sourceTree = "<group>"; };
+		B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPluginProtocol.swift; sourceTree = "<group>"; };
+		B25B65E3258CFA6C0006B771 /* AppKitPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPlugin.swift; sourceTree = "<group>"; };
+		B25B65F6258D01BB0006B771 /* MenuBarPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopover.swift; sourceTree = "<group>"; };
 		B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPreferencesView.swift; sourceTree = "<group>"; };
 		B2742C63256048CE0087E4B6 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster.entitlements; sourceTree = "<group>"; };
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -327,10 +338,12 @@
 		B227DEF1256738860002C127 /* RoosterAppKitPlugin */ = {
 			isa = PBXGroup;
 			children = (
+				B25B65FB258D02AB0006B771 /* Supporting Files */,
+				B25B65FA258D028C0006B771 /* Can't get this to work */,
 				B227DF18256743C80002C127 /* AppKitPluginProtocol.h */,
-				B227DEF2256738860002C127 /* Info.plist */,
 				B227DEF9256738C50002C127 /* AppKitPlugin.swift */,
-				B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */,
+				B20955E2258CF14F00753C7B /* MenuBarPopover.swift */,
+				B25B65D0258CF3760006B771 /* MenuBarPopover+ContentView.swift */,
 			);
 			path = RoosterAppKitPlugin;
 			sourceTree = "<group>";
@@ -361,6 +374,32 @@
 				B2F817FB2576ABD900B28119 /* RightSideViewController.swift */,
 			);
 			path = RightSide;
+			sourceTree = "<group>";
+		};
+		B25B65E2258CFA440006B771 /* AppKitPlugin */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AppKitPlugin;
+			sourceTree = "<group>";
+		};
+		B25B65FA258D028C0006B771 /* Can't get this to work */ = {
+			isa = PBXGroup;
+			children = (
+				B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */,
+				B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */,
+				B25B65CD258CF2A60006B771 /* RoosterAppKitPlugin.modulemap */,
+			);
+			name = "Can't get this to work";
+			sourceTree = "<group>";
+		};
+		B25B65FB258D02AB0006B771 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */,
+				B227DEF2256738860002C127 /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		B2742C9F25605D6C0087E4B6 /* Other Files */ = {
@@ -482,6 +521,7 @@
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B25B65E2258CFA440006B771 /* AppKitPlugin */,
 				B2C7423D2577225E006645A0 /* PreferencesWindow */,
 				B2E1549225768619008BE604 /* Views */,
 				B2F6B50D2562F20E000BC78E /* MainWindow */,
@@ -566,6 +606,7 @@
 		B2F6B4A72561B447000BC78E /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
+				B25B65F6258D01BB0006B771 /* MenuBarPopover.swift */,
 				B2742C6925604A9B0087E4B6 /* AppDelegate.swift */,
 				B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */,
 			);
@@ -575,10 +616,10 @@
 		B2F6B4F52562DD01000BC78E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B25B65E3258CFA6C0006B771 /* AppKitPlugin.swift */,
 				B2965515257BD3EC008D1858 /* DictionaryCodable.swift */,
 				B2F6B4F92562DD64000BC78E /* UIWindow+Utilities.swift */,
 				B2F6B51225632AE8000BC78E /* Date+Utilities.swift */,
-				B227DEFD25673A270002C127 /* AppKitBundleLoader.swift */,
 				B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */,
 				B2AFE6E0256B2571006B3C58 /* EventNotification.swift */,
 				B2F818282576FB1100B28119 /* String+Utilities.swift */,
@@ -694,7 +735,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				B227DF0425673C490002C127 /* PBXTargetDependency */,
+				B25B6606258D04F40006B771 /* PBXTargetDependency */,
 			);
 			name = "Rooster (iOS)";
 			productName = "Rooster (iOS)";
@@ -765,7 +806,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B20955E3258CF14F00753C7B /* MenuBarPopover.swift in Sources */,
 				B227DEFA256738C50002C127 /* AppKitPlugin.swift in Sources */,
+				B25B65DB258CF7AF0006B771 /* MenuBarPopoverProcotol.swift in Sources */,
+				B25B65D1258CF3760006B771 /* MenuBarPopover+ContentView.swift in Sources */,
+				B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,6 +822,7 @@
 				B2C7423F257723FD006645A0 /* PreferenceSceneDelegate.swift in Sources */,
 				B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */,
 				B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */,
+				B25B6600258D03550006B771 /* MenuBarPopover.swift in Sources */,
 				B2F817E125768E2200B28119 /* TableViewModel.swift in Sources */,
 				B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */,
 				B2AFE69A256AD3D1006B3C58 /* AllCalendarsListViewModel.swift in Sources */,
@@ -794,6 +840,7 @@
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
 				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
 				B2965512257BD33A008D1858 /* PreferencesDataStore+IdentifierDictionary.swift in Sources */,
+				B25B65EB258CFDB20006B771 /* AppKitPlugin.swift in Sources */,
 				B2E1549C257686C3008BE604 /* CalenderSection.swift in Sources */,
 				B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
@@ -831,7 +878,6 @@
 				B2F817D525768DFD00B28119 /* TableViewRowProtocol.swift in Sources */,
 				B236FCD6255EFE0A00A2E58D /* EventKitManager.swift in Sources */,
 				B2E154AA25768768008BE604 /* CalendarRow.swift in Sources */,
-				B227DF0925673E530002C127 /* AppKitBundleLoader.swift in Sources */,
 				B2E1546C2575B7CF008BE604 /* SpacerAdornment.swift in Sources */,
 				B2965532257C0BD4008D1858 /* EventKitAlarm+DictionaryCodable.swift in Sources */,
 				B2F6B4FA2562DD64000BC78E /* UIWindow+Utilities.swift in Sources */,
@@ -878,11 +924,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B227DF0425673C490002C127 /* PBXTargetDependency */ = {
+		B25B6606258D04F40006B771 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = maccatalyst;
 			target = B227DEEF256738860002C127 /* RoosterAppKitPlugin */;
-			targetProxy = B227DF0325673C490002C127 /* PBXContainerItemProxy */;
+			targetProxy = B25B6605258D04F40006B771 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -904,6 +950,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = RoosterAppKitPlugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -912,6 +959,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MODULEMAP_FILE = RoosterAppKitPlugin/RoosterAppKitPlugin.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.RoosterAppKitPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -929,6 +977,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = RoosterAppKitPlugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -937,6 +986,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MODULEMAP_FILE = RoosterAppKitPlugin/RoosterAppKitPlugin.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.RoosterAppKitPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

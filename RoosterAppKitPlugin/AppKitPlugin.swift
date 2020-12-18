@@ -25,6 +25,7 @@ extension Date {
 
 
 class AppKitPlugin : NSObject, AppKitPluginProtocol {
+    
     func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
         
@@ -39,54 +40,6 @@ class AppKitPlugin : NSObject, AppKitPluginProtocol {
             
             print("attempted to foreground: \(bundle): \(result)")
         }
-    }
-    
-    func findEvents(with calendars: [EKCalendar]!, store: EKEventStore!) -> [EKEvent]! {
-        let currentCalendar = NSCalendar.current
-        
-        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
-        
-        guard let today = currentCalendar.date(from: dateComponents) else {
-            return []
-        }
-        
-        guard let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 30, to: today) else {
-            return []
-        }
-        
-        let predicate = store.predicateForEvents(withStart: today,
-                                                 end: tomorrow,
-                                                 calendars: calendars)
-
-    
-        let now = Date()
-        
-        var events:[EKEvent] = []
-        
-        for event in store.events(matching: predicate) {
-            
-            if event.isAllDay {
-                continue
-            }
-            
-            guard let endDate = event.endDate else {
-                continue
-            }
-            
-            if event.status == .canceled {
-                continue
-            }
-            
-//            guard let title = event.title else {
-//                continue
-//            }
-
-            if endDate.isAfterDate(now) {
-                events.append(event)
-            }
-        }
-        
-        return events
     }
     
     func requestPermissionToDelegateCalendars(for eventStore: EKEventStore, completion: ((Bool, EKEventStore?, Error?) -> Void)?) {
@@ -167,4 +120,7 @@ class AppKitPlugin : NSObject, AppKitPluginProtocol {
         }
     }
     
+    func createMenuBarPopover() -> MenuBarPopoverProtocol {
+        return MenuBarPopover()
+    }
 }
