@@ -114,7 +114,7 @@ class AlarmController {
         self.playAlarmSoundIfNeeded(forItem:item)
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
-            AppDelegate.instance.appKitBundle?.bringAppToFront()
+            AppKitPlugin.instance.bringAppToFront()
         }
     }
     
@@ -214,7 +214,7 @@ extension AlarmController {
             }
             
             if let bundleID = item.bestAppBundle {
-                AppDelegate.instance.appKitBundle?.bringAnotherApp(toFront: bundleID)
+                AppKitPlugin.instance.bringAnotherApp(toFront: bundleID)
             }
         }
     }

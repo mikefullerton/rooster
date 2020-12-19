@@ -12,7 +12,7 @@ import SwiftUI
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var appKitBundle: AppKitPluginProtocol?
+    var menuBarPopover = MenuBarPopover()
     
     static var instance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -31,8 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let bundleLoader = AppKitBundleLoader()
-        self.appKitBundle = bundleLoader.load()
         AlarmController.instance.start()
         
         return true

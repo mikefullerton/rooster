@@ -1,0 +1,9 @@
+
+framework module RoosterAppKitPlugin {
+
+    header "AppKitPluginProtocol.h"
+    
+    export *
+    module * { export * }
+
+}
