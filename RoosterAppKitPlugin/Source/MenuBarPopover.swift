@@ -33,6 +33,10 @@ extension NSImage {
     
     private var statusBarItem: NSStatusItem? = nil
     
+    var showingRedRooster = false
+    
+    private weak var timer: Timer?
+    
     var redRoosterImage : NSImage? {
         if let image = Bundle(for: type(of: self)).image(forResource: NSImage.Name("RedRoosterIcon")) {
             
@@ -115,6 +119,15 @@ extension NSImage {
     
     var _isAlarmFiring = false
     
+    func toggleImages() {
+        self.showingRedRooster = !self.showingRedRooster
+        if self.showingRedRooster {
+            self.setStatusBarIconImage(self.redRoosterImage)
+        } else {
+            self.setStatusBarIconImage(self.defaultRoosterImage)
+        }
+    }
+    
     var isAlarmFiring: Bool {
         
         get {
@@ -126,11 +139,33 @@ extension NSImage {
                 _isAlarmFiring = firing
                 
                 if _isAlarmFiring {
+                    self.showingRedRooster = true
                     self.setStatusBarIconImage(self.redRoosterImage)
+                    self.startFlashingTimer()
                 } else {
+                    self.showingRedRooster = false
                     self.setStatusBarIconImage(self.defaultRoosterImage)
                 }
             }
+        }
+    }
+    
+    func startFlashingTimer() {
+        self.stopFlashingTimer()
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
+            if self.isAlarmFiring {
+                self.toggleImages()
+            } else {
+                self.stopFlashingTimer()
+            }
+        }
+        self.timer = timer
+    }
+    
+    func stopFlashingTimer() {
+        if self.timer != nil {
+            self.timer?.invalidate()
+            self.timer = nil
         }
     }
 }

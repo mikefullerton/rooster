@@ -134,10 +134,11 @@ class AlarmController {
     private func startAlarm<T>(forItem item: T) where T: EventKitItem {
         self.openEventLocationURL(forItem: item)
         self.playAlarmSoundIfNeeded(forItem:item)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
-            AppKitPlugin.instance.bringAppToFront()
-        }
+
+// Do we want this since you can just click in the menubar now?
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
+//            AppKitPlugin.instance.bringAppToFront()
+//        }
     }
     
     private func updateAlarms<T>(forItems items: [T]) -> [T]? where T: EventKitItem {
