@@ -2,7 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Rooster.xcodeproj">
+      location = "group:Podfile">
+   </FileRef>
+   <FileRef
+      location = "group:AppKitPlugin/RoosterAppKitPlugin.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App/Rooster.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -6,20 +6,20 @@
 //
 
 import Foundation
-import Sparkle
-
-extension AppKitPlugin {
-    public class SparkleController : NSObject {
-        
-        let updater: SUUpdater
-        
-        public init(withBundle appBundle: Bundle) {
-            self.updater = SUUpdater.init(for: appBundle)
-        }
-        
-        
-    }
-}
+//import Sparkle
+//
+//extension AppKitPlugin {
+//    public class SparkleController : NSObject {
+//        
+//        let updater: SUUpdater
+//        
+//        public init(withBundle appBundle: Bundle) {
+//            self.updater = SUUpdater.init(for: appBundle)
+//        }
+//        
+//        
+//    }
+//}
 /*
  Public key (SUPublicEDKey value) for this key is:
 

@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		29962B20375DDABDB67966F4 /* Pods_RoosterAppKitPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B779D4E6B61C877195F4512 /* Pods_RoosterAppKitPlugin.framework */; };
+		B2866190258E824000D3A538 /* AppKitPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2866188258E824000D3A538 /* AppKitPluginProtocol.swift */; };
+		B2866191258E824000D3A538 /* SparkleSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286618A258E824000D3A538 /* SparkleSupport.swift */; };
+		B2866192258E824000D3A538 /* MenuBarPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286618B258E824000D3A538 /* MenuBarPopover.swift */; };
+		B2866193258E824000D3A538 /* AppKitPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286618C258E824000D3A538 /* AppKitPlugin.swift */; };
+		B2866194258E824000D3A538 /* MenuBarPopover+ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286618E258E824000D3A538 /* MenuBarPopover+ContentView.swift */; };
+		B2866195258E824000D3A538 /* MenuBarPopoverProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286618F258E824000D3A538 /* MenuBarPopoverProcotol.swift */; };
+		B28661A9258E861F00D3A538 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28661A8258E861F00D3A538 /* Sparkle.framework */; };
+		B28661AA258E862A00D3A538 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B28661A8258E861F00D3A538 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B28661A5258E84EB00D3A538 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B28661AA258E862A00D3A538 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4B779D4E6B61C877195F4512 /* Pods_RoosterAppKitPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RoosterAppKitPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51B028BEC15A7BA604122BD3 /* Pods-RoosterAppKitPlugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoosterAppKitPlugin.debug.xcconfig"; path = "Target Support Files/Pods-RoosterAppKitPlugin/Pods-RoosterAppKitPlugin.debug.xcconfig"; sourceTree = "<group>"; };
+		B286617B258E810400D3A538 /* RoosterAppKitPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoosterAppKitPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2866188258E824000D3A538 /* AppKitPluginProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppKitPluginProtocol.swift; sourceTree = "<group>"; };
+		B2866189258E824000D3A538 /* RoosterAppKitPlugin-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RoosterAppKitPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
+		B286618A258E824000D3A538 /* SparkleSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SparkleSupport.swift; sourceTree = "<group>"; };
+		B286618B258E824000D3A538 /* MenuBarPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarPopover.swift; sourceTree = "<group>"; };
+		B286618C258E824000D3A538 /* AppKitPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppKitPlugin.swift; sourceTree = "<group>"; };
+		B286618D258E824000D3A538 /* AppKitPluginProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppKitPluginProtocol.h; sourceTree = "<group>"; };
+		B286618E258E824000D3A538 /* MenuBarPopover+ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MenuBarPopover+ContentView.swift"; sourceTree = "<group>"; };
+		B286618F258E824000D3A538 /* MenuBarPopoverProcotol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverProcotol.swift; sourceTree = "<group>"; };
+		B2866198258E825500D3A538 /* Info2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info2.plist; sourceTree = "<group>"; };
+		B2866199258E825500D3A538 /* RoosterAppKitPlugin.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = RoosterAppKitPlugin.modulemap; sourceTree = "<group>"; };
+		B286619A258E825500D3A538 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B28661A8258E861F00D3A538 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = ../Pods/Sparkle/Sparkle.framework; sourceTree = "<group>"; };
+		C4D3FFF9D1574DDD1F24C1DB /* Pods-RoosterAppKitPlugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoosterAppKitPlugin.release.xcconfig"; path = "Target Support Files/Pods-RoosterAppKitPlugin/Pods-RoosterAppKitPlugin.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B2866178258E810400D3A538 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B28661A9258E861F00D3A538 /* Sparkle.framework in Frameworks */,
+				29962B20375DDABDB67966F4 /* Pods_RoosterAppKitPlugin.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		65CB8CB9FEDC0377AC07F4C3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				51B028BEC15A7BA604122BD3 /* Pods-RoosterAppKitPlugin.debug.xcconfig */,
+				C4D3FFF9D1574DDD1F24C1DB /* Pods-RoosterAppKitPlugin.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		B2866172258E810400D3A538 = {
+			isa = PBXGroup;
+			children = (
+				B2866187258E824000D3A538 /* Source */,
+				B2866197258E825500D3A538 /* Other Files */,
+				B286617C258E810400D3A538 /* Products */,
+				65CB8CB9FEDC0377AC07F4C3 /* Pods */,
+				FFD60229D19B30BEFEC8547D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B286617C258E810400D3A538 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B286617B258E810400D3A538 /* RoosterAppKitPlugin.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2866187258E824000D3A538 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				B2866188258E824000D3A538 /* AppKitPluginProtocol.swift */,
+				B2866189258E824000D3A538 /* RoosterAppKitPlugin-Bridging-Header.h */,
+				B286618A258E824000D3A538 /* SparkleSupport.swift */,
+				B286618B258E824000D3A538 /* MenuBarPopover.swift */,
+				B286618C258E824000D3A538 /* AppKitPlugin.swift */,
+				B286618D258E824000D3A538 /* AppKitPluginProtocol.h */,
+				B286618E258E824000D3A538 /* MenuBarPopover+ContentView.swift */,
+				B286618F258E824000D3A538 /* MenuBarPopoverProcotol.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		B2866197258E825500D3A538 /* Other Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2866198258E825500D3A538 /* Info2.plist */,
+				B2866199258E825500D3A538 /* RoosterAppKitPlugin.modulemap */,
+				B286619A258E825500D3A538 /* Info.plist */,
+			);
+			path = "Other Files";
+			sourceTree = "<group>";
+		};
+		FFD60229D19B30BEFEC8547D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B28661A8258E861F00D3A538 /* Sparkle.framework */,
+				4B779D4E6B61C877195F4512 /* Pods_RoosterAppKitPlugin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B286617A258E810400D3A538 /* RoosterAppKitPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2866181258E810400D3A538 /* Build configuration list for PBXNativeTarget "RoosterAppKitPlugin" */;
+			buildPhases = (
+				5D515042E1C32C95DD34A90A /* [CP] Check Pods Manifest.lock */,
+				B2866177258E810400D3A538 /* Sources */,
+				B2866178258E810400D3A538 /* Frameworks */,
+				B2866179258E810400D3A538 /* Resources */,
+				B28661A5258E84EB00D3A538 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RoosterAppKitPlugin;
+			productName = RoosterAppKitPlugin;
+			productReference = B286617B258E810400D3A538 /* RoosterAppKitPlugin.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B2866173258E810400D3A538 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					B286617A258E810400D3A538 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = B2866176258E810400D3A538 /* Build configuration list for PBXProject "RoosterAppKitPlugin" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B2866172258E810400D3A538;
+			productRefGroup = B286617C258E810400D3A538 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B286617A258E810400D3A538 /* RoosterAppKitPlugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B2866179258E810400D3A538 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5D515042E1C32C95DD34A90A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RoosterAppKitPlugin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B2866177258E810400D3A538 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2866195258E824000D3A538 /* MenuBarPopoverProcotol.swift in Sources */,
+				B2866191258E824000D3A538 /* SparkleSupport.swift in Sources */,
+				B2866193258E824000D3A538 /* AppKitPlugin.swift in Sources */,
+				B2866192258E824000D3A538 /* MenuBarPopover.swift in Sources */,
+				B2866194258E824000D3A538 /* MenuBarPopover+ContentView.swift in Sources */,
+				B2866190258E824000D3A538 /* AppKitPluginProtocol.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B286617F258E810400D3A538 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B2866180258E810400D3A538 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B2866182258E810400D3A538 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 51B028BEC15A7BA604122BD3 /* Pods-RoosterAppKitPlugin.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "Other Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.RoosterAppKitPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/RoosterAppKitPlugin-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		B2866183258E810400D3A538 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4D3FFF9D1574DDD1F24C1DB /* Pods-RoosterAppKitPlugin.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "Other Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.RoosterAppKitPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/RoosterAppKitPlugin-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B2866176258E810400D3A538 /* Build configuration list for PBXProject "RoosterAppKitPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B286617F258E810400D3A538 /* Debug */,
+				B2866180258E810400D3A538 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B2866181258E810400D3A538 /* Build configuration list for PBXNativeTarget "RoosterAppKitPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2866182258E810400D3A538 /* Debug */,
+				B2866183258E810400D3A538 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B2866173258E810400D3A538 /* Project object */;
+}
