@@ -177,6 +177,7 @@
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2866124258E630900D3A538 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		B286612B258E700E00D3A538 /* SparkleSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleSupport.swift; sourceTree = "<group>"; };
 		B2965509257BD227008D1858 /* Preferences+Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+Sounds.swift"; sourceTree = "<group>"; };
 		B296550D257BD2F2008D1858 /* PrefencesDataStore+IdentifierList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrefencesDataStore+IdentifierList.swift"; sourceTree = "<group>"; };
 		B2965511257BD33A008D1858 /* PreferencesDataStore+IdentifierDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreferencesDataStore+IdentifierDictionary.swift"; sourceTree = "<group>"; };
@@ -287,7 +288,6 @@
 				6238FC39C87994F491CB1D67 /* Pods-RoosterAppKitPlugin.debug.xcconfig */,
 				7CB6AB3E3719A9A0EBA62F99 /* Pods-RoosterAppKitPlugin.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -355,6 +355,7 @@
 				B227DEF2256738860002C127 /* Info.plist */,
 				B227DEF9256738C50002C127 /* AppKitPlugin.swift */,
 				B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */,
+				B286612B258E700E00D3A538 /* SparkleSupport.swift */,
 			);
 			path = RoosterAppKitPlugin;
 			sourceTree = "<group>";
