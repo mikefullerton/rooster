@@ -112,6 +112,7 @@
 		B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */; };
 		B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818062576C05C00B28119 /* TimeRemainingView.swift */; };
 		B2F818292576FB1100B28119 /* String+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F818282576FB1100B28119 /* String+Utilities.swift */; };
+		EEDCA4937BC2CC39FD7F9703 /* Pods_RoosterAppKitPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD977A1D3F481FAB98C09AD /* Pods_RoosterAppKitPlugin.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6238FC39C87994F491CB1D67 /* Pods-RoosterAppKitPlugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoosterAppKitPlugin.debug.xcconfig"; path = "Target Support Files/Pods-RoosterAppKitPlugin/Pods-RoosterAppKitPlugin.debug.xcconfig"; sourceTree = "<group>"; };
+		7CB6AB3E3719A9A0EBA62F99 /* Pods-RoosterAppKitPlugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoosterAppKitPlugin.release.xcconfig"; path = "Target Support Files/Pods-RoosterAppKitPlugin/Pods-RoosterAppKitPlugin.release.xcconfig"; sourceTree = "<group>"; };
 		B2020A992577D83D00F478CC /* PreferencesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTableViewController.swift; sourceTree = "<group>"; };
 		B2020A9D2577D88600F478CC /* Reloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reloader.swift; sourceTree = "<group>"; };
 		B2020AB72577D99800F478CC /* PreferencesTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesTableViewModel.swift; sourceTree = "<group>"; };
@@ -173,6 +176,7 @@
 		B2742C63256048CE0087E4B6 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster.entitlements; sourceTree = "<group>"; };
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B2866124258E630900D3A538 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		B2965509257BD227008D1858 /* Preferences+Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+Sounds.swift"; sourceTree = "<group>"; };
 		B296550D257BD2F2008D1858 /* PrefencesDataStore+IdentifierList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrefencesDataStore+IdentifierList.swift"; sourceTree = "<group>"; };
 		B2965511257BD33A008D1858 /* PreferencesDataStore+IdentifierDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreferencesDataStore+IdentifierDictionary.swift"; sourceTree = "<group>"; };
@@ -233,7 +237,7 @@
 		B2F6B49A25619A34000BC78E /* EventKitEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitEvent.swift; sourceTree = "<group>"; };
 		B2F6B49D25619A43000BC78E /* EventKitReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitReminder.swift; sourceTree = "<group>"; };
 		B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSceneDelegate.swift; sourceTree = "<group>"; };
-		B2F6B4B12561DAA5000BC78E /* Rooster (iOS)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rooster (iOS)-Bridging-Header.h"; sourceTree = "<group>"; };
+		B2F6B4B12561DAA5000BC78E /* Rooster-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rooster-Bridging-Header.h"; sourceTree = "<group>"; };
 		B2F6B4F92562DD64000BC78E /* UIWindow+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Utilities.swift"; sourceTree = "<group>"; };
 		B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSceneDelegate.swift; sourceTree = "<group>"; };
 		B2F6B50A2562EBE5000BC78E /* TestCalendars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCalendars.swift; sourceTree = "<group>"; };
@@ -255,6 +259,7 @@
 		B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
 		B2F818062576C05C00B28119 /* TimeRemainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingView.swift; sourceTree = "<group>"; };
 		B2F818282576FB1100B28119 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
+		BDD977A1D3F481FAB98C09AD /* Pods_RoosterAppKitPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RoosterAppKitPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,6 +267,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEDCA4937BC2CC39FD7F9703 /* Pods_RoosterAppKitPlugin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +281,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		233328332EC297ECB3CF32BB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6238FC39C87994F491CB1D67 /* Pods-RoosterAppKitPlugin.debug.xcconfig */,
+				7CB6AB3E3719A9A0EBA62F99 /* Pods-RoosterAppKitPlugin.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A3610C7C2E2FFA5C51C91B79 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BDD977A1D3F481FAB98C09AD /* Pods_RoosterAppKitPlugin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B2020AB62577D99800F478CC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,11 +390,19 @@
 		B2742C9F25605D6C0087E4B6 /* Other Files */ = {
 			isa = PBXGroup;
 			children = (
-				B2F6B4B12561DAA5000BC78E /* Rooster (iOS)-Bridging-Header.h */,
+				B2F6B4B12561DAA5000BC78E /* Rooster-Bridging-Header.h */,
 				B2E1512A255EED2B002672EC /* Info.plist */,
 				B2742C63256048CE0087E4B6 /* Rooster.entitlements */,
 			);
 			path = "Other Files";
+			sourceTree = "<group>";
+		};
+		B2866123258E62DD00D3A538 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2866124258E630900D3A538 /* Podfile */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		B296554E257C0F86008D1858 /* Events */ = {
@@ -476,12 +508,15 @@
 				B2742C9F25605D6C0087E4B6 /* Other Files */,
 				B227DEF1256738860002C127 /* RoosterAppKitPlugin */,
 				B2E15128255EED2B002672EC /* Products */,
+				233328332EC297ECB3CF32BB /* Pods */,
+				A3610C7C2E2FFA5C51C91B79 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		B2E1511F255EED2B002672EC /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B2866123258E62DD00D3A538 /* Supporting Files */,
 				B2C7423D2577225E006645A0 /* PreferencesWindow */,
 				B2E1549225768619008BE604 /* Views */,
 				B2F6B50D2562F20E000BC78E /* MainWindow */,
@@ -669,6 +704,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B227DEF5256738860002C127 /* Build configuration list for PBXNativeTarget "RoosterAppKitPlugin" */;
 			buildPhases = (
+				D9FCB582B2C4AA63617D1A27 /* [CP] Check Pods Manifest.lock */,
 				B227DEEC256738860002C127 /* Sources */,
 				B227DEED256738860002C127 /* Frameworks */,
 				B227DEEE256738860002C127 /* Resources */,
@@ -682,9 +718,9 @@
 			productReference = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
-		B2E15126255EED2B002672EC /* Rooster (iOS) */ = {
+		B2E15126255EED2B002672EC /* Rooster */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B2E1513B255EED2B002672EC /* Build configuration list for PBXNativeTarget "Rooster (iOS)" */;
+			buildConfigurationList = B2E1513B255EED2B002672EC /* Build configuration list for PBXNativeTarget "Rooster" */;
 			buildPhases = (
 				B2E15123255EED2B002672EC /* Sources */,
 				B2E15124255EED2B002672EC /* Frameworks */,
@@ -696,7 +732,7 @@
 			dependencies = (
 				B227DF0425673C490002C127 /* PBXTargetDependency */,
 			);
-			name = "Rooster (iOS)";
+			name = Rooster;
 			productName = "Rooster (iOS)";
 			productReference = B2E15127255EED2B002672EC /* Rooster.app */;
 			productType = "com.apple.product-type.application";
@@ -733,7 +769,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B2E15126255EED2B002672EC /* Rooster (iOS) */,
+				B2E15126255EED2B002672EC /* Rooster */,
 				B227DEEF256738860002C127 /* RoosterAppKitPlugin */,
 			);
 		};
@@ -759,6 +795,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D9FCB582B2C4AA63617D1A27 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RoosterAppKitPlugin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B227DEEC256738860002C127 /* Sources */ = {
@@ -900,6 +961,7 @@
 /* Begin XCBuildConfiguration section */
 		B227DEF3256738860002C127 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6238FC39C87994F491CB1D67 /* Pods-RoosterAppKitPlugin.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -925,6 +987,7 @@
 		};
 		B227DEF4256738860002C127 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7CB6AB3E3719A9A0EBA62F99 /* Pods-RoosterAppKitPlugin.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1078,7 +1141,7 @@
 				PRODUCT_NAME = Rooster;
 				SDKROOT = iphoneos.internal;
 				SUPPORTS_MACCATALYST = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Other Files/Rooster (iOS)-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Other Files/Rooster-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
@@ -1105,7 +1168,7 @@
 				PRODUCT_NAME = Rooster;
 				SDKROOT = iphoneos.internal;
 				SUPPORTS_MACCATALYST = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Other Files/Rooster (iOS)-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Other Files/Rooster-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
 				VALIDATE_PRODUCT = YES;
@@ -1133,7 +1196,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B2E1513B255EED2B002672EC /* Build configuration list for PBXNativeTarget "Rooster (iOS)" */ = {
+		B2E1513B255EED2B002672EC /* Build configuration list for PBXNativeTarget "Rooster" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B2E1513C255EED2B002672EC /* Debug */,
