@@ -7,7 +7,6 @@
 
 import Foundation
 import EventKit
-import UIKit
 
 struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hashable  {
     let EKCalendar: EKCalendar
@@ -16,7 +15,6 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
     let sourceTitle: String
     let sourceIdentifier: String
     let isSubscribed: Bool
-    let color: UIColor?
     
     init(withCalendar EKCalendar: EKCalendar,
          subscribed: Bool) {
@@ -26,8 +24,6 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
         self.id = EKCalendar.uniqueID
         self.sourceTitle = EKCalendar.source.title
         self.sourceIdentifier = EKCalendar.source.sourceIdentifier
-        
-        self.color = UIColor(cgColor: EKCalendar.cgColor)
     }
     
     var description: String {

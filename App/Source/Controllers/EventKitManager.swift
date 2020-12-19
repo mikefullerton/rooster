@@ -236,7 +236,7 @@ class EventKitManager {
     
     private func handleAccessGranted() {
         
-        AppKitPlugin.instance.requestPermissionToDelegateCalendars(for: self.store, completion: { (success, delegateEventStore, error) in
+        AppKitPluginController.instance.requestPermissionToDelegateCalendars(for: self.store, completion: { (success, delegateEventStore, error) in
             DispatchQueue.main.async {
                 if success && delegateEventStore != nil {
                     self.delegateEventStore = delegateEventStore!

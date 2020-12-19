@@ -192,21 +192,3 @@ extension EventKitManager {
     }
     
 }
-
-extension EKCalendar {
-    var uniqueID: String {
-        return "\(self.source.sourceIdentifier)+\(self.calendarIdentifier)"
-    }
-}
-
-extension EKReminder {
-    var uniqueID: String {
-        return "\(self.calendar.uniqueID)+\(self.calendarItemExternalIdentifier ?? self.calendarItemIdentifier)"
-    }
-}
-
-extension EKEvent {
-    var uniqueID: String {
-        return "\(self.calendar.uniqueID)+\(self.eventIdentifier ?? self.calendarItemExternalIdentifier ?? self.calendarItemIdentifier)"
-    }
-}

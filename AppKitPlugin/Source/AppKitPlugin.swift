@@ -9,21 +9,6 @@ import Foundation
 import AppKit
 import EventKit
 
-extension Date {
-    
-    func isAfterDate(_ date: Date) -> Bool {
-        let isAfter = self.compare(date) == .orderedDescending
-        return isAfter
-    }
-    
-    func isBeforeDate(_ date: Date) -> Bool {
-        let isBefore = self.compare(date) == .orderedAscending
-        return isBefore
-    }
-    
-}
-
-
 @objc class ActualAppKitPlugin : NSObject, AppKitPluginProtocol {
     
     func bringAppToFront() {

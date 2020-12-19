@@ -8,14 +8,14 @@
 import Foundation
 import EventKit
 
-class AppKitPlugin : NSObject, AppKitPluginProtocol {
+class AppKitPluginController : NSObject, AppKitPluginProtocol {
     
-    static var instance = AppKitPlugin()
+    static var instance = AppKitPluginController()
     
     private var plugin: AppKitPluginProtocol?
     
     private override init() {
-        self.plugin = AppKitPlugin.loadPlugin()
+        self.plugin = AppKitPluginController.loadPlugin()
     }
     
     func requestPermissionToDelegateCalendars(for eventStore: EKEventStore, completion: ((Bool, EKEventStore?, Error?) -> Void)?) {

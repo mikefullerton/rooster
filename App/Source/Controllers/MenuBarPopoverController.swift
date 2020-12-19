@@ -12,7 +12,7 @@ class MenuBarPopoverController : NSObject, MenuBarPopoverProtocolDelegate {
     static var instance = MenuBarPopoverController()
     
     var popover: MenuBarPopoverProtocol? {
-        return AppKitPlugin.instance.menuBarPopover
+        return AppKitPluginController.instance.menuBarPopover
     }
     
     private override init() {
@@ -48,7 +48,7 @@ class MenuBarPopoverController : NSObject, MenuBarPopoverProtocolDelegate {
         if AlarmController.instance.alarmsAreFiring {
             AlarmController.instance.stopAllAlarms()
         } else {
-            AppKitPlugin.instance.bringAppToFront()
+            AppKitPluginController.instance.bringAppToFront()
             // show popover
         }
         

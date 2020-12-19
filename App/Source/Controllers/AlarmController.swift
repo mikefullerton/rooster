@@ -291,7 +291,7 @@ extension AlarmController {
             }
             
             if let bundleID = item.bestAppBundle {
-                AppKitPlugin.instance.bringAnotherApp(toFront: bundleID)
+                AppKitPluginController.instance.bringAnotherApp(toFront: bundleID)
             }
         }
     }
