@@ -12,6 +12,9 @@ class AlarmController {
 
     static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
 
+    static let AlarmsDidStartEvent = NSNotification.Name("AlarmsDidStartEvent")
+    static let AlarmsDidStopEvent = NSNotification.Name("AlarmsDidStopEvent")
+
     static let instance = AlarmController()
     
     private weak var timer: Timer?
@@ -25,6 +28,10 @@ class AlarmController {
         self.firingEvents = Set<String>()
 
         NotificationCenter.default.addObserver(self, selector: #selector(dataModelDidChange(_:)), name: EventKitDataModelController.DidChangeEvent, object: nil)
+    }
+    
+    var alarmsAreFiring: Bool {
+        return self.firingEvents.count > 0
     }
     
     private func startTimerForNextEventTime() {
@@ -64,7 +71,12 @@ class AlarmController {
         if let alarmSound = self.alarmSoundManager.sound(forIdentifier: identifer) {
             self.firingEvents.remove(identifer)
             alarmSound.stop()
+
+            if self.firingEvents.count == 0 {
+                NotificationCenter.default.post(name: AlarmController.AlarmsDidStopEvent, object: self)
+            }
         }
+        
     }
     
     private func stopPlayingAlarmIfPlaying<T>(forItem item: T) where T: EventKitItem {
@@ -74,6 +86,11 @@ class AlarmController {
     private func playAlarmSoundIfNeeded<T>(forItem item: T) where T: EventKitItem {
         
         if !self.firingEvents.contains(item.id) {
+            
+            if self.firingEvents.count == 0 {
+                NotificationCenter.default.post(name: AlarmController.AlarmsDidStartEvent, object: self)
+            }
+            
             self.firingEvents.insert(item.id)
             
             guard self.alarmSoundManager.sound(forIdentifier: item.id) == nil else {
@@ -90,23 +107,28 @@ class AlarmController {
         AlarmController.instance.handleDataModelChanged()
     }
     
-    private func stopAlarmsForMissingItems() {
+    private func stopAlarmsForMissingOrFutureItems<T>(_ items: [T]) where T: EventKitItem {
         
         var itemsSet = Set<String>()
         
-        EventKitDataModelController.dataModel.events.forEach {
-            itemsSet.insert($0.id)
+        items.forEach { (item) in
+            itemsSet.insert(item.id)
+            
+            if !item.alarm.isHappeningNow {
+                self.stopAlarmIfPlaying(forIdentifier: item.id)
+            }
         }
         
-        EventKitDataModelController.dataModel.reminders.forEach {
-            itemsSet.insert($0.id)
-        }
-
         self.firingEvents.forEach {
-            if !itemsSet.contains($0) {
+            if itemsSet.contains($0) {
                 self.stopAlarmIfPlaying(forIdentifier: $0)
             }
         }
+    }
+    
+    private func stopAlarmsForMissingItems() {
+        self.stopAlarmsForMissingOrFutureItems(EventKitDataModelController.dataModel.events)
+        self.stopAlarmsForMissingOrFutureItems(EventKitDataModelController.dataModel.reminders)
     }
     
     private func startAlarm<T>(forItem item: T) where T: EventKitItem {
@@ -169,6 +191,60 @@ class AlarmController {
         }
         
         return madeChange ? outList : nil
+    }
+    
+    private func stopAlarms<T>(forItems items: [T]) -> [T]? where T: EventKitItem {
+        var outList:[T] = []
+        var madeChange = false
+        
+        for item in items {
+            
+            let alarm = item.alarm
+            var alarmState = alarm.state
+            
+            switch(item.alarm.state) {
+            case .neverFired:
+                break
+            
+            case .firing:
+                alarmState = .finished
+                self.stopPlayingAlarmIfPlaying(forItem: item)
+                
+            case .finished:
+                self.stopPlayingAlarmIfPlaying(forItem: item)
+            
+            case .willNeverFire:
+                break
+            }
+            
+            if alarmState != alarm.state {
+                let updatedAlarm = alarm.updatedAlarm(alarmState)
+                
+                let updatedItem = item.updateAlarm(updatedAlarm) as! T // wth, why do I need to cast this?
+                
+                outList.append(updatedItem)
+                
+                madeChange = true
+            } else {
+                outList.append(item)
+            }
+        }
+        
+        return madeChange ? outList : nil
+    }
+    
+    public func stopAllAlarms() {
+        self.stopAlarmsForMissingItems()
+
+        if let updatedEvents = self.stopAlarms(forItems: EventKitDataModelController.dataModel.events)  {
+            EventKitDataModelController.instance.update(someEvents: updatedEvents)
+        }
+    
+        if let updatedReminders = self.stopAlarms(forItems: EventKitDataModelController.dataModel.reminders) {
+            EventKitDataModelController.instance.update(someReminders: updatedReminders)
+        }
+    
+        self.startTimerForNextEventTime()
     }
     
     private func handleDataModelChanged() {

@@ -24,7 +24,7 @@ extension Date {
 }
 
 
-class AppKitPlugin : NSObject, AppKitPluginProtocol {
+@objc class ActualAppKitPlugin : NSObject, AppKitPluginProtocol {
     
     func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
@@ -120,7 +120,9 @@ class AppKitPlugin : NSObject, AppKitPluginProtocol {
         }
     }
     
-    func createMenuBarPopover() -> MenuBarPopoverProtocol {
+    lazy var menuBarPopover: MenuBarPopoverProtocol? = {
+        
         return MenuBarPopover()
-    }
+    }()
+    
 }

@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol AppKitPluginProtocol <NSObject>
 
+@property (readonly, strong, nonatomic, nullable) id<MenuBarPopoverProtocol> menuBarPopover;
+
 - (void)requestPermissionToDelegateCalendarsForEventStore:(EKEventStore *)eventStore
                                                completion:(nullable void (^)(BOOL success, EKEventStore* _Nullable delegateEventStore, NSError * _Nullable error)) completion;
 
@@ -26,13 +28,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)bringAppToFront;
 - (void)bringAnotherAppToFront:(NSString*)bundleIdentier;
 
-
-- (id<MenuBarPopoverProtocol>)createMenuBarPopover;
 @end
 
+@protocol MenuBarPopoverProtocolDelegate;
 
 @protocol MenuBarPopoverProtocol <NSObject>
-@property (readwrite, assign, nonatomic, getter=isHidden) BOOL hidden;
+- (void)showInMenuBar;
+@property (readwrite, weak, nonatomic) id<MenuBarPopoverProtocolDelegate> delegate;
+@property (readwrite, assign, nonatomic, getter=isPopoverHidden) BOOL popoverHidden;
+@property (readwrite, assign, nonatomic) BOOL isAlarmFiring;
+@end
+
+@protocol MenuBarPopoverProtocolDelegate <NSObject>
+- (void)menuBarButtonWasClicked:(id<MenuBarPopoverProtocol>)popover;
 @end
 
 NS_ASSUME_NONNULL_END

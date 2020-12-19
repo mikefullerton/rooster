@@ -30,10 +30,6 @@ class AppKitPlugin : NSObject, AppKitPluginProtocol {
         self.plugin?.bringAnotherApp(toFront: bundleIdentier)
     }
     
-    func createMenuBarPopover() -> MenuBarPopoverProtocol {
-        return (self.plugin?.createMenuBarPopover())!
-    }
-
     func openURLDirectly(inAppIfPossible url: URL, completion: ((Bool, Error?) -> Void)? = nil) {
         self.plugin?.openURLDirectly(inAppIfPossible: url, completion: completion)
     }
@@ -50,6 +46,8 @@ class AppKitPlugin : NSObject, AppKitPluginProtocol {
             return nil
         }
         
+        print("Loaded plugin principle class: \(principleClass)")
+    
         guard let plugin = principleClass.init() as? AppKitPluginProtocol else {
             print("Failed to initialize plugin: \(principleClass)")
             return nil
@@ -57,6 +55,11 @@ class AppKitPlugin : NSObject, AppKitPluginProtocol {
         
         return plugin
     }
+
+    var menuBarPopover: MenuBarPopoverProtocol? {
+        return self.plugin?.menuBarPopover
+    }
+    
     
 }
 

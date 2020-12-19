@@ -24,7 +24,13 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
                     let frame = NSRectFromString(windowBoundsString)
                     window.makeKey()
                     window.setFrameAndBecomeVisible(newFrame: frame)
-                    
+
+                    // this is a hack, if this is called before the window is show, it will crash
+                    DispatchQueue.main.async {
+
+                        MenuBarPopoverController.instance.showInMenuBar()
+                    }
+
 //                    print("restored window frame: \(frame) for key: \(key)")
                 }
             }

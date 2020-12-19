@@ -12,7 +12,7 @@ import SwiftUI
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var menuBarPopover = MenuBarPopover()
+//    var menuBarPopover = MenuBarPopover()
     
     static var instance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
