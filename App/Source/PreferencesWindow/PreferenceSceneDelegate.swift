@@ -27,7 +27,7 @@ class PreferencesSceneDelegate: WindowSceneDelegate {
         let viewController = PreferencesViewController()
         window.rootViewController = viewController
         
-        self.set(window: window, restoreKey: nil)
+        self.set(window: window, restoreKey: "")
     }
 }
 

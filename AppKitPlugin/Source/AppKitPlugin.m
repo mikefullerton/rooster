@@ -9,13 +9,6 @@
 
 #import "RoosterAppKitPlugin-Swift.h"
 
-@interface AppKitPlugin()
-@property (readwrite, strong, nonatomic, nullable) id<AppKitMenuBarController> menuBarPopover;
-@property (readwrite, strong, nonatomic) id<AppKitEventKitHelper> eventKitHelper;
-@property (readwrite, strong, nonatomic) id<AppKitUtilities> utilities;
-@property (readwrite, strong, nonatomic) id<AppKitInstallationUpdater> installationUpdater;
-@end
-
 @implementation AppKitPlugin
 
 - (instancetype)init {
@@ -25,6 +18,7 @@
         _eventKitHelper = [[EventKitHelper alloc] init];
         _utilities = [[Utilities alloc] init];
         _installationUpdater = [[InstallationUpdater alloc] init];
+        _windowController = [[WindowController alloc] init];
     }
     return self;
 }

@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -19,15 +17,28 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
 	<string>We want to make alarms tracking your events</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>We want to make alarms tracking your reminders with due dates</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.apple.rooster.staterestore.main</string>
+		<string>com.apple.rooster.staterestore.preferences</string>
+	</array>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://toolsweb.apple.com/apps/rooster/releases.rss</string>
+	<key>SUPublicEDKey</key>
+	<string>DP+imgyOegheuDKQfK7ur191ScNFBpkTLFoTBJHfF30=</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -54,16 +65,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>com.apple.rooster.staterestore.main</string>
-		<string>com.apple.rooster.staterestore.preferences</string>
-	</array>
-	<key>SUPublicEDKey</key>
-	<string>DP+imgyOegheuDKQfK7ur191ScNFBpkTLFoTBJHfF30=</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUFeedURL</key>
-	<string>https://toolsweb.apple.com/apps/rooster/releases.rss</string>
 </dict>
 </plist>

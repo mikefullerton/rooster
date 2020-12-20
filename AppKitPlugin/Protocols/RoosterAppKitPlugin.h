@@ -9,6 +9,7 @@
 #import "AppKitEventKitHelper.h"
 #import "AppKitUtilities.h"
 #import "AppKitInstallationUpdater.h"
+#import "AppKitWindowController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, strong, nonatomic) id<AppKitUtilities> utilities;
 
 @property (readonly, strong, nonatomic) id<AppKitInstallationUpdater> installationUpdater;
+
+@property (readonly, strong, nonatomic) id<AppKitWindowController> windowController;
 
 @end
 

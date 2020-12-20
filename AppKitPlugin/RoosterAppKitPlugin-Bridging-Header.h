@@ -3,3 +3,5 @@
 //
 
 #import "RoosterAppKitPlugin.h"
+
+#import "WindowControllerHelper.h"

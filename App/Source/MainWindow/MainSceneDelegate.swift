@@ -39,7 +39,7 @@ class MainSceneDelegate: WindowSceneDelegate, NSToolbarDelegate {
         
         self.set(window: window, restoreKey: "mainWindowBounds")
         
-        #if targetEnvironment(macCatalyst)
+#if targetEnvironment(macCatalyst)
         
         let toolbar = NSToolbar(identifier: "main")
         toolbar.delegate = self
@@ -49,7 +49,11 @@ class MainSceneDelegate: WindowSceneDelegate, NSToolbarDelegate {
             titlebar.toolbar = toolbar
             titlebar.toolbarStyle = .automatic
         }
-        #endif
+#endif
+        
+        DispatchQueue.main.async {
+            AppDelegate.instance.mainWindowDidShow()
+        }
     }
     
     

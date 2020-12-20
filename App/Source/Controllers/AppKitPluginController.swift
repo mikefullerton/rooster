@@ -10,7 +10,6 @@ import EventKit
 import OSLog
 
 class AppKitPluginController : NSObject, RoosterAppKitPlugin {
-    
     private static let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPluginController")
         
     static var instance = AppKitPluginController()
@@ -61,6 +60,11 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin {
         return self.plugin!.installationUpdater
     }
 
+    var windowController: AppKitWindowController {
+        return self.plugin!.windowController
+    }
+    
+    
     
 }
 
