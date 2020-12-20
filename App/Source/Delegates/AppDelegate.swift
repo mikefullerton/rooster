@@ -10,9 +10,7 @@ import UIKit
 import SwiftUI
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-//    var menuBarPopover = MenuBarPopover()
+class AppDelegate: UIResponder, UIApplicationDelegate, AppKitInstallationUpdaterDelegate {
     
     static var instance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -21,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     enum UserActivities: String {
         case preferences = "com.apple.rooster.preferences"
         case main = "com.apple.rooster.main"
+        case update = "com.apple.rooster.update"
     }
     
     enum SceneNames: String {
@@ -30,8 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        AlarmController.instance.start()
         
         return true
     }
@@ -53,21 +50,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return configuration
     }
 
-    override func buildMenu(with builder: UIMenuBuilder) {
-        super.buildMenu(with: builder)
-
+    private var preferencesMenuItem : UIMenu {
         let preferencesCommand = UICommand(title: "Preferences…",
                                     image: nil,
                                     action: #selector(self.showPreferences(_:)),
                                     propertyList: nil)
 
-        let calendarPreferencesMenu = UIMenu(title: "",
-                                     image: nil,
-                                     identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
-                                     options: [ UIMenu.Options.displayInline ],
-                                     children: [ preferencesCommand ])
+        return UIMenu(title: "",
+                      image: nil,
+                      identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
+                      options: [ UIMenu.Options.displayInline ],
+                      children: [ preferencesCommand ])
+    }
+    
+    @objc private func showPreferences(_ sender: AppDelegate) {
+        self.showPreferences()
+    }
+    
+    private var updateMenuItem : UIMenu {
+        let command = UICommand(title: "Check for Updates",
+                                image: nil,
+                                action: #selector(self.checkForUpdates(_:)),
+                                propertyList: nil)
 
-        builder.insertSibling(calendarPreferencesMenu, afterMenu: .about)
+        return UIMenu(title: "",
+                          image: nil,
+                          identifier: UIMenu.Identifier(UserActivities.update.rawValue),
+                          options: [ UIMenu.Options.displayInline ],
+                          children: [ command ])
+    }
+    
+    override func buildMenu(with builder: UIMenuBuilder) {
+        super.buildMenu(with: builder)
+
+        let preferencesMenuItem = self.preferencesMenuItem
+        builder.insertSibling(preferencesMenuItem, afterMenu: .about)
+        
+        let updateMenuItem = self.updateMenuItem
+        builder.insertSibling(updateMenuItem, afterMenu: preferencesMenuItem.identifier)
+        
     }
     
     func showPreferences () {
@@ -75,8 +96,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
     }
 
-    @objc private func showPreferences(_ sender: AppDelegate) {
-        self.showPreferences()
+    @objc private func checkForUpdates(_ sender: AppDelegate) {
+        AppKitPluginController.instance.installationUpdater.checkForUpdates()
+    }
+
+    func appKitInstallationUpdater(_ updater: AppKitInstallationUpdater, didCheckForUpdate updateAvailable: Bool, error: Error?) {
+        
+    }
+    
+    public func mainWindowDidShow() {
+        AlarmController.instance.start()
+        MenuBarPopoverController.instance.showIconInMenuBar()
+        AppKitPluginController.instance.installationUpdater.delegate = self
+        AppKitPluginController.instance.installationUpdater.configure(withAppBundle: Bundle.init(for: type(of:self)))
     }
     
 //    func findMainScene() -> MainSceneDelegate? {

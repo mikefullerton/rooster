@@ -27,9 +27,9 @@ extension NSImage {
 }
 
 
-@objc class MenuBarPopover: NSObject, MenuBarPopoverProtocol {
+@objc class MenuBarController: NSObject, AppKitMenuBarController {
     
-    var delegate: MenuBarPopoverProtocolDelegate?
+    public weak var delegate: AppKitMenuBarControllerDelegate?
     
     private var statusBarItem: NSStatusItem? = nil
     
@@ -65,7 +65,7 @@ extension NSImage {
         }
     }
     
-    func showInMenuBar() {
+    func showIconInMenuBar() {
         let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.squareLength))
         
         if let button = statusBarItem.button,

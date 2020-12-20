@@ -7,11 +7,11 @@
 
 import Foundation
 
-class MenuBarPopoverController : NSObject, MenuBarPopoverProtocolDelegate {
+class MenuBarPopoverController : NSObject, AppKitMenuBarControllerDelegate {
     
     static var instance = MenuBarPopoverController()
     
-    var popover: MenuBarPopoverProtocol? {
+    var popover: AppKitMenuBarController? {
         return AppKitPluginController.instance.menuBarPopover
     }
     
@@ -38,17 +38,17 @@ class MenuBarPopoverController : NSObject, MenuBarPopoverProtocolDelegate {
         }
     }
     
-    func showInMenuBar() {
+    func showIconInMenuBar() {
         self.popover?.delegate = self
-        self.popover?.showInMenuBar()
+        self.popover?.showIconInMenuBar()
     }
     
-    func menuBarButtonWasClicked(_ popover: MenuBarPopoverProtocol) {
+    func menuBarButtonWasClicked(_ popover: AppKitMenuBarController) {
         
         if AlarmController.instance.alarmsAreFiring {
             AlarmController.instance.stopAllAlarms()
         } else {
-            AppKitPluginController.instance.bringAppToFront()
+            AppKitPluginController.instance.utilities.bringAppToFront()
             // show popover
         }
         

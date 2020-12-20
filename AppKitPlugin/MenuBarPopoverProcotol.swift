@@ -7,12 +7,12 @@
 
 import Foundation
 
-//@protocol MenuBarPopoverProtocol <NSObject>
+//@protocol AppKitMenuBarController <NSObject>
 //@property (readwrite, assign, nonatomic, getter=isHidden) BOOL hidden;
 //@end
 
-//public protocol MenuBarPopoverProtocol : NSObject {
+//public protocol AppKitMenuBarController : NSObject {
 //    var isHidden: Bool { get set }
 //
-//    static func create() -> MenuBarPopoverProtocol
+//    static func create() -> AppKitMenuBarController
 //}

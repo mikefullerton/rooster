@@ -18,5 +18,5 @@ import EventKit
 // 
 //    func bringAnotherApp(toFront bundleIdentier: String)
 //    
-//    func createMenubarPopover() -> MenuBarPopoverProtocol
+//    func createMenubarPopover() -> AppKitMenuBarController
 //}

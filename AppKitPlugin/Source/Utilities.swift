@@ -7,9 +7,9 @@
 
 import Foundation
 import AppKit
-import EventKit
 
-@objc class ActualAppKitPlugin : NSObject, AppKitPluginProtocol {
+
+@objc class Utilities : NSObject, AppKitUtilities {
     
     func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
@@ -27,28 +27,7 @@ import EventKit
         }
     }
     
-    func requestPermissionToDelegateCalendars(for eventStore: EKEventStore, completion: ((Bool, EKEventStore?, Error?) -> Void)?) {
-        if completion != nil {
-            completion!(false, nil, nil)
-        }
-    
-        let sources = eventStore.delegateSources
 
-        let delegateEventStore = EKEventStore(sources: sources)
-
-        delegateEventStore.requestAccess(to: EKEntityType.event) { (success, error) in
-
-            if success == false || error != nil {
-                if completion != nil {
-                    completion!(false, nil, error)
-                }
-            } else {
-                if completion != nil {
-                    completion!(true, delegateEventStore, nil)
-                }
-            }
-        }
-    }
     
     let webexBundleID = "com.cisco.webexmeetingsapp"
   
@@ -104,10 +83,4 @@ import EventKit
             
         }
     }
-    
-    lazy var menuBarPopover: MenuBarPopoverProtocol? = {
-        
-        return MenuBarPopover()
-    }()
-    
 }

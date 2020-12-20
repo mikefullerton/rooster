@@ -28,7 +28,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
                     // this is a hack, if this is called before the window is show, it will crash
                     DispatchQueue.main.async {
 
-                        MenuBarPopoverController.instance.showInMenuBar()
+                        AppDelegate.instance.mainWindowDidShow()
                     }
 
 //                    print("restored window frame: \(frame) for key: \(key)")

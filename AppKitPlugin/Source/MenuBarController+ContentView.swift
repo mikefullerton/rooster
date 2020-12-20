@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension MenuBarPopover {
+extension MenuBarController {
     
     struct ContentView: View {
         var body: some View {
