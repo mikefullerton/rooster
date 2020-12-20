@@ -7,25 +7,28 @@
 
 import Foundation
 import UIKit
+import OSLog
 
+/// Highlest level controller. This controls the alarms.
 class AlarmController {
-
-    static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
-
-    static let AlarmsDidStartEvent = NSNotification.Name("AlarmsDidStartEvent")
-    static let AlarmsDidStopEvent = NSNotification.Name("AlarmsDidStopEvent")
-
-    static let instance = AlarmController()
     
+    private static let logger = Logger(subsystem: "com.apple.rooster", category: "AlarmController")
+
+    public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
+    public static let AlarmsWillStartEvent = NSNotification.Name("AlarmsWillStartEvent")
+    public static let AlarmsDidStopEvent = NSNotification.Name("AlarmsDidStopEvent")
+
+    public static let instance = AlarmController()
+    
+    // private
     private weak var timer: Timer?
-    
-    private var firingEvents:Set<String>
+    private var firingEvents:[String: Alarmable]
     private let alarmSoundManager: AlarmSoundManager
     
-    init() {
+    private init() {
         self.timer = nil
         self.alarmSoundManager = AlarmSoundManager()
-        self.firingEvents = Set<String>()
+        self.firingEvents = [:]
 
         NotificationCenter.default.addObserver(self, selector: #selector(dataModelDidChange(_:)), name: EventKitDataModelController.DidChangeEvent, object: nil)
     }
@@ -34,10 +37,30 @@ class AlarmController {
         return self.firingEvents.count > 0
     }
     
-    private func startTimerForNextEventTime() {
-//        print("timer stopped")
-        self.stopTimer()
+    var logger: Logger {
+        return AlarmController.logger
+    }
+    
+    public func stopAllAlarms() {
+        self.stopAlarmsForMissingOrFutureItems()
+
+        if let updatedEvents = self.stopAlarms(forItems: EventKitDataModelController.dataModel.events)  {
+            EventKitDataModelController.instance.update(someEvents: updatedEvents)
+        }
+    
+        if let updatedReminders = self.stopAlarms(forItems: EventKitDataModelController.dataModel.reminders) {
+            EventKitDataModelController.instance.update(someReminders: updatedReminders)
+        }
         
+        self.logger.log("Stopped all alarms")
+        
+        self.startTimerForNextEventTime()
+    }
+
+    // MARK: timer management
+    
+    private func startTimerForNextEventTime() {
+        self.stopTimer()
         if let nextEventTime = EventKitDataModelController.dataModel.nextEventTime {
             self.startTimer(withDate: nextEventTime)
         }
@@ -52,12 +75,12 @@ class AlarmController {
         let fireInterval = fireTime - now
         
         let timer = Timer.scheduledTimer(withTimeInterval: fireInterval, repeats: false) { (timer) in
-//            print("timer fired after: \(fireInterval)")
-            self.timerDidFire()
+            self.logger.log("timer did fire after: \(fireInterval)")
+            self.handleDataModelChanged()
         }
         self.timer = timer
         
-//        print("started timer: \(timer) for time interval \(fireInterval)")
+//        logger.log("started timer: \(timer) for time interval \(fireInterval)")
     }
     
     private func stopTimer() {
@@ -66,32 +89,34 @@ class AlarmController {
             self.timer = nil
         }
     }
-
-    private func stopAlarmIfPlaying(forIdentifier identifer: String) {
-        if let alarmSound = self.alarmSoundManager.sound(forIdentifier: identifer) {
-            self.firingEvents.remove(identifer)
-            alarmSound.stop()
-
-            if self.firingEvents.count == 0 {
-                NotificationCenter.default.post(name: AlarmController.AlarmsDidStopEvent, object: self)
-            }
-        }
-        
-    }
+    
+    // MARK: alarm management
     
     private func stopPlayingAlarmIfPlaying<T>(forItem item: T) where T: EventKitItem {
-        self.stopAlarmIfPlaying(forIdentifier: item.id)
+        if let alarmSound = self.alarmSoundManager.sound(forIdentifier: item.id) {
+            self.firingEvents.removeValue(forKey: item.id)
+            alarmSound.stop()
+            self.logger.log("Stopped alarm sound: \(alarmSound.name) for \(item.title)")
+            
+            if self.firingEvents.count == 0 {
+                DispatchQueue.main.async {
+                    self.logger.log("Notifying that all alarms have stopped")
+                    NotificationCenter.default.post(name: AlarmController.AlarmsDidStopEvent, object: self)
+                }
+            }
+        }
     }
     
     private func playAlarmSoundIfNeeded<T>(forItem item: T) where T: EventKitItem {
         
-        if !self.firingEvents.contains(item.id) {
+        if self.firingEvents[item.id] == nil {
             
             if self.firingEvents.count == 0 {
-                NotificationCenter.default.post(name: AlarmController.AlarmsDidStartEvent, object: self)
+                self.logger.log("Notifying that alarms will start")
+                NotificationCenter.default.post(name: AlarmController.AlarmsWillStartEvent, object: self)
             }
             
-            self.firingEvents.insert(item.id)
+            self.firingEvents[item.id] = item
             
             guard self.alarmSoundManager.sound(forIdentifier: item.id) == nil else {
                 // already firing
@@ -100,11 +125,9 @@ class AlarmController {
             
             let alarmSound = RoosterCrowingAlarmSound()
             alarmSound?.play(forIdentifier: item.id)
+
+            self.logger.log("Started alarm sound: \(alarmSound?.name ?? "nil" ) for \(item.title)")
         }
-    }
-    
-    @objc private func dataModelDidChange(_ notif: Notification) {
-        AlarmController.instance.handleDataModelChanged()
     }
     
     private func stopAlarmsForMissingOrFutureItems<T>(_ items: [T]) where T: EventKitItem {
@@ -115,18 +138,19 @@ class AlarmController {
             itemsSet.insert(item.id)
             
             if !item.alarm.isHappeningNow {
-                self.stopAlarmIfPlaying(forIdentifier: item.id)
+                self.stopPlayingAlarmIfPlaying(forItem: item)
             }
         }
         
-        self.firingEvents.forEach {
-            if itemsSet.contains($0) {
-                self.stopAlarmIfPlaying(forIdentifier: $0)
+        self.firingEvents.forEach { (key, item) in
+            if itemsSet.contains(key),
+               let typedItem = item as? T {
+                self.stopPlayingAlarmIfPlaying(forItem: typedItem)
             }
         }
     }
     
-    private func stopAlarmsForMissingItems() {
+    private func stopAlarmsForMissingOrFutureItems() {
         self.stopAlarmsForMissingOrFutureItems(EventKitDataModelController.dataModel.events)
         self.stopAlarmsForMissingOrFutureItems(EventKitDataModelController.dataModel.reminders)
     }
@@ -146,6 +170,10 @@ class AlarmController {
         var madeChange = false
         
         for item in items {
+            
+            if self.firingEvents[item.id] != nil {
+                self.firingEvents[item.id] = item
+            }
             
             let alarm = item.alarm
             var alarmState = alarm.state
@@ -234,23 +262,15 @@ class AlarmController {
         return madeChange ? outList : nil
     }
     
-    public func stopAllAlarms() {
-        self.stopAlarmsForMissingItems()
-
-        if let updatedEvents = self.stopAlarms(forItems: EventKitDataModelController.dataModel.events)  {
-            EventKitDataModelController.instance.update(someEvents: updatedEvents)
-        }
+    // MARK: data model interaction
     
-        if let updatedReminders = self.stopAlarms(forItems: EventKitDataModelController.dataModel.reminders) {
-            EventKitDataModelController.instance.update(someReminders: updatedReminders)
-        }
-    
-        self.startTimerForNextEventTime()
+    @objc private func dataModelDidChange(_ notif: Notification) {
+        self.handleDataModelChanged()
     }
     
     private func handleDataModelChanged() {
 
-        self.stopAlarmsForMissingItems()
+        self.stopAlarmsForMissingOrFutureItems()
 
         if let updatedEvents = self.updateAlarms(forItems: EventKitDataModelController.dataModel.events)  {
             EventKitDataModelController.instance.update(someEvents: updatedEvents)
@@ -263,11 +283,8 @@ class AlarmController {
         self.startTimerForNextEventTime()
     }
     
-    private func timerDidFire() {
-        self.handleDataModelChanged()
-    }
-    
-    func start() {
+    /// called by the AppDelegate
+    public func start() {
         EventKitDataModelController.instance.authenticate { (success) in
             NotificationCenter.default.post(name: AlarmController.CalendarDidAuthenticateEvent, object: self)
         }
@@ -285,6 +302,9 @@ class AlarmController {
 extension AlarmController {
     func openEventLocationURL<T>(forItem item: T) where T: EventKitItem {
         if let locationURL = item.bestLocationURL {
+            
+            self.logger.log("Opening location URL: \(locationURL) forItem: \(item.title)")
+            
             UIApplication.shared.open(locationURL,
                                       options: [:]) { (innerSuccess) in
                 

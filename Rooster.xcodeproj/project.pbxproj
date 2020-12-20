@@ -27,7 +27,7 @@
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF242568096C0002C127 /* MainSplitViewController.swift */; };
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
-		B236FCD6255EFE0A00A2E58D /* EventKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */; };
+		B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
 		B256BC04258023E500FA67DC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC03258023E500FA67DC /* TabBarController.swift */; };
@@ -78,8 +78,7 @@
 		B28662A0258EC7C200D3A538 /* EventKitAlarm+SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7098E257FE2AB00C48ED5 /* EventKitAlarm+SavedState.swift */; };
 		B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662AD258F9C7C00D3A538 /* EventKitHelper.swift */; };
 		B28662BA258FA41100D3A538 /* InstallationUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286612B258E700E00D3A538 /* InstallationUpdater.swift */; };
-		B28662BF258FB34500D3A538 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662BE258FB34500D3A538 /* Log.swift */; };
-		B28662C0258FB34500D3A538 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662BE258FB34500D3A538 /* Log.swift */; };
+		B28662D3258FBB3900D3A538 /* EventKitController+ReloadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662CE258FBB0900D3A538 /* EventKitController+ReloadingState.swift */; };
 		B296550A257BD227008D1858 /* Preferences+Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965509257BD227008D1858 /* Preferences+Sounds.swift */; };
 		B296550E257BD2F2008D1858 /* PrefencesDataStore+IdentifierList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B296550D257BD2F2008D1858 /* PrefencesDataStore+IdentifierList.swift */; };
 		B2965512257BD33A008D1858 /* PreferencesDataStore+IdentifierDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965511257BD33A008D1858 /* PreferencesDataStore+IdentifierDictionary.swift */; };
@@ -110,9 +109,11 @@
 		B2B7098F257FE2AB00C48ED5 /* EventKitAlarm+SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7098E257FE2AB00C48ED5 /* EventKitAlarm+SavedState.swift */; };
 		B2C7423F257723FD006645A0 /* PreferenceSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C7423E257723FD006645A0 /* PreferenceSceneDelegate.swift */; };
 		B2C7424325772435006645A0 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C7424225772435006645A0 /* PreferencesViewController.swift */; };
-		B2D1889A2579405800F812C5 /* EventKitManager+EKDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D188992579405800F812C5 /* EventKitManager+EKDataModel.swift */; };
-		B2D1889E25794AE400F812C5 /* EventKitManager+IntermediateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1889D25794AE400F812C5 /* EventKitManager+IntermediateModel.swift */; };
-		B2D188A925794C0C00F812C5 /* EventKitManager+CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D188A825794C0C00F812C5 /* EventKitManager+CalendarModel.swift */; };
+		B2CA1122258FD4D800B8BF81 /* EventKitController+EventKitDataModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA1121258FD4D800B8BF81 /* EventKitController+EventKitDataModelFactory.swift */; };
+		B2CA1126258FD70000B8BF81 /* EKDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA1125258FD70000B8BF81 /* EKDataModel.swift */; };
+		B2D1889A2579405800F812C5 /* EKDataModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D188992579405800F812C5 /* EKDataModelFactory.swift */; };
+		B2D1889E25794AE400F812C5 /* EventKitDataModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1889D25794AE400F812C5 /* EventKitDataModelFactory.swift */; };
+		B2D188A925794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D188A825794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 		B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1545D2575B5F3008BE604 /* DividerView.swift */; };
 		B2E154622575B67C008BE604 /* SpacerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154612575B67C008BE604 /* SpacerView.swift */; };
@@ -212,7 +213,7 @@
 		B227DEF9256738C50002C127 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B227DF242568096C0002C127 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		B227DF2825680C970002C127 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitManager.swift; sourceTree = "<group>"; };
+		B236FCD5255EFE0A00A2E58D /* EventKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
 		B256BC03258023E500FA67DC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -251,7 +252,7 @@
 		B28662AD258F9C7C00D3A538 /* EventKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitHelper.swift; sourceTree = "<group>"; };
 		B28662B0258F9E8500D3A538 /* AppKitUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppKitUtilities.h; sourceTree = "<group>"; };
 		B28662B5258FA1FF00D3A538 /* AppKitInstallationUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppKitInstallationUpdater.h; sourceTree = "<group>"; };
-		B28662BE258FB34500D3A538 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		B28662CE258FBB0900D3A538 /* EventKitController+ReloadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitController+ReloadingState.swift"; sourceTree = "<group>"; };
 		B2965509257BD227008D1858 /* Preferences+Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+Sounds.swift"; sourceTree = "<group>"; };
 		B296550D257BD2F2008D1858 /* PrefencesDataStore+IdentifierList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrefencesDataStore+IdentifierList.swift"; sourceTree = "<group>"; };
 		B2965511257BD33A008D1858 /* PreferencesDataStore+IdentifierDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreferencesDataStore+IdentifierDictionary.swift"; sourceTree = "<group>"; };
@@ -284,9 +285,11 @@
 		B2B7098E257FE2AB00C48ED5 /* EventKitAlarm+SavedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitAlarm+SavedState.swift"; sourceTree = "<group>"; };
 		B2C7423E257723FD006645A0 /* PreferenceSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceSceneDelegate.swift; sourceTree = "<group>"; };
 		B2C7424225772435006645A0 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
-		B2D188992579405800F812C5 /* EventKitManager+EKDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitManager+EKDataModel.swift"; sourceTree = "<group>"; };
-		B2D1889D25794AE400F812C5 /* EventKitManager+IntermediateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitManager+IntermediateModel.swift"; sourceTree = "<group>"; };
-		B2D188A825794C0C00F812C5 /* EventKitManager+CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitManager+CalendarModel.swift"; sourceTree = "<group>"; };
+		B2CA1121258FD4D800B8BF81 /* EventKitController+EventKitDataModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitController+EventKitDataModelFactory.swift"; sourceTree = "<group>"; };
+		B2CA1125258FD70000B8BF81 /* EKDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKDataModel.swift; sourceTree = "<group>"; };
+		B2D188992579405800F812C5 /* EKDataModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKDataModelFactory.swift; sourceTree = "<group>"; };
+		B2D1889D25794AE400F812C5 /* EventKitDataModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModelFactory.swift; sourceTree = "<group>"; };
+		B2D188A825794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitDataModelFactory+IntermediateDataModel.swift"; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -513,10 +516,8 @@
 			isa = PBXGroup;
 			children = (
 				B25B65E3258CFA6C0006B771 /* AppKitPluginController.swift */,
-				B236FCD5255EFE0A00A2E58D /* EventKitManager.swift */,
-				B2D1889D25794AE400F812C5 /* EventKitManager+IntermediateModel.swift */,
-				B2D188A825794C0C00F812C5 /* EventKitManager+CalendarModel.swift */,
-				B2D188992579405800F812C5 /* EventKitManager+EKDataModel.swift */,
+				B236FCD5255EFE0A00A2E58D /* EventKitController.swift */,
+				B28662CE258FBB0900D3A538 /* EventKitController+ReloadingState.swift */,
 				B2F6B49625619705000BC78E /* AlarmController.swift */,
 				B2020AE62577E84500F478CC /* EventKitDataModelController.swift */,
 				B25B65F6258D01BB0006B771 /* MenuBarPopoverController.swift */,
@@ -541,6 +542,7 @@
 				B2F6B50D2562F20E000BC78E /* MainWindow */,
 				B2F6B4F52562DD01000BC78E /* Utilities */,
 				B2F6B518256433C8000BC78E /* Sounds */,
+				B2CA1124258FD6D000B8BF81 /* DataModel */,
 				B286626A258EC25700D3A538 /* Controllers */,
 				B2020AFB2577FD0600F478CC /* Preferences */,
 				B2F6B4A72561B447000BC78E /* Delegates */,
@@ -655,6 +657,18 @@
 			path = PreferencesWindow;
 			sourceTree = "<group>";
 		};
+		B2CA1124258FD6D000B8BF81 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				B2CA1121258FD4D800B8BF81 /* EventKitController+EventKitDataModelFactory.swift */,
+				B2D1889D25794AE400F812C5 /* EventKitDataModelFactory.swift */,
+				B2D188A825794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift */,
+				B2D188992579405800F812C5 /* EKDataModelFactory.swift */,
+				B2CA1125258FD70000B8BF81 /* EKDataModel.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
 		B2E1511A255EED2A002672EC = {
 			isa = PBXGroup;
 			children = (
@@ -754,7 +768,6 @@
 				B2965527257BE0FA008D1858 /* EventKitItem.swift */,
 				B2F6B49D25619A43000BC78E /* EventKitReminder.swift */,
 				B296552D257C0B8F008D1858 /* SerializedEventKitItem.swift */,
-				B28662BE258FB34500D3A538 /* Log.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -974,7 +987,6 @@
 				B2866296258EC77200D3A538 /* EventKitCalendar.swift in Sources */,
 				B28662BA258FA41100D3A538 /* InstallationUpdater.swift in Sources */,
 				B2866270258EC37A00D3A538 /* Reloader.swift in Sources */,
-				B28662C0258FB34500D3A538 /* Log.swift in Sources */,
 				B2866298258EC77200D3A538 /* EKCalendar+UniqueID.swift in Sources */,
 				B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */,
 				B2866278258EC50400D3A538 /* AlarmSound.swift in Sources */,
@@ -1011,15 +1023,17 @@
 				B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */,
 				B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */,
 				B28661EC258E935800D3A538 /* MenuBarPopoverController.swift in Sources */,
+				B28662D3258FBB3900D3A538 /* EventKitController+ReloadingState.swift in Sources */,
 				B2F817E125768E2200B28119 /* TableViewModel.swift in Sources */,
 				B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */,
 				B2866253258EC09600D3A538 /* EventKitCalendar+UIColor.swift in Sources */,
 				B2AFE69A256AD3D1006B3C58 /* AllCalendarsListViewModel.swift in Sources */,
 				B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */,
-				B2D1889A2579405800F812C5 /* EventKitManager+EKDataModel.swift in Sources */,
+				B2D1889A2579405800F812C5 /* EKDataModelFactory.swift in Sources */,
 				B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */,
 				B2E154AE2576877E008BE604 /* CalendarSectionHeader.swift in Sources */,
 				B2866261258EC12700D3A538 /* EKCalendar+UniqueID.swift in Sources */,
+				B2CA1126258FD70000B8BF81 /* EKDataModel.swift in Sources */,
 				B2020AE72577E84500F478CC /* EventKitDataModelController.swift in Sources */,
 				B2F817E525768E3600B28119 /* TableViewSectionAdornment.swift in Sources */,
 				B296550A257BD227008D1858 /* Preferences+Sounds.swift in Sources */,
@@ -1064,9 +1078,9 @@
 				B2F817DD25768E1700B28119 /* TableViewModelProtocol.swift in Sources */,
 				B256BC08258025EC00FA67DC /* LeftSideViewController.swift in Sources */,
 				B2F6B49B25619A34000BC78E /* EventKitEvent.swift in Sources */,
-				B2D188A925794C0C00F812C5 /* EventKitManager+CalendarModel.swift in Sources */,
+				B2D188A925794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift in Sources */,
 				B2F817D525768DFD00B28119 /* TableViewRowProtocol.swift in Sources */,
-				B236FCD6255EFE0A00A2E58D /* EventKitManager.swift in Sources */,
+				B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */,
 				B2E154AA25768768008BE604 /* CalendarRow.swift in Sources */,
 				B2E1546C2575B7CF008BE604 /* SpacerAdornment.swift in Sources */,
 				B2965532257C0BD4008D1858 /* EventKitAlarm+DictionaryCodable.swift in Sources */,
@@ -1090,10 +1104,9 @@
 				B2E1548F257681B8008BE604 /* VerticalStackView.swift in Sources */,
 				B2965520257BDBEB008D1858 /* EventKitAlarm.swift in Sources */,
 				B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */,
-				B2D1889E25794AE400F812C5 /* EventKitManager+IntermediateModel.swift in Sources */,
+				B2D1889E25794AE400F812C5 /* EventKitDataModelFactory.swift in Sources */,
 				B2866260258EC12700D3A538 /* EKReminder+UniqueID.swift in Sources */,
 				B2F6B49025618EC5000BC78E /* AlarmSoundManager.swift in Sources */,
-				B28662BF258FB34500D3A538 /* Log.swift in Sources */,
 				B227DF252568096C0002C127 /* MainSplitViewController.swift in Sources */,
 				B2B7098F257FE2AB00C48ED5 /* EventKitAlarm+SavedState.swift in Sources */,
 				B2020ABE2577D99800F478CC /* PreferencesRow.swift in Sources */,
@@ -1105,6 +1118,7 @@
 				B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */,
 				B2965540257C0EF1008D1858 /* ReminderRow.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,
+				B2CA1122258FD4D800B8BF81 /* EventKitController+EventKitDataModelFactory.swift in Sources */,
 				B2020ABD2577D99800F478CC /* PreferencesTableViewModel.swift in Sources */,
 				B256BC04258023E500FA67DC /* TabBarController.swift in Sources */,
 				B2F6B52125643434000BC78E /* EmptyAlarmSound.swift in Sources */,

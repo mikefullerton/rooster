@@ -7,14 +7,16 @@
 
 import Foundation
 import AppKit
-
+import OSLog
 
 @objc class Utilities : NSObject, AppKitUtilities {
     
+    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.Utilities")
+        
     func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
         
-        print("Brought app to front: \(result)")
+        self.logger.log("Brought app to front: \(result)")
     }
     
     func bringAnotherApp(toFront bundleIdentier: String) {
@@ -23,7 +25,7 @@ import AppKit
         for bundle in apps {
             let result = bundle.activate(options: .activateIgnoringOtherApps)
             
-            print("attempted to foreground: \(bundle): \(result)")
+            self.logger.log("attempted to foreground: \(bundle): \(result)")
         }
     }
     

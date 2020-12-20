@@ -6,13 +6,13 @@
 //
 
 import Foundation
-
 import AVFoundation
-
-//var player: AVAudioPlayer?
+import OSLog
 
 class BundleAlarmSound : AlarmSound {
     
+    private static let logger = Logger(subsystem: "com.apple.rooster", category: "BundleAlarmSound")
+        
     weak static var delegate: AlarmSoundDelegate?
     
     var name: String
@@ -40,7 +40,7 @@ class BundleAlarmSound : AlarmSound {
             }
             
         } catch let error {
-            print(error.localizedDescription)
+            BundleAlarmSound.logger.error("Playing sound failed with error: \(error.localizedDescription)")
             return nil
         }
 
@@ -78,7 +78,7 @@ class BundleAlarmSound : AlarmSound {
             BundleAlarmSound.delegate!.soundWillStartPlaying(self, forIdentifier: identifier)
         }
         
-        print("playing sound: \(self.name): for: \(identifier)")
+        BundleAlarmSound.logger.log("playing sound: \(self.name): for: \(identifier)")
         self.player.numberOfLoops = -1
         self.player.play()
     }

@@ -17,7 +17,7 @@ class MenuBarPopoverController : NSObject, AppKitMenuBarControllerDelegate {
     
     private override init() {
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(alarmsDidStart(_:)), name: AlarmController.AlarmsDidStartEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(alarmsDidStart(_:)), name: AlarmController.AlarmsWillStartEvent, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(alarmsDidStop(_:)), name: AlarmController.AlarmsDidStopEvent, object: nil)
     }
 

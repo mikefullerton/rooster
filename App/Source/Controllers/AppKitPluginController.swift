@@ -7,9 +7,12 @@
 
 import Foundation
 import EventKit
+import OSLog
 
 class AppKitPluginController : NSObject, RoosterAppKitPlugin {
     
+    private static let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPluginController")
+        
     static var instance = AppKitPluginController()
     
     private var plugin: RoosterAppKitPlugin?
@@ -21,22 +24,24 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin {
     static func loadPlugin() -> RoosterAppKitPlugin? {
         let pluginPath = Bundle.main.builtInPlugInsPath!.appending("/RoosterAppKitPlugin.bundle")
         guard let bundle = Bundle(path: pluginPath) else {
-            print("Unable to load plugin bundle at path: \(pluginPath)")
+            self.logger.fault("Unable to load plugin bundle at path: \(pluginPath)")
             return nil
         }
         
         guard let principleClass = bundle.principalClass as? NSObject.Type else {
-            print("Failed to get principle class for plugin")
+            self.logger.fault("Failed to get principle class for plugin")
             return nil
         }
         
-        print("Loaded plugin principle class: \(principleClass)")
+        self.logger.log("Loaded plugin principle class: \(principleClass)")
     
         guard let plugin = principleClass.init() as? RoosterAppKitPlugin else {
-            print("Failed to initialize plugin: \(principleClass)")
+            self.logger.fault("Failed to initialize plugin: \(principleClass)")
             return nil
         }
         
+        self.logger.log("AppKit plugin loaded ok")
+    
         return plugin
     }
 

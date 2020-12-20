@@ -1,5 +1,5 @@
 //
-//  EventKitManager+CalendarModel.swift
+//  EventKitController+CalendarModel.swift
 //  Rooster (iOS)
 //
 //  Created by Mike Fullerton on 12/3/20.
@@ -8,9 +8,9 @@
 import Foundation
 import EventKit
 
-extension EventKitManager {
-    
-    struct CalendarModel {
+extension EventKitDataModelFactory {
+
+    struct IntermediateDataModel {
         private let model: EKDataModel
         private(set) var calendars: [EventKitCalendar]
         private(set) var events: [EventKitEvent]
@@ -26,8 +26,7 @@ extension EventKitManager {
                 
             self.addCalendars()
             self.addEvents()
-            // reminders not supported yet
-//            self.addReminders()
+            self.addReminders()
             self.addGroupedCalendars()
         }
         
@@ -39,7 +38,7 @@ extension EventKitManager {
             for ekEvent in self.model.events {
                 if ekEvent.refresh() {
                     guard let calendar = self.calendar(forIdentifier: ekEvent.calendar.uniqueID) else {
-                        print("Error couldn't find calendar for id: \(ekEvent.calendar.uniqueID)")
+                        EventKitController.logger.error("Error couldn't find calendar for id: \(ekEvent.calendar.uniqueID)")
                         continue
                     }
                     
@@ -83,7 +82,7 @@ extension EventKitManager {
             for ekReminder in self.model.reminders {
                 if ekReminder.refresh() {
                     guard let calendar = self.calendar(forIdentifier: ekReminder.calendar.uniqueID) else {
-                        print("Error couldn't find calendar for id: \(ekReminder.calendar.uniqueID)")
+                        EventKitController.logger.error("Error couldn't find calendar for id: \(ekReminder.calendar.uniqueID)")
                         continue
                     }
 
@@ -151,6 +150,4 @@ extension EventKitManager {
             }
         }
     }
-    
 }
-

@@ -7,9 +7,12 @@
 
 import Foundation
 import Sparkle
+import OSLog
 
 @objc public class InstallationUpdater : NSObject, AppKitInstallationUpdater, SUUpdaterDelegate {
     
+    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.InstallationUpdater")
+        
     public weak var delegate: AppKitInstallationUpdaterDelegate?
     
     private var updater: SUUpdater? = nil
@@ -26,20 +29,23 @@ import Sparkle
             updater.automaticallyChecksForUpdates = true
             updater.automaticallyDownloadsUpdates = true
             self.updater = updater
-            print("Sparkle updater configured. Last update check was: \(String(describing: updater.lastUpdateCheckDate))")
+            self.logger.log("Sparkle updater configured. Last update check was: \(String(describing: updater.lastUpdateCheckDate))")
+        } else {
+            self.logger.error("Failed to create Sparkle updater")
         }
     }
     
     public func checkForUpdates() {
+        self.logger.log("Checking for updates with Sparkle")
         self.updater?.checkForUpdates(self)
     }
     
     public func updaterDidNotFindUpdate(_ updater: SUUpdater) {
-        print("Sparkle did not find update")
+        self.logger.log("Sparkle did not find update")
     }
     
 //    public func updaterShouldPromptForPermissionToCheck(forUpdates updater: SUUpdater) -> Bool {
-//        print("Sparkle asked for permission to check")
+//        self.logger.log("Sparkle asked for permission to check")
 //        return true
 //    }
     
@@ -53,7 +59,7 @@ import Sparkle
     }
     
     public func updater(_ updater: SUUpdater, didAbortWithError error: Error) {
-        print("Sparkle did abort with error: \(error)")
+        self.logger.error("Sparkle did abort with error: \(error.localizedDescription)")
         if let nsError = error as NSError? {
             if nsError.domain == SUSparkleErrorDomain && nsError.code == SUError.appcastError.rawValue {
                 self.showErrorAlert()
@@ -62,23 +68,23 @@ import Sparkle
     }
     
     public func updater(_ updater: SUUpdater, failedToDownloadUpdate item: SUAppcastItem, error: Error) {
-        print("Sparkle failed to download update with error: \(error)")
+        self.logger.error("Sparkle failed to download update with error: \(error.localizedDescription)")
     }
     
     public func updater(_ updater: SUUpdater, didFindValidUpdate item: SUAppcastItem) {
-        print("Sparkle did find valid update");
+        self.logger.log("Sparkle did find valid update");
     }
     
     public func updaterWillShowModalAlert(_ updater: SUUpdater) {
-        print("Sparkle will show modal alert");
+        self.logger.log("Sparkle will show modal alert");
     }
     
     public func updater(_ updater: SUUpdater, willDownloadUpdate item: SUAppcastItem, with request: NSMutableURLRequest) {
-        print("Sparkle will download update from \(request)")
+        self.logger.log("Sparkle will download update from \(request)")
     }
 
     public func updater(_ updater: SUUpdater, didDownloadUpdate item: SUAppcastItem) {
-        print("Sparkle did download update")
+        self.logger.log("Sparkle did download update")
     }
 
     public func updaterDidShowModalAlert(_ updater: SUUpdater) {
@@ -86,7 +92,7 @@ import Sparkle
     }
     
 //    public func updaterMayCheck(forUpdates updater: SUUpdater) -> Bool {
-//        print("Sparkle asked for permission to check");
+//        self.logger.log("Sparkle asked for permission to check");
 //        return true
 //    }
     

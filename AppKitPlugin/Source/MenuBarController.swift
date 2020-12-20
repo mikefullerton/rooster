@@ -7,7 +7,8 @@
 
 import Foundation
 import AppKit
-import SwiftUI
+//import SwiftUI
+import OSLog
 
 extension NSImage {
     func tint(color: NSColor) -> NSImage {
@@ -28,6 +29,8 @@ extension NSImage {
 
 
 @objc class MenuBarController: NSObject, AppKitMenuBarController {
+    
+    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.MenuBarController")
     
     public weak var delegate: AppKitMenuBarControllerDelegate?
     
@@ -83,6 +86,7 @@ extension NSImage {
     }
 
     @objc func buttonClicked(_ sender: AnyObject?) {
+        self.logger.log("MenuBar button was clicked")
         if let delegate = self.delegate {
             delegate.menuBarButtonWasClicked(self)
         }
