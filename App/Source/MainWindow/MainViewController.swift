@@ -8,10 +8,9 @@
 import Foundation
 import UIKit
 
-class MainViewController : UIViewController {
+class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresentationControllerDelegate {
     
-    var mainSplitViewController: MainSplitViewController?
-    var toolbar: UIToolbar?
+    var contentViewController: UIViewController?
     var spinner: UIActivityIndicatorView?
     
     func configure() {
@@ -33,13 +32,13 @@ class MainViewController : UIViewController {
     }
     
     func createMainViewsIfNeeded() {
-        if self.mainSplitViewController == nil {
+        if self.contentViewController == nil {
             
-            self.mainSplitViewController = MainSplitViewController()
+            self.contentViewController = RightSideViewController()
             
-            self.addChild(self.mainSplitViewController!)
+            self.addChild(self.contentViewController!)
 
-            if let subview = self.mainSplitViewController!.view {
+            if let subview = self.contentViewController!.view {
                 self.view.addSubview(subview)
 
                 subview.translatesAutoresizingMaskIntoConstraints = false
@@ -116,6 +115,97 @@ class MainViewController : UIViewController {
         }
     }
     
+    #if targetEnvironment(macCatalyst)
+
+    lazy var toolbar: NSToolbar = {
+        let toolbar = NSToolbar(identifier: "main")
+        toolbar.delegate = self
+        toolbar.displayMode = .iconOnly
+        
+        return toolbar
+    }()
     
+    var presentingPopoverViewController: UIViewController? = nil
     
+    @objc
+    func showCalendars(_ sender: Any?) {
+        
+        if self.presentingPopoverViewController != nil {
+            self.presentingPopoverViewController?.dismiss(animated: true, completion: {
+                
+            })
+            self.presentingPopoverViewController = nil
+        } else {
+            let viewController = CalendarsPopOverViewController()
+            
+            viewController.preferredContentSize = viewController.calculatedSize
+            
+            viewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+            if let presentationController = viewController.popoverPresentationController {
+                presentationController.permittedArrowDirections = .up
+                presentationController.sourceView = self.view
+                presentationController.canOverlapSourceViewRect = true
+                
+                let bounds = self.view.bounds
+                let sourceRect = CGRect(x: bounds.size.width - 32,
+                                        y: 35,
+                                        width: 10,
+                                        height: 10)
+                presentationController.sourceRect = sourceRect
+            }
+
+            self.present(viewController, animated: true) {
+            }
+            
+            self.presentingPopoverViewController = viewController
+        }
+    }
+
+    func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+        let identifiers: [NSToolbarItem.Identifier] = [
+//            .toggleSidebar,
+            .flexibleSpace,
+            .calendars,
+        ]
+        return identifiers
+    }
+    
+    func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+        return toolbarDefaultItemIdentifiers(toolbar)
+    }
+    
+    func toolbar(_ toolbar: NSToolbar,
+                 itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
+                 willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+        
+        var toolbarItem: NSToolbarItem?
+        
+        switch itemIdentifier {
+        case .toggleSidebar:
+            toolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
+        
+        case .calendars:
+            let item = NSToolbarItem(itemIdentifier: itemIdentifier)
+//            item.view = UIButton()
+            item.image = UIImage(systemName: "calendar")
+            item.label = "Edit Calendars"
+            item.action = #selector(showCalendars(_:))
+            item.target = self
+            toolbarItem = item
+            
+        default:
+            toolbarItem = nil
+        }
+        
+        return toolbarItem
+    }
+    
+    #endif
 }
+
+#if targetEnvironment(macCatalyst)
+extension NSToolbarItem.Identifier {
+    static let calendars = NSToolbarItem.Identifier("com.apple.rooster.showCalendars")
+}
+#endif

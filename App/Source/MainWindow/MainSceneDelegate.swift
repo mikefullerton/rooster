@@ -8,16 +8,7 @@
 import Foundation
 import UIKit
 
-//#if targetEnvironment(macCatalyst)
-//extension NSToolbarItem.Identifier {
-////    static let editRecipe = NSToolbarItem.Identifier("com.example.apple-samplecode.Recipes.editRecipe")
-////    static let toggleRecipeIsFavorite = NSToolbarItem.Identifier("com.example.apple-samplecode.Recipes.toggleRecipeIsFavorite")
-//}
-//
-//#endif
-//
-
-class MainSceneDelegate: WindowSceneDelegate, NSToolbarDelegate {
+class MainSceneDelegate: WindowSceneDelegate {
 
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -39,80 +30,17 @@ class MainSceneDelegate: WindowSceneDelegate, NSToolbarDelegate {
         
         self.set(window: window, restoreKey: "mainWindowBounds")
         
-#if targetEnvironment(macCatalyst)
-        
-        let toolbar = NSToolbar(identifier: "main")
-        toolbar.delegate = self
-        toolbar.displayMode = .iconOnly
-        
+        #if targetEnvironment(macCatalyst)
+        let toolbar = viewController.toolbar
         if let titlebar = windowScene.titlebar {
             titlebar.toolbar = toolbar
             titlebar.toolbarStyle = .automatic
         }
-#endif
+        #endif
         
         DispatchQueue.main.async {
             AppDelegate.instance.mainWindowDidShow()
         }
-    }
-    
-    
-//    @objc
-//    func editRecipe(_ sender: Any?) {
-//        NotificationCenter.default.post(name: .editRecipe, object: self)
-//    }
-//
-//    @objc
-//    func toggleRecipeIsFavorite(_ sender: Any?) {
-//        NotificationCenter.default.post(name: .toggleRecipeIsFavorite, object: self)
-//    }
-//
-
-    func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        let identifiers: [NSToolbarItem.Identifier] = [
-            .toggleSidebar,
-            .flexibleSpace,
-//            .editRecipe,
-//            .toggleRecipeIsFavorite
-        ]
-        return identifiers
-    }
-    
-    func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return toolbarDefaultItemIdentifiers(toolbar)
-    }
-    
-    func toolbar(_ toolbar: NSToolbar,
-                 itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
-                 willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-        
-        var toolbarItem: NSToolbarItem?
-        
-        switch itemIdentifier {
-        case .toggleSidebar:
-            toolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
-        
-//        case .editRecipe:
-//            let item = NSToolbarItem(itemIdentifier: itemIdentifier)
-//            item.image = UIImage(systemName: "square.and.pencil")
-//            item.label = "Edit Recipe"
-//            item.action = #selector(editRecipe(_:))
-//            item.target = self
-//            toolbarItem = item
-//
-//        case .toggleRecipeIsFavorite:
-//            let item = NSToolbarItem(itemIdentifier: itemIdentifier)
-//            item.image = UIImage(systemName: "heart")
-//            item.label = "Toggle Favorite"
-//            item.action = #selector(toggleRecipeIsFavorite(_:))
-//            item.target = self
-//            toolbarItem = item
-            
-        default:
-            toolbarItem = nil
-        }
-        
-        return toolbarItem
     }
 }
 

@@ -11,6 +11,8 @@ import UIKit
 class CalendarListCell : UITableViewCell, TableViewRowCell {
     private var calendar: EventKitCalendar?
 
+    private let padding:CGFloat = 8
+    
     private lazy var checkBox: UISwitch = {
         let view = UISwitch()
         view.preferredStyle = .checkbox
@@ -20,7 +22,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
             view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             view.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
@@ -32,14 +34,19 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     lazy var calendarColorBar: UIView = {
         let view = UIView()
         self.addSubview(view)
-
+      
+        let width: CGFloat = 4
+        let inset: CGFloat = 2
+        
+        view.layer.cornerRadius = width / 2.0;
+      
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 4),
-            view.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
-            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            view.widthAnchor.constraint(equalToConstant: width),
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: inset),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -inset),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.padding),
         ])
         
         return view
@@ -71,7 +78,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     }
     
     static var cellHeight: CGFloat {
-        return 24
+        return 28
     }
     
     
