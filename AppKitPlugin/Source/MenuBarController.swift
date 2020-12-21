@@ -121,8 +121,6 @@ extension NSImage {
         }
     }
     
-    var _isAlarmFiring = false
-    
     func toggleImages() {
         self.showingRedRooster = !self.showingRedRooster
         if self.showingRedRooster {
@@ -133,24 +131,22 @@ extension NSImage {
     }
     
     var isAlarmFiring: Bool {
-        
-        get {
-            return _isAlarmFiring
+        if let delegate = self.delegate {
+            return delegate.appKitMenuBarControllerAreAlarmsFiring(self)
         }
         
-        set(firing) {
-            if firing != _isAlarmFiring {
-                _isAlarmFiring = firing
-                
-                if _isAlarmFiring {
-                    self.showingRedRooster = true
-                    self.setStatusBarIconImage(self.redRoosterImage)
-                    self.startFlashingTimer()
-                } else {
-                    self.showingRedRooster = false
-                    self.setStatusBarIconImage(self.defaultRoosterImage)
-                }
-            }
+        return false
+    }
+    
+    func alarmStateDidChange() {
+        if self.isAlarmFiring {
+            self.showingRedRooster = true
+            self.setStatusBarIconImage(self.redRoosterImage)
+            self.startFlashingTimer()
+        } else {
+            self.showingRedRooster = false
+            self.setStatusBarIconImage(self.defaultRoosterImage)
+            self.stopFlashingTimer()
         }
     }
     

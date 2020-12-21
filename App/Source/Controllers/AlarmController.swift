@@ -92,18 +92,22 @@ class AlarmController {
     
     // MARK: alarm management
     
+    private func notifyIfAlarmsStopped() {
+        DispatchQueue.main.async {
+            if self.firingEvents.count == 0 {
+                self.logger.log("Notifying that all alarms have stopped")
+                NotificationCenter.default.post(name: AlarmController.AlarmsDidStopEvent, object: self)
+            }
+        }
+    }
+    
     private func stopPlayingAlarmIfPlaying<T>(forItem item: T) where T: EventKitItem {
         if let alarmSound = self.alarmSoundManager.sound(forIdentifier: item.id) {
             self.firingEvents.removeValue(forKey: item.id)
             alarmSound.stop()
             self.logger.log("Stopped alarm sound: \(alarmSound.name) for \(item.title)")
             
-            if self.firingEvents.count == 0 {
-                DispatchQueue.main.async {
-                    self.logger.log("Notifying that all alarms have stopped")
-                    NotificationCenter.default.post(name: AlarmController.AlarmsDidStopEvent, object: self)
-                }
-            }
+            self.notifyIfAlarmsStopped()
         }
     }
     
@@ -111,10 +115,7 @@ class AlarmController {
         
         if self.firingEvents[item.id] == nil {
             
-            if self.firingEvents.count == 0 {
-                self.logger.log("Notifying that alarms will start")
-                NotificationCenter.default.post(name: AlarmController.AlarmsWillStartEvent, object: self)
-            }
+            let notify = self.firingEvents.count == 0
             
             self.firingEvents[item.id] = item
             
@@ -127,6 +128,11 @@ class AlarmController {
             alarmSound?.play(forIdentifier: item.id)
 
             self.logger.log("Started alarm sound: \(alarmSound?.name ?? "nil" ) for \(item.title)")
+        
+            if notify {
+                self.logger.log("Notifying that alarms will start")
+                NotificationCenter.default.post(name: AlarmController.AlarmsWillStartEvent, object: self)
+            }
         }
     }
     

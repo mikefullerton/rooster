@@ -8,6 +8,7 @@
 import Foundation
 
 class MenuBarPopoverController : NSObject, AppKitMenuBarControllerDelegate {
+   
     
     static var instance = MenuBarPopoverController()
     
@@ -22,11 +23,15 @@ class MenuBarPopoverController : NSObject, AppKitMenuBarControllerDelegate {
     }
 
     @objc private func alarmsDidStart(_ notif: Notification) {
-        self.popover?.isAlarmFiring = true
+        self.popover?.alarmStateDidChange()
     }
     
     @objc private func alarmsDidStop(_ notif: Notification) {
-        self.popover?.isAlarmFiring = false
+        self.popover?.alarmStateDidChange()
+    }
+    
+    func appKitMenuBarControllerAreAlarmsFiring(_ controller: AppKitMenuBarController) -> Bool {
+        return AlarmController.instance.alarmsAreFiring
     }
     
     public var isPopoverHidden: Bool {

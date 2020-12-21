@@ -16,14 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readwrite, assign, nonatomic, getter=isPopoverHidden) BOOL popoverHidden;
 
-@property (readwrite, assign, nonatomic) BOOL isAlarmFiring;
-
 - (void)showIconInMenuBar;
+
+- (void)alarmStateDidChange;
 
 @end
 
 @protocol AppKitMenuBarControllerDelegate <NSObject>
 - (void)menuBarButtonWasClicked:(id<AppKitMenuBarController>)popover;
+
+- (BOOL)appKitMenuBarControllerAreAlarmsFiring:(id<AppKitMenuBarController>)controller;
+
 @end
 
 NS_ASSUME_NONNULL_END
