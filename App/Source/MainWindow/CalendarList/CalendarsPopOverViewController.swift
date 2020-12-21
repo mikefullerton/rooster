@@ -109,7 +109,7 @@ class CalendarsPopOverViewController : UIViewController {
         return DelegateCalendarListViewController()
     }()
     
-    let width:CGFloat = 300
+    let width:CGFloat = 400
     
     func setToolbarItems(calendarColor: UIColor, delegateCalendarsColor: UIColor) {
         let calendarToolBarItem = UIBarButtonItem(title: "Calendars",
@@ -133,29 +133,29 @@ class CalendarsPopOverViewController : UIViewController {
         
     }
     
-    func setToolbarItems(calendarFocused: Bool) {
-        let calendarToolBarItem = UIBarButtonItem(title: "Calendars",
-                                                  style: .plain,
-                                                  target: self,
-                                                  action:#selector(userClickCalendarsButton(_:)))
-        
-        
-        
-        calendarToolBarItem.tintColor = calendarColor
-        
-        let delegateCalendarToolBarItem = UIBarButtonItem(title: "Delegate Calendars",
-                                                          style: .plain,
-                                                          target: self,
-                                                          action:#selector(userClickDelegateCalendarsButton(_:)))
-
-        delegateCalendarToolBarItem.tintColor = delegateCalendarsColor
-
-        self.toolbar.items = [ UIBarButtonItem.flexibleSpace(),
-                               calendarToolBarItem,
-                               delegateCalendarToolBarItem,
-                               UIBarButtonItem.flexibleSpace()]
-        
-    }
+//    func setToolbarItems(calendarFocused: Bool) {
+//        let calendarToolBarItem = UIBarButtonItem(title: "Calendars",
+//                                                  style: .plain,
+//                                                  target: self,
+//                                                  action:#selector(userClickCalendarsButton(_:)))
+//
+//
+//
+//        calendarToolBarItem.tintColor = calendarColor
+//
+//        let delegateCalendarToolBarItem = UIBarButtonItem(title: "Delegate Calendars",
+//                                                          style: .plain,
+//                                                          target: self,
+//                                                          action:#selector(userClickDelegateCalendarsButton(_:)))
+//
+//        delegateCalendarToolBarItem.tintColor = delegateCalendarsColor
+//
+//        self.toolbar.items = [ UIBarButtonItem.flexibleSpace(),
+//                               calendarToolBarItem,
+//                               delegateCalendarToolBarItem,
+//                               UIBarButtonItem.flexibleSpace()]
+//
+//    }
     
     
     @objc func userClickCalendarsButton(_ sender: Any) {
@@ -195,6 +195,7 @@ class CalendarsPopOverViewController : UIViewController {
 
         toolbar.items = [ UIBarButtonItem.flexibleSpace(),
                           calendarToolBarItem,
+                          UIBarButtonItem.flexibleSpace(),
                           delegateCalendarToolBarItem,
                           UIBarButtonItem.flexibleSpace()]
 
@@ -229,6 +230,6 @@ class CalendarsPopOverViewController : UIViewController {
     var calculatedSize: CGSize {
         
         
-        return CGSize(width: 300, height: 700)
+        return CGSize(width: self.width, height: 700)
     }
 }

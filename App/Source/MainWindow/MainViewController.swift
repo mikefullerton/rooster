@@ -125,16 +125,13 @@ class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresent
         return toolbar
     }()
     
-    var presentingPopoverViewController: UIViewController? = nil
-    
     @objc
     func showCalendars(_ sender: Any?) {
         
-        if self.presentingPopoverViewController != nil {
-            self.presentingPopoverViewController?.dismiss(animated: true, completion: {
+        if self.presentedViewController != nil {
+            self.presentedViewController?.dismiss(animated: true, completion: {
                 
             })
-            self.presentingPopoverViewController = nil
         } else {
             let viewController = CalendarsPopOverViewController()
             
@@ -157,8 +154,6 @@ class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresent
 
             self.present(viewController, animated: true) {
             }
-            
-            self.presentingPopoverViewController = viewController
         }
     }
 
