@@ -7,9 +7,24 @@
 
 import Foundation
 
+class BundleAlarmSound : FileAlarmSound {
+    init?(withName name: String,
+          extension fileExtension: String = "mp3") {
+        
+        guard let url = Bundle.main.url(forResource: name, withExtension: fileExtension) else {
+            return nil;
+        }
+    
+        super.init(withURL: url)
+    }
+    
+    
+}
+
+
 class ChickensAlarmSound : BundleAlarmSound {
     init?() {
-        super.init(withName: "chickens", extension: "mp3")
+        super.init(withName: "Chickens", extension: "mp3")
     }
 }
 

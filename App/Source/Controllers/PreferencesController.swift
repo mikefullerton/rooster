@@ -28,6 +28,13 @@ class PreferencesController {
     }
     
     
+    func soundPreference(forItem item: Alarmable) -> SoundPreference {
+        let preference = SoundPreference(withSoundNames: [ "Rooster Crowing", "Chickens", "Rooster Crowing" ], repeatCount: SoundPreference.RepeatEndlessly)
+        
+        return preference
+    }
+    
+    
     
     
 }

@@ -16,7 +16,7 @@ import OSLog
 
 class AlarmSoundController: AlarmSoundDelegate  {
 
-    private static let logger = Logger(subsystem: "com.apple.rooster", category: "AlarmController")
+    static let logger = Logger(subsystem: "com.apple.rooster", category: "AlarmController")
     
     var logger: Logger {
         return AlarmSoundController.logger
@@ -32,8 +32,9 @@ class AlarmSoundController: AlarmSoundDelegate  {
     }
     
     func soundDidStopPlaying(_ sound: AlarmSound) {
-        if self.firingEvents[sound.behavior.identifier] != nil {
+        if let pair = self.firingEvents[sound.behavior.identifier] {
             self.firingEvents.removeValue(forKey: sound.behavior.identifier)
+            self.logger.log("Stopped alarm sound: \(pair.sound.name) for \(pair.item.title)")
         }
     }
     
@@ -43,18 +44,20 @@ class AlarmSoundController: AlarmSoundDelegate  {
             return
         }
         
-        if let alarmSound = RoosterCrowingAlarmSound() {
-            
-            let soundBehavior = AlarmSoundBehavior(withIdentifier: item.id,
-                                                   playCount: AlarmSoundBehavior.RepeatEndlessly,
-                                                   timeBetweenPlays: 0.1,
-                                                   fadeInTime: 0)
-            
-            alarmSound.delegate = self
-            alarmSound.play(withBehavior: soundBehavior)
-            
-            self.firingEvents[item.id] = (item: item, sound: alarmSound)
-        }
+        let preference = PreferencesController.instance.soundPreference(forItem: item)
+        let alarmSound = AlarmSoundGroup(withPreference: preference)
+    
+        let soundBehavior = AlarmSoundBehavior(withIdentifier: item.id,
+                                               playCount: AlarmSoundBehavior.RepeatEndlessly,
+                                               timeBetweenPlays: 0.1,
+                                               fadeInTime: 0)
+        
+        alarmSound.delegate = self
+        alarmSound.play(withBehavior: soundBehavior)
+        
+        self.firingEvents[item.id] = (item: item, sound: alarmSound)
+
+        self.logger.log("Started alarm sound: \(alarmSound.name) for \(item.title)")
     }
     
     func isPlayingSound(forItem item: Alarmable) -> Bool  {
@@ -87,6 +90,23 @@ class AlarmSoundController: AlarmSoundDelegate  {
             self.firingEvents[item.id] = (item: item, sound: pair.sound)
         }
     }
+}
+
+extension FileAlarmSound {
+    
+    static func alarmSounds(withURLs urls:[URL]) -> [AlarmSound] {
+        var sounds:[AlarmSound] = []
+        for url in urls {
+            if let alarm = FileAlarmSound(withURL: url) {
+                sounds.append(alarm)
+                AlarmSoundController.logger.error("Loaded sound for URL: \(url)")
+            } else {
+                AlarmSoundController.logger.error("Failed to load sound for URL: \(url)")
+            }
+        }
+        return sounds
+    }
+    
 }
 
 

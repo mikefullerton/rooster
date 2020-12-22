@@ -63,9 +63,9 @@ extension SoundPreference {
     init?(withDictionary dictionary: [AnyHashable : Any]) {
     
         if let sounds = dictionary[CodingKeys.sounds.rawValue] as? [String] {
-            self.sounds = sounds
+            self.soundNames = sounds
         } else {
-            self.sounds = []
+            self.soundNames = []
         }
         
         if let repeatCount = dictionary[CodingKeys.repeatCount.rawValue] as? Int {
@@ -77,7 +77,7 @@ extension SoundPreference {
 
     var asDictionary: [AnyHashable : Any] {
         var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.sounds.rawValue] = self.sounds
+        dictionary[CodingKeys.sounds.rawValue] = self.soundNames
         dictionary[CodingKeys.repeatCount.rawValue] = self.repeatCount
         return dictionary
     }

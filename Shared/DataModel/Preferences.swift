@@ -7,21 +7,6 @@
 
 import Foundation
 
-struct SoundPreference {
-    let sounds: [String]
-    let repeatCount: Int
-    
-    init(withSounds sounds: [String],
-         repeatCount: Int) {
-        self.sounds = sounds
-        self.repeatCount = repeatCount
-    }
-    
-    init() {
-        self.init(withSounds: [], repeatCount: -1)
-    }
-}
-
 struct Preferences {
 
     let sounds: SoundPreference

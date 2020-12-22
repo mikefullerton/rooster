@@ -45,7 +45,7 @@ class SimpleTimer {
     var willFireAgain: Bool {
         return self.isTiming &&
                (self.requestedFireCount == SimpleTimer.RepeatEndlessly ||
-                self.fireCount > self.requestedFireCount)
+                self.fireCount < self.requestedFireCount)
     }
     
     func stop() {
@@ -54,6 +54,8 @@ class SimpleTimer {
             self.timer = nil
         }
         self.isTiming = false
+        self.requestedFireCount = 0
+        self.fireCount = 0
     }
     
     func start(withInterval interval: TimeInterval,
@@ -62,7 +64,15 @@ class SimpleTimer {
         
         self.stop()
         
+        self.requestedFireCount = playCount
+        self.fireCount = 0
         self.isTiming = true
+        
+        if !self.willFireAgain {
+            self.stop()
+            completion(self)
+            return
+        }
         
         weak var weakSelf = self
         let timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { (timer) in

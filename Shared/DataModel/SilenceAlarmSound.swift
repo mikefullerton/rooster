@@ -47,7 +47,7 @@ class SilenceAlarmSound : AlarmSound {
     override func startPlayingSound() -> TimeInterval {
         self.sound.startTime = Date.timeIntervalSinceReferenceDate
         self.sound.isPlaying = true
-        return self.duration
+        return self.duration + self.behavior.timeBetweenPlays
     }
     
     override func stopPlayingSound() {

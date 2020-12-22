@@ -28,7 +28,6 @@
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
 		B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
-		B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* chickens.mp3 */; };
 		B256BC08258025EC00FA67DC /* CalendarsPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */; };
 		B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */; };
 		B256BC16258028BD00FA67DC /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC15258028BD00FA67DC /* CalendarListViewController.swift */; };
@@ -101,6 +100,13 @@
 		B29D057125925A7E0027C152 /* EventKitReminder+DictionaryCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D057025925A7E0027C152 /* EventKitReminder+DictionaryCodable.swift */; };
 		B29D0575259260130027C152 /* SimpleTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0574259260130027C152 /* SimpleTimer.swift */; };
 		B29D0576259260130027C152 /* SimpleTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0574259260130027C152 /* SimpleTimer.swift */; };
+		B2A58B37259288EA00188584 /* SoundPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B36259288EA00188584 /* SoundPreference.swift */; };
+		B2A58B38259288EA00188584 /* SoundPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B36259288EA00188584 /* SoundPreference.swift */; };
+		B2A58B3F25928B0000188584 /* Chickens.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */; };
+		B2A58B4125928B0200188584 /* Rooster Crowing.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B2F6B51525642F48000BC78E /* Rooster Crowing.mp3 */; };
+		B2A58B4525928F0C00188584 /* Bundle+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */; };
+		B2A58B48259290F700188584 /* AlarmSoundGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* AlarmSoundGroup.swift */; };
+		B2A58B4B2592917500188584 /* SoundPreference+AlarmSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4A2592917500188584 /* SoundPreference+AlarmSounds.swift */; };
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
 		B2AFE6642569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6632569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
@@ -147,9 +153,8 @@
 		B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */; };
 		B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */; };
 		B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51225632AE8000BC78E /* Date+Utilities.swift */; };
-		B2F6B51625642F48000BC78E /* Rooster-crowing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B2F6B51525642F48000BC78E /* Rooster-crowing.mp3 */; };
 		B2F6B51A256433DA000BC78E /* AlarmSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B519256433DA000BC78E /* AlarmSounds.swift */; };
-		B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51D256433F3000BC78E /* BundleAlarmSound.swift */; };
+		B2F6B51E256433F3000BC78E /* FileAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51D256433F3000BC78E /* FileAlarmSound.swift */; };
 		B2F6B52125643434000BC78E /* SilenceAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */; };
 		B2F817CF25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817CE25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift */; };
 		B2F817D525768DFD00B28119 /* TableViewRowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F817D425768DFD00B28119 /* TableViewRowProtocol.swift */; };
@@ -196,6 +201,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B2A58B3B25928A4C00188584 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Sounds;
+			dstSubfolderSpec = 7;
+			files = (
+				B2A58B3F25928B0000188584 /* Chickens.mp3 in CopyFiles */,
+				B2A58B4125928B0200188584 /* Rooster Crowing.mp3 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -222,7 +238,7 @@
 		B227DF2825680C970002C127 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B236FCD5255EFE0A00A2E58D /* EventKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
-		B236FCDF255F1C2C00A2E58D /* chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chickens.mp3; sourceTree = "<group>"; };
+		B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chickens.mp3; sourceTree = "<group>"; };
 		B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarsPopOverViewController.swift; sourceTree = "<group>"; };
 		B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC15258028BD00FA67DC /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +298,10 @@
 		B29D056D25925A6D0027C152 /* EventKitEvent+DictionaryCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitEvent+DictionaryCodable.swift"; sourceTree = "<group>"; };
 		B29D057025925A7E0027C152 /* EventKitReminder+DictionaryCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitReminder+DictionaryCodable.swift"; sourceTree = "<group>"; };
 		B29D0574259260130027C152 /* SimpleTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTimer.swift; sourceTree = "<group>"; };
+		B2A58B36259288EA00188584 /* SoundPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPreference.swift; sourceTree = "<group>"; };
+		B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Utilities.swift"; sourceTree = "<group>"; };
+		B2A58B47259290F700188584 /* AlarmSoundGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundGroup.swift; sourceTree = "<group>"; };
+		B2A58B4A2592917500188584 /* SoundPreference+AlarmSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundPreference+AlarmSounds.swift"; sourceTree = "<group>"; };
 		B2AFE64E2569782D006B3C58 /* CalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
 		B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utiities.swift"; sourceTree = "<group>"; };
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
@@ -336,9 +356,9 @@
 		B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSceneDelegate.swift; sourceTree = "<group>"; };
 		B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewRow.swift; sourceTree = "<group>"; };
 		B2F6B51225632AE8000BC78E /* Date+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utilities.swift"; sourceTree = "<group>"; };
-		B2F6B51525642F48000BC78E /* Rooster-crowing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Rooster-crowing.mp3"; sourceTree = "<group>"; };
+		B2F6B51525642F48000BC78E /* Rooster Crowing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Rooster Crowing.mp3"; sourceTree = "<group>"; };
 		B2F6B519256433DA000BC78E /* AlarmSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSounds.swift; sourceTree = "<group>"; };
-		B2F6B51D256433F3000BC78E /* BundleAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleAlarmSound.swift; sourceTree = "<group>"; };
+		B2F6B51D256433F3000BC78E /* FileAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAlarmSound.swift; sourceTree = "<group>"; };
 		B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilenceAlarmSound.swift; sourceTree = "<group>"; };
 		B2F817CE25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSectionAdornmentProtocol.swift; sourceTree = "<group>"; };
 		B2F817D425768DFD00B28119 /* TableViewRowProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewRowProtocol.swift; sourceTree = "<group>"; };
@@ -452,9 +472,8 @@
 		B236FCE4255F1C9D00A2E58D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B2A58B3A259289F300188584 /* Sounds */,
 				B2E15122255EED2B002672EC /* Assets.xcassets */,
-				B236FCDF255F1C2C00A2E58D /* chickens.mp3 */,
-				B2F6B51525642F48000BC78E /* Rooster-crowing.mp3 */,
 				B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
@@ -630,6 +649,15 @@
 			path = EventKitTableView;
 			sourceTree = "<group>";
 		};
+		B2A58B3A259289F300188584 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */,
+				B2F6B51525642F48000BC78E /* Rooster Crowing.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		B2AFE66F2569DFD6006B3C58 /* F SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +819,7 @@
 				B2F6B49D25619A43000BC78E /* EventKitReminder.swift */,
 				B29D0560259251840027C152 /* Preferences.swift */,
 				B29D0574259260130027C152 /* SimpleTimer.swift */,
+				B2A58B36259288EA00188584 /* SoundPreference.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -809,6 +838,7 @@
 			children = (
 				B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */,
 				B2866250258EC04D00D3A538 /* EventKitCalendar+UIColor.swift */,
+				B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -831,7 +861,9 @@
 			isa = PBXGroup;
 			children = (
 				B2F6B519256433DA000BC78E /* AlarmSounds.swift */,
-				B2F6B51D256433F3000BC78E /* BundleAlarmSound.swift */,
+				B2F6B51D256433F3000BC78E /* FileAlarmSound.swift */,
+				B2A58B47259290F700188584 /* AlarmSoundGroup.swift */,
+				B2A58B4A2592917500188584 /* SoundPreference+AlarmSounds.swift */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -899,6 +931,7 @@
 				B2E15124255EED2B002672EC /* Frameworks */,
 				B2E15125255EED2B002672EC /* Resources */,
 				B227DF0E25673FF90002C127 /* CopyFiles */,
+				B2A58B3B25928A4C00188584 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -962,8 +995,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
-				B2F6B51625642F48000BC78E /* Rooster-crowing.mp3 in Resources */,
-				B236FCE0255F1C2C00A2E58D /* chickens.mp3 in Resources */,
 				B2E15137255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1002,6 +1033,7 @@
 			files = (
 				B286626E258EC37100D3A538 /* EventNotification.swift in Sources */,
 				B286629B258EC77200D3A538 /* EKReminder+UniqueID.swift in Sources */,
+				B2A58B38259288EA00188584 /* SoundPreference.swift in Sources */,
 				B2866266258EC1F500D3A538 /* DictionaryCodable.swift in Sources */,
 				B28661DC258E8FA100D3A538 /* MenuBarController.swift in Sources */,
 				B2866296258EC77200D3A538 /* EventKitCalendar.swift in Sources */,
@@ -1067,7 +1099,7 @@
 				B2965528257BE0FA008D1858 /* EventKitItem.swift in Sources */,
 				B2AFE6892569E286006B3C58 /* AllCalendarsListViewController.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
-				B2F6B51E256433F3000BC78E /* BundleAlarmSound.swift in Sources */,
+				B2F6B51E256433F3000BC78E /* FileAlarmSound.swift in Sources */,
 				B2965512257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift in Sources */,
 				B25B65EB258CFDB20006B771 /* AppKitPluginController.swift in Sources */,
 				B2E1549C257686C3008BE604 /* CalenderSection.swift in Sources */,
@@ -1083,6 +1115,8 @@
 				B2020AC12577D99800F478CC /* PreferencesDividerSection.swift in Sources */,
 				B256BC16258028BD00FA67DC /* CalendarListViewController.swift in Sources */,
 				B2020AD72577DAC600F478CC /* EventKitTableViewController.swift in Sources */,
+				B2A58B4B2592917500188584 /* SoundPreference+AlarmSounds.swift in Sources */,
+				B2A58B4525928F0C00188584 /* Bundle+Utilities.swift in Sources */,
 				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
 				B2F817FC2576ABD900B28119 /* RightSideViewController.swift in Sources */,
 				B2B70987257FC5E900C48ED5 /* StringFormatter.swift in Sources */,
@@ -1093,6 +1127,7 @@
 				B2020ABF2577D99800F478CC /* PreferencesSectionHeader.swift in Sources */,
 				B2F817D925768E0800B28119 /* TableViewSectionProtocol.swift in Sources */,
 				B2965558257C1186008D1858 /* ReminderTableViewCell.swift in Sources */,
+				B2A58B37259288EA00188584 /* SoundPreference.swift in Sources */,
 				B2E154A0257686D0008BE604 /* DelegateDividerSection.swift in Sources */,
 				B2F6B51A256433DA000BC78E /* AlarmSounds.swift in Sources */,
 				B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */,
@@ -1138,6 +1173,7 @@
 				B29D0561259251840027C152 /* Preferences.swift in Sources */,
 				B296555F257C306E008D1858 /* EventKitItemTableViewCell.swift in Sources */,
 				B2965544257C0EFE008D1858 /* ReminderSection.swift in Sources */,
+				B2A58B48259290F700188584 /* AlarmSoundGroup.swift in Sources */,
 				B29D057125925A7E0027C152 /* EventKitReminder+DictionaryCodable.swift in Sources */,
 				B2C7424325772435006645A0 /* PreferencesViewController.swift in Sources */,
 				B2020A9A2577D83D00F478CC /* PreferencesTableViewController.swift in Sources */,

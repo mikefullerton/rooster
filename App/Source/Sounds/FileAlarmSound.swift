@@ -9,19 +9,14 @@ import Foundation
 import AVFoundation
 import OSLog
 
-class BundleAlarmSound : AlarmSound {
+class FileAlarmSound : AlarmSound {
         
     weak static var delegate: AlarmSoundDelegate?
     
     private let url: URL
     private let player: AVAudioPlayer
     
-    init?(withName name: String,
-          extension fileExtension: String = "mp3") {
-        
-        guard let url = Bundle.main.url(forResource: name, withExtension: fileExtension) else {
-            return nil;
-        }
+    init?(withURL url: URL) {
 
         var player: AVAudioPlayer?
         
@@ -42,7 +37,7 @@ class BundleAlarmSound : AlarmSound {
 
         self.url = url
         self.player = player!
-        super.init(withName: name)
+        super.init(withName: url.fileName)
     }
     
     override var isPlaying: Bool {
@@ -51,6 +46,10 @@ class BundleAlarmSound : AlarmSound {
     
     override var volume: Float {
         return self.player.volume
+    }
+    
+    override var duration: TimeInterval {
+        return self.player.duration
     }
     
     override func set(volume: Float, fadeDuration: TimeInterval) {
@@ -64,14 +63,16 @@ class BundleAlarmSound : AlarmSound {
     override func startPlayingSound() -> TimeInterval {
         self.player.numberOfLoops = 0
         self.player.play()
-        return self.player.duration
+        return self.duration + self.behavior.timeBetweenPlays
     }
     
     override func stopPlayingSound() {
         self.player.stop()
     }
     
-    static func == (lhs: BundleAlarmSound, rhs: BundleAlarmSound) -> Bool {
+    static func == (lhs: FileAlarmSound, rhs: FileAlarmSound) -> Bool {
         return lhs === rhs
     }
 }
+
+
