@@ -9,6 +9,8 @@ import Foundation
 
 extension EventKitController {
     
+    /// since loading status is asynchronous and a reload can be started at anytime, this encapsulates the state of the reloading so
+    /// we don't overlap or needlessly reload.
     struct ReloadingState {
         private var requestID: Int
         private(set) var requestedCount : Int

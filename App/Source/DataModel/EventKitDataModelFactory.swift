@@ -8,6 +8,7 @@
 import Foundation
 import EventKit
 
+/// This takes the two IntermediateDataModel structs and combines them into the Single and final EventKitDataModel
 struct EventKitDataModelFactory {
 
     private let personalCalendarModel: IntermediateDataModel
@@ -53,6 +54,7 @@ struct EventKitDataModelFactory {
         return nil
     }
     
+    /// this takes the old list of items and the new list of items updates the state for the new items with the state of the old items if applicable.
     private static func mergeItems<Item>(_ newItems:[Item],
                                          withOldItems oldItems: [Item],
                                          updateAlarmBlock:(_ item: Item, _ newAlarm: EventKitAlarm) -> Item ) -> [Item] where Item: EventKitItem {
@@ -73,7 +75,7 @@ struct EventKitDataModelFactory {
                         // common case of reload during an alarm.
                         outItems.append(newItem)
                     } else {
-                        
+                        // this always means the alarm is .neverFired
                         let updatedItem = updateAlarmBlock(newItem, newAlarm.updatedAlarm(.neverFired))
                         outItems.append(updatedItem)
                     }
@@ -113,6 +115,7 @@ struct EventKitDataModelFactory {
         }
     }
     
+    /// actually create the final data model
     func createDataModel() -> EventKitDataModel {
         return EventKitDataModel(calendars: self.personalCalendars,
                                  delegateCalendars: self.delegateCalendars,

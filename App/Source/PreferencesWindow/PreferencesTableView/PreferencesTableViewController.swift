@@ -11,6 +11,6 @@ import UIKit
 class PreferencesTableViewController : EventKitTableViewController<PreferencesTableViewModel> {
     
     override func reloadViewModel() -> PreferencesTableViewModel? {
-        return PreferencesTableViewModel(preferences: Preferences.instance)
+        return PreferencesTableViewModel(preferences: PreferencesController.instance.preferences)
     }
 }

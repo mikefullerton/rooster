@@ -9,6 +9,8 @@ import Foundation
 import EventKit
 import OSLog
 
+/// this asychronously fetches all the EKCalendars, EKEvents, and EKReminders we're interested in.
+/// All the fetched data is later used to Create our EventKitCalendars, EventKitEvents, and EventKitReminders.
 struct EKDataModelFactory {
     
     static let logger = Logger(subsystem: "com.apple.rooster", category: "EKDataModelFactory")
@@ -62,7 +64,7 @@ struct EKDataModelFactory {
         
         var subscribedCalendars: [EKCalendar] = []
         for calendar in calendars {
-            let subscribed = Preferences.instance.isCalendarSubscribed(calendar.uniqueID)
+            let subscribed = EventKitDataModel.Storage.instance.isCalendarSubscribed(calendar.uniqueID)
             if subscribed {
                 subscribedCalendars.append(calendar)
             }

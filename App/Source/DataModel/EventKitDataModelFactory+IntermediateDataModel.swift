@@ -10,6 +10,9 @@ import EventKit
 
 extension EventKitDataModelFactory {
 
+    /// This takes the data in the EKDataModel and converts it into our EventKit<Type> versions.
+    /// When it inflates the object it updates the new inflated object with persisted data for that item.
+    /// Note this is for a single EKEventStore, we later combine the IntermediateDataModels into a Single EventKitDataModel
     struct IntermediateDataModel {
         private let model: EKDataModel
         private(set) var calendars: [EventKitCalendar]
@@ -43,7 +46,7 @@ extension EventKitDataModelFactory {
                     }
                     
                     var eventKitEvent: EventKitEvent? = nil
-                    if let savedState = Preferences.instance.eventState(forKey: ekEvent.uniqueID) {
+                    if let savedState = EventKitDataModel.Storage.instance.eventState(forKey: ekEvent.uniqueID) {
                         eventKitEvent = EventKitEvent(withEvent: ekEvent,
                                                       calendar: calendar,
                                                       savedState: savedState)
@@ -68,7 +71,7 @@ extension EventKitDataModelFactory {
         private mutating func addCalendars() {
             for ekCalendar in self.model.calendars {
                 if ekCalendar.refresh() {
-                    let subscribed = Preferences.instance.isCalendarSubscribed(ekCalendar.uniqueID)
+                    let subscribed = EventKitDataModel.Storage.instance.isCalendarSubscribed(ekCalendar.uniqueID)
                     
                     let calendar = EventKitCalendar(withCalendar: ekCalendar,
                                                     subscribed:subscribed)
@@ -105,7 +108,7 @@ extension EventKitDataModelFactory {
                     }
                     
                     var reminder: EventKitReminder? = nil
-                    if let savedState = Preferences.instance.reminderState(forKey: ekReminder.uniqueID) {
+                    if let savedState = EventKitDataModel.Storage.instance.reminderState(forKey: ekReminder.uniqueID) {
                         reminder = EventKitReminder(withReminder: ekReminder,
                                                          calendar: calendar,
                                                          startDate: startDate!,

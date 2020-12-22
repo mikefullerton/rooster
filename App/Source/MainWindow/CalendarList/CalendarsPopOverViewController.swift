@@ -9,40 +9,9 @@ import Foundation
 import UIKit
 
 class CalendarsPopOverViewController : UIViewController {
-    
-//    enum TabBarItem: Int, CaseIterable {
-//        case calendars, delegateCalendars
-//
-//        func title() -> String {
-//            switch self {
-//            case .calendars:
-//                return "calendars"
-//            case .delegateCalendars:
-//                return "delegate calendars"
-//            }
-//        }
-//    }
+  
+    let popoverWidth:CGFloat = 400
 
-    
-//    convenience init() {
-//        self.init(nibName: nil, bundle: nil)
-//    }
-//
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-//        self.calendars = CalendarListViewController()
-//        self.delegateCalendars = DelegateCalendarListViewController()
-//        self.segmentedControl = UISegmentedControl()
-//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    }
-//
-//    required public init?(coder: NSCoder) {
-//        self.calendars = CalendarListViewController()
-//        self.delegateCalendars = DelegateCalendarListViewController()
-//        self.segmentedControl = UISegmentedControl()
-//
-//        super.init(coder: coder)
-//    }
-    
     func add(controller: UIViewController) {
         
         self.addChild(controller)
@@ -61,45 +30,45 @@ class CalendarsPopOverViewController : UIViewController {
         ])
     }
     
-    lazy var segmentedControl: UISegmentedControl = {
-        
-        let segmentedControl = UISegmentedControl()
-        segmentedControl.isMomentary = false
-
-        weak var weakSelf = self
-        
-        let lhsAction = UIAction(title: "Calendars", image: nil, identifier: UIAction.Identifier(rawValue:"lhs")) { action in
-            weakSelf?.calendars.view.isHidden = false
-            weakSelf?.delegateCalendars.view.isHidden = true
-            weakSelf?.segmentedControl.selectedSegmentIndex = 0
-        }
-
-        let rhsAction = UIAction(title: "Delegate Calendars", image: nil, identifier: UIAction.Identifier(rawValue:"rhs")) { action in
-            weakSelf?.calendars.view.isHidden = true
-            weakSelf?.delegateCalendars.view.isHidden = false
-            weakSelf?.segmentedControl.selectedSegmentIndex = 1
-        }
-
-        segmentedControl.insertSegment(action: rhsAction, at: 0, animated: false)
-        segmentedControl.insertSegment(action: lhsAction, at: 0, animated: false)
-        segmentedControl.selectedSegmentIndex = 0
-//        segmentedControl.apportionsSegmentWidthsByContent = true
-        
-        self.view.addSubview(segmentedControl)
-        
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-
-        let size = segmentedControl.sizeThatFits(CGSize(width: 200, height: CGFloat.greatestFiniteMagnitude))
-        
-        NSLayoutConstraint.activate([
-            segmentedControl.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            segmentedControl.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            segmentedControl.heightAnchor.constraint(equalToConstant: size.height),
-            segmentedControl.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20)
-        ])
-
-        return segmentedControl
-    }()
+//    lazy var segmentedControl: UISegmentedControl = {
+//
+//        let segmentedControl = UISegmentedControl()
+//        segmentedControl.isMomentary = false
+//
+//        weak var weakSelf = self
+//
+//        let lhsAction = UIAction(title: "Calendars", image: nil, identifier: UIAction.Identifier(rawValue:"lhs")) { action in
+//            weakSelf?.calendars.view.isHidden = false
+//            weakSelf?.delegateCalendars.view.isHidden = true
+//            weakSelf?.segmentedControl.selectedSegmentIndex = 0
+//        }
+//
+//        let rhsAction = UIAction(title: "Delegate Calendars", image: nil, identifier: UIAction.Identifier(rawValue:"rhs")) { action in
+//            weakSelf?.calendars.view.isHidden = true
+//            weakSelf?.delegateCalendars.view.isHidden = false
+//            weakSelf?.segmentedControl.selectedSegmentIndex = 1
+//        }
+//
+//        segmentedControl.insertSegment(action: rhsAction, at: 0, animated: false)
+//        segmentedControl.insertSegment(action: lhsAction, at: 0, animated: false)
+//        segmentedControl.selectedSegmentIndex = 0
+////        segmentedControl.apportionsSegmentWidthsByContent = true
+//
+//        self.view.addSubview(segmentedControl)
+//
+//        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let size = segmentedControl.sizeThatFits(CGSize(width: 200, height: CGFloat.greatestFiniteMagnitude))
+//
+//        NSLayoutConstraint.activate([
+//            segmentedControl.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+//            segmentedControl.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+//            segmentedControl.heightAnchor.constraint(equalToConstant: size.height),
+//            segmentedControl.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20)
+//        ])
+//
+//        return segmentedControl
+//    }()
     
     lazy var calendars: CalendarListViewController = {
         return CalendarListViewController()
@@ -108,8 +77,6 @@ class CalendarsPopOverViewController : UIViewController {
     lazy var delegateCalendars: DelegateCalendarListViewController = {
         return DelegateCalendarListViewController()
     }()
-    
-    let width:CGFloat = 400
     
     func setToolbarItems(calendarColor: UIColor, delegateCalendarsColor: UIColor) {
         let calendarToolBarItem = UIBarButtonItem(title: "Calendars",
@@ -132,31 +99,6 @@ class CalendarsPopOverViewController : UIViewController {
                                UIBarButtonItem.flexibleSpace()]
         
     }
-    
-//    func setToolbarItems(calendarFocused: Bool) {
-//        let calendarToolBarItem = UIBarButtonItem(title: "Calendars",
-//                                                  style: .plain,
-//                                                  target: self,
-//                                                  action:#selector(userClickCalendarsButton(_:)))
-//
-//
-//
-//        calendarToolBarItem.tintColor = calendarColor
-//
-//        let delegateCalendarToolBarItem = UIBarButtonItem(title: "Delegate Calendars",
-//                                                          style: .plain,
-//                                                          target: self,
-//                                                          action:#selector(userClickDelegateCalendarsButton(_:)))
-//
-//        delegateCalendarToolBarItem.tintColor = delegateCalendarsColor
-//
-//        self.toolbar.items = [ UIBarButtonItem.flexibleSpace(),
-//                               calendarToolBarItem,
-//                               delegateCalendarToolBarItem,
-//                               UIBarButtonItem.flexibleSpace()]
-//
-//    }
-    
     
     @objc func userClickCalendarsButton(_ sender: Any) {
         self.calendars.view.isHidden = false
@@ -204,8 +146,8 @@ class CalendarsPopOverViewController : UIViewController {
         
         toolbar.translatesAutoresizingMaskIntoConstraints = false
 
-        let size = toolbar.sizeThatFits(CGSize(width: self.width,
-                                                        height: CGFloat.greatestFiniteMagnitude))
+        let size = toolbar.sizeThatFits(CGSize(width: self.popoverWidth,
+                                               height: CGFloat.greatestFiniteMagnitude))
         
         NSLayoutConstraint.activate([
             toolbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
@@ -229,7 +171,8 @@ class CalendarsPopOverViewController : UIViewController {
     
     var calculatedSize: CGSize {
         
+        // TODO: Caculate height of largest list of calendars
         
-        return CGSize(width: self.width, height: 700)
+        return CGSize(width: self.popoverWidth, height: 700)
     }
 }

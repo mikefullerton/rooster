@@ -125,8 +125,38 @@ class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresent
         return toolbar
     }()
     
-    @objc
-    func showCalendars(_ sender: Any?) {
+    func showPopover(for viewController: UIViewController,
+                     fromView view: UIView) {
+        
+        viewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+        if let presentationController = viewController.popoverPresentationController {
+            presentationController.permittedArrowDirections = .up
+            presentationController.sourceView = view
+            presentationController.canOverlapSourceViewRect = true
+        }
+
+        self.present(viewController, animated: true) {
+        }
+    }
+    
+    lazy var calendarButtonSourceView: UIView = {
+        let view = UIView(frame: CGRect(x:0, y: 35, width:10, height: 10))
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
+            view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
+            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35.0),
+            view.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -32.0)
+        ])
+        
+        return view
+    }()
+    
+    @objc func toggleCalendarsPopover(_ sender: Any?) {
         
         if self.presentedViewController != nil {
             self.presentedViewController?.dismiss(animated: true, completion: {
@@ -134,33 +164,47 @@ class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresent
             })
         } else {
             let viewController = CalendarsPopOverViewController()
-            
             viewController.preferredContentSize = viewController.calculatedSize
-            
-            viewController.modalPresentationStyle = UIModalPresentationStyle.popover
-
-            if let presentationController = viewController.popoverPresentationController {
-                presentationController.permittedArrowDirections = .up
-                presentationController.sourceView = self.view
-                presentationController.canOverlapSourceViewRect = true
-                
-                let bounds = self.view.bounds
-                let sourceRect = CGRect(x: bounds.size.width - 32,
-                                        y: 35,
-                                        width: 10,
-                                        height: 10)
-                presentationController.sourceRect = sourceRect
-            }
-
-            self.present(viewController, animated: true) {
-            }
+            self.showPopover(for: viewController,
+                             fromView: self.calendarButtonSourceView)
         }
     }
 
+    lazy var preferencesButtonSourceView: UIView = {
+        let view = UIView(frame: CGRect(x:0, y: 35, width:10, height: 10))
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
+            view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
+            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35.0),
+            view.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -72.0)
+        ])
+        
+        return view
+    }()
+    
+    @objc func togglePreferencesPopover(_ sender: Any?) {
+        
+        if self.presentedViewController != nil {
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                
+            })
+        } else {
+            let viewController = PreferencesViewController()
+            viewController.preferredContentSize = viewController.calculatedSize
+            self.showPopover(for: viewController,
+                             fromView: self.preferencesButtonSourceView)
+        }
+    }
+
+    
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         let identifiers: [NSToolbarItem.Identifier] = [
-//            .toggleSidebar,
-            .flexibleSpace,
+            .preferences,
+//            .flexibleSpace,
             .calendars,
         ]
         return identifiers
@@ -182,13 +226,20 @@ class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresent
         
         case .calendars:
             let item = NSToolbarItem(itemIdentifier: itemIdentifier)
-//            item.view = UIButton()
             item.image = UIImage(systemName: "calendar")
-            item.label = "Edit Calendars"
-            item.action = #selector(showCalendars(_:))
+            item.label = "Calendars"
+            item.action = #selector(toggleCalendarsPopover(_:))
             item.target = self
             toolbarItem = item
-            
+
+        case .preferences:
+            let item = NSToolbarItem(itemIdentifier: itemIdentifier)
+            item.image = UIImage(systemName: "gear")
+            item.label = "Preferences"
+            item.action = #selector(togglePreferencesPopover(_:))
+            item.target = self
+            toolbarItem = item
+
         default:
             toolbarItem = nil
         }
@@ -201,6 +252,7 @@ class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresent
 
 #if targetEnvironment(macCatalyst)
 extension NSToolbarItem.Identifier {
+    static let preferences = NSToolbarItem.Identifier("com.apple.rooster.preferences")
     static let calendars = NSToolbarItem.Identifier("com.apple.rooster.showCalendars")
 }
 #endif

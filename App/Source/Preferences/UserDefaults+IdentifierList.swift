@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension PreferencesDataStore {
+extension UserDefaults {
     struct IdentifierList {
         private let preferencesKey: String
         

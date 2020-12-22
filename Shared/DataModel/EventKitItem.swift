@@ -9,14 +9,14 @@ import Foundation
 
 protocol Alarmable {
     var alarm: EventKitAlarm { get }
+    var id: String { get }
+    var title: String { get }
 }
 
 protocol EventKitItem: Alarmable, CustomStringConvertible, Hashable {
     
     associatedtype ItemType
     
-    var id: String { get }
-    var title: String { get }
     var location: String? { get }
     var notes: String? { get }
     var url: URL? { get }

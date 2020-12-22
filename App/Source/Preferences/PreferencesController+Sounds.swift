@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Preferences {
+extension PreferencesController {
     
     struct Sounds : DictionaryCodable {
         var alarmSound: String?

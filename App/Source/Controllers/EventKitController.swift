@@ -27,7 +27,6 @@ class EventKitController {
     
     private let store: EKEventStore
     private var delegateEventStore: EKEventStore?
-    private let preferences: Preferences
     private var dataModel: EventKitDataModel
     private var eventStoreReloader: Reloader?
     private var reloadingState: ReloadingState {
@@ -37,10 +36,9 @@ class EventKitController {
     }
     private var authenticated: Bool
     
-    init(preferences: Preferences) {
+    init() {
         self.store = EKEventStore()
         self.delegateEventStore = nil
-        self.preferences = preferences
         self.dataModel = EventKitDataModel()
         self.reloadingState = ReloadingState()
         self.authenticated = false

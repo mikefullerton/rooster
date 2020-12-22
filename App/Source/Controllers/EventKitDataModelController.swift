@@ -26,7 +26,7 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
     private var needsNotify = false
     
     private init() {
-        self.eventKitController = EventKitController(preferences: Preferences.instance)
+        self.eventKitController = EventKitController()
         self.dataModel = EventKitDataModel()
         self.preferencesReloader = nil
         self.isAuthenticating = false
@@ -75,7 +75,7 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
                                                delegateCalendars: updatedDelegateList,
                                                events: dataModel.events,
                                                reminders: dataModel.reminders)
-            Preferences.instance.update(calendar: newCalendar)
+            EventKitDataModel.Storage.instance.update(calendar: newCalendar)
             
             self.logger.log("EventKitDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
             
@@ -95,7 +95,7 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
                                            inItems: self.dataModel.events) {
             
             updatedEvents.forEach {
-                Preferences.instance.update(event: $0)
+                EventKitDataModel.Storage.instance.update(event: $0)
             }
             
             self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
@@ -116,7 +116,7 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
                                               inItems: self.dataModel.reminders) {
             
             updatedReminders.forEach {
-                Preferences.instance.update(reminder: $0)
+                EventKitDataModel.Storage.instance.update(reminder: $0)
             }
             
             self.dataModel = EventKitDataModel(calendars: dataModel.calendars,

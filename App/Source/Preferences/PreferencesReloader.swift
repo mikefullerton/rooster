@@ -10,7 +10,7 @@ import Foundation
 class PreferencesReloader : Reloader {
     
     init(for reloadable: Reloadable) {
-        super.init(withNotificationName: Preferences.DidChangeEvent,
+        super.init(withNotificationName: PreferencesController.DidChangeEvent,
                    object: nil,
                    for: reloadable)
     }

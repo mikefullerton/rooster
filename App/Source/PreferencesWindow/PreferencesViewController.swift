@@ -10,6 +10,11 @@ import UIKit
 
 class PreferencesViewController : UIViewController {
     
+    let popoverWidth: CGFloat = 400
     
-    
+    var calculatedSize: CGSize {
+        
+        
+        return CGSize(width: self.popoverWidth, height: 700)
+    }
 }

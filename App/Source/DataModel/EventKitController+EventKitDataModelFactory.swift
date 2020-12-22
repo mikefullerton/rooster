@@ -8,6 +8,7 @@
 import Foundation
 import EventKit
 
+/// interface used by EventKitController to fetch all the data and create a new updated EventKitDataModel
 extension EventKitController {
     
     private func handleBothEKDataModelsFetched(calendarDataModel: EKDataModel,
@@ -49,8 +50,8 @@ extension EventKitController {
         
         return outDelegateCalendars
     }
-    
-    
+
+    /// called by EventKitController
     func fetchNewDataModel(forUserStore userEventStore: EKEventStore,
                            delegateEventStore: EKEventStore?,
                            previousDataModel: EventKitDataModel,
