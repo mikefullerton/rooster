@@ -49,7 +49,7 @@ class NotificationController : NSObject, UNUserNotificationCenterDelegate {
     }
     
     func scheduleNotification(forItem item: Alarmable) {
-//        self.cancelNotifications()
+
         let center = UNUserNotificationCenter.current()
         
         center.getNotificationSettings { settings in

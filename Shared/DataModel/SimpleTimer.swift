@@ -10,7 +10,7 @@ import OSLog
 
 class SimpleTimer : CustomStringConvertible {
     
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "NotificationController")
+    static let logger = Logger(subsystem: "com.apple.rooster", category: "SimpleTimer")
     var logger: Logger {
         return type(of: self).logger
     }

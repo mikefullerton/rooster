@@ -55,6 +55,7 @@ class AlarmController {
         self.startTimerForNextEventTime()
         
         NotificationController.instance.cancelNotifications()
+        AppKitPluginController.instance.utilities.stopBouncingAppIcon()
     }
 
     // MARK: timer management
@@ -115,8 +116,20 @@ class AlarmController {
         let notifyIsStart = self.alarmSoundController.playingCount == 0
         
         if self.alarmSoundController.startPlayingSound(forItem: item) {
-            self.openEventLocationURL(forItem: item)
-            NotificationController.instance.scheduleNotification(forItem: item)
+            
+            let prefs = PreferencesController.instance.preferences
+            
+            if prefs.autoOpenLocations {
+                self.openEventLocationURL(forItem: item)
+            }
+            
+            if prefs.useSystemNotifications {
+                NotificationController.instance.scheduleNotification(forItem: item)
+            }
+            
+            if prefs.bounceIconInDock {
+                AppKitPluginController.instance.utilities.startBouncingAppIcon()
+            }
         }
 
         if notifyIsStart {

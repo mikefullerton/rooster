@@ -13,6 +13,7 @@ import OSLog
     
     private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.Utilities")
         
+    private var userAttentionRequest:Int = 0
     func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
         
@@ -83,6 +84,18 @@ import OSLog
 
             }
             
+        }
+    }
+    
+    func startBouncingAppIcon() {
+        self.stopBouncingAppIcon()
+        self.userAttentionRequest = NSApp.requestUserAttention(.criticalRequest)
+    }
+    
+    func stopBouncingAppIcon() {
+        if self.userAttentionRequest != 0 {
+            NSApp.cancelUserAttentionRequest(self.userAttentionRequest)
+            self.userAttentionRequest = 0
         }
     }
 }

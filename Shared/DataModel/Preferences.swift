@@ -27,8 +27,8 @@ struct Preferences {
     
     init() {
         self.init(withSounds: SoundPreference(),
-                  useSystemNotifications: false,
-                  bounceIconInDock: false,
-                  autoOpenLocations: false)
+                  useSystemNotifications: true,
+                  bounceIconInDock: true,
+                  autoOpenLocations: true)
     }
 }
