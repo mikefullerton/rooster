@@ -36,11 +36,41 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         self.init(nibName: nil, bundle: nil)
     }
     
+    lazy var navigationViewController: UINavigationController = {
+        
+        let viewController = MainEventListViewController()
+        
+        let navigationItem = viewController.navigationItem
+        
+        let leftImage = UIImage(systemName: "gear")
+        
+        let leftButton = UIBarButtonItem(image: leftImage,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(preferencesButtonClicked(_:)))
+                                         
+        navigationItem.leftBarButtonItem = leftButton
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "calendar"),
+                                                                                    style: .plain, target: self, action: #selector(calendarsButtonClicked(_:)))
+
+        navigationItem.title = "Rooster"
+        
+        let navigationViewController = UINavigationController(rootViewController: viewController)
+        
+        navigationViewController.setNavigationBarHidden(false, animated:false)
+        
+        return navigationViewController
+    }()
+    
     func createMainViewsIfNeeded() {
         if self.contentViewController == nil {
-            
-            self.contentViewController = RightSideViewController()
-            
+            #if targetEnvironment(macCatalyst)
+            self.contentViewController = MainEventListViewController()
+            #else
+            self.contentViewController = self.navigationViewController
+            #endif
+
             self.addChild(self.contentViewController!)
 
             if let subview = self.contentViewController!.view {
@@ -57,6 +87,15 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
             }
         }
     }
+    
+    @objc func preferencesButtonClicked(_ sender: Any) {
+        
+    }
+
+    @objc func calendarsButtonClicked(_ sender: Any) {
+        self.navigationViewController.pushViewController(CalendarsPopOverViewController(), animated: true)
+    }
+
     
     func addSpinner() {
         
@@ -209,7 +248,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         let identifiers: [NSToolbarItem.Identifier] = [
             .preferences,
-//            .flexibleSpace,
+            .flexibleSpace,
             .calendars,
         ]
         return identifiers

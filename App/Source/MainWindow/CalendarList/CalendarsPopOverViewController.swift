@@ -25,7 +25,7 @@ class CalendarsPopOverViewController : UIViewController {
         NSLayoutConstraint.activate([
             controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            controller.view.topAnchor.constraint(equalTo: self.toolbar.bottomAnchor, constant: 16),
+            controller.view.topAnchor.constraint(equalTo: self.calendarsToolbar.bottomAnchor, constant: 16),
             controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
     }
@@ -93,10 +93,10 @@ class CalendarsPopOverViewController : UIViewController {
 
         delegateCalendarToolBarItem.tintColor = delegateCalendarsColor
 
-        self.toolbar.items = [ UIBarButtonItem.flexibleSpace(),
-                               calendarToolBarItem,
-                               delegateCalendarToolBarItem,
-                               UIBarButtonItem.flexibleSpace()]
+        self.calendarsToolbar.items = [ UIBarButtonItem.flexibleSpace(),
+                                        calendarToolBarItem,
+                                        delegateCalendarToolBarItem,
+                                        UIBarButtonItem.flexibleSpace()]
         
     }
     
@@ -114,7 +114,7 @@ class CalendarsPopOverViewController : UIViewController {
         self.setToolbarItems(calendarColor: .label, delegateCalendarsColor: .link)
     }
 
-    lazy var toolbar: UIToolbar = {
+    lazy var calendarsToolbar: UIToolbar = {
         let toolbar = UIToolbar()
         
         var appearance = UIToolbarAppearance()
@@ -149,11 +149,18 @@ class CalendarsPopOverViewController : UIViewController {
         let size = toolbar.sizeThatFits(CGSize(width: self.popoverWidth,
                                                height: CGFloat.greatestFiniteMagnitude))
         
+        #if targetEnvironment(macCatalyst)
+        let topBuffer:CGFloat = 20
+        #else
+        let topBuffer:CGFloat = 100
+        #endif
+        
         NSLayoutConstraint.activate([
             toolbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
             toolbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
             toolbar.heightAnchor.constraint(equalToConstant: size.height),
-            toolbar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20)
+            toolbar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: topBuffer)
+            
         ])
 
         return toolbar
@@ -163,6 +170,8 @@ class CalendarsPopOverViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let _ = self.calendarsToolbar
+        
         self.add(controller: self.calendars)
         self.add(controller: self.delegateCalendars)
         

@@ -153,7 +153,28 @@ class EventKitController {
         #if targetEnvironment(macCatalyst)
         AppKitPluginController.instance.eventKitHelper.requestPermissionToDelegateCalendars(for: self.store, completion: completion)
         #else
+        self.logger.log("Delegate eventStore not available on iOS");
+        
         completion(true, nil, nil)
+        
+        #if false
+        let sources = store.delegateSources
+
+        let delegateEventStore = EKEventStore(sources: sources)
+
+        self.logger.log("EventKitHelper requesting access to delegate calendars")
+        
+        delegateEventStore.requestAccess(to: EKEntityType.event) { (success, error) in
+            if success == false || error != nil {
+                self.logger.error("Failed to be granted access to delegate calendars with error: \(error?.localizedDescription ?? "nil")")
+                completion!(false, nil, error)
+            } else {
+                self.logger.log("Access granted to delegate calendars")
+                completion!(true, delegateEventStore, nil)
+            }
+        }
+        #endif
+        
         #endif
     }
     

@@ -76,6 +76,16 @@ class TimeRemainingView : UILabel {
             }
         }
     }
+
+    #if targetEnvironment(macCatalyst)
+    let hours = " hours"
+    let minutes = " minutes"
+    let seconds = " seconds"
+    #else
+    let hours = "h"
+    let minutes = "m"
+    let seconds = "s"
+    #endif
     
     private func updateCountDown() {
 
@@ -100,16 +110,16 @@ class TimeRemainingView : UILabel {
             var shouldDisplaySeconds = false
             var text = ""
             if hours > 0 {
-                text += "\(self.printableTimeComponent(interval: hours)) hours"
+                text += "\(self.printableTimeComponent(interval: hours))\(self.hours)"
                 if displayMinutes > 1 {
-                    text += ", \(self.printableTimeComponent(interval: displayMinutes)) minutes"
+                    text += ", \(self.printableTimeComponent(interval: displayMinutes))\(self.minutes)"
                 } else if displayMinutes == 1 {
                     text += ", 1 minute"
                 }
             } else if displayMinutes == 1 {
                 text += "1 minute"
             } else if displayMinutes > 0 {
-                text += "\(self.printableTimeComponent(interval: displayMinutes)) minutes"
+                text += "\(self.printableTimeComponent(interval: displayMinutes))\(self.minutes)"
                 shouldDisplaySeconds = self.showSecondsWithMinutes
 
                 if shouldDisplaySeconds {
@@ -121,7 +131,7 @@ class TimeRemainingView : UILabel {
             
             if shouldDisplaySeconds {
                 if displaySeconds > 1 {
-                    text += "\(self.printableTimeComponent(interval: displaySeconds)) seconds"
+                    text += "\(self.printableTimeComponent(interval: displaySeconds))\(self.seconds)"
                 } else if displaySeconds == 1 {
                     text += "1 second"
                 } else {
@@ -146,5 +156,36 @@ class TimeRemainingView : UILabel {
             self.stopTimer()
         }
     }
+}
+
+class TimeRemainingView_iOS : TimeRemainingView, Reloadable {
     
+    private var reloader: DataModelReloader? = nil
+
+    func startTimer() {
+    
+        if self.reloader == nil {
+            self.reloader = DataModelReloader(for: self)
+        
+            self.prefixString = "Next alarm in "
+            self.showSecondsWithMinutes = true
+            self.outOfRangeString = "No more meetings today! 🎉"
+        }
+
+        self.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextEventStartTime) { () -> Date? in
+            return EventKitDataModelController.instance.dataModel.nextEventStartTime
+        }
+    }
+    
+    func reloadData() {
+        self.startTimer()
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        if self.superview != nil {
+            self.startTimer()
+        }
+    }
 }

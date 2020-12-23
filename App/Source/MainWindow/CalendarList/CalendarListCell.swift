@@ -15,17 +15,51 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     
     private lazy var checkBox: UISwitch = {
         let view = UISwitch()
+        
+        #if targetEnvironment(macCatalyst)
         view.preferredStyle = .checkbox
+        #else
+//        view.preferredStyle = .a
+        #endif
+
         view.addTarget(self, action: #selector(checkBoxChecked(_:)), for: .valueChanged)
         self.contentView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
+        #if targetEnvironment(macCatalyst)
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
             view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             view.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+        ])
+        #else
+        view.sizeToFit()
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
+            view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
+            view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
+            view.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+        ])
+        #endif
+        
+        
+        return view
+    }()
+    
+    private lazy var checkBoxTitleView : UILabel = {
+        let view = UILabel()
+        view.textColor = UIColor.secondaryLabel
+        self.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.checkBox.trailingAnchor, constant: 10),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            view.topAnchor.constraint(equalTo: self.topAnchor),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
         ])
 
         return view
@@ -56,17 +90,28 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         self.calendar = nil
     }
     
+    #if targetEnvironment(macCatalyst)
+    func setCheckBoxTitle(_ title: String) {
+        self.checkBox.title = title
+    }
+    #else
+    func setCheckBoxTitle(_ title: String) {
+        self.checkBoxTitleView.text = title
+    }
+    
+    #endif
+    
     func setCalendar(_ calendar: EventKitCalendar) {
         self.calendar = calendar
-        self.checkBox.title = calendar.title
+        self.setCheckBoxTitle(calendar.title)
         self.checkBox.setOn(calendar.isSubscribed, animated:false)
         self.checkBox.sizeToFit()
         if let calendarColor = calendar.color {
-            self.checkBox.thumbTintColor = calendarColor
+//            self.checkBox.thumbTintColor = calendarColor
             self.calendarColorBar.backgroundColor = calendarColor
             self.calendarColorBar.isHidden = false
         } else {
-            self.checkBox.thumbTintColor = nil
+//            self.checkBox.thumbTintColor = nil
             self.calendarColorBar.isHidden = true
         }
     }
@@ -78,7 +123,11 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     }
     
     static var cellHeight: CGFloat {
+        #if targetEnvironment(macCatalyst)
         return 28
+        #else
+        return 50
+        #endif
     }
     
     

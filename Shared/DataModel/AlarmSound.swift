@@ -37,26 +37,38 @@ struct AlarmSoundBehavior {
     }
 }
 
-protocol AlarmSoundSubclass {
-    
+protocol AlarmSound : AnyObject {
+    var delegate: AlarmSoundDelegate? { get set }
+    var name: String { get }
+    var duration: TimeInterval { get }
+    var behavior: AlarmSoundBehavior { get }
+    var isPlaying: Bool { get }
+    var currentTime: TimeInterval { get }
+    var volume: Float { get }
+    func set(volume: Float, fadeDuration: TimeInterval)
+    func play(withBehavior behavior: AlarmSoundBehavior)
+    func stop()
 }
 
-class AlarmSound {
-    
-    weak var delegate: AlarmSoundDelegate?
-    
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "AlarmSound")
+extension AlarmSound {
+
+    static var logger: Logger {
+        return Logger(subsystem: "com.apple.rooster", category: "AlarmSound")
+    }
     
     var logger: Logger {
         return type(of: self).logger
     }
-    
+}
+
+/*
+
     let name: String
     private let timer: SimpleTimer
     private(set) var behavior: AlarmSoundBehavior
     private(set) var duration: TimeInterval
     
-    private var playCount:Int
+    
     
     init(withName name: String) {
         self.name = name
@@ -85,57 +97,11 @@ class AlarmSound {
         return 0
     }
     
-    private func startTimer() {
-        weak var weakSelf = self
-        self.timer.start(withInterval: self.duration) { (timer) in
-        
-            if let strongSelf = weakSelf {
-                strongSelf.playCount += 1
-                
-                if  strongSelf.behavior.playCount == AlarmSoundBehavior.RepeatEndlessly ||
-                    strongSelf.playCount < strongSelf.behavior.playCount {
-                    
-                    strongSelf.startTimer()
-                } else {
-                    strongSelf.stop()
-                }
-                
-            }
-        }
-    }
     
-    func play(withBehavior behavior: AlarmSoundBehavior) {
-        
-        self.behavior = behavior
-        self.playCount = 0
-        
-        self.duration = self.startPlayingSound()
-        
-        if let delegate = self.delegate {
-            delegate.soundWillStartPlaying(self, forIdentifier: behavior.identifier)
-        }
-
-        self.logger.log("playing sound: \(self.name): for: \(behavior.identifier)")
-
-        self.startTimer()
-    }
     
     func stopPlayingSound() {
         
     }
     
-    func stop() {
-        if self.isPlaying {
-            self.timer.stop()
-            if let delegate = self.delegate {
-                delegate.soundDidStopPlaying(self)
-            }
-
-            self.logger.log("stopped sound: \(self.name): for: \(self.behavior.identifier)")
-
-            self.stopPlayingSound()
-        }
-    }
-    
-}
-
+  
+*/

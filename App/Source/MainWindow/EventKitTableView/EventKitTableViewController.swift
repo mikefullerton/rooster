@@ -21,4 +21,11 @@ class EventKitTableViewController<ViewModel> : TableViewController<ViewModel> wh
         super.viewWillDisappear(animated)
         self.reloader = nil
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.tableView.allowsSelection = false
+        self.tableView.separatorStyle = .none
+    }
 }
