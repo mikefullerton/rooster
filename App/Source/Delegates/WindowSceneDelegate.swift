@@ -17,10 +17,12 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = nil
         super.init()
         
+        #if targetEnvironment(macCatalyst)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(windowSceneDidBecomeVisible(_:)),
                                                name: NSNotification.Name("_UIWindowSceneDidBecomeVisibleNotification"),
                                                object: window)
+        #endif
         
     }
     
@@ -30,10 +32,13 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.makeKeyAndVisible()
     }
     
+    #if targetEnvironment(macCatalyst)
+
     @objc func windowSceneDidBecomeVisible(_ notif: Notification) {
         AppKitPluginController.instance.windowController.restoreWindowPosition(forWindow: (self.window as Any),
                                                                                windowName: self.windowRestoreKey)
     }
 
+    #endif
     
 }

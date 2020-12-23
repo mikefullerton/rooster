@@ -8,10 +8,15 @@
 import Foundation
 import UIKit
 import SwiftUI
+#if targetEnvironment(macCatalyst)
+protocol MacAppDelegateProtocols : AppKitInstallationUpdaterDelegate {}
+#else
+protocol MacAppDelegateProtocols {}
+#endif
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, AppKitInstallationUpdaterDelegate {
-    
+class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols {
+
     static var instance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
@@ -50,6 +55,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppKitInstallationUpdater
         configuration.delegateClass = MainSceneDelegate.self
         return configuration
     }
+
+    
+    func showPreferences () {
+        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
+        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+    }
+
+    #if targetEnvironment(macCatalyst)
 
     private var preferencesMenuItem : UIMenu {
         let preferencesCommand = UICommand(title: "Preferences…",
@@ -91,11 +104,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppKitInstallationUpdater
         builder.insertSibling(updateMenuItem, afterMenu: preferencesMenuItem.identifier)
         
     }
-    
-    func showPreferences () {
-        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
-        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
-    }
 
     @objc private func checkForUpdates(_ sender: AppDelegate) {
         AppKitPluginController.instance.installationUpdater.checkForUpdates()
@@ -104,68 +112,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppKitInstallationUpdater
     func appKitInstallationUpdater(_ updater: AppKitInstallationUpdater, didCheckForUpdate updateAvailable: Bool, error: Error?) {
         
     }
+    #endif
     
     public func mainWindowDidShow() {
         AlarmController.instance.start()
+        #if targetEnvironment(macCatalyst)
         MenuBarPopoverController.instance.showIconInMenuBar()
         AppKitPluginController.instance.installationUpdater.delegate = self
         AppKitPluginController.instance.installationUpdater.configure(withAppBundle: Bundle.init(for: type(of:self)))
+        #endif
     }
-    
-//    func findMainScene() -> MainSceneDelegate? {
-//        let connectedSessions = UIApplication.shared.openSessions
-//        for session in connectedSessions {
-//            if let mainSceneDelegate = session.scene?.delegate as? MainSceneDelegate {
-//                return mainSceneDelegate
-//            }
-//        }
-//
-//        return nil
-//    }
-//
-//    func findViewController(inWindow window: UIWindow) -> UIViewController? {
-//        if let rootViewController = window.rootViewController {
-//            if let navigationController = rootViewController as? UINavigationController {
-//                return navigationController.viewControllers.first
-//            }
-//            if let tabBarController = rootViewController as? UITabBarController {
-//                return tabBarController.selectedViewController
-//            }
-//            return rootViewController
-//        }
-//
-//        return nil
-//    }
-//
-//    func findViewControllerForAlert() -> UIViewController? {
-//        let connectedSessions = UIApplication.shared.openSessions
-//        for session in connectedSessions {
-//            if let windowScene = session.scene as? UIWindowScene {
-//                if windowScene.title == SceneNames.main.rawValue {
-//                    let windows = windowScene.windows
-//                    for window in windows {
-//                        if let viewController = self.findViewController(inWindow: window) {
-//                            return viewController
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        let windows = UIApplication.shared.windows
-//
-//        for window in windows {
-//            if window.isKeyWindow {
-//                return self.findViewController(inWindow: windows[0])
-//            }
-//        }
-//
-//
-//        return nil
-//    }
-    
-
-    
 }
 
 

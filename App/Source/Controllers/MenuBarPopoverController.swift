@@ -6,6 +6,7 @@
 //
 
 import Foundation
+#if targetEnvironment(macCatalyst)
 
 class MenuBarPopoverController : NSObject, AppKitMenuBarControllerDelegate {
    
@@ -60,3 +61,4 @@ class MenuBarPopoverController : NSObject, AppKitMenuBarControllerDelegate {
 //        self.isPopoverHidden = !self.isPopoverHidden
     }
 }
+#endif

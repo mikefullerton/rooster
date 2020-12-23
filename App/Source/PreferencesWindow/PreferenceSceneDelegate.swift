@@ -31,13 +31,4 @@ class PreferencesSceneDelegate: WindowSceneDelegate {
     }
 }
 
-//#if targetEnvironment(macCatalyst)
-//    func addWindowSizeHandlerForMacOS() {
-//        UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.forEach { windowScene in
-//            print("addWindowSizeHandlerForMacOS()")
-//            windowScene.sizeRestrictions?.minimumSize = CGSize(width: 800, height: 800)
-//            // windowScene.sizeRestrictions?.maximumSize = CGSize(width: 801, height: 1101)
-//        }
-//    }
-//#endif
 

@@ -120,37 +120,44 @@ class EventKitController {
         }
     }
     
-    private func handleAccessGranted() {
-        self.logger.log("granted access to EventKit to user calendars, now checking delegate calendars...")
-
-        AppKitPluginController.instance.eventKitHelper.requestPermissionToDelegateCalendars(for: self.store, completion: { (success, delegateEventStore, error) in
-            DispatchQueue.main.async {
-                if success && delegateEventStore != nil {
+    private func finishedRequestingAccessToEventStores(success: Bool,
+                                                       delegateEventStore: EKEventStore?,
+                                                       error: Error?,
+                                                       completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        DispatchQueue.main.async {
+            if success {
+                if delegateEventStore != nil {
                     self.delegateEventStore = delegateEventStore!
                     self.logger.log("did load delegateEventStore")
+                } else {
+                    self.logger.log("delegate event store not loaded")
                 }
                 
-                if success {
-                    self.logger.log("did authenticate for all EventKit calendars")
-
-                    self.registerForEvents()
-                    self.authenticated = true
-                    self.reloadDataModel()
-                } else {
-                    self.logger.fault("failed to authenticate with error: \(error?.localizedDescription ?? "nil" )")
-                }
-
+                self.logger.log("finished requesting access to EventKit calendars with success")
+                
+                self.registerForEvents()
+                self.authenticated = true
+                self.actuallyReloadDataModel()
+            } else {
+                self.logger.error("failed to authenticate to event stores.)")
             }
-        })
+        
+            completion(success, error)
+
+        }
     }
     
-    private func handleAccessDenied(error: Error?) {
-        self.logger.error("failed to be granted access with error: \(error?.localizedDescription ?? "nil")")
+    private func requestAccessToDelegateStore(withUserStore store: EKEventStore,
+                                              completion: @escaping (_ success: Bool, _ eventStore: EKEventStore?, _ error: Error?) -> Void) {
+        
+        #if targetEnvironment(macCatalyst)
+        AppKitPluginController.instance.eventKitHelper.requestPermissionToDelegateCalendars(for: self.store, completion: completion)
+        #else
+        completion(true, nil, nil)
+        #endif
     }
-        
-    public func requestAccess(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
-        
-        self.logger.log("requesting access to events and reminders in user calanders")
+    
+    private func fasterRequestAccess(toStore store: EKEventStore, completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         
         var count = 0
         var errorResults: [Error?] = [ nil, nil ]
@@ -167,21 +174,65 @@ class EventKitController {
                 successResults[1] = success
                 errorResults[1] = error
             
-                DispatchQueue.main.async {
-                    
+                completion(success, error)
+            }
+        }
+        
+        store.requestAccess(to: EKEntityType.event, completion: completion)
+        store.requestAccess(to: EKEntityType.reminder, completion: completion)
+    }
+    
+    private func requestAccess(toStore store: EKEventStore, completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+    
+        self.logger.log("requesting access to events in eventStore: \(store.eventStoreIdentifier)")
+        store.requestAccess(to: EKEntityType.event) { success, error in
+            if success {
+                self.logger.log("granted access to events in user eventStore, requesting access to reminders in eventStore: \(store.eventStoreIdentifier)")
+                
+                store.requestAccess(to: EKEntityType.reminder) { success, error in
+
                     if success {
-                        self.handleAccessGranted()
-                    } else {
-                        self.handleAccessDenied(error: error)
+                        self.logger.log("granted access to reminders in eventStore: \(store.eventStoreIdentifier)")
                     }
                     
                     completion(success, error)
                 }
+            } else {
+                
+                self.logger.error("failed to be granted access to store: \(store.eventStoreIdentifier) with error: \(error?.localizedDescription ?? "nil")")
+                
+                completion(success, error)
             }
         }
+    }
+    
+    public func requestAccess(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         
-        self.store.requestAccess(to: EKEntityType.event, completion: completion)
-        self.store.requestAccess(to: EKEntityType.reminder, completion: completion)
+        self.logger.log("requesting access to events and reminders in user eventStore: \(self.store.eventStoreIdentifier)")
+        
+        self.requestAccess(toStore: self.store) { success, error in
+            if success {
+                self.requestAccessToDelegateStore(withUserStore: self.store) { success, delegateEventStore, error in
+                    
+                    if !success || error != nil{
+                        self.logger.error("failed to be granted access to delegate eventStore with error: \(error?.localizedDescription ?? "nil")")
+                    }
+                    
+                    self.finishedRequestingAccessToEventStores(success: success,
+                                                               delegateEventStore: delegateEventStore,
+                                                               error: error,
+                                                               completion: completion)
+                    
+                }
+            } else {
+                self.logger.error("failed to be granted access to user eventStore: \(self.store.eventStoreIdentifier) with error: \(error?.localizedDescription ?? "nil")")
+
+                self.finishedRequestingAccessToEventStores(success: success,
+                                                           delegateEventStore: nil,
+                                                           error: error,
+                                                           completion: completion)
+            }
+        }
         
     }
 }

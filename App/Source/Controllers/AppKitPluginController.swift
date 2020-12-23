@@ -4,6 +4,7 @@
 //
 //  Created by Mike Fullerton on 12/18/20.
 //
+#if targetEnvironment(macCatalyst)
 
 import Foundation
 import EventKit
@@ -63,8 +64,6 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin {
     var windowController: AppKitWindowController {
         return self.plugin!.windowController
     }
-    
-    
-    
 }
 
+#endif

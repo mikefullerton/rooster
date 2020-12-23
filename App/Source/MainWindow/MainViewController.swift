@@ -8,8 +8,13 @@
 import Foundation
 import UIKit
 
-class MainViewController : UIViewController, NSToolbarDelegate, UIPopoverPresentationControllerDelegate {
-    
+#if targetEnvironment(macCatalyst)
+protocol MainViewControllerMacProtocols : NSToolbarDelegate {}
+#else
+protocol MainViewControllerMacProtocols {}
+#endif
+
+class MainViewController : UIViewController, UIPopoverPresentationControllerDelegate, MainViewControllerMacProtocols {
     var contentViewController: UIViewController?
     var spinner: UIActivityIndicatorView?
     

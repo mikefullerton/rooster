@@ -55,7 +55,9 @@ class AlarmController {
         self.startTimerForNextEventTime()
         
         NotificationController.instance.cancelNotifications()
+        #if targetEnvironment(macCatalyst)
         AppKitPluginController.instance.utilities.stopBouncingAppIcon()
+        #endif
     }
 
     // MARK: timer management
@@ -127,9 +129,11 @@ class AlarmController {
                 NotificationController.instance.scheduleNotification(forItem: item)
             }
             
+            #if targetEnvironment(macCatalyst)
             if prefs.bounceIconInDock {
                 AppKitPluginController.instance.utilities.startBouncingAppIcon()
             }
+            #endif
         }
 
         if notifyIsStart {
@@ -278,9 +282,11 @@ extension AlarmController {
                 
             }
             
+            #if targetEnvironment(macCatalyst)
             if let bundleID = item.bestAppBundle {
                 AppKitPluginController.instance.utilities.bringAnotherApp(toFront: bundleID)
             }
+            #endif
         }
     }
 }
