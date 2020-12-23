@@ -18,8 +18,6 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         
         #if targetEnvironment(macCatalyst)
         view.preferredStyle = .checkbox
-        #else
-//        view.preferredStyle = .a
         #endif
 
         view.addTarget(self, action: #selector(checkBoxChecked(_:)), for: .valueChanged)
@@ -48,6 +46,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         return view
     }()
     
+    #if os(iOS)
     private lazy var checkBoxTitleView : UILabel = {
         let view = UILabel()
         view.textColor = UIColor.secondaryLabel
@@ -64,6 +63,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
 
         return view
     }()
+    #endif
     
     lazy var calendarColorBar: UIView = {
         let view = UIView()
@@ -98,7 +98,6 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     func setCheckBoxTitle(_ title: String) {
         self.checkBoxTitleView.text = title
     }
-    
     #endif
     
     func setCalendar(_ calendar: EventKitCalendar) {
@@ -107,11 +106,9 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         self.checkBox.setOn(calendar.isSubscribed, animated:false)
         self.checkBox.sizeToFit()
         if let calendarColor = calendar.color {
-//            self.checkBox.thumbTintColor = calendarColor
             self.calendarColorBar.backgroundColor = calendarColor
             self.calendarColorBar.isHidden = false
         } else {
-//            self.checkBox.thumbTintColor = nil
             self.calendarColorBar.isHidden = true
         }
     }
