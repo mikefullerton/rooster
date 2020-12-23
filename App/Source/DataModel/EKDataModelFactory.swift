@@ -16,7 +16,7 @@ struct EKDataModelFactory {
     static let logger = Logger(subsystem: "com.apple.rooster", category: "EKDataModelFactory")
     
     var logger: Logger {
-        return EventKitController.logger
+        return type(of: self).logger
     }
     
     private let store: EKEventStore?

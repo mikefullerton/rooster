@@ -6,10 +6,16 @@
 //
 
 import Foundation
+import OSLog
 
-class SimpleTimer {
+class SimpleTimer : CustomStringConvertible {
     
-    static let RepeatEndlessly: Int = 0
+    static let logger = Logger(subsystem: "com.apple.rooster", category: "NotificationController")
+    var logger: Logger {
+        return type(of: self).logger
+    }
+ 
+    static let RepeatEndlessly: Int = Int.max
     
     private weak var timer: Timer?
     
@@ -19,11 +25,21 @@ class SimpleTimer {
     
     private(set) var isTiming: Bool
     
+    private var interval: TimeInterval
+    
+    private var id: Int
+    
+    private static var idCounter:Int = 0
+    
     init() {
         self.timer = nil
         self.requestedFireCount = 0
         self.fireCount = 0
         self.isTiming = false
+        self.interval = 0
+        
+        SimpleTimer.idCounter += 1
+        self.id = SimpleTimer.idCounter
     }
     
     var fireDate: Date? {
@@ -49,13 +65,44 @@ class SimpleTimer {
     }
     
     func stop() {
+        if self.isTiming {
+            self.logger.log("Timer stopped: \(self.description)")
+          
+            self.stopTimer()
+            self.isTiming = false
+            self.requestedFireCount = 0
+            self.fireCount = 0
+            self.interval = 0
+        }
+    }
+    
+    private func stopTimer() {
         if self.timer != nil {
             self.timer?.invalidate()
             self.timer = nil
         }
-        self.isTiming = false
-        self.requestedFireCount = 0
-        self.fireCount = 0
+    }
+    
+    private func startTimer(completion: @escaping (_ timer: SimpleTimer) -> Void) {
+        
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(withTimeInterval: self.interval, repeats: false) { (timer) in
+                self.stopTimer()
+                self.logger.log("timer fired: \(self.description)")
+
+                self.fireCount += 1
+                if self.willFireAgain {
+                    self.logger.log("Rescheduling timer: \(self.description)")
+                    self.startTimer(completion: completion)
+                } else {
+                    self.stop()
+                }
+                
+                completion(self)
+            }
+            
+            self.logger.log("scheduled timer: \(self.description)")
+        }
     }
     
     func start(withInterval interval: TimeInterval,
@@ -67,31 +114,18 @@ class SimpleTimer {
         self.requestedFireCount = playCount
         self.fireCount = 0
         self.isTiming = true
-        
+        self.interval = interval
+
         if !self.willFireAgain {
             self.stop()
+            self.logger.error("Invalid timer: \(self.description)")
             completion(self)
             return
         }
         
-        weak var weakSelf = self
-        let timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { (timer) in
-            if let strongSelf = weakSelf {
-                
-                strongSelf.fireCount += 1
-                if !strongSelf.willFireAgain {
-                    strongSelf.stop()
-                }
-
-                completion(strongSelf)
-                
-            } else {
-                // we went away but the timer was still going
-                timer.invalidate()
-            }
-        }
-        
-        self.timer = timer
+        self.logger.log("Starting timer: \(self.description)")
+      
+        self.startTimer(completion: completion)
     }
 
     func start(withInterval interval: TimeInterval,
@@ -126,6 +160,15 @@ class SimpleTimer {
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
         self.start(withDate: date, playCount: 1, completion: completion)
+    }
+    
+    var description: String {
+        
+        let isValid = self.timer != nil ? "\(self.timer!.isValid)" : "nil"
+        let interval = self.timer != nil ? "\(self.timer!.timeInterval)" : "nil"
+        let fireDate = self.timer != nil ? "\(self.timer!.fireDate)" : "nil"
+
+        return "Timer: \(self.id), interval:\(self.interval), fireCount: \(self.fireCount), requestFireCount: \(self.requestedFireCount), timer: \(String(describing: self.timer )), timer is valid: \(isValid), timer interval: \(interval), timer fire date: \(fireDate)"
     }
 
 

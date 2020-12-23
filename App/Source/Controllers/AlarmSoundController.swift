@@ -19,9 +19,9 @@ class AlarmSoundController: AlarmSoundDelegate  {
     static let logger = Logger(subsystem: "com.apple.rooster", category: "AlarmController")
     
     var logger: Logger {
-        return AlarmSoundController.logger
+        return type(of: self).logger
     }
-
+    
     private var firingEvents:[String: (item: Alarmable, sound: AlarmSound)]
 
     init() {
@@ -38,10 +38,10 @@ class AlarmSoundController: AlarmSoundDelegate  {
         }
     }
     
-    func startPlayingSound(forItem item: Alarmable) {
+    func startPlayingSound(forItem item: Alarmable) -> Bool {
 
         if self.isPlayingSound(forItem: item) {
-            return
+            return false
         }
         
         let preference = PreferencesController.instance.soundPreference(forItem: item)
@@ -58,6 +58,8 @@ class AlarmSoundController: AlarmSoundDelegate  {
         self.firingEvents[item.id] = (item: item, sound: alarmSound)
 
         self.logger.log("Started alarm sound: \(alarmSound.name) for \(item.title)")
+        
+        return true
     }
     
     func isPlayingSound(forItem item: Alarmable) -> Bool  {

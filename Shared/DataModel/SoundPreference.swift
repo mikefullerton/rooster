@@ -9,7 +9,7 @@ import Foundation
 
 struct SoundPreference {
     
-    static let RepeatEndlessly: Int = 0
+    static let RepeatEndlessly = Int.max
     
     let soundNames: [String]
     let repeatCount: Int

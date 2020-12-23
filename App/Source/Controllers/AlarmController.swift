@@ -36,7 +36,7 @@ class AlarmController {
     }
     
     var logger: Logger {
-        return AlarmController.logger
+        return type(of: self).logger
     }
     
     public func stopAllAlarms() {
@@ -53,6 +53,8 @@ class AlarmController {
         self.logger.log("Stopped all alarms")
         
         self.startTimerForNextEventTime()
+        
+        NotificationController.instance.cancelNotifications()
     }
 
     // MARK: timer management
@@ -88,18 +90,6 @@ class AlarmController {
         self.notifyIfAlarmsStopped()
     }
     
-    private func playAlarmSoundIfNeeded(forItem item: Alarmable) {
-        
-        let notify = self.alarmSoundController.playingCount == 0
-        
-        self.alarmSoundController.startPlayingSound(forItem: item)
-
-        if notify {
-            self.logger.log("Notifying that alarms will start")
-            NotificationCenter.default.post(name: AlarmController.AlarmsWillStartEvent, object: self)
-        }
-    }
-    
     private func stopAlarmsForMissingOrFutureItems() {
         let items:[Alarmable] = EventKitDataModelController.dataModel.events + EventKitDataModelController.dataModel.reminders
         
@@ -121,8 +111,18 @@ class AlarmController {
     }
     
     private func startAlarm<T>(forItem item: T) where T: EventKitItem {
-        self.openEventLocationURL(forItem: item)
-        self.playAlarmSoundIfNeeded(forItem:item)
+
+        let notifyIsStart = self.alarmSoundController.playingCount == 0
+        
+        if self.alarmSoundController.startPlayingSound(forItem: item) {
+            self.openEventLocationURL(forItem: item)
+            NotificationController.instance.scheduleNotification(forItem: item)
+        }
+
+        if notifyIsStart {
+            self.logger.log("Notifying that alarms will start")
+            NotificationCenter.default.post(name: AlarmController.AlarmsWillStartEvent, object: self)
+        }
 
 // Do we want this since you can just click in the menubar now?
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
@@ -159,7 +159,7 @@ class AlarmController {
                     alarmState = .finished
                     self.stopPlayingAlarmIfPlaying(forItem: item)
                 } else {
-                    self.playAlarmSoundIfNeeded(forItem:item)
+                    self.startAlarm(forItem: item)
                 }
         
             case .finished:

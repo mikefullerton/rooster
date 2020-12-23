@@ -20,7 +20,7 @@ class EventKitController {
     static let logger = Logger(subsystem: "com.apple.rooster", category: "EventKitController")
     
     var logger: Logger {
-        return EventKitController.logger
+        return type(of: self).logger
     }
     
     weak var delegate: EventKitControllerDelegate?

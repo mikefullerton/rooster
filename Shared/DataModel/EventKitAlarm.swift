@@ -78,12 +78,12 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
     var description: String {
         var formatter = StringFormatter(withTitle: "EventKitAlarm")
         formatter.append("State", self.state)
-        formatter.append("Start Date", self.startDate.asShortDateString)
-        formatter.append("End Date", self.endDate?.asShortDateString)
-        formatter.append("Original Start Date", self.originalStartDate.asShortDateString)
-        formatter.append("Original End Date", self.originalEndDate?.asShortDateString)
-        formatter.append("Snoozed Start Date", self.snoozedStartDate?.asShortDateString)
-        formatter.append("Snoozed End Date", self.snoozedEndDate?.asShortDateString)
+        formatter.append("Start Date", self.startDate.shortDateString)
+        formatter.append("End Date", self.endDate?.shortDateString)
+        formatter.append("Original Start Date", self.originalStartDate.shortDateString)
+        formatter.append("Original End Date", self.originalEndDate?.shortDateString)
+        formatter.append("Snoozed Start Date", self.snoozedStartDate?.shortDateString)
+        formatter.append("Snoozed End Date", self.snoozedEndDate?.shortDateString)
         formatter.append("isEnabled", self.isEnabled)
         return formatter.string
     }

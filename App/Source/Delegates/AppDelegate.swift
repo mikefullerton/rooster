@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AppKitInstallationUpdater
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        NotificationController.instance.requestAccess()
         return true
     }
     

@@ -39,7 +39,7 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
     // MARK: convenience accessors
     
     var logger: Logger {
-        return EventKitController.logger
+        return type(of: self).logger
     }
     
     public static var dataModel: EventKitDataModel {

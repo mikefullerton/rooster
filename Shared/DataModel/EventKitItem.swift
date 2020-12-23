@@ -11,19 +11,16 @@ protocol Alarmable {
     var alarm: EventKitAlarm { get }
     var id: String { get }
     var title: String { get }
-}
-
-protocol EventKitItem: Alarmable, CustomStringConvertible, Hashable {
-    
-    associatedtype ItemType
-    
+    var calendar: EventKitCalendar { get }
     var location: String? { get }
     var notes: String? { get }
     var url: URL? { get }
     var noteURLS: [URL]? { get }
-    var calendar: EventKitCalendar { get }
     var isSubscribed: Bool { get }
-    
+}
+
+protocol EventKitItem: Alarmable, CustomStringConvertible, Hashable {
+    associatedtype ItemType
     func updateAlarm(_ alarm: EventKitAlarm) -> ItemType
 }
 

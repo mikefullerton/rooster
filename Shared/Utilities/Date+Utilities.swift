@@ -20,7 +20,7 @@ extension Date {
         return isBefore
     }
     
-    var asShortDateString: String {
+    var shortDateString: String {
         return DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
     }
     

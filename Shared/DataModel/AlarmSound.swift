@@ -15,7 +15,7 @@ protocol AlarmSoundDelegate : AnyObject {
 
 struct AlarmSoundBehavior {
     
-    static let RepeatEndlessly = 0
+    static let RepeatEndlessly = Int.max
     
     let identifier: String
     let playCount: Int
@@ -48,7 +48,7 @@ class AlarmSound {
     static let logger = Logger(subsystem: "com.apple.rooster", category: "AlarmSound")
     
     var logger: Logger {
-        return AlarmSound.logger
+        return type(of: self).logger
     }
     
     let name: String
