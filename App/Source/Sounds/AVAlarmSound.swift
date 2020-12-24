@@ -7,32 +7,31 @@
 
 import Foundation
 import AVFoundation
-import OSLog
 
-class FileAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
-    
+class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     weak var delegate: AlarmSoundDelegate?
+    
+    var identifier: String
+    
+    private(set) var name: String
+    private(set) var behavior: AlarmSoundBehavior
     
     private let url: URL
     private let player: AVAudioPlayer
-    private(set) var name: String
-    private(set) var behavior: AlarmSoundBehavior
     private let stopTimer: SimpleTimer
     
     init?(withURL url: URL) {
-
-        FileAlarmSound.configureAudioSession()
-        
         do {
             self.player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
         } catch let error {
-            FileAlarmSound.logger.error("Failed to create sound for url: \(url), with error: \(error.localizedDescription)")
+            AVAlarmSound.logger.error("Failed to create sound for url: \(url), with error: \(error.localizedDescription)")
             return nil
         }
         self.url = url
         self.name = url.fileName
         self.behavior = AlarmSoundBehavior()
         self.stopTimer = SimpleTimer()
+        self.identifier = ""
         super.init()
         self.player.delegate = self
     }
@@ -61,8 +60,8 @@ class FileAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         return self.player.currentTime
     }
         
-    static func == (lhs: FileAlarmSound, rhs: FileAlarmSound) -> Bool {
-        return lhs === rhs
+    static func == (lhs: AVAlarmSound, rhs: AVAlarmSound) -> Bool {
+        return lhs.identifier == rhs.identifier
     }
     
     func play(withBehavior behavior: AlarmSoundBehavior) {
@@ -103,20 +102,20 @@ class FileAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         self.logger.log("Sound did stop playing: \(self.name)")
         self.startStopNotify()
     }
-
-    private static var configureAudioSession: () -> Void = {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playback, mode: .default)
-            try audioSession.setActive(true)
-            FileAlarmSound.logger.log("Configured audio session ok")
-        } catch let error {
-            FileAlarmSound.logger.error("Configuring AVAudioSession failed with error: \(error.localizedDescription)")
-        }
-        
-        return {}
-    }()
-    
 }
 
-
+extension AVAlarmSound {
+    static func alarmSounds(withURLs urls:[URL]) -> [AlarmSound] {
+        var sounds:[AlarmSound] = []
+        for url in urls {
+            if let alarm = AVAlarmSound(withURL: url) {
+                sounds.append(alarm)
+                AVAlarmSound.logger.error("Loaded sound for URL: \(url)")
+            } else {
+                AVAlarmSound.logger.error("Failed to load sound for URL: \(url)")
+            }
+        }
+        return sounds
+    }
+    
+}

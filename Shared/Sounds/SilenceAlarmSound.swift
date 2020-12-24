@@ -23,6 +23,7 @@ class SilenceAlarmSound : AlarmSound {
     private(set) var behavior: AlarmSoundBehavior
     private var playCount:Int
     private(set) var duration: TimeInterval
+    var identifier: String
     
     init(withDuration duration: TimeInterval = 0) {
         self.duration = duration
@@ -31,6 +32,7 @@ class SilenceAlarmSound : AlarmSound {
         self.timer = SimpleTimer()
         self.behavior = AlarmSoundBehavior()
         self.playCount = 0
+        self.identifier = ""
     }
 
     var isPlaying: Bool {
@@ -82,10 +84,10 @@ class SilenceAlarmSound : AlarmSound {
         self.sound.isPlaying = true
 
         if let delegate = self.delegate {
-            delegate.soundWillStartPlaying(self, forIdentifier: behavior.identifier)
+            delegate.soundWillStartPlaying(self)
         }
 
-        self.logger.log("playing sound: \(self.name): for: \(behavior.identifier)")
+        self.logger.log("playing sound: \(self.name): for: \(self.identifier)")
 
         self.startTimer(withDuration: self.duration + self.behavior.timeBetweenPlays)
     }
@@ -97,7 +99,7 @@ class SilenceAlarmSound : AlarmSound {
                 delegate.soundDidStopPlaying(self)
             }
 
-            self.logger.log("stopped sound: \(self.name): for: \(self.behavior.identifier)")
+            self.logger.log("stopped sound: \(self.name): for: \(self.identifier)")
 
             self.sound.startTime = 0
             self.sound.isPlaying = false

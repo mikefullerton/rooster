@@ -1,11 +1,32 @@
 //
-//  SoundPreference+AlarmSounds.swift
+//  SoundPreference.swift
 //  Rooster
 //
 //  Created by Mike Fullerton on 12/22/20.
 //
 
 import Foundation
+
+struct SoundPreference {
+    
+    static let RepeatEndlessly = AlarmSoundBehavior.RepeatEndlessly
+    
+    let soundNames: [String]
+    let playCount: Int
+    let startDelay: Int
+    
+    init(withSoundNames soundNames: [String],
+         playCount: Int,
+         startDelay: Int) {
+        self.soundNames = soundNames
+        self.playCount = playCount
+        self.startDelay = startDelay
+    }
+    
+    init() {
+        self.init(withSoundNames: [], playCount: 0, startDelay: 0)
+    }
+}
 
 extension SoundPreference {
     

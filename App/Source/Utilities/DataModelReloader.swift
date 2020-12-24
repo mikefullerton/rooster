@@ -7,11 +7,25 @@
 
 import Foundation
 
-class DataModelReloader : Reloader {
+protocol DataModelAware : AnyObject {
+    func dataModelDidReload(_ dataModel: EventKitDataModel)
+}
+
+class DataModelReloader  {
+    private weak var target: DataModelAware?
     
-    init(for reloadable: Reloadable) {
-        super.init(withNotificationName: EventKitDataModelController.DidChangeEvent,
-                   object: nil,
-                   for: reloadable)
+    init(for target: DataModelAware? = nil) {
+        self.target = target
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(notificationReceived(_:)),
+                                               name: EventKitDataModelController.DidChangeEvent,
+                                               object: nil)
+    }
+    
+    @objc private func notificationReceived(_ notif: Notification) {
+        if let target = self.target {
+            target.dataModelDidReload(EventKitDataModelController.dataModel)
+        }
     }
 }
+

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TimeRemainingViewController : UIViewController, Reloadable {
+class TimeRemainingViewController : UIViewController, DataModelAware {
     
     private weak var timer: Timer?
 
@@ -48,8 +48,8 @@ class TimeRemainingViewController : UIViewController, Reloadable {
     }
     
     func startTimer() {
-        self.timeRemainingLabel.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextEventStartTime) { () -> Date? in
-            return EventKitDataModelController.instance.dataModel.nextEventStartTime
+        self.timeRemainingLabel.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
+            return EventKitDataModelController.instance.dataModel.nextAlarmDate
         }
     }
 
@@ -66,7 +66,7 @@ class TimeRemainingViewController : UIViewController, Reloadable {
         self.reloader = nil
     }
     
-    func reloadData() {
+    func dataModelDidReload(_ dataModel: EventKitDataModel) {
         self.startTimer()
     }
 }

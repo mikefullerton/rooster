@@ -43,7 +43,7 @@ extension ReminderTableViewCell {
         
         @objc override func handleLocationButtonClick(_ sender: UIButton) {
             if let reminder = self.reminder {
-                AlarmController.instance.openEventLocationURL(forItem: reminder)
+                reminder.openLocationURL()
             }
         }
         
@@ -59,3 +59,5 @@ extension ReminderTableViewCell {
     }
     
 }
+
+

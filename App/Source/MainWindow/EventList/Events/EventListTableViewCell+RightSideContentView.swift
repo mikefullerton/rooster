@@ -43,7 +43,7 @@ extension EventListTableViewCell {
         
         @objc override func handleLocationButtonClick(_ sender: UIButton) {
             if let event = self.event {
-                AlarmController.instance.openEventLocationURL(forItem: event)
+                event.openLocationURL()
             }
         }
         

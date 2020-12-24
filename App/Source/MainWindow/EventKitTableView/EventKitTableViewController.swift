@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class EventKitTableViewController<ViewModel> : TableViewController<ViewModel> where ViewModel: TableViewModelProtocol {
+class EventKitTableViewController<ViewModel> : TableViewController<ViewModel>, DataModelAware where ViewModel: TableViewModelProtocol {
     
     private var reloader: DataModelReloader? = nil
 
@@ -28,4 +28,9 @@ class EventKitTableViewController<ViewModel> : TableViewController<ViewModel> wh
         self.tableView.allowsSelection = false
         self.tableView.separatorStyle = .none
     }
+    
+    func dataModelDidReload(_ dataModel: EventKitDataModel) {
+        self.reloadData()
+    }
+
 }

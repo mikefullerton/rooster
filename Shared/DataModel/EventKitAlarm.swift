@@ -14,7 +14,7 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
         case neverFired = "neverFired"
         case firing = "firing"
         case finished = "finished"
-        case willNeverFire = "never"
+        case disabled = "disabled"
     }
 
     let state: State
@@ -59,7 +59,7 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
                 lhs.isEnabled == rhs.isEnabled
     }
     
-    func updatedAlarm(_ state: State) -> EventKitAlarm {
+    func alarmWithUpdatedState(_ state: State) -> EventKitAlarm {
         return EventKitAlarm(withState: state,
                              startDate: self.originalStartDate,
                              endDate: self.originalEndDate,
@@ -67,7 +67,7 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
                              snoozeInterval: self.snoozeInterval)
     }
 
-    func snoozeAlarm(_ snoozeInterval: TimeInterval) -> EventKitAlarm {
+    func alarmWithSnoozedInterval(_ snoozeInterval: TimeInterval) -> EventKitAlarm {
         return EventKitAlarm(withState: .neverFired,
                              startDate: self.originalStartDate,
                              endDate: self.originalEndDate,

@@ -73,7 +73,7 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
         hasher.combine(self.id)
     }
     
-    func updateAlarm(_ alarm: EventKitAlarm) -> EventKitReminder {
+    func itemWithUpdatedAlarm(_ alarm: EventKitAlarm) -> EventKitReminder {
         return EventKitReminder(withReminder: self.EKReminder,
                                 calendar: self.calendar,
                                 subscribed: self.isSubscribed,

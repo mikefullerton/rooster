@@ -57,7 +57,8 @@ extension SoundPreference {
     
     enum CodingKeys: String, CodingKey {
         case sounds = "sounds"
-        case repeatCount = "repeatCount"
+        case playCount = "playCount"
+        case startDelay = "startDelay"
     }
     
     init?(withDictionary dictionary: [AnyHashable : Any]) {
@@ -68,17 +69,24 @@ extension SoundPreference {
             self.soundNames = []
         }
         
-        if let repeatCount = dictionary[CodingKeys.repeatCount.rawValue] as? Int {
-            self.repeatCount = repeatCount
+        if let playCount = dictionary[CodingKeys.playCount.rawValue] as? Int {
+            self.playCount = playCount
         } else {
-            self.repeatCount = -1
+            self.playCount = 0
+        }
+
+        if let startDelay = dictionary[CodingKeys.startDelay.rawValue] as? Int {
+            self.startDelay = startDelay
+        } else {
+            self.startDelay = 0
         }
     }
 
     var asDictionary: [AnyHashable : Any] {
         var dictionary: [AnyHashable : Any] = [:]
         dictionary[CodingKeys.sounds.rawValue] = self.soundNames
-        dictionary[CodingKeys.repeatCount.rawValue] = self.repeatCount
+        dictionary[CodingKeys.playCount.rawValue] = self.playCount
+        dictionary[CodingKeys.startDelay.rawValue] = self.startDelay
         return dictionary
     }
 

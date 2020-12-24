@@ -7,18 +7,11 @@
 
 import Foundation
 import EventKit
-import OSLog
 
 /// this asychronously fetches all the EKCalendars, EKEvents, and EKReminders we're interested in.
 /// All the fetched data is later used to Create our EventKitCalendars, EventKitEvents, and EventKitReminders.
-struct EKDataModelFactory {
-    
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "EKDataModelFactory")
-    
-    var logger: Logger {
-        return type(of: self).logger
-    }
-    
+struct EKDataModelFactory: Loggable {
+
     private let store: EKEventStore?
     
     init(store: EKEventStore?) {

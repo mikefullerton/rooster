@@ -7,12 +7,10 @@
 
 import Foundation
 import AppKit
-import OSLog
 
-class WindowController : NSObject, AppKitWindowController {
-    private var helper = WindowControllerHelper()
+class WindowController : NSObject, AppKitWindowController, Loggable {
     
-    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.WindowController")
+    private var helper = WindowControllerHelper()
     
     private var autoSaveNames:Set<String> = Set<String>()
     

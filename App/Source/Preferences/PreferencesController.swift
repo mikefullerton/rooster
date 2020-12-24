@@ -27,14 +27,12 @@ class PreferencesController {
                                         userInfo: nil)
     }
     
-    
-    func soundPreference(forItem item: Alarmable) -> SoundPreference {
-        let preference = SoundPreference(withSoundNames: [ "Rooster Crowing", "Chickens", "Rooster Crowing" ], repeatCount: SoundPreference.RepeatEndlessly)
+    func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
         
-        return preference
+        let soundPreference = SoundPreference(withSoundNames: [ "Rooster Crowing", "Chickens", "Rooster Crowing" ],
+                                              playCount: SoundPreference.RepeatEndlessly,
+                                              startDelay: 3)
+        
+        return ItemPreference(soundPreference: soundPreference)
     }
-    
-    
-    
-    
 }

@@ -6,11 +6,9 @@
 //
 
 import Foundation
-import OSLog
 
-class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
-    
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "EventKitDataModelController")
+/// interface the app uses to access or update the data model.
+class EventKitDataModelController : EventKitControllerDelegate, Loggable {
     
     static let DidChangeEvent = Notification.Name("DataModelDidChangeEvent")
 
@@ -21,27 +19,19 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
     private(set) var isAuthenticated: Bool
 
     // private stuff
-    private var preferencesReloader : PreferencesReloader?
     private let eventKitController: EventKitController
     private var needsNotify = false
     
     private init() {
         self.eventKitController = EventKitController()
         self.dataModel = EventKitDataModel()
-        self.preferencesReloader = nil
         self.isAuthenticating = false
         self.isAuthenticated = false
-
-        self.preferencesReloader = PreferencesReloader(for: self)
         self.eventKitController.delegate = self
     }
     
     // MARK: convenience accessors
-    
-    var logger: Logger {
-        return type(of: self).logger
-    }
-    
+
     public static var dataModel: EventKitDataModel {
         return EventKitDataModelController.instance.dataModel
     }
@@ -99,9 +89,9 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
             }
             
             self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
-                                                 delegateCalendars: dataModel.delegateCalendars,
-                                                 events: updatedEvents,
-                                                 reminders: dataModel.reminders)
+                                               delegateCalendars: dataModel.delegateCalendars,
+                                               events: updatedEvents,
+                                               reminders: dataModel.reminders)
 
             self.notify()
         }
@@ -120,9 +110,9 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
             }
             
             self.dataModel = EventKitDataModel(calendars: dataModel.calendars,
-                                                 delegateCalendars: dataModel.delegateCalendars,
-                                                 events: dataModel.events,
-                                                 reminders: updatedReminders)
+                                               delegateCalendars: dataModel.delegateCalendars,
+                                               events: dataModel.events,
+                                               reminders: updatedReminders)
 
             self.notify()
         }
@@ -218,9 +208,11 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
         self.needsNotify = true
     
         DispatchQueue.main.async {
-            self.needsNotify = false
-            self.logger.log("EventDataModel did change notification sent")
-            NotificationCenter.default.post(name: EventKitDataModelController.DidChangeEvent, object: self)
+            if self.needsNotify {
+                self.needsNotify = false
+                self.logger.log("EventDataModel did change notification sent")
+                NotificationCenter.default.post(name: EventKitDataModelController.DidChangeEvent, object: self)
+            }
         }
     }
     
@@ -238,9 +230,9 @@ class EventKitDataModelController : EventKitControllerDelegate, Reloadable {
 extension EventKitEvent {
     func stopAlarm() {
         
-        let updatedAlarm = self.alarm.updatedAlarm(.finished)
+        let updatedAlarm = self.alarm.alarmWithUpdatedState(.finished)
         
-        let updatedEvent = self.updateAlarm(updatedAlarm)
+        let updatedEvent = self.itemWithUpdatedAlarm(updatedAlarm)
         
         EventKitDataModelController.instance.update(event: updatedEvent)
     }
@@ -249,31 +241,25 @@ extension EventKitEvent {
 extension EventKitReminder {
     func stopAlarm() {
         
-        let updatedAlarm = self.alarm.updatedAlarm(.finished)
+        let updatedAlarm = self.alarm.alarmWithUpdatedState(.finished)
         
-        let updatedReminder = self.updateAlarm(updatedAlarm)
+        let updatedReminder = self.itemWithUpdatedAlarm(updatedAlarm)
         
         EventKitDataModelController.instance.update(reminder: updatedReminder)
     }
     
     func snoozeAlarm() {
-        let updatedAlarm = self.alarm.snoozeAlarm(60 * 60 * 2)
+        let updatedAlarm = self.alarm.alarmWithSnoozedInterval(60 * 60 * 2)
         
-        let updatedReminder = self.updateAlarm(updatedAlarm)
+        let updatedReminder = self.itemWithUpdatedAlarm(updatedAlarm)
         
         EventKitDataModelController.instance.update(reminder: updatedReminder)
     }
 }
 
 extension EventKitCalendar {
-    func updatedCalendar(isSubscribed: Bool) -> EventKitCalendar {
-        return EventKitCalendar(withCalendar: self.EKCalendar, subscribed: isSubscribed)
-    }
-    
     func set(subscribed: Bool) {
-        
-        let updatedCalendar = self.updatedCalendar(isSubscribed: subscribed)
-         
+        let updatedCalendar = self.calendarWithSubscriptionChange(isSubscribed: subscribed)
         EventKitDataModelController.instance.update(calendar: updatedCalendar)
     }
 }

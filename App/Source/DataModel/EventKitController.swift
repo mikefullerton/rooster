@@ -7,21 +7,14 @@
 
 import Foundation
 import EventKit
-import OSLog
 
 protocol EventKitControllerDelegate: AnyObject {
     func eventKitController(_ controller: EventKitController,
                             didReloadDataModel dataModel: EventKitDataModel)
 }
 
-// needs to be class to recieve NSNotifications
-class EventKitController {
-    
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "EventKitController")
-    
-    var logger: Logger {
-        return type(of: self).logger
-    }
+// Highest level controller for creating and updating the EventKitDataModel
+class EventKitController: Loggable {
     
     weak var delegate: EventKitControllerDelegate?
     
@@ -158,6 +151,9 @@ class EventKitController {
         completion(true, nil, nil)
         
         #if false
+        
+        // sigh, can't get delegate calendars on iOS
+        
         let sources = store.delegateSources
 
         let delegateEventStore = EKEventStore(sources: sources)

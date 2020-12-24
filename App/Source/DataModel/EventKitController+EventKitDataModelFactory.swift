@@ -25,7 +25,6 @@ extension EventKitController {
         DispatchQueue.main.async {
             completion(dataModel)
         }
-
     }
     
     private func removeDuplicateDelegateCalendars(calendars: [EKCalendar],

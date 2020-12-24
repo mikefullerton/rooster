@@ -8,7 +8,6 @@
 import Foundation
 import AppKit
 //import SwiftUI
-import OSLog
 
 extension NSImage {
     func tint(color: NSColor) -> NSImage {
@@ -27,11 +26,8 @@ extension NSImage {
     }
 }
 
-
-@objc class MenuBarController: NSObject, AppKitMenuBarController {
-    
-    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.MenuBarController")
-    
+@objc class MenuBarController: NSObject, AppKitMenuBarController, Loggable {
+        
     public weak var delegate: AppKitMenuBarControllerDelegate?
     
     private var statusBarItem: NSStatusItem? = nil
@@ -167,5 +163,13 @@ extension NSImage {
             self.timer?.invalidate()
             self.timer = nil
         }
+    }
+    
+    func showNowFiringItem(_ item: Any) {
+        self.isPopoverHidden = false
+    }
+    
+    func hideNowFiringItem(_ item: Any) {
+        self.isPopoverHidden = true
     }
 }

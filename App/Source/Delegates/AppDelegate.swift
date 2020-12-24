@@ -15,7 +15,9 @@ protocol MacAppDelegateProtocols {}
 #endif
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols {
+class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, Loggable {
+
+    public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
 
     static var instance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -35,7 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        NotificationController.instance.requestAccess()
+        self.logger.log("Application did finish launching")
+        AudioSessionController.instance.startAudioSession()
+        UserNotificationCenterController.instance.requestAccess()
         return true
     }
     
@@ -97,11 +101,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols {
     override func buildMenu(with builder: UIMenuBuilder) {
         super.buildMenu(with: builder)
 
-        let preferencesMenuItem = self.preferencesMenuItem
-        builder.insertSibling(preferencesMenuItem, afterMenu: .about)
+//        let preferencesMenuItem = self.preferencesMenuItem
+//        builder.insertSibling(preferencesMenuItem, afterMenu: .about)
         
         let updateMenuItem = self.updateMenuItem
-        builder.insertSibling(updateMenuItem, afterMenu: preferencesMenuItem.identifier)
+        builder.insertSibling(updateMenuItem, afterMenu: .about)
         
     }
 
@@ -114,13 +118,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols {
     }
     #endif
     
-    public func mainWindowDidShow() {
-        AlarmController.instance.start()
+    public func didAuthenticate() {
+        
+        self.logger.log("Application authenticate EventKit access")
+
         #if targetEnvironment(macCatalyst)
-        MenuBarPopoverController.instance.showIconInMenuBar()
+        AppKitPluginController.instance.menuBarPopover.showIconInMenuBar()
         AppKitPluginController.instance.installationUpdater.delegate = self
         AppKitPluginController.instance.installationUpdater.configure(withAppBundle: Bundle.init(for: type(of:self)))
         #endif
+
+        AlarmScheduler.instance.start()
+        AlarmNotificationController.instance.start()
+        
+        NotificationCenter.default.post(name: AppDelegate.CalendarDidAuthenticateEvent, object: self)
+    }
+    
+    public func mainWindowDidShow() {
+        self.logger.log("Main Window did show")
+
+        EventKitDataModelController.instance.authenticate { (success) in
+            DispatchQueue.main.async {
+                self.didAuthenticate()
+            }
+        }
     }
 }
 

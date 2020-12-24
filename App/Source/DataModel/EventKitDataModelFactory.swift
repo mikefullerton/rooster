@@ -76,7 +76,7 @@ struct EventKitDataModelFactory {
                         outItems.append(newItem)
                     } else {
                         // this always means the alarm is .neverFired
-                        let updatedItem = updateAlarmBlock(newItem, newAlarm.updatedAlarm(.neverFired))
+                        let updatedItem = updateAlarmBlock(newItem, newAlarm.alarmWithUpdatedState(.neverFired))
                         outItems.append(updatedItem)
                     }
                     continue

@@ -8,21 +8,74 @@
 import Foundation
 
 extension EventKitDataModel {
-    
-    var nextEventTime: Date? {
-        
+
+    private func nextActionableAlarmDate(forItems items: [Alarmable]) -> Date? {
         let now = Date()
+        var nextDate = now.tomorrow
         
-        for event in self.events {
-            if event.startDate.isAfterDate(now) {
-                return event.startDate
+        for item in items {
+
+            let alarm = item.alarm
+            
+            if let endDate = alarm.endDate,
+               endDate.isAfterDate(now),
+               (nextDate == nil || endDate.isBeforeDate(nextDate!)) {
+                nextDate = endDate
             }
 
-            if event.startDate.isAfterDate(now) {
-                return event.endDate
+            if alarm.startDate.isAfterDate(now),
+               (nextDate == nil || alarm.startDate.isBeforeDate(nextDate!)) {
+                nextDate = alarm.startDate
             }
         }
+
+        return nextDate
+    }
+    
+    var nextActionableAlarmDate: Date? {
+        let nextEventDate = self.nextActionableAlarmDate(forItems: self.events)
+        let nextReminderDate = self.nextActionableAlarmDate(forItems: self.reminders)
         
+        if nextEventDate != nil && nextReminderDate != nil {
+            return nextEventDate!.isBeforeDate(nextReminderDate!) ? nextEventDate : nextReminderDate
+        }
+        
+        return nextEventDate != nil ? nextEventDate : nextReminderDate
+    }
+    
+    private func nextAlarmDate(forItems items: [Alarmable]) -> Date? {
+        let now = Date()
+        var nextDate = now.tomorrow
+        
+        for item in items {
+
+            let alarm = item.alarm
+            
+            if alarm.startDate.isAfterDate(now),
+               (nextDate == nil || alarm.startDate.isBeforeDate(nextDate!)) {
+                nextDate = alarm.startDate
+            }
+        }
+
+        return nextDate
+    }
+    
+    var nextAlarmDate: Date? {
+        let nextEventDate = self.nextAlarmDate(forItems: self.events)
+        let nextReminderDate = self.nextAlarmDate(forItems: self.reminders)
+        
+        if nextEventDate != nil && nextReminderDate != nil {
+            return nextEventDate!.isBeforeDate(nextReminderDate!) ? nextEventDate : nextReminderDate
+        }
+        
+        return nextEventDate != nil ? nextEventDate : nextReminderDate
+    }
+    
+}
+
+extension Date {
+    
+    var tomorrow: Date? {
         let currentCalendar = NSCalendar.current
         
         let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
@@ -31,18 +84,6 @@ extension EventKitDataModel {
            let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) {
             
             return tomorrow
-        }
-        
-        return nil
-    }
-    
-    var nextEventStartTime: Date? {
-        let now = Date()
-        
-        for event in self.events {
-            if event.startDate.isAfterDate(now) {
-                return event.startDate
-            }
         }
         
         return nil

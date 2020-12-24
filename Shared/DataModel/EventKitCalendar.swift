@@ -42,6 +42,9 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
         hasher.combine(self.id)
     }
 
+    func calendarWithSubscriptionChange(isSubscribed: Bool) -> EventKitCalendar {
+        return EventKitCalendar(withCalendar: self.EKCalendar, subscribed: isSubscribed)
+    }
 }
 
 

@@ -7,12 +7,9 @@
 
 import Foundation
 import Sparkle
-import OSLog
 
-@objc public class InstallationUpdater : NSObject, AppKitInstallationUpdater, SUUpdaterDelegate {
+@objc public class InstallationUpdater : NSObject, AppKitInstallationUpdater, SUUpdaterDelegate, Loggable {
     
-    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.InstallationUpdater")
-        
     public weak var delegate: AppKitInstallationUpdaterDelegate?
     
     private var updater: SUUpdater? = nil

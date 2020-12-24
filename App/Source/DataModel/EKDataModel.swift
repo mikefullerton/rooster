@@ -7,7 +7,6 @@
 
 import Foundation
 import EventKit
-import OSLog
 
 /// This represents the data we are interested in from a single EKEventStore. We later combine everything into a single EventKitDataModel
 struct EKDataModel {

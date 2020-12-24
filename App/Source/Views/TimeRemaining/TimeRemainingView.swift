@@ -158,7 +158,7 @@ class TimeRemainingView : UILabel {
     }
 }
 
-class TimeRemainingView_iOS : TimeRemainingView, Reloadable {
+class TimeRemainingView_iOS : TimeRemainingView, DataModelAware {
     
     private var reloader: DataModelReloader? = nil
 
@@ -172,15 +172,15 @@ class TimeRemainingView_iOS : TimeRemainingView, Reloadable {
             self.outOfRangeString = "No more meetings today! 🎉"
         }
 
-        self.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextEventStartTime) { () -> Date? in
-            return EventKitDataModelController.instance.dataModel.nextEventStartTime
+        self.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
+            return EventKitDataModelController.instance.dataModel.nextAlarmDate
         }
     }
     
-    func reloadData() {
+    func dataModelDidReload(_ dataModel: EventKitDataModel) {
         self.startTimer()
     }
-    
+
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         

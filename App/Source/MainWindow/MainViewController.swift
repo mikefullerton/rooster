@@ -19,7 +19,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     var spinner: UIActivityIndicatorView?
     
     func configure() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleCalenderAuthentication(_:)), name: AlarmController.CalendarDidAuthenticateEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCalenderAuthentication(_:)), name: AppDelegate.CalendarDidAuthenticateEvent, object: nil)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

@@ -8,10 +8,9 @@
 
 import Foundation
 import EventKit
-import OSLog
 
-class AppKitPluginController : NSObject, RoosterAppKitPlugin {
-    private static let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPluginController")
+/// interface to the AppKitPlugin
+class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMenuBarControllerDelegate {
         
     static var instance = AppKitPluginController()
     
@@ -19,6 +18,12 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin {
     
     private override init() {
         self.plugin = AppKitPluginController.loadPlugin()
+        super.init()
+        
+        self.menuBarPopover.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(alarmsDidStart(_:)), name: AlarmNotificationController.AlarmsWillStartEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(alarmsDidStop(_:)), name: AlarmNotificationController.AlarmsDidStopEvent, object: nil)
     }
     
     static func loadPlugin() -> RoosterAppKitPlugin? {
@@ -63,6 +68,30 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin {
 
     var windowController: AppKitWindowController {
         return self.plugin!.windowController
+    }
+    
+    @objc private func alarmsDidStart(_ notif: Notification) {
+        self.menuBarPopover.alarmStateDidChange()
+    }
+    
+    @objc private func alarmsDidStop(_ notif: Notification) {
+        self.menuBarPopover.alarmStateDidChange()
+    }
+
+    func appKitMenuBarControllerAreAlarmsFiring(_ controller: AppKitMenuBarController) -> Bool {
+        return AlarmNotificationController.instance.alarmsAreFiring
+    }
+    
+    func menuBarButtonWasClicked(_ popover: AppKitMenuBarController) {
+        
+        if AlarmNotificationController.instance.alarmsAreFiring {
+            AlarmNotificationController.instance.stopAllNotifications()
+        } else {
+            AppKitPluginController.instance.utilities.bringAppToFront()
+            // show popover
+        }
+        
+//        self.isPopoverHidden = !self.isPopoverHidden
     }
 }
 

@@ -15,11 +15,14 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     private let sounds:[AlarmSound]
     private var currentSoundIndex = -1
     
+    var identifier: String
+    
     init(withPreference preference: SoundPreference) {
-        self.sounds = FileAlarmSound.alarmSounds(withURLs: preference.soundURLs)
+        self.sounds = AVAlarmSound.alarmSounds(withURLs: preference.soundURLs)
     
         self.name = preference.soundNames.joined(separator: ":")
         self.behavior = AlarmSoundBehavior()
+        self.identifier = ""
     }
     
     var currentSound: AlarmSound? {
@@ -31,7 +34,6 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     }
     
     var isPlaying: Bool {
-        
         if let currentSound = self.currentSound {
             return currentSound.isPlaying
         }
@@ -52,12 +54,10 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     }
     
     var currentTime: TimeInterval {
-        
         // TODO this isn't correct overall
         if let currentSound = self.currentSound {
             return currentSound.currentTime
         }
-        
         return 0
     }
 
@@ -69,8 +69,10 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
         }
         
         if let currentSound = self.currentSound {
-            let behavior = AlarmSoundBehavior(withIdentifier: self.behavior.identifier,
-                                              playCount: 1,
+            
+            self.logger.log("Playing next sound: \(currentSound.name)")
+            
+            let behavior = AlarmSoundBehavior(playCount: 1,
                                               timeBetweenPlays: self.behavior.timeBetweenPlays,
                                               fadeInTime: 0)
             
@@ -85,24 +87,26 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
         return duration
     }
     
-    func soundWillStartPlaying(_ sound: AlarmSound, forIdentifier identifier: String) {
+    func soundWillStartPlaying(_ sound: AlarmSound) {
     }
     
     func soundDidStopPlaying(_ sound: AlarmSound) {
+        self.logger.log("Sound did stop: \(sound.name)")
         if self.currentSound != nil {
             self.playNextSound()
         }
     }
     
     func play(withBehavior behavior: AlarmSoundBehavior) {
+        self.logger.log("Playing sound: \(self.name)")
         self.behavior = behavior
         self.playNextSound()
     }
     
     func stop() {
         if let currentSound = self.currentSound {
+            self.logger.log("Stopped sound: \(self.name)")
             currentSound.stop()
-            
             self.currentSoundIndex = -1
         }
     }

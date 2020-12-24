@@ -7,21 +7,13 @@
 
 import Foundation
 import UIKit
-import OSLog
 
-class NotificationController : NSObject, UNUserNotificationCenterDelegate {
+class UserNotificationCenterController : NSObject, UNUserNotificationCenterDelegate, Loggable {
     
-    static var instance = NotificationController()
-    
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "NotificationController")
+    static var instance = UserNotificationCenterController()
     
     private var identifiers:[String]
     private let timer: SimpleTimer
-    
-    var logger: Logger {
-        return type(of: self).logger
-    }
-    
     private var accessGranted: Bool
     
     private override init() {
@@ -124,7 +116,7 @@ class NotificationController : NSObject, UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        AlarmController.instance.stopAllAlarms()
+        AlarmNotificationController.instance.stopAllNotifications()
         
         completionHandler()
     }

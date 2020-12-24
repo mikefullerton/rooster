@@ -7,13 +7,11 @@
 
 import Foundation
 import AppKit
-import OSLog
 
-@objc class Utilities : NSObject, AppKitUtilities {
+@objc class Utilities : NSObject, AppKitUtilities, Loggable {
+            
+    private var userAttentionRequest: Int = 0
     
-    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.Utilities")
-        
-    private var userAttentionRequest:Int = 0
     func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
         

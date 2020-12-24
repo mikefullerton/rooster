@@ -53,14 +53,14 @@ struct EventKitDataModel : CustomStringConvertible {
         return "calenders: \(self.calendars)\ndelegate calendars: \(self.delegateCalendars)\nevents: \(self.events)\nreminders: \(self.reminders)"
     }
     
-    func findCalendar(forIdentifier id: String) -> EventKitCalendar? {
+    func calendar(forIdentifier id: String) -> EventKitCalendar? {
         if let calendar = self.calendarLookup[id] {
             return calendar
         }
         return nil;
     }
     
-    func findEvents(forCalendar calendar: EventKitCalendar) -> [EventKitEvent] {
+    func events(forCalendar calendar: EventKitCalendar) -> [EventKitEvent] {
         var outEvents: [EventKitEvent] = []
         for event in self.events {
             if event.calendar.id == calendar.id {
@@ -70,5 +70,36 @@ struct EventKitDataModel : CustomStringConvertible {
         
         return outEvents
     }
+    
+    func event(forIdentifier identifer: String) -> EventKitEvent? {
+        for event in self.events {
+            if event.id == identifer {
+                return event
+            }
+        }
+        
+        return nil
+    }
+
+    func reminder(forIdentifier identifer: String) -> EventKitReminder? {
+        for reminder in self.reminders {
+            if reminder.id == identifer {
+                return reminder
+            }
+        }
+        
+        return nil
+    }
+    
+    func item(forIdentifier identifer: String) -> Alarmable? {
+        if let event = self.event(forIdentifier: identifer) {
+            return event
+        }
+        if let reminder = self.reminder(forIdentifier: identifer) {
+            return reminder
+        }
+        return nil
+    }
+
 }
 

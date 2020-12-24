@@ -6,15 +6,8 @@
 //
 
 import Foundation
-import OSLog
 
-class SimpleTimer : CustomStringConvertible {
-    
-    static let logger = Logger(subsystem: "com.apple.rooster", category: "SimpleTimer")
-    var logger: Logger {
-        return type(of: self).logger
-    }
- 
+class SimpleTimer : CustomStringConvertible, Loggable {
     static let RepeatEndlessly: Int = Int.max
     
     private weak var timer: Timer?
@@ -106,23 +99,22 @@ class SimpleTimer : CustomStringConvertible {
     }
     
     func start(withInterval interval: TimeInterval,
-               playCount: Int,
+               fireCount: Int,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
         self.stop()
         
-        self.requestedFireCount = playCount
-        self.fireCount = 0
-        self.isTiming = true
-        self.interval = interval
-
-        if !self.willFireAgain {
-            self.stop()
-            self.logger.error("Invalid timer: \(self.description)")
+        if interval <= 0 {
+            self.logger.log("Timer fired after 0 seconds")
             completion(self)
             return
         }
         
+        self.requestedFireCount = max(fireCount, 1)
+        self.fireCount = 0
+        self.isTiming = true
+        self.interval = interval
+
         self.logger.log("Starting timer: \(self.description)")
       
         self.startTimer(completion: completion)
@@ -130,20 +122,11 @@ class SimpleTimer : CustomStringConvertible {
 
     func start(withInterval interval: TimeInterval,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
-        self.start(withInterval: interval, playCount: 1, completion: completion)
-    }
-
-    func start(withplayCount playCount: Int,
-               completion: @escaping (_ timer: SimpleTimer) -> Void) {
-        self.start(withInterval: 0, playCount: playCount, completion: completion)
-    }
-
-    func start(completion: @escaping (_ timer: SimpleTimer) -> Void) {
-        self.start(withInterval: 0, playCount: 1, completion: completion)
+        self.start(withInterval: interval, fireCount: 1, completion: completion)
     }
 
     func start(withDate date: Date,
-               playCount: Int,
+               fireCount: Int,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
         let fireTime = date.timeIntervalSinceReferenceDate
@@ -152,14 +135,14 @@ class SimpleTimer : CustomStringConvertible {
         let fireInterval = fireTime - now
     
         self.start(withInterval: fireInterval,
-                   playCount: playCount,
+                   fireCount: fireCount,
                    completion: completion)
     }
 
     func start(withDate date: Date,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
-        self.start(withDate: date, playCount: 1, completion: completion)
+        self.start(withDate: date, fireCount: 1, completion: completion)
     }
     
     var description: String {

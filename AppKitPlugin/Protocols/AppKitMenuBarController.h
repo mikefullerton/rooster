@@ -8,6 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class Alarmable;
 @protocol AppKitMenuBarControllerDelegate;
 
 @protocol AppKitMenuBarController <NSObject>
@@ -19,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showIconInMenuBar;
 
 - (void)alarmStateDidChange;
+
+- (void)showNowFiringItem:(id)item;
+
+- (void)hideNowFiringItem:(id)item;
 
 @end
 

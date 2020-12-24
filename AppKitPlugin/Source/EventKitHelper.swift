@@ -7,12 +7,9 @@
 
 import Foundation
 import EventKit
-import OSLog
 
-@objc class EventKitHelper: NSObject, AppKitEventKitHelper {
+@objc class EventKitHelper: NSObject, AppKitEventKitHelper, Loggable {
  
-    private let logger = Logger(subsystem: "com.apple.rooster", category: "AppKitPlugin.EventKitHelper")
-    
     func requestPermissionToDelegateCalendars(for eventStore: EKEventStore, completion: ((Bool, EKEventStore?, Error?) -> Void)?) {
         let sources = eventStore.delegateSources
 
