@@ -25,6 +25,8 @@ class DataModelReloader  {
     @objc private func notificationReceived(_ notif: Notification) {
         if let target = self.target {
             target.dataModelDidReload(EventKitDataModelController.dataModel)
+        } else {
+            NotificationCenter.default.removeObserver(self)
         }
     }
 }

@@ -15,6 +15,8 @@ class AudioSessionController: Loggable {
     private(set) var isActive = false
     
     func startAudioSession() {
+        self.logger.log("Staring to configure audio session...")
+        
         DispatchQueue.global().async {
             do {
                 let audioSession = AVAudioSession.sharedInstance()

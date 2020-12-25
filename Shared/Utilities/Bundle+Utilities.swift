@@ -35,8 +35,3 @@ extension Bundle {
     
 }
 
-extension URL {
-    var fileName: String {
-        return self.deletingPathExtension().lastPathComponent
-    }
-}
