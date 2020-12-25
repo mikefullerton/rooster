@@ -1,26 +1,28 @@
 //
-//  EventKitDataModel+EventUtilities.swift
-//  Rooster (iOS)
+//  EventKitDataModel+EventScheduler.swift
+//  Rooster
 //
-//  Created by Mike Fullerton on 11/21/20.
+//  Created by Mike Fullerton on 12/24/20.
 //
 
 import Foundation
 
 extension EventKitDataModel {
-    
-    private func nextAlarmDate(forItems items: [Alarmable]) -> Date? {
+
+    private func nextAlarmDateForSchedulingTimer(forItems items: [Alarmable]) -> Date? {
         let now = Date()
-        var nextDate:Date? = nil
+        var nextDate = now.tomorrow
         
         for item in items {
 
             let alarm = item.alarm
             
-            if alarm.state != .neverFired {
-                continue
+            if let endDate = alarm.endDate,
+               endDate.isAfterDate(now),
+               (nextDate == nil || endDate.isBeforeDate(nextDate!)) {
+                nextDate = endDate
             }
-           
+
             if alarm.startDate.isAfterDate(now),
                (nextDate == nil || alarm.startDate.isBeforeDate(nextDate!)) {
                 nextDate = alarm.startDate
@@ -30,9 +32,9 @@ extension EventKitDataModel {
         return nextDate
     }
     
-    var nextAlarmDate: Date? {
-        let nextEventDate = self.nextAlarmDate(forItems: self.events)
-        let nextReminderDate = self.nextAlarmDate(forItems: self.reminders)
+    var nextAlarmDateForSchedulingTimer: Date? {
+        let nextEventDate = self.nextAlarmDateForSchedulingTimer(forItems: self.events)
+        let nextReminderDate = self.nextAlarmDateForSchedulingTimer(forItems: self.reminders)
         
         if nextEventDate != nil && nextReminderDate != nil {
             return nextEventDate!.isBeforeDate(nextReminderDate!) ? nextEventDate : nextReminderDate
@@ -40,5 +42,4 @@ extension EventKitDataModel {
         
         return nextEventDate != nil ? nextEventDate : nextReminderDate
     }
-    
 }

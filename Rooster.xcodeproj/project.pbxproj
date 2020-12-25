@@ -155,6 +155,8 @@
 		B2E154BE2576881E008BE604 /* EventRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154BD2576881E008BE604 /* EventRow.swift */; };
 		B2E78A19259562A000DF0ACF /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A18259562A000DF0ACF /* URL+Utilities.swift */; };
 		B2E78A1A259562A000DF0ACF /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A18259562A000DF0ACF /* URL+Utilities.swift */; };
+		B2E78A1D2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift */; };
+		B2E78A1E2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift */; };
 		B2F6A1B7257A78D8007C2858 /* EventListTableViewCell+RightSideContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6A1B6257A78D7007C2858 /* EventListTableViewCell+RightSideContentView.swift */; };
 		B2F6A1BB257A7A07007C2858 /* EventListTableViewCell+LeftSideContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6A1BA257A7A07007C2858 /* EventListTableViewCell+LeftSideContentView.swift */; };
 		B2F6B489256187CC000BC78E /* EventKitCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B488256187CC000BC78E /* EventKitCalendar.swift */; };
@@ -362,6 +364,7 @@
 		B2E154B72576880A008BE604 /* EventSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSection.swift; sourceTree = "<group>"; };
 		B2E154BD2576881E008BE604 /* EventRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRow.swift; sourceTree = "<group>"; };
 		B2E78A18259562A000DF0ACF /* URL+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
+		B2E78A1C2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitDataModel+EventScheduler.swift"; sourceTree = "<group>"; };
 		B2F6A1B6257A78D7007C2858 /* EventListTableViewCell+RightSideContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventListTableViewCell+RightSideContentView.swift"; sourceTree = "<group>"; };
 		B2F6A1BA257A7A07007C2858 /* EventListTableViewCell+LeftSideContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventListTableViewCell+LeftSideContentView.swift"; sourceTree = "<group>"; };
 		B2F6B488256187CC000BC78E /* EventKitCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitCalendar.swift; sourceTree = "<group>"; };
@@ -480,6 +483,7 @@
 				B20AACD12594F3E900F9B50C /* AlarmNotificationController.swift */,
 				B20AACD42594F41E00F9B50C /* AlarmNotification.swift */,
 				B20AAD0C259557C900F9B50C /* EventKitDataModelController+Alarms.swift */,
+				B2E78A1C2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift */,
 			);
 			path = Alarms;
 			sourceTree = "<group>";
@@ -1072,6 +1076,7 @@
 				B286629B258EC77200D3A538 /* EKReminder+UniqueID.swift in Sources */,
 				B2A58B38259288EA00188584 /* SoundPreference.swift in Sources */,
 				B2E78A1A259562A000DF0ACF /* URL+Utilities.swift in Sources */,
+				B2E78A1E2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift in Sources */,
 				B2866266258EC1F500D3A538 /* DictionaryCodable.swift in Sources */,
 				B28661DC258E8FA100D3A538 /* MenuBarController.swift in Sources */,
 				B2866296258EC77200D3A538 /* EventKitCalendar.swift in Sources */,
@@ -1155,6 +1160,7 @@
 				B2F817CF25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift in Sources */,
 				B20AACE825950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */,
 				B286625F258EC12700D3A538 /* EKEvent+UniqueID.swift in Sources */,
+				B2E78A1D2595656500DF0ACF /* EventKitDataModel+EventScheduler.swift in Sources */,
 				B2965579257C371D008D1858 /* ReminderTableViewCell+LeftSideContentView.swift in Sources */,
 				B2020AC12577D99800F478CC /* PreferencesDividerSection.swift in Sources */,
 				B256BC16258028BD00FA67DC /* CalendarListViewController.swift in Sources */,

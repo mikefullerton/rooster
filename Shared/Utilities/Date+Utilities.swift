@@ -24,6 +24,19 @@ extension Date {
         return DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
     }
     
+    var tomorrow: Date? {
+        let currentCalendar = NSCalendar.current
+        
+        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
+        
+        if let today = currentCalendar.date(from: dateComponents),
+           let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) {
+            
+            return tomorrow
+        }
+        
+        return nil
+    }
 }
 
 extension DateComponents {
