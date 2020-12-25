@@ -48,9 +48,9 @@ extension EventKitReminder {
             self.isSubscribed = subscribedBool
         }
 
-        var asDictionary: [AnyHashable : Any] {
+        var dictionaryRepresentation: [AnyHashable : Any] {
             var dictionary: [AnyHashable : Any] = [:]
-            dictionary[CodingKeys.alarm.rawValue] = self.alarmState.asDictionary
+            dictionary[CodingKeys.alarm.rawValue] = self.alarmState.dictionaryRepresentation
             dictionary[CodingKeys.subscribed.rawValue] = self.isSubscribed
             return dictionary
         }

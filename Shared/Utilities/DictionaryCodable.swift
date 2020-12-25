@@ -11,6 +11,6 @@ protocol DictionaryCodable {
 
     init?(withDictionary dictionary: [AnyHashable: Any])
     
-    var asDictionary:[AnyHashable: Any] { get }
+    var dictionaryRepresentation:[AnyHashable: Any] { get }
 
 }

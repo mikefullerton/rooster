@@ -48,10 +48,10 @@ extension EventKitEvent {
             self.isSubscribed = subscribedBool
         }
 
-        var asDictionary: [AnyHashable : Any] {
+        var dictionaryRepresentation: [AnyHashable : Any] {
             var dictionary: [AnyHashable : Any] = [:]
             dictionary[CodingKeys.subscribed.rawValue] = self.isSubscribed
-            dictionary[CodingKeys.alarm.rawValue] = self.alarmState.asDictionary
+            dictionary[CodingKeys.alarm.rawValue] = self.alarmState.dictionaryRepresentation
             return dictionary
         }
     }

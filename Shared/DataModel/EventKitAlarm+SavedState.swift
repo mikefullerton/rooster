@@ -43,7 +43,7 @@ extension EventKitAlarm {
             self.snoozeInterval = alarm.snoozeInterval
         }
         
-        var asDictionary: [AnyHashable : Any] {
+        var dictionaryRepresentation: [AnyHashable : Any] {
             var dictionary: [AnyHashable : Any] = [:]
             dictionary[CodingKeys.state.rawValue] = self.state.rawValue
             dictionary[CodingKeys.enabled.rawValue] = self.isEnabled

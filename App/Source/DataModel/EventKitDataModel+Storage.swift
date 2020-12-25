@@ -41,7 +41,7 @@ extension EventKitDataModel {
 
         func update(event: EventKitEvent) {
             let savedState = EventKitEvent.SavedState(withEvent: event)
-            self.events.set(value:savedState.asDictionary, forKey: event.id)
+            self.events.set(value:savedState.dictionaryRepresentation, forKey: event.id)
             
             self.update(alarm: event.alarm, forIdentifier: event.id)
         }
@@ -58,7 +58,7 @@ extension EventKitDataModel {
 
         func update(reminder: EventKitReminder) {
             let savedState = EventKitReminder.SavedState(withReminder: reminder)
-            self.reminders.set(value:savedState.asDictionary, forKey: reminder.id)
+            self.reminders.set(value:savedState.dictionaryRepresentation, forKey: reminder.id)
 
             self.update(alarm: reminder.alarm, forIdentifier: reminder.id)
         }
@@ -77,7 +77,7 @@ extension EventKitDataModel {
         private func update(alarm: EventKitAlarm,
                             forIdentifier identifier: String) {
             let savedState = EventKitAlarm.SavedState(withAlarm: alarm)
-            self.alarms.set(value: savedState.asDictionary, forKey: identifier)
+            self.alarms.set(value: savedState.dictionaryRepresentation, forKey: identifier)
         }
 
         private func alarmState(forKey key: String) -> EventKitAlarm.SavedState? {

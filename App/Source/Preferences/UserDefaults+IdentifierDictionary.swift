@@ -23,38 +23,49 @@ extension UserDefaults {
         
         func set(value: Any?, forKey key: String) {
             
-            var dictionary = self.dictionary
+            if var dictionary = self.dictionary {
+                if value != nil {
+                    dictionary[key] = value
+                } else {
+                    dictionary.removeValue(forKey: key)
+                }
             
-            if value != nil {
-                dictionary[key] = value
-            } else {
-                dictionary.removeValue(forKey: key)
+                self.save(dictionary)
+            } else if value != nil {
+                self.save([key: value!])
             }
-            
-            self.save(dictionary)
         }
         
         func value(forKey key: String) -> Any? {
-            return self.dictionary[key]
+            if let dictionary = self.dictionary {
+                return dictionary[key]
+            }
+            
+            return nil
         }
         
         func removeValue(forKey key: String) {
-            var dictionary = self.dictionary
-            dictionary.removeValue(forKey: key)
-            self.save(dictionary)
+            if var dictionary = self.dictionary {
+                dictionary.removeValue(forKey: key)
+                self.save(dictionary)
+            }
         }
 
         func removeAll() {
             self.save([:])
         }
         
-        func replaceAll(_ dictionary: [AnyHashable: Any]) {
-            self.save(dictionary)
+        func replaceAll(_ dictionary: [AnyHashable: Any]?) {
+            if dictionary != nil {
+                self.save(dictionary!)
+            } else {
+                self.removeAll()
+            }
         }
         
-        var dictionary: [AnyHashable: Any] {
+        var dictionary: [AnyHashable: Any]? {
             get {
-                return UserDefaults.standard.dictionary(forKey: self.preferencesKey) ?? [:]
+                return UserDefaults.standard.dictionary(forKey: self.preferencesKey)
             }
             set(newDictionary) {
                 self.replaceAll(newDictionary)

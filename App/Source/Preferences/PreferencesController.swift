@@ -7,18 +7,32 @@
 
 import Foundation
 
-class PreferencesController {
+class PreferencesController: ObservableObject, Loggable {
     static let DidChangeEvent = Notification.Name(rawValue: "PreferencesDidChangeEvent")
     
-    private let dataStore: PreferencesDataStore
+    private var storage: UserDefaults.IdentifierDictionary
     
     public static let instance = PreferencesController()
  
-    var preferences: Preferences
+    @Published var preferences: Preferences {
+        didSet {
+            self.write()
+        }
+    }
     
     private init() {
-        self.preferences = Preferences()
-        self.dataStore = PreferencesDataStore()
+        let storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "preferences")
+        
+        var prefs: Preferences? = nil
+        
+        if let existingPrefences = storage.dictionary {
+            prefs = Preferences(withDictionary: existingPrefences)
+        } else {
+            prefs = Preferences.defaultPreferences
+        }
+        
+        self.storage = storage
+        self.preferences = prefs!
     }
     
     func notify() {
@@ -34,5 +48,27 @@ class PreferencesController {
                                               startDelay: 3)
         
         return ItemPreference(soundPreference: soundPreference)
+    }
+    
+    private func write() {
+        self.storage.dictionary = self.preferences.dictionaryRepresentation
+        
+        NotificationCenter.default.post(name: PreferencesController.DidChangeEvent, object: self)
+
+        self.logger.log("Wrote preferences: \(self.preferences.description)")
+    }
+    
+    func read() {
+        var prefs: Preferences? = nil
+        
+        if let existingPrefences = self.storage.dictionary {
+            prefs = Preferences(withDictionary: existingPrefences)
+        } else {
+            prefs = Preferences.defaultPreferences
+        }
+        
+        self.preferences = prefs!
+        
+        self.logger.log("Read preferences: \(self.preferences.description)")
     }
 }

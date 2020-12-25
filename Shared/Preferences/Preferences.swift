@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Preferences {
+struct Preferences : CustomStringConvertible {
 
     let sounds: SoundPreference
     let useSystemNotifications: Bool
@@ -31,4 +31,9 @@ struct Preferences {
                   bounceIconInDock: true,
                   autoOpenLocations: true)
     }
+    
+    var description: String {
+        return "Prefs: useSystemNotifications: \(self.useSystemNotifications), bounce icon: \(self.bounceIconInDock), auto open Locaitions: \(self.autoOpenLocations)"
+    }
+    
 }
