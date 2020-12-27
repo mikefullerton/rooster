@@ -10,52 +10,32 @@ import UIKit
 
 class NotificationChoicesView : GroupBoxView {
     
-    init() {
-        super.init(frame: CGRect.zero,
+    init(frame: CGRect) {
+        super.init(frame: frame,
                   title: "Notifications" )
         
-        self.addTopSubview(view: self.automaticallyOpenLocationURLs)
-        self.addSubview(view: self.bounceIconInDock, belowView: self.automaticallyOpenLocationURLs)
-        self.addSubview(view: self.useSystemNotifications, belowView: self.bounceIconInDock)
+        self.layout.addSubview(self.automaticallyOpenLocationURLs)
+        self.layout.addSubview(self.bounceIconInDock)
+        self.layout.addSubview(self.useSystemNotifications)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func preferenceSettingChanged(_ sender: UISwitch) {
-        
-    }
-    
-    private func createCheckBox(withTitle title: String) -> UISwitch {
-        let view = UISwitch()
-        view.title = title
-        
-        #if targetEnvironment(macCatalyst)
-        view.preferredStyle = .checkbox
-        #endif
-
-        view.addTarget(self, action: #selector(preferenceSettingChanged(_:)), for: .valueChanged)
-        self.addSubview(view)
-    
-        return view
-    }
-    
-    lazy var automaticallyOpenLocationURLs : UISwitch = {
-        let view = self.createCheckBox(withTitle:"Automatically open location URLs")
-        return view
+    lazy var automaticallyOpenLocationURLs : NotificationChoiceView = {
+        return AutomaticallyOpenLocationURLsChoiceView(frame: self.bounds)
     }()
 
-    lazy var bounceIconInDock : UISwitch = {
-        let view = self.createCheckBox(withTitle:"Bounce Icon in Dock")
-        return view
+    lazy var bounceIconInDock : NotificationChoiceView = {
+        return BounceInDockChoiceView(frame: self.bounds)
     }()
 
-    lazy var useSystemNotifications : UISwitch = {
-        let view = self.createCheckBox(withTitle:"Use System Notifications")
-        return view
+    lazy var useSystemNotifications : NotificationChoiceView = {
+        return UseSystemNotificationsChoiceView(frame: self.bounds)
     }()
     
     
     
 }
+

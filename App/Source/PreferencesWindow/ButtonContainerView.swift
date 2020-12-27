@@ -69,10 +69,13 @@ class ButtonsContainerView : UIView {
     
     lazy var resetPrefsButton: UIButton = {
         
-        let image = UIImage(systemName: "arrow.triangle.2.circlepath")
+        // "arrow.triangle.2.circlepath"
+        
+        let image = UIImage(systemName: "return")
         
         
         let view = UIButton.createImageButton(withImage: image)
+        
         
         return view
         
@@ -100,13 +103,9 @@ class ButtonsContainerView : UIView {
     } ()
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        
         var outSize = size
-        
-        outSize.height = self.calculateLayoutSize(withInsets: UIEdgeInsets.zero).height
-        
-        outSize.height += Layout.insets.top + Layout.insets.bottom
-        
+        let layout = ViewLayoutSpec.default
+        outSize.height = ButtonsContainerView.buttonSize + layout.insets.top + layout.insets.bottom
         return outSize
     }
 }

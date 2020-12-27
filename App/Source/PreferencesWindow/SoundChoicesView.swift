@@ -10,14 +10,13 @@ import UIKit
 
 class SoundChoicesView : GroupBoxView {
     
-    init() {
-        super.init(frame: CGRect.zero,
+    init(frame: CGRect) {
+        super.init(frame: frame,
                   title: "Sounds" )
         
-        self.addTopSubview(view: self.firstSoundChoice)
-        self.addSubview(view: self.secondSoundChoice, belowView: self.firstSoundChoice)
-        self.addSubview(view: self.thirdSoundChoice, belowView: self.secondSoundChoice)
-
+        self.layout.addSubview(self.firstSoundChoice)
+        self.layout.addSubview(self.secondSoundChoice)
+        self.layout.addSubview(self.thirdSoundChoice)
     }
     
     required init?(coder: NSCoder) {
@@ -25,21 +24,21 @@ class SoundChoicesView : GroupBoxView {
     }
     
     lazy var firstSoundChoice: UIView = {
-        let view = SoundChoiceView(frame: CGRect.zero,
+        let view = SoundChoiceView(frame: self.bounds,
                                    soundPreferenceIndex: 0)
         
         return view
     }()
 
     lazy var secondSoundChoice: UIView = {
-        let view = SoundChoiceView(frame: CGRect.zero,
+        let view = SoundChoiceView(frame: self.bounds,
                                    soundPreferenceIndex: 1)
 
         return view
     }()
 
     lazy var thirdSoundChoice: UIView = {
-        let view = SoundChoiceView(frame: CGRect.zero,
+        let view = SoundChoiceView(frame: self.bounds,
                                    soundPreferenceIndex: 2)
 
         

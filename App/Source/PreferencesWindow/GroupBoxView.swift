@@ -77,26 +77,13 @@ class GroupBoxView : UIView {
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var outSize = size
-        outSize.height = self.calculateLayoutSize(withInsets: UIEdgeInsets.zero).height
-        outSize.height += Layout.insets.bottom
+        outSize.height = self.layout.layoutSize.height + self.insets.top + self.insets.bottom
         return outSize
     }
     
-    override func addTopSubview(view: UIView) {
-        self.addSubview(view)
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.sizeToFit()
+    lazy var layout: VerticalStackedViewLayout = {
+        return VerticalStackedViewLayout(hostView: self.outLineView,
+                                         layoutSpec: ViewLayoutSpec.default)
         
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Layout.insets.left),
-            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Layout.insets.right),
-            view.topAnchor.constraint(equalTo: self.titleView.bottomAnchor, constant: Layout.insets.top),
-            view.heightAnchor.constraint(equalToConstant: view.frame.size.height)
-        ])
-    }
-    
-
-    
+    }()
 }

@@ -28,7 +28,7 @@ class SoundChoiceView : UIView {
     }
     
     lazy var textField: UITextField = {
-        let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        let textField = UITextField(frame: self.bounds)
         textField.text = PreferencesController.instance.preferences.sounds.sound(withIndex: self.index)
         textField.isUserInteractionEnabled = false
         self.addSubview(textField)
@@ -45,7 +45,7 @@ class SoundChoiceView : UIView {
 
     lazy var button: UIButton = {
         let button = UIButton.createImageButton(withImage: UIImage(systemName: "speaker.wave.2"))
-            
+        button.frame = self.bounds
         button.addTarget(self, action: #selector(playSound(_:)), for: .touchUpInside)
         button.tag = index
         

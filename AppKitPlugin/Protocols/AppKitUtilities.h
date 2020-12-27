@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startBouncingAppIcon;
 - (void)stopBouncingAppIcon;
 
+- (void)openNotificationSettings;
 @end
 
 NS_ASSUME_NONNULL_END

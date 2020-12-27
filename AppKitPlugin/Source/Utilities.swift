@@ -9,6 +9,7 @@ import Foundation
 import AppKit
 
 @objc class Utilities : NSObject, AppKitUtilities, Loggable {
+    
             
     private var userAttentionRequest: Int = 0
     
@@ -96,4 +97,27 @@ import AppKit
             self.userAttentionRequest = 0
         }
     }
+    
+    func openNotificationSettings() {
+//        let urlString = "/System/Library/PreferencePanes/Notifications.prefPane"
+//        let url = URL(fileURLWithPath: urlString)
+//
+//        let config = NSWorkspace.OpenConfiguration()
+//        config.promptsUserIfNeeded = false
+//
+//        NSWorkspace.shared.openApplication(at: url, configuration: config) { (results, error) in
+//
+//            print("\(results) : \(error)")
+//        }
+//
+        let task = Process()
+        task.launchPath = "/bin/bash"
+        task.arguments = ["-c", "open", "/System/Library/PreferencePanes/Notifications.prefPane"]
+        task.launch()
+        task.waitUntilExit()
+        
+        
+//        system
+    }
+    
 }

@@ -11,24 +11,38 @@ import SwiftUI
 
 class PreferencesViewController : UIViewController {
 
-    lazy var buttonsContainer = ButtonsContainerView(frame: CGRect(x: 0, y: 0, width: ButtonsContainerView.buttonSize, height: ButtonsContainerView.buttonSize))
+    lazy var buttonsContainer = ButtonsContainerView(frame: CGRect(x: 0,
+                                                                   y: 0,
+                                                                   width: ButtonsContainerView.buttonSize,
+                                                                   height: ButtonsContainerView.buttonSize))
     
-    lazy var notificationChoices =  NotificationChoicesView()
+    lazy var notificationChoices =  NotificationChoicesView(frame: CGRect(x: 0,
+                                                                          y: 0,
+                                                                          width:self.layout.layoutSpec.width,
+                                                                          height: CGFloat.greatestFiniteMagnitude))
     
-    lazy var soundChoices = SoundChoicesView()
+    lazy var soundChoices = SoundChoicesView(frame: CGRect(x: 0,
+                                                           y: 0,
+                                                           width:self.layout.layoutSpec.width,
+                                                           height: CGFloat.greatestFiniteMagnitude))
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.addTopSubview(view: self.soundChoices)
-        self.view.addSubview(view: self.notificationChoices, belowView: self.soundChoices)
-        self.view.addSubview(view: self.buttonsContainer, belowView: self.notificationChoices)
+
+        self.layout.addSubview(self.soundChoices)
+        self.layout.addSubview(self.notificationChoices)
+        self.layout.addSubview(self.buttonsContainer)
     }
 
+    lazy var layout: VerticalStackedViewLayout = {
+        return VerticalStackedViewLayout(hostView: self.view,
+                                         layoutSpec: ViewLayoutSpec.default)
+        
+    }()
+    
     var calculatedSize: CGSize {
-        var size = CGSize.zero
-        size.width = Layout.width
-        size.height = self.view.calculateLayoutSize(withInsets: Layout.insets).height
+        let size =  self.layout.layoutSize
+        
         return size
     }
 }
