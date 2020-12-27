@@ -11,6 +11,6 @@ import UIKit
 extension EventKitCalendar {
     
     var color: UIColor? {
-        return UIColor(cgColor: EKCalendar.cgColor)
+        return self.cgColor != nil ? UIColor(cgColor: self.cgColor!) : nil
     }
 }

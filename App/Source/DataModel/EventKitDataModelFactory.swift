@@ -97,10 +97,20 @@ struct EventKitDataModelFactory {
                                     withOldEvents oldEvents: [EventKitEvent]) -> [EventKitEvent] {
         
         return self.mergeItems(newEvents, withOldItems: oldEvents) { newEvent, newAlarm in
-            return EventKitEvent(withEvent: newEvent.EKEvent,
+            return EventKitEvent(withIdentifier: newEvent.id,
+                                 ekEventID: newEvent.ekEventID,
                                  calendar: newEvent.calendar,
                                  subscribed: newEvent.isSubscribed,
-                                 alarm: newAlarm)
+                                 alarm: newAlarm,
+                                 startDate: newEvent.startDate,
+                                 endDate: newEvent.endDate,
+                                 title: newEvent.title,
+                                 location: newEvent.location,
+                                 url: newEvent.url,
+                                 notes: newEvent.notes,
+                                 noteURLS: newEvent.noteURLS,
+                                 organizer: newEvent.organizer)
+
         }
     }
     
@@ -108,10 +118,20 @@ struct EventKitDataModelFactory {
                                        withOldReminders oldReminders: [EventKitReminder]) -> [EventKitReminder] {
         
         return self.mergeItems(newReminders, withOldItems: oldReminders) { newReminder, newAlarm in
-            return EventKitReminder(withReminder: newReminder.EKReminder,
+            return EventKitReminder(withIdentifier: newReminder.id,
+                                    ekReminderID: newReminder.ekReminderID,
                                     calendar: newReminder.calendar,
                                     subscribed: newReminder.isSubscribed,
-                                    alarm: newAlarm)
+                                    completed: newReminder.isCompleted,
+                                    alarm: newAlarm,
+                                    startDate: newReminder.startDate,
+                                    dueDate: newReminder.dueDate,
+                                    title: newReminder.title,
+                                    location: newReminder.location,
+                                    url: newReminder.url,
+                                    notes: newReminder.notes,
+                                    noteURLS: newReminder.noteURLS)
+
         }
     }
     

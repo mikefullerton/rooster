@@ -57,12 +57,25 @@ extension EventKitEvent {
     }
     
     func update(withSavedState state: SavedState) -> EventKitEvent {
-        return EventKitEvent(withEvent: self.EKEvent,
+        
+        let alarm = EventKitAlarm(withSavedState: state.alarmState,
+                                  startDate: self.startDate,
+                                  endDate: self.endDate)
+        
+        return EventKitEvent(withIdentifier: self.id,
+                             ekEventID: self.ekEventID,
                              calendar: self.calendar,
                              subscribed: state.isSubscribed,
-                             alarm: EventKitAlarm(withSavedState: state.alarmState,
-                                                  startDate: self.startDate,
-                                                  endDate: self.endDate))
+                             alarm: alarm,
+                             startDate: self.startDate,
+                             endDate: self.endDate,
+                             title: self.title,
+                             location: self.location,
+                             url: self.url,
+                             notes: self.notes,
+                             noteURLS: self.noteURLS,
+                             organizer: self.organizer)
+
     }
 
     init(withEvent EKEvent: EKEvent,
@@ -72,12 +85,22 @@ extension EventKitEvent {
         let alarm = EventKitAlarm(withSavedState: savedState.alarmState,
                                   startDate: EKEvent.startDate,
                                   endDate: EKEvent.endDate)
-        
-        self.init(withEvent: EKEvent,
+
+        self.init(withIdentifier: EKEvent.uniqueID,
+                  ekEventID: EKEvent.eventIdentifier,
                   calendar: calendar,
                   subscribed: savedState.isSubscribed,
-                  alarm: alarm)
+                  alarm: alarm,
+                  startDate: EKEvent.startDate,
+                  endDate: EKEvent.endDate,
+                  title: EKEvent.title,
+                  location: EKEvent.location,
+                  url: EKEvent.url,
+                  notes: EKEvent.notes,
+                  noteURLS: nil,
+                  organizer: EKEvent.organizer?.name)
     }
+    
 }
 
 

@@ -6,12 +6,10 @@
 //
 
 import Foundation
-import EventKit
 
 struct EventKitEvent: Identifiable, Hashable, EventKitItem {
     typealias ItemType = EventKitEvent
     
-    let EKEvent: EKEvent
     let calendar: EventKitCalendar
     
     let isSubscribed: Bool
@@ -21,30 +19,42 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
     let endDate: Date
     let title: String
     let id: String
+    let ekEventID: String
     let organizer: String?
     let location: String?
     let url: URL?
     let notes: String?
     let noteURLS: [URL]?
-    
-    init(withEvent EKEvent: EKEvent,
+
+    init(withIdentifier identifier: String,
+         ekEventID: String,
          calendar: EventKitCalendar,
          subscribed: Bool,
-         alarm: EventKitAlarm) {
-        self.EKEvent = EKEvent
-        self.id = EKEvent.uniqueID
+         alarm: EventKitAlarm,
+         startDate: Date,
+         endDate: Date,
+         title: String,
+         location: String?,
+         url: URL?,
+         notes: String?,
+         noteURLS: [URL]?,
+         organizer: String?) {
+        
+        self.id = identifier
+        self.ekEventID = ekEventID
         self.calendar = calendar
-        self.title = EKEvent.title
+        self.title = title
         self.isSubscribed = subscribed
         self.alarm = alarm
-        self.startDate = EKEvent.startDate
-        self.endDate = EKEvent.endDate
-        self.organizer = EKEvent.organizer?.name
-        self.location = EKEvent.location
-        self.url = EKEvent.url
-        self.notes = EKEvent.notes
-        if self.notes != nil {
-            self.noteURLS = self.notes!.detectURLs()
+        self.startDate = startDate
+        self.endDate = endDate
+        self.organizer = organizer
+        self.location = location
+        self.url = url
+        self.notes = notes
+        
+        if notes != nil && noteURLS == nil {
+            self.noteURLS = notes!.detectURLs()
         } else {
             self.noteURLS = nil
         }
@@ -73,10 +83,19 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
     }
     
     func itemWithUpdatedAlarm(_ alarm: EventKitAlarm) -> EventKitEvent {
-        return EventKitEvent(withEvent: self.EKEvent,
+        return EventKitEvent(withIdentifier: self.id,
+                             ekEventID: self.ekEventID,
                              calendar: self.calendar,
                              subscribed: self.isSubscribed,
-                             alarm: alarm)
+                             alarm: alarm,
+                             startDate: self.startDate,
+                             endDate: self.endDate,
+                             title: self.title,
+                             location: self.location,
+                             url: self.url,
+                             notes: self.notes,
+                             noteURLS: self.noteURLS,
+                             organizer: self.organizer)
     }
 }
 

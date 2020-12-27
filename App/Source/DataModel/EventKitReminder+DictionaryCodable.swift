@@ -56,11 +56,26 @@ extension EventKitReminder {
         }
     }
 
-    func update(withSavedState state: SavedState) -> EventKitReminder {
-        return EventKitReminder(withReminder: self.EKReminder,
+    func update(withSavedState savedState: SavedState) -> EventKitReminder {
+
+        let alarm = EventKitAlarm(withSavedState: savedState.alarmState,
+                                  startDate: self.dueDate,
+                                  endDate: nil)
+
+        return EventKitReminder(withIdentifier: self.id,
+                                ekReminderID:self.ekReminderID,
                                 calendar: self.calendar,
-                                subscribed: state.isSubscribed,
-                                alarm: self.alarm)
+                                subscribed: savedState.isSubscribed,
+                                completed: self.isCompleted,
+                                alarm: alarm,
+                                startDate: self.startDate,
+                                dueDate: self.dueDate,
+                                title: self.title,
+                                location: self.location,
+                                url: self.url,
+                                notes: self.notes,
+                                noteURLS: self.noteURLS)
+
     }
     
     init(withReminder EKReminder: EKReminder,
@@ -73,9 +88,20 @@ extension EventKitReminder {
                                  startDate: startDate,
                                  endDate: endDate)
         
-        self.init(withReminder: EKReminder,
+        self.init(withIdentifier: EKReminder.uniqueID,
+                  ekReminderID: EKReminder.calendarItemIdentifier,
                   calendar: calendar,
                   subscribed: savedState.isSubscribed,
-                  alarm: alarm)
+                  completed: EKReminder.isCompleted,
+                  alarm: alarm,
+                  startDate: EKReminder.startDateComponents?.date ?? Date.distantFuture,
+                  dueDate: EKReminder.dueDateComponents?.date ?? Date.distantFuture,
+                  title: EKReminder.title,
+                  location: EKReminder.location,
+                  url: EKReminder.url,
+                  notes: EKReminder.notes,
+                  noteURLS: nil)
+
     }
+
 }

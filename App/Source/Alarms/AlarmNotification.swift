@@ -160,6 +160,10 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
             delegate.alarmNotificationDidFinish(self)
         }
     }
+    
+    func shouldStop(ifNotContainedIn dataModelIdentifiers: Set<String>) -> Bool {
+        return !dataModelIdentifiers.contains(self.itemID)
+    }
 }
 
 extension Alarmable {

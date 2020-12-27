@@ -8,8 +8,9 @@
 import Foundation
 
 protocol Alarmable: CustomStringConvertible, Loggable {
-    var alarm: EventKitAlarm { get }
     var id: String { get }
+
+    var alarm: EventKitAlarm { get }
     var title: String { get }
     var calendar: EventKitCalendar { get }
     var location: String? { get }

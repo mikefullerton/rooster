@@ -23,6 +23,14 @@ struct SoundPreference {
         self.startDelay = startDelay
     }
     
+    func sound(withIndex index: Int) -> String {
+        if index >= 0 && index < self.soundNames.count {
+            return self.soundNames[index]
+        }
+        
+        return "None"
+    }
+    
     init() {
         self.init(withSoundNames: [], playCount: 0, startDelay: 0)
     }
@@ -46,5 +54,10 @@ extension SoundPreference {
         }
         
         return outURLs
+    }
+    
+    static var availableSounds: [String] {
+        let availableURLs = Bundle.availableSoundResources
+        return availableURLs.map { $0.fileName }
     }
 }

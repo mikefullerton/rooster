@@ -28,7 +28,7 @@ class PreferencesController: ObservableObject, Loggable {
         if let existingPrefences = storage.dictionary {
             prefs = Preferences(withDictionary: existingPrefences)
         } else {
-            prefs = Preferences.defaultPreferences
+            prefs = Preferences.defaults
         }
         
         self.storage = storage
@@ -42,12 +42,7 @@ class PreferencesController: ObservableObject, Loggable {
     }
     
     func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
-        
-        let soundPreference = SoundPreference(withSoundNames: [ "Rooster Crowing", "Chickens", "Rooster Crowing" ],
-                                              playCount: SoundPreference.RepeatEndlessly,
-                                              startDelay: 3)
-        
-        return ItemPreference(soundPreference: soundPreference)
+        return ItemPreference.defaults
     }
     
     private func write() {
@@ -64,7 +59,7 @@ class PreferencesController: ObservableObject, Loggable {
         if let existingPrefences = self.storage.dictionary {
             prefs = Preferences(withDictionary: existingPrefences)
         } else {
-            prefs = Preferences.defaultPreferences
+            prefs = Preferences.defaults
         }
         
         self.preferences = prefs!

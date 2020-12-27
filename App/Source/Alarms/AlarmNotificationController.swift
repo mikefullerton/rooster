@@ -32,15 +32,18 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         if self.notifications.contains(where: { return $0.itemID == item.id }) {
             return
         }
-        
-        let notify = self.notifications.count == 0
 
-        let notification = AlarmNotification(withItemIdentifier: item.id)
-        notification.delegate = self
+        self.schedule(notification: AlarmNotification(withItemIdentifier: item.id))
+    }
+    
+    func schedule(notification: AlarmNotification) {
+
+        let notify = self.notifications.count == 0
         self.notifications.append(notification)
         
         self.logger.log("Starting notification for \(notification)")
         
+        notification.delegate = self
         notification.start()
 
         if notify {
@@ -109,7 +112,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
     
     func stopNotifications(forIdentifiersNotInSet identifiers: Set<String>) {
         self.notifications.reversed().forEach() { (notification) in
-            if !identifiers.contains(notification.itemID) {
+            if notification.shouldStop(ifNotContainedIn: identifiers) {
                 self.logger.log("Stopping notification for \(notification.description)")
                 
                 notification.stop()

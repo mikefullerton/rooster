@@ -6,24 +6,32 @@
 //
 
 import Foundation
-import EventKit
 
 struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hashable  {
-    let EKCalendar: EKCalendar
+
     let title: String
     let id: String
+    let ekCalendarID: String
     let sourceTitle: String
     let sourceIdentifier: String
     let isSubscribed: Bool
+    let cgColor: CGColor?
     
-    init(withCalendar EKCalendar: EKCalendar,
-         subscribed: Bool) {
-        self.EKCalendar = EKCalendar
-        self.isSubscribed = subscribed
-        self.title = EKCalendar.title
-        self.id = EKCalendar.uniqueID
-        self.sourceTitle = EKCalendar.source.title
-        self.sourceIdentifier = EKCalendar.source.sourceIdentifier
+    init(withIdentifier identifier: String,
+         ekCalendarID: String,
+         title: String,
+         sourceTitle: String,
+         sourceIdentifier: String,
+         isSubscribed: Bool,
+         color: CGColor?) {
+        
+        self.id = identifier
+        self.ekCalendarID = ekCalendarID
+        self.title = title
+        self.sourceTitle = sourceTitle
+        self.sourceIdentifier = sourceIdentifier
+        self.isSubscribed = isSubscribed
+        self.cgColor = color
     }
     
     var description: String {
@@ -43,7 +51,13 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
     }
 
     func calendarWithSubscriptionChange(isSubscribed: Bool) -> EventKitCalendar {
-        return EventKitCalendar(withCalendar: self.EKCalendar, subscribed: isSubscribed)
+        return EventKitCalendar(withIdentifier: self.id,
+                                ekCalendarID: self.ekCalendarID,
+                                title: self.title,
+                                sourceTitle: self.sourceTitle,
+                                sourceIdentifier: self.sourceIdentifier,
+                                isSubscribed: isSubscribed,
+                                color: self.cgColor)
     }
 }
 

@@ -6,16 +6,15 @@
 //
 
 import Foundation
-import EventKit
 
 struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     
     typealias ItemType = EventKitReminder
     
-    let EKReminder: EKReminder
     let calendar: EventKitCalendar
     
     let id: String
+    let ekReminderID: String
     let isSubscribed: Bool
     let alarm: EventKitAlarm
     let isCompleted: Bool
@@ -24,28 +23,38 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     let notes: String?
     let url: URL?
     let noteURLS: [URL]?
-    let dueDate: Date?
-    let startDate: Date?
-
-    init(withReminder EKReminder: EKReminder,
+    let dueDate: Date
+    let startDate: Date
+    
+    init(withIdentifier identifier: String,
+         ekReminderID: String,
          calendar: EventKitCalendar,
          subscribed: Bool,
-         alarm: EventKitAlarm) {
-        self.id = EKReminder.uniqueID
-        self.EKReminder = EKReminder
-        self.isSubscribed = subscribed
+         completed: Bool,
+         alarm: EventKitAlarm,
+         startDate: Date,
+         dueDate: Date,
+         title: String,
+         location: String?,
+         url: URL?,
+         notes: String?,
+         noteURLS: [URL]?) {
+
         self.calendar = calendar
+        self.id = identifier
+        self.ekReminderID = ekReminderID
+        self.isSubscribed = subscribed
         self.alarm = alarm
-        self.isCompleted = EKReminder.isCompleted
-        self.title = EKReminder.title
-        self.location = EKReminder.location
-        self.notes = EKReminder.notes
-        self.url = EKReminder.url
-        self.dueDate = EKReminder.dueDateComponents?.date
-        self.startDate = EKReminder.startDateComponents?.date
+        self.isCompleted = completed
+        self.title = title
+        self.startDate = startDate
+        self.dueDate = dueDate
+        self.location = location
+        self.url = url
+        self.notes = notes
         
-        if self.notes != nil {
-            self.noteURLS = self.notes!.detectURLs()
+        if notes != nil && noteURLS == nil {
+            self.noteURLS = notes!.detectURLs()
         } else {
             self.noteURLS = nil
         }
@@ -74,10 +83,20 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     }
     
     func itemWithUpdatedAlarm(_ alarm: EventKitAlarm) -> EventKitReminder {
-        return EventKitReminder(withReminder: self.EKReminder,
+        
+        return EventKitReminder(withIdentifier: self.id,
+                                ekReminderID: self.ekReminderID,
                                 calendar: self.calendar,
                                 subscribed: self.isSubscribed,
-                                alarm: alarm)
+                                completed: self.isCompleted,
+                                alarm: alarm,
+                                startDate: self.startDate,
+                                dueDate: self.dueDate,
+                                title: self.title,
+                                location: self.location,
+                                url: self.url,
+                                notes: self.notes,
+                                noteURLS: self.noteURLS)
     }
     
 

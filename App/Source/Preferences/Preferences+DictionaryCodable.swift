@@ -51,9 +51,5 @@ extension Preferences : DictionaryCodable {
         dictionary[CodingKeys.autoOpenLocations.rawValue] = self.autoOpenLocations
         return dictionary
     }
-    
-    static var defaultPreferences: Preferences {
-        return Preferences()
-    }
 }
 
