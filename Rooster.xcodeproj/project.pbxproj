@@ -27,6 +27,7 @@
 		B20AACF52595308300F9B50C /* ItemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACF32595308300F9B50C /* ItemPreference.swift */; };
 		B20AAD0625954B2C00F9B50C /* AudioSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AAD0525954B2C00F9B50C /* AudioSessionController.swift */; };
 		B20AAD0D259557C900F9B50C /* EventKitDataModelController+Alarms.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AAD0C259557C900F9B50C /* EventKitDataModelController+Alarms.swift */; };
+		B21DA15F259A69E7002A56C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B21DA161259A69E7002A56C8 /* Localizable.strings */; };
 		B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DE20256573630002C127 /* EventKitDataModel.swift */; };
 		B227DEFA256738C50002C127 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEF9256738C50002C127 /* Utilities.swift */; };
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -78,7 +79,7 @@
 		B286629D258EC77200D3A538 /* EKEvent+UniqueID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2866259258EC11300D3A538 /* EKEvent+UniqueID.swift */; };
 		B28662A0258EC7C200D3A538 /* EventKitAlarm+SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7098E257FE2AB00C48ED5 /* EventKitAlarm+SavedState.swift */; };
 		B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662AD258F9C7C00D3A538 /* EventKitHelper.swift */; };
-		B28662BA258FA41100D3A538 /* InstallationUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286612B258E700E00D3A538 /* InstallationUpdater.swift */; };
+		B28662BA258FA41100D3A538 /* SparkleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286612B258E700E00D3A538 /* SparkleController.swift */; };
 		B28662D3258FBB3900D3A538 /* EventKitController+ReloadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662CE258FBB0900D3A538 /* EventKitController+ReloadingState.swift */; };
 		B296550E257BD2F2008D1858 /* UserDefaults+IdentifierList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B296550D257BD2F2008D1858 /* UserDefaults+IdentifierList.swift */; };
 		B2965512257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965511257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift */; };
@@ -260,6 +261,9 @@
 		B20AACF32595308300F9B50C /* ItemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPreference.swift; sourceTree = "<group>"; };
 		B20AAD0525954B2C00F9B50C /* AudioSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionController.swift; sourceTree = "<group>"; };
 		B20AAD0C259557C900F9B50C /* EventKitDataModelController+Alarms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitDataModelController+Alarms.swift"; sourceTree = "<group>"; };
+		B21DA160259A69E7002A56C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B21DA16A259A6B67002A56C8 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = "../../../../Users/mfullerton/Library/Developer/Xcode/DerivedData/Rooster-ghpmraqzsuysyecnubbqjytppnpl/Build/Products/Debug/Reachability/Reachability.framework"; sourceTree = "<group>"; };
+		B21DA16E259A6B6F002A56C8 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reachability.framework; sourceTree = "<group>"; };
 		B227DE20256573630002C127 /* EventKitDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModel.swift; sourceTree = "<group>"; };
 		B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoosterAppKitPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RoosterAppKitPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -281,10 +285,10 @@
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B280E473259130AB00707E22 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.Internal.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		B286612B258E700E00D3A538 /* InstallationUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallationUpdater.swift; sourceTree = "<group>"; };
+		B286612B258E700E00D3A538 /* SparkleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleController.swift; sourceTree = "<group>"; };
 		B28661CB258E8B2100D3A538 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Pods/Sparkle/Sparkle.framework; sourceTree = "<group>"; };
 		B28661D1258E8B9E00D3A538 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../Other Files/Info.plist"; sourceTree = "<group>"; };
-		B28661D2258E8B9E00D3A538 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = "<group>"; };
+		B28661D2258E8B9E00D3A538 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B28661D3258E8B9F00D3A538 /* Rooster-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Rooster-Bridging-Header.h"; path = "../Other Files/Rooster-Bridging-Header.h"; sourceTree = "<group>"; };
 		B28661D4258E8B9F00D3A538 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Rooster.entitlements; path = "../Other Files/Rooster.entitlements"; sourceTree = "<group>"; };
 		B28661DF258E902F00D3A538 /* AppKitPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitPlugin.h; sourceTree = "<group>"; };
@@ -347,7 +351,6 @@
 		B2A181CF259907B700C1E7F0 /* TipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipView.swift; sourceTree = "<group>"; };
 		B2A181D3259916B400C1E7F0 /* VerticalStackedViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalStackedViewLayout.swift; sourceTree = "<group>"; };
 		B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationChoiceView.swift; sourceTree = "<group>"; };
-		B2A181E12599402C00C1E7F0 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.Internal.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
 		B2A58B36259288EA00188584 /* SoundPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPreference.swift; sourceTree = "<group>"; };
 		B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Utilities.swift"; sourceTree = "<group>"; };
 		B2A58B47259290F700188584 /* AlarmSoundGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundGroup.swift; sourceTree = "<group>"; };
@@ -473,7 +476,7 @@
 		682CBAE243B2ABE20637E7B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B2A181E12599402C00C1E7F0 /* ScriptingBridge.framework */,
+				B21DA16E259A6B6F002A56C8 /* Reachability.framework */,
 				B280E473259130AB00707E22 /* UIKit.framework */,
 				B2CA1149258FEB4500B8BF81 /* UIKitMacHelper.framework */,
 				B28661F9258E9DDB00D3A538 /* AppKit.framework */,
@@ -577,6 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				B28661F3258E962500D3A538 /* Images.xcassets */,
+				B21DA161259A69E7002A56C8 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -584,10 +588,8 @@
 		B28661F6258E962E00D3A538 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B28661DF258E902F00D3A538 /* AppKitPlugin.h */,
-				B28661E0258E902F00D3A538 /* AppKitPlugin.m */,
 				B227DEF9256738C50002C127 /* Utilities.swift */,
-				B286612B258E700E00D3A538 /* InstallationUpdater.swift */,
+				B286612B258E700E00D3A538 /* SparkleController.swift */,
 				B20955E2258CF14F00753C7B /* MenuBarController.swift */,
 				B25B65D0258CF3760006B771 /* MenuBarController+ContentView.swift */,
 				B2866204258EA45C00D3A538 /* MenuBarPopoverViewController.swift */,
@@ -675,6 +677,8 @@
 				B28662B0258F9E8500D3A538 /* AppKitUtilities.h */,
 				B28662B5258FA1FF00D3A538 /* AppKitInstallationUpdater.h */,
 				B2CA113F258FDFE700B8BF81 /* AppKitWindowController.h */,
+				B28661DF258E902F00D3A538 /* AppKitPlugin.h */,
+				B28661E0258E902F00D3A538 /* AppKitPlugin.m */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -835,6 +839,7 @@
 		B2E1511A255EED2A002672EC = {
 			isa = PBXGroup;
 			children = (
+				B21DA16A259A6B67002A56C8 /* Reachability.framework */,
 				B286626C258EC2F600D3A538 /* Shared */,
 				B2E1511F255EED2B002672EC /* App */,
 				B227DEF1256738860002C127 /* AppKitPlugin */,
@@ -1119,6 +1124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B28661F4258E962500D3A538 /* Images.xcassets in Resources */,
+				B21DA15F259A69E7002A56C8 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1180,7 +1186,7 @@
 				B2866266258EC1F500D3A538 /* DictionaryCodable.swift in Sources */,
 				B28661DC258E8FA100D3A538 /* MenuBarController.swift in Sources */,
 				B2866296258EC77200D3A538 /* EventKitCalendar.swift in Sources */,
-				B28662BA258FA41100D3A538 /* InstallationUpdater.swift in Sources */,
+				B28662BA258FA41100D3A538 /* SparkleController.swift in Sources */,
 				B29D0562259251840027C152 /* Preferences.swift in Sources */,
 				B2866270258EC37A00D3A538 /* Reloader.swift in Sources */,
 				B2CA1146258FE95B00B8BF81 /* WindowController.swift in Sources */,
@@ -1375,6 +1381,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B21DA161259A69E7002A56C8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B21DA160259A69E7002A56C8 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

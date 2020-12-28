@@ -9,10 +9,20 @@ import Foundation
 
 
 extension Date {
-    
+
+    func isEquaToOrAfterDate(_ date: Date) -> Bool {
+        let isAfter = self.compare(date) != .orderedAscending
+        return isAfter
+    }
+
     func isAfterDate(_ date: Date) -> Bool {
         let isAfter = self.compare(date) == .orderedDescending
         return isAfter
+    }
+    
+    func isEqualToOrBeforeDate(_ date: Date) -> Bool {
+        let isBefore = self.compare(date) != .orderedDescending
+        return isBefore
     }
     
     func isBeforeDate(_ date: Date) -> Bool {

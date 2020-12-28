@@ -17,7 +17,7 @@
         _menuBarPopover = [[MenuBarController alloc] init];
         _eventKitHelper = [[EventKitHelper alloc] init];
         _utilities = [[Utilities alloc] init];
-        _installationUpdater = [[InstallationUpdater alloc] init];
+        _installationUpdater = [[SparkleController alloc] init];
         _windowController = [[WindowController alloc] init];
     }
     return self;
