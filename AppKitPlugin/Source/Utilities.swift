@@ -9,8 +9,6 @@ import Foundation
 import AppKit
 
 @objc class Utilities : NSObject, AppKitUtilities, Loggable {
-    
-            
     private var userAttentionRequest: Int = 0
     
     func bringAppToFront() {
@@ -96,6 +94,14 @@ import AppKit
             NSApp.cancelUserAttentionRequest(self.userAttentionRequest)
             self.userAttentionRequest = 0
         }
+    }
+    
+    func bounceAppIconOnce() {
+        self.stopBouncingAppIcon()
+        self.userAttentionRequest = NSApp.requestUserAttention(.informationalRequest)
+//        DispatchQueue.main.async {
+//            self.stopBouncingAppIcon()
+//        }
     }
     
     func openNotificationSettings() {

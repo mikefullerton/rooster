@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  Rooster
+
+  Created by Mike Fullerton on 12/29/20.
+  
+*/
+
+// prefs
+
+"NOTIFICATIONS" = "Notifications";
+
+"AUTO_OPEN_LOCATIONS" = "Automatically open location URLs";
+"SAFARI_TIP" = "Enable Safari Webex plugin to bypass Safari prompts";
+"BOUNCE_ICON" = "Bounce app icon in dock";
+"USE_SYSTEM_NOTIFICATIONS" = "Use macOS notifications";
+
+"SOUNDS" = "Sounds";

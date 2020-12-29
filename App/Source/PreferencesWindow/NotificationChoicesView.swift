@@ -12,7 +12,7 @@ class NotificationChoicesView : GroupBoxView {
     
     init(frame: CGRect) {
         super.init(frame: frame,
-                  title: "Notifications" )
+                   title: "NOTIFICATIONS".localized )
         
         self.layout.addSubview(self.automaticallyOpenLocationURLs)
         self.layout.addSubview(self.bounceIconInDock)

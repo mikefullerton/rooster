@@ -42,13 +42,10 @@ class NotificationChoiceView : UIView {
         return view
     }()
     
-    lazy var layoutSpec = ViewLayoutSpec(insets: UIEdgeInsets.zero,
-                                         verticalViewSpacing: 0,
-                                         width:400)
-    
-    lazy var layout: VerticalStackedViewLayout = {
-        return VerticalStackedViewLayout(hostView: self,
-                                         layoutSpec: self.layoutSpec)
+    lazy var layout: ViewLayout = {
+        return VerticalViewLayout(hostView: self,
+                                  insets: UIEdgeInsets.zero,
+                                  spacing: UIOffset.zero)
         
     }()
     
@@ -56,7 +53,7 @@ class NotificationChoiceView : UIView {
 
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var outSize = size
-        outSize.height = self.layout.layoutSize.height
+        outSize.height = self.layout.size.height
         
         print("Layout Size: \(outSize) for \(self)")
         print("Views: \(self.subviews)")
@@ -69,7 +66,7 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
     
     init(frame: CGRect) {
         super.init(frame: frame,
-                   title: "Automatically open location URLs")
+                   title: "AUTO_OPEN_LOCATIONS".localized)
         
         self.layout.addSubview(self.locationTipView)
     }
@@ -80,15 +77,9 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
 
-        let prefs = PreferencesController.instance.preferences
-
-        let newPrefs = Preferences(withSounds: prefs.sounds,
-                                   useSystemNotifications: prefs.useSystemNotifications,
-                                   bounceIconInDock: prefs.bounceIconInDock,
-                                   autoOpenLocations: sender.isOn)
-
-        
-        PreferencesController.instance.preferences = newPrefs
+        var prefs = PreferencesController.instance.preferences
+        prefs.autoOpenLocations = sender.isOn
+        PreferencesController.instance.preferences = prefs
     }
     
     override var value: Bool {
@@ -98,8 +89,9 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
     lazy var locationTipView : TipView = {
         
         var locationTip = Tip(image: UIImage(systemName: "info.circle.fill"),
-                                   title: "Tip: enable Safari Webex plugin to bypass Safari prompts",
-                                   action: nil)
+                              imageTintColor: UIColor.systemBlue,
+                              title: "SAFARI_TIP".localized,
+                              action: nil)
         
         let view = TipView(frame: CGRect.zero, tip: locationTip)
         
@@ -141,7 +133,7 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
 class BounceInDockChoiceView : NotificationChoiceView {
     init(frame: CGRect) {
         super.init(frame: frame,
-                   title: "Bouce app icon in dock")
+                   title: "BOUNCE_ICON".localized)
     }
 
     required init?(coder: NSCoder) {
@@ -150,15 +142,13 @@ class BounceInDockChoiceView : NotificationChoiceView {
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
         
-        let prefs = PreferencesController.instance.preferences
-
-        let newPrefs = Preferences(withSounds: prefs.sounds,
-                                   useSystemNotifications: prefs.useSystemNotifications,
-                                   bounceIconInDock: sender.isOn,
-                                   autoOpenLocations: prefs.autoOpenLocations)
-
+        var prefs = PreferencesController.instance.preferences
+        prefs.bounceIconInDock = sender.isOn
+        PreferencesController.instance.preferences = prefs
         
-        PreferencesController.instance.preferences = newPrefs
+        if sender.isOn {
+            AppKitPluginController.instance.utilities.bounceAppIconOnce()
+        }
     }
     
     override var value: Bool {
@@ -171,7 +161,7 @@ class UseSystemNotificationsChoiceView : NotificationChoiceView {
 
     init(frame: CGRect) {
         super.init(frame: frame,
-                   title: "Use System Notifications")
+                   title: "USE_SYSTEM_NOTIFICATIONS".localized)
     
         self.layout.addSubview(self.button)
     }
@@ -211,14 +201,9 @@ class UseSystemNotificationsChoiceView : NotificationChoiceView {
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
         
-        let prefs = PreferencesController.instance.preferences
-
-        let newPrefs = Preferences(withSounds: prefs.sounds,
-                                   useSystemNotifications: sender.isOn,
-                                   bounceIconInDock: prefs.bounceIconInDock,
-                                   autoOpenLocations: prefs.autoOpenLocations)
-
-        PreferencesController.instance.preferences = newPrefs
+        var prefs = PreferencesController.instance.preferences
+        prefs.useSystemNotifications = sender.isOn
+        PreferencesController.instance.preferences = prefs
     }
 
     override var value: Bool {

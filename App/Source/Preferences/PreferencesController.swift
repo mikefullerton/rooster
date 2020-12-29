@@ -28,7 +28,7 @@ class PreferencesController: ObservableObject, Loggable {
         if let existingPrefences = storage.dictionary {
             prefs = Preferences(withDictionary: existingPrefences)
         } else {
-            prefs = Preferences.defaults
+            prefs = Preferences()
         }
         
         self.storage = storage
@@ -42,7 +42,7 @@ class PreferencesController: ObservableObject, Loggable {
     }
     
     func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
-        return ItemPreference.defaults
+        return ItemPreference()
     }
     
     private func write() {
@@ -59,7 +59,7 @@ class PreferencesController: ObservableObject, Loggable {
         if let existingPrefences = self.storage.dictionary {
             prefs = Preferences(withDictionary: existingPrefences)
         } else {
-            prefs = Preferences.defaults
+            prefs = Preferences()
         }
         
         self.preferences = prefs!

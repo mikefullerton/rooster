@@ -77,13 +77,13 @@ class GroupBoxView : UIView {
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var outSize = size
-        outSize.height = self.layout.layoutSize.height + self.insets.top + self.insets.bottom
+        outSize.height = self.layout.size.height + self.insets.top + self.insets.bottom
         return outSize
     }
     
-    lazy var layout: VerticalStackedViewLayout = {
-        return VerticalStackedViewLayout(hostView: self.outLineView,
-                                         layoutSpec: ViewLayoutSpec.default)
-        
+    lazy var layout: ViewLayout = {
+        return VerticalViewLayout(hostView: self.outLineView,
+                                  insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20),
+                                  spacing: UIOffset(horizontal: 10, vertical: 10))
     }()
 }

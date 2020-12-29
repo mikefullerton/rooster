@@ -57,7 +57,6 @@ import Sparkle
     }
 
     var isTimeForUpdate: Bool {
-        return true
         return self.nextCheckDate.isEqualToOrBeforeDate(Date())
     }
     

@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)bringAppToFront;
 - (void)bringAnotherAppToFront:(NSString*)bundleIdentier;
 
+- (void)bounceAppIconOnce;
 - (void)startBouncingAppIcon;
 - (void)stopBouncingAppIcon;
 

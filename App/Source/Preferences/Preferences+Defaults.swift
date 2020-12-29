@@ -8,26 +8,27 @@
 import Foundation
 
 extension SoundPreference {
-    
-    static var defaults: SoundPreference {
-        return SoundPreference(withSoundNames: [ "Rooster Crowing", "Chickens", "Rooster Crowing" ],
-                                              playCount: SoundPreference.RepeatEndlessly,
-                                              startDelay: 3)
+    init() {
+        self.init(sound1: Sound(name: "Rooster Crowing", enabled: true, random: false),
+                  sound2: Sound(name: "Chickens", enabled: true, random: false),
+                  sound3: Sound(name: "Rooster Crowing", enabled: true, random: false),
+                  playCount: SoundPreference.RepeatEndlessly,
+                  startDelay: 3)
     }
 }
 
 extension Preferences {
-    static var defaults: Preferences {
-        return Preferences(withSounds: SoundPreference.defaults,
-                           useSystemNotifications: true,
-                           bounceIconInDock: true,
-                           autoOpenLocations: true)
+    init() {
+        self.init(withSounds: SoundPreference(),
+                  useSystemNotifications: true,
+                  systemNotificationDelay: 7,
+                  bounceIconInDock: true,
+                  autoOpenLocations: true)
     }
 }
 
 extension ItemPreference {
-    
-    static var defaults: ItemPreference {
-        return ItemPreference(soundPreference: SoundPreference.defaults)
+    init() {
+        self.soundPreference = SoundPreference()
     }
 }

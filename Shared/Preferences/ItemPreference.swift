@@ -8,5 +8,5 @@
 import Foundation
 
 struct ItemPreference {
-    let soundPreference: SoundPreference
+    var soundPreference: SoundPreference
 }

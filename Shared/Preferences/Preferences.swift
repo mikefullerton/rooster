@@ -9,13 +9,15 @@ import Foundation
 
 struct Preferences : CustomStringConvertible {
 
-    let sounds: SoundPreference
-    let useSystemNotifications: Bool
-    let bounceIconInDock: Bool
-    let autoOpenLocations: Bool
+    var sounds: SoundPreference
+    var useSystemNotifications: Bool
+    var systemNotificationDelay: TimeInterval
+    var bounceIconInDock: Bool
+    var autoOpenLocations: Bool
     
     init(withSounds sounds: SoundPreference,
          useSystemNotifications: Bool,
+         systemNotificationDelay: TimeInterval,
          bounceIconInDock: Bool,
          autoOpenLocations: Bool) {
         
@@ -23,13 +25,7 @@ struct Preferences : CustomStringConvertible {
         self.useSystemNotifications = useSystemNotifications
         self.bounceIconInDock = bounceIconInDock
         self.autoOpenLocations = autoOpenLocations
-    }
-    
-    init() {
-        self.init(withSounds: SoundPreference(),
-                  useSystemNotifications: true,
-                  bounceIconInDock: true,
-                  autoOpenLocations: true)
+        self.systemNotificationDelay = systemNotificationDelay
     }
     
     var description: String {

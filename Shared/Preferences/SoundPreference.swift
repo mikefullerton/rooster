@@ -7,33 +7,67 @@
 
 import Foundation
 
-struct SoundPreference {
+struct SoundPreference: Sequence {
+    
+    typealias Element = Sound
+    typealias Iterator = Array<Sound>.Iterator
+    
+    struct Sound {
+        var name: String
+        var enabled: Bool
+        var random: Bool
+    }
     
     static let RepeatEndlessly = AlarmSoundBehavior.RepeatEndlessly
+
+    enum SoundIndex : Int {
+        case sound1
+        case sound2
+        case sound3
+    }
+
+    private(set) var sounds: [Sound]
     
-    let soundNames: [String]
-    let playCount: Int
-    let startDelay: Int
+    var playCount: Int
+    var startDelay: Int
     
-    init(withSoundNames soundNames: [String],
+    init(sound1: Sound,
+         sound2: Sound,
+         sound3: Sound,
          playCount: Int,
          startDelay: Int) {
-        self.soundNames = soundNames
+        
+        self.sounds = [
+            sound1,
+            sound2,
+            sound3
+        ]
+        
         self.playCount = playCount
         self.startDelay = startDelay
     }
-    
-    func sound(withIndex index: Int) -> String {
-        if index >= 0 && index < self.soundNames.count {
-            return self.soundNames[index]
+
+    subscript(index: SoundIndex) -> Sound {
+        get {
+            return self.sounds[ index.rawValue ]
         }
-        
-        return "None"
+        set(newValue) {
+            self.sounds[ index.rawValue ] = newValue
+        }
     }
     
-    init() {
-        self.init(withSoundNames: [], playCount: 0, startDelay: 0)
+    func makeIterator() -> Self.Iterator {
+        return self.sounds.makeIterator()
     }
+    
+    var underestimatedCount: Int {
+        return self.sounds.underestimatedCount
+    }
+
+    func withContiguousStorageIfAvailable<R>(_ body: (UnsafeBufferPointer<Self.Element>) throws -> R) rethrows -> R? {
+        return try self.sounds.withContiguousStorageIfAvailable(body)
+    }
+
 }
 
 extension SoundPreference {
@@ -44,10 +78,10 @@ extension SoundPreference {
         
         let availableURLs = Bundle.availableSoundResources
         
-        for name in self.soundNames {
+        for sound in self {
             for url in availableURLs {
                 let fileName = url.fileName
-                if fileName == name {
+                if fileName == sound.name {
                     outURLs.append(url)
                 }
             }
@@ -59,5 +93,9 @@ extension SoundPreference {
     static var availableSounds: [String] {
         let availableURLs = Bundle.availableSoundResources
         return availableURLs.map { $0.fileName }
+    }
+    
+    static var availableSoundURLs: [URL] {
+        return Bundle.availableSoundResources
     }
 }

@@ -14,32 +14,35 @@ extension Preferences : DictionaryCodable {
         case useSystemNotifications = "useSystemNotifications"
         case bounceIconInDock = "bounceIconInDock"
         case autoOpenLocations = "autoOpenLocations"
+        case systemNotificationDelay = "systemNotificationDelay"
     }
     
     init?(withDictionary dictionary: [AnyHashable : Any]) {
         
+        self.init()
+        
         if let soundsDictionary = dictionary[CodingKeys.sounds.rawValue] as? [AnyHashable: Any] {
             self.sounds = SoundPreference(withDictionary: soundsDictionary) ?? SoundPreference()
-        } else {
-            self.sounds = SoundPreference()
         }
         
         if let useSystemNotifications = dictionary[CodingKeys.useSystemNotifications.rawValue] as? Bool {
             self.useSystemNotifications = useSystemNotifications
-        } else {
-            self.useSystemNotifications = false
         }
 
         if let bounceIconInDock = dictionary[CodingKeys.bounceIconInDock.rawValue] as? Bool {
             self.bounceIconInDock = bounceIconInDock
-        } else {
-            self.bounceIconInDock = false
         }
         
         if let autoOpenLocations = dictionary[CodingKeys.autoOpenLocations.rawValue] as? Bool {
             self.autoOpenLocations = autoOpenLocations
-        } else {
-            self.autoOpenLocations = false
+        }
+        
+        if let autoOpenLocations = dictionary[CodingKeys.autoOpenLocations.rawValue] as? Bool {
+            self.autoOpenLocations = autoOpenLocations
+        }
+        
+        if let systemNotificationDelay = dictionary[CodingKeys.systemNotificationDelay.rawValue] as? TimeInterval {
+            self.systemNotificationDelay = systemNotificationDelay
         }
     }
 
@@ -49,6 +52,7 @@ extension Preferences : DictionaryCodable {
         dictionary[CodingKeys.useSystemNotifications.rawValue] = self.useSystemNotifications
         dictionary[CodingKeys.bounceIconInDock.rawValue] = self.bounceIconInDock
         dictionary[CodingKeys.autoOpenLocations.rawValue] = self.autoOpenLocations
+        dictionary[CodingKeys.systemNotificationDelay.rawValue] = self.systemNotificationDelay
         return dictionary
     }
 }

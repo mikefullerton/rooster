@@ -8,11 +8,21 @@
 import Foundation
 import UIKit
 
-class SoundChoicesView : GroupBoxView {
+
+protocol SoundChoicesViewDelegate : AnyObject {
+    func soundChoicesView(_ view: SoundChoicesView,
+                          presentSoundChooser soundChooser: SoundChooserViewController,
+                          fromView: UIView)
+}
+
+class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate {
     
-    init(frame: CGRect) {
+    weak var delegate: SoundChoicesViewDelegate?
+
+    init(frame: CGRect, delegate: SoundChoicesViewDelegate) {
+        self.delegate = delegate
         super.init(frame: frame,
-                  title: "Sounds" )
+                   title: "SOUNDS".localized)
         
         self.layout.addSubview(self.firstSoundChoice)
         self.layout.addSubview(self.secondSoundChoice)
@@ -25,23 +35,35 @@ class SoundChoicesView : GroupBoxView {
     
     lazy var firstSoundChoice: UIView = {
         let view = SoundChoiceView(frame: self.bounds,
-                                   soundPreferenceIndex: 0)
+                                   soundPreferenceIndex: .sound1,
+                                   delegate: self)
         
         return view
     }()
 
     lazy var secondSoundChoice: UIView = {
         let view = SoundChoiceView(frame: self.bounds,
-                                   soundPreferenceIndex: 1)
+                                   soundPreferenceIndex: .sound2,
+                                   delegate: self)
 
         return view
     }()
 
     lazy var thirdSoundChoice: UIView = {
         let view = SoundChoiceView(frame: self.bounds,
-                                   soundPreferenceIndex: 2)
+                                   soundPreferenceIndex: .sound3,
+                                   delegate: self)
 
         
         return view
     }()
+    
+    func soundChoiceViewChooser(_ view: SoundChoiceView, buttonPressed button: UIButton) {
+        if let delegate = self.delegate {
+            delegate.soundChoicesView(self,
+                                      presentSoundChooser: SoundChooserViewController(withSoundPreferenceIndex: view.index),
+                                      fromView: button)
+        }
+    }
+
 }
