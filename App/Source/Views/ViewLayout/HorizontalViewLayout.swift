@@ -10,16 +10,24 @@ import UIKit
 
 struct HorizontalViewLayout: ViewLayout {
     
+    enum Alignment {
+        case left
+        case right
+    }
+    
     let hostView: UIView
     let insets:UIEdgeInsets
     let spacing:UIOffset
+    let alignment:Alignment
 
     init(hostView view: UIView,
          insets: UIEdgeInsets,
-         spacing: UIOffset) {
+         spacing: UIOffset,
+         alignment: Alignment = .left) {
         self.hostView = view
         self.insets = insets
         self.spacing = spacing
+        self.alignment = alignment
     }
     
     private func addLeadingSubview(_ view: UIView) {
@@ -32,9 +40,19 @@ struct HorizontalViewLayout: ViewLayout {
             view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
             view.heightAnchor.constraint(equalToConstant: size.height),
             view.widthAnchor.constraint(equalToConstant: size.width),
-            
-            view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left)
         ])
+        
+        switch(self.alignment) {
+        case .left:
+            NSLayoutConstraint.activate([
+                view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left)
+            ])
+        
+        case .right:
+            NSLayoutConstraint.activate([
+                view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right)
+            ])
+        }
     }
     
     private func addSubview(_ view: UIView, nextTo: UIView) {
@@ -48,8 +66,19 @@ struct HorizontalViewLayout: ViewLayout {
             view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
             view.heightAnchor.constraint(equalToConstant: size.height),
             view.widthAnchor.constraint(equalToConstant: size.width),
-            view.leadingAnchor.constraint(equalTo: nextTo.leadingAnchor, constant: self.spacing.horizontal)
         ])
+        
+        switch(self.alignment) {
+        case .left:
+            NSLayoutConstraint.activate([
+                view.leadingAnchor.constraint(equalTo: nextTo.leadingAnchor, constant: self.spacing.horizontal)
+            ])
+        
+        case .right:
+            NSLayoutConstraint.activate([
+                view.trailingAnchor.constraint(equalTo: nextTo.leadingAnchor, constant: -self.spacing.horizontal)
+            ])
+        }
     }
     
     func addSubview(_ view: UIView) {

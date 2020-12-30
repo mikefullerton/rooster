@@ -7,6 +7,23 @@
 
 import Foundation
 import AVFoundation
+import UIKit
+
+extension URL {
+    
+    var AVFileType: AVFileType? {
+        if self.absoluteString.hasSuffix("mp3") {
+            return .mp3
+        }
+        
+        if self.absoluteString.hasSuffix("wav") {
+            return .wav
+        }
+        
+        return nil
+    }
+    
+}
 
 class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     weak var delegate: AlarmSoundDelegate?
@@ -23,8 +40,14 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     private(set) var isPlaying: Bool
     
     init?(withURL url: URL) {
+        
+        guard let avFileType = url.AVFileType else {
+            AVAlarmSound.logger.error("Unexpected file type for url: \(url)")
+            return nil
+        }
+        
         do {
-            self.player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            self.player = try AVAudioPlayer(contentsOf: url, fileTypeHint: avFileType.rawValue)
         } catch let error {
             AVAlarmSound.logger.error("Failed to create sound for url: \(url), with error: \(error.localizedDescription)")
             return nil
@@ -37,10 +60,21 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         self.isPlaying = false
         super.init()
         self.player.delegate = self
+        self.updateVolume()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
     }
     
     deinit {
         self.player.stop()
+    }
+    
+    func updateVolume() {
+        self.player.setVolume(PreferencesController.instance.preferences.sounds.volume, fadeDuration: 0)
+    }
+    
+    @objc func preferencesDidChange(_ sender: Notification) {
+        self.updateVolume()
     }
 
     var volume: Float {

@@ -14,7 +14,8 @@ extension SoundPreference {
                       sound2: Sound.zero,
                       sound3: Sound.zero,
                       playCount: SoundPreference.RepeatEndlessly,
-                      startDelay: 3)
+                      startDelay: 3,
+                      volume: 1.0)
             return
         }
         
@@ -22,7 +23,8 @@ extension SoundPreference {
                   sound2: Sound.zero,
                   sound3: Sound.zero,
                   playCount: SoundPreference.RepeatEndlessly,
-                  startDelay: 3)
+                  startDelay: 3,
+                  volume: 1.0)
     }
 }
 

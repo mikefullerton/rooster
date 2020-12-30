@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 protocol SoundChoiceViewDelegate : AnyObject {
-    func soundChoiceViewChooser(_ view: SoundChoiceView, buttonPressed button: UIButton)
+    func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: UIButton)
 }
 
-class SoundChoiceView : UIView {
+class SingleSoundChoiceView : UIView {
     
     weak var delegate: SoundChoiceViewDelegate?
 
@@ -28,12 +28,18 @@ class SoundChoiceView : UIView {
         super.init(frame: frame)
         
         self.layout.addSubview(self.checkbox)
-        self.layout.addSubview(self.playButton)
         self.layout.addSubview(self.pencilButton)
+        self.layout.addSubview(self.playButton)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
+
         self.refresh()
     }
-    
+
+    @objc func preferencesDidChange(_ sender: Notification) {
+        self.refresh()
+    }
+
     var sound: SoundPreference.Sound {
         get {
             return PreferencesController.instance.preferences.sounds[self.index]
@@ -101,16 +107,26 @@ class SoundChoiceView : UIView {
 
     lazy var layout: ViewLayout = {
         return HorizontallyOpposedLayout(hostView: self,
-                                         insets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0),
+                                         insets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 10),
                                          spacing: UIOffset(horizontal: 4, vertical: 0))
     }()
 
     func refresh() {
         
-        if let newURL = self.sound.url {
+        if let newURL = self.sound.url,
+           newURL.fileName.count > 0 {
+            
             self.checkbox.title = newURL.fileName
+            self.checkbox.isOn = self.sound.enabled
             self.playButton.url = newURL
         
+            self.setEnabledStates()
+        } else {
+            
+            self.checkbox.title = "None"
+            self.checkbox.isOn = false
+            self.playButton.url = nil
+            
             self.setEnabledStates()
         }
     }

@@ -49,7 +49,6 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
             self.setImage(self.playImage, for: .normal)
             self.isEnabled = false
         }
-        
     }
     
     @objc func playSound(_ sender: UIButton) {

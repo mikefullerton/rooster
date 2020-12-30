@@ -86,6 +86,16 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
             self.autoSaveNames.insert(key)
         }
     }
+    
+    func bringWindow(toFront window: Any) {
+        if let nsWindow = self.helper.hostWindow(forUIWindow: window) {
+            nsWindow.makeKeyAndOrderFront(self)
+        }
+            
+    }
+    
+    
+    
 }
 
 extension NSWindow {

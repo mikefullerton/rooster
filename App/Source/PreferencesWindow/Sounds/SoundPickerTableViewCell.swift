@@ -57,7 +57,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell, AlarmSoundDe
     }
     
     static var cellHeight: CGFloat {
-        return 40.0
+        return 32.0
     }
     
     let buttonHeight:CGFloat = 20
@@ -65,7 +65,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell, AlarmSoundDe
     @objc func wasTapped(_ sender: UITapGestureRecognizer) {
         let touch = sender.location(in: self.contentView)
 
-        if !self.titleView.frame.contains(touch) && !self.checkMark.frame.contains(touch) {
+        if !self.checkMark.frame.contains(touch) && !self.titleView.frame.contains(touch) {
             return
         }
         

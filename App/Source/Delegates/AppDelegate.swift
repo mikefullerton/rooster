@@ -59,11 +59,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         configuration.delegateClass = MainSceneDelegate.self
         return configuration
     }
+    
+//    func applicationWillTerminate(_ application: UIApplication) {
+//
+//        let windows = UIApplication.shared.windows
+//
+//        var session: UISceneSession? = nil
+//
+//        for window in windows {
+//            if let scene = window.windowScene,
+//               scene.title == "Preferences" {
+//
+//                session = scene.session
+//                break
+//            }
+//        }
+//
+//        if session != nil {
+//            let options =  UIWindowSceneDestructionRequestOptions()
+//            options.windowDismissalAnimation = .standard
+//
+//            UIApplication.shared.requestSceneSessionDestruction(session!,
+//                                                                options: options) { error in
+//
+//            }
+//        }
+//
+//    }
 
     
     func showPreferences () {
-        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
-        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+        
+//        for window in UIApplication.shared.windows {
+//            if window.windowScene?.title == "Preferences" {
+//
+//                // Catalyst is extremely lame with window management
+//                AppKitPluginController.instance.windowController.bringWindow(toFront: window)
+//
+//                return
+//            }
+//        }
+//
+//        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
+//        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
     }
 
     #if targetEnvironment(macCatalyst)

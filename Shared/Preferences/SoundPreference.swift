@@ -48,12 +48,14 @@ struct SoundPreference: Sequence {
     
     var playCount: Int
     var startDelay: Int
+    var volume:Float
     
     init(sound1: Sound,
          sound2: Sound,
          sound3: Sound,
          playCount: Int,
-         startDelay: Int) {
+         startDelay: Int,
+         volume: Float) {
         
         self.sounds = [
             sound1,
@@ -63,6 +65,7 @@ struct SoundPreference: Sequence {
         
         self.playCount = playCount
         self.startDelay = startDelay
+        self.volume = volume
     }
 
     subscript(index: SoundIndex) -> Sound {

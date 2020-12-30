@@ -238,9 +238,22 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
             })
         } else {
             let viewController = PreferencesViewController()
-            viewController.preferredContentSize = viewController.calculatedSize
-            self.showPopover(for: viewController,
-                             fromView: self.preferencesButtonSourceView)
+            
+            viewController.modalPresentationStyle = .pageSheet
+            
+
+//            if let presentationController = viewController.popoverPresentationController {
+////                presentationController.permittedArrowDirections = .up
+////                presentationController.sourceView = view
+//                presentationController.canOverlapSourceViewRect = true
+//            }
+
+            self.present(viewController, animated: true) {
+            }
+            
+//            viewController.preferredContentSize = viewController.calculatedSize
+//            self.showPopover(for: viewController,
+//                             fromView: self.preferencesButtonSourceView)
         }
     }
 

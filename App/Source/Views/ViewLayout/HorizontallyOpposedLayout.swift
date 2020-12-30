@@ -14,36 +14,55 @@ struct HorizontallyOpposedLayout: ViewLayout {
     let insets:UIEdgeInsets
     let spacing:UIOffset
     
-    func addSubview(_ view: UIView) {
+    private func updateLayout() {
         
-        let startViewCount = self.hostView.subviews.count
+        let subviews = self.hostView.subviews
         
-        self.hostView.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        if subviews.count < 2 {
+            return
+        }
         
-        let size = view.sizeThatFits(self.hostView.frame.size)
+        for view in subviews {
+            NSLayoutConstraint.deactivate(view.constraints)
+        }
         
-        NSLayoutConstraint.activate([
-            view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
-            view.heightAnchor.constraint(equalToConstant: size.height),
-            view.widthAnchor.constraint(equalToConstant: size.width),
-        ])
+        var lastView: UIView? = nil
         
-        if startViewCount == 0 {
-            NSLayoutConstraint.activate([
-                view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left)
-            ])
-        } else if (startViewCount == 1) {
-            NSLayoutConstraint.activate([
-                view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right)
-            ])
-        } else {
-            let lastView = self.hostView.subviews[self.hostView.subviews.count - 2]
+        for (index, view) in subviews.reversed().enumerated() {
+            let size = view.sizeThatFits(self.hostView.frame.size)
 
             NSLayoutConstraint.activate([
-                view.trailingAnchor.constraint(equalTo: lastView.leadingAnchor, constant: -self.spacing.horizontal)
+                view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
+                view.heightAnchor.constraint(equalToConstant: size.height),
             ])
+
+            if index == 0 {
+                NSLayoutConstraint.activate([
+                    view.widthAnchor.constraint(equalToConstant: size.width),
+                    view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right)
+                ])
+            } else if let nextToView = lastView {
+                if index == subviews.count - 1 {
+                    NSLayoutConstraint.activate([
+                        view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left),
+                        view.trailingAnchor.constraint(equalTo: nextToView.leadingAnchor, constant: -self.spacing.horizontal)
+                    ])
+                } else {
+                    NSLayoutConstraint.activate([
+                        view.widthAnchor.constraint(equalToConstant: size.width),
+                        view.trailingAnchor.constraint(equalTo: nextToView.leadingAnchor, constant: -self.spacing.horizontal)
+                    ])
+                }
+            }
+            
+            lastView = view
         }
+    }
+    
+    func addSubview(_ view: UIView) {
+        self.hostView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.updateLayout()
     }
 }
 

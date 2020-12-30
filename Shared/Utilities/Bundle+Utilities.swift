@@ -26,7 +26,10 @@ extension Bundle {
                     outUrls.append(soundsPath.appendingPathComponent(file))
                 }
                 
-                return outUrls
+                return outUrls.sorted { lhs, rhs in
+                    lhs.fileName.localizedCaseInsensitiveCompare(rhs.fileName) == ComparisonResult.orderedAscending
+                }
+                
             } catch {
             }
         }

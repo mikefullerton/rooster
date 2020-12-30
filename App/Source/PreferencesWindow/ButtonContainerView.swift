@@ -67,6 +67,14 @@ class ButtonsContainerView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func resetButtonPressed(_ sender: UIButton) {
+        PreferencesController.instance.preferences = Preferences()
+    }
+
+    @objc func tryItButtonPressed(_ sender: UIButton) {
+        
+    }
+
     lazy var resetPrefsButton: UIButton = {
         
         // "arrow.triangle.2.circlepath"
@@ -76,6 +84,8 @@ class ButtonsContainerView : UIView {
         
         let view = UIButton.createImageButton(withImage: image)
         
+        view.addTarget(self, action: #selector(resetButtonPressed(_:)), for: .touchUpInside)
+
         
         return view
         

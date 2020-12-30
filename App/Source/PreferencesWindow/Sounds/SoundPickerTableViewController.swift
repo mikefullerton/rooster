@@ -20,8 +20,8 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     
     init(withSoundIndex soundIndex: SoundPreference.SoundIndex) {
         self.soundIndex = soundIndex
-        
         super.init(nibName: nil, bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -31,12 +31,13 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     override func reloadViewModel() -> SoundPickerTableViewModel? {
         return SoundPickerTableViewModel(withURLs: SoundPreference.availableSoundURLs, soundIndex: self.soundIndex)
     }
+
+    @objc func preferencesDidChange(_ sender: Notification) {
+        self.tableView.reloadData()
+    }
     
     func soundPickerTableViewCell(_ soundPicker: SoundPickerTableViewCell, didSelectSound soundURL: URL) {
-        
-        self.tableView.reloadData()
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(330)) {
             if let delegate = self.soundPickerDelegate {
                 delegate.soundPickerTableViewController(self, didSelectSound: soundURL)
             }
@@ -48,7 +49,5 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
             soundCell.soundPickerDelegate = self
         }
     }
-    
-//    - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-    
+
 }

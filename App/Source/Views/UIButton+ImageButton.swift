@@ -26,3 +26,30 @@ extension UIButton {
         return view
     }
 }
+
+class CustomButton : UIButton {
+    
+    var preferredSize:CGSize? = nil {
+        didSet {
+            if let preferredSize = self.preferredSize {
+                var frame = self.frame
+                frame.size = preferredSize
+                self.frame = frame
+            }
+        }
+    }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return self.preferredSize ?? super.sizeThatFits(size)
+    }
+    
+    override func sizeToFit() {
+        if let preferredSize = self.preferredSize {
+            var frame = self.frame
+            frame.size = preferredSize
+            self.frame = frame
+        } else {
+            super.sizeToFit()
+        }
+    }
+}
