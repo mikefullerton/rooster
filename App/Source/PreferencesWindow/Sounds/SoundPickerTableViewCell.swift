@@ -40,6 +40,8 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell, AlarmSoundDe
     
     func setURL(_ url: URL, soundIndex: SoundPreference.SoundIndex) {
         self.url = url
+        self.playButton.url = url
+        self.playButton.isEnabled = true
         
         if let fileName = self.url?.fileName {
             self.titleView.text = fileName
@@ -69,7 +71,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell, AlarmSoundDe
         
         if let url = self.url {
             var soundPref = self.soundPref
-            soundPref.name = url.fileName
+            soundPref.url = url
             self.soundPref = soundPref
             
             if let delegate = self.soundPickerDelegate {
@@ -104,34 +106,13 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell, AlarmSoundDe
         return titleView
     }()
     
-    @objc func playSound(_ sender: UIButton) {
-//        print("Play sound: \(self.sound)")
+    lazy var playButton: SoundPlayerButton = {
         
-        if let sound = self.sound {
-            if sound.isPlaying {
-                sound.stop()
-            } else {
-                sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
-            }
-        } else if let url = self.url,
-           let sound = AVAlarmSound(withURL: url) {
-            self.sound = sound
-            sound.delegate = self
-            
-            sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
-        }
-    }
-    
-    lazy var playButton: UIView = {
-        
-        let image = UIImage(systemName: "speaker.wave.2")?.withTintColor(UIColor.label)
-        
-        let button = UIButton.createImageButton(withImage: image)
+        let button = SoundPlayerButton()
 
         self.contentView.addSubview(button)
 
         button.frame = CGRect(x: 0, y: 0, width: self.buttonHeight, height: self.buttonHeight)
-        button.addTarget(self, action: #selector(playSound(_:)), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         

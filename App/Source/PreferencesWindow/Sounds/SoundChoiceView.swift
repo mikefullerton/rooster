@@ -31,7 +31,7 @@ class SoundChoiceView : UIView {
         self.layout.addSubview(self.playButton)
         self.layout.addSubview(self.pencilButton)
         
-        self.setEnabledStates()
+        self.refresh()
     }
     
     var sound: SoundPreference.Sound {
@@ -49,7 +49,6 @@ class SoundChoiceView : UIView {
     }
     
     @objc func checkboxChanged(_ sender: UISwitch) {
-        
         var sound = self.sound
         sound.enabled = sender.isOn
         self.sound = sound
@@ -74,37 +73,15 @@ class SoundChoiceView : UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    lazy var textField: UITextField = {
-//        let textField = UITextField(frame: self.bounds)
-//        textField.text = self.sound.name
-//        textField.isUserInteractionEnabled = false
-//        self.addSubview(textField)
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            textField.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            textField.trailingAnchor.constraint(equalTo: self.button.leadingAnchor),
-//            textField.topAnchor.constraint(equalTo: self.topAnchor),
-//            textField.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-//        ])
-//
-//        return textField
-//    }()
 
-    @objc func playSound(_ sender: UIButton) {
-        print("Play sound: \(self.sound)")
-    }
-    
     @objc func editSound(_ sender: UIButton) {
         if let delegate = self.delegate {
             delegate.soundChoiceViewChooser(self, buttonPressed: sender)
         }
     }
 
-    lazy var playButton: UIButton = {
-        let button = UIButton.createImageButton(withImage: UIImage(systemName: "speaker.wave.2"))
-        button.frame = CGRect(x: 0, y: 0, width: self.buttonHeight, height: self.buttonHeight)
-        button.addTarget(self, action: #selector(playSound(_:)), for: .touchUpInside)
+    lazy var playButton: SoundPlayerButton = {
+        let button = SoundPlayerButton()
         return button
     }()
 
@@ -128,4 +105,13 @@ class SoundChoiceView : UIView {
                                          spacing: UIOffset(horizontal: 4, vertical: 0))
     }()
 
+    func refresh() {
+        
+        if let newURL = self.sound.url {
+            self.checkbox.title = newURL.fileName
+            self.playButton.url = newURL
+        
+            self.setEnabledStates()
+        }
+    }
 }

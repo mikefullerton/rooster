@@ -9,21 +9,17 @@ import Foundation
 
 extension SoundPreference.Sound {
     enum CodingKeys: String, CodingKey {
-        case name = "name"
+        case url = "name"
         case enabled = "enabled"
         case random = "random"
     }
     
     init?(withDictionary dictionary: [AnyHashable : Any]) {
     
-        self.name = ""
+        self.url = URL(string:"")
         self.enabled = false
         self.random = false
-        
-        if let name = dictionary[CodingKeys.name.rawValue] as? String {
-            self.name = name
-        }
-        
+
         if let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool {
             self.enabled = enabled
         }
@@ -31,18 +27,24 @@ extension SoundPreference.Sound {
         if let random = dictionary[CodingKeys.random.rawValue] as? Bool {
             self.random = random
         }
+
+        if let urlString = dictionary[CodingKeys.url.rawValue] as? String,
+           urlString.count > 0 {
+            self.url = URL(string: urlString)
+        } else {
+            self.enabled = false
+        }
+        
     }
 
     var asDictionary: [AnyHashable : Any] {
         var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.name.rawValue] = self.name
+        dictionary[CodingKeys.url.rawValue] = self.url?.absoluteString ?? ""
         dictionary[CodingKeys.enabled.rawValue] = self.enabled
         dictionary[CodingKeys.random.rawValue] = self.random
         return dictionary
     }
-
 }
-
 
 extension SoundPreference {
     

@@ -20,6 +20,8 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     private let player: AVAudioPlayer
     private let stopTimer: SimpleTimer
     
+    private(set) var isPlaying: Bool
+    
     init?(withURL url: URL) {
         do {
             self.player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
@@ -32,6 +34,7 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         self.behavior = AlarmSoundBehavior()
         self.stopTimer = SimpleTimer()
         self.identifier = ""
+        self.isPlaying = false
         super.init()
         self.player.delegate = self
     }
@@ -39,11 +42,7 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     deinit {
         self.player.stop()
     }
-    
-    var isPlaying: Bool {
-        return self.player.isPlaying
-    }
-    
+
     var volume: Float {
         return self.player.volume
     }
@@ -65,18 +64,23 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     }
     
     func play(withBehavior behavior: AlarmSoundBehavior) {
+        self.isPlaying = true
         self.logger.log("Sound will start playing: \(self.name)")
-        self.player.numberOfLoops = 0
-        self.player.play()
+        DispatchQueue.main.async {
+            self.player.numberOfLoops = 0
+            self.player.play()
+        }
     }
     
     func stop() {
+        self.isPlaying = false
         self.player.stop()
         self.stopTimer.stop()
         self.logger.log("Sound aborted: \(self.name)")
     }
     
     private func didStop() {
+        self.isPlaying = false
         if let delegate = self.delegate {
             delegate.soundDidStopPlaying(self)
             self.logger.log("Sound stopped and notified delgate: \(self.name)")

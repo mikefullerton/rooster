@@ -9,12 +9,13 @@ import Foundation
 import UIKit
 
 protocol SoundChooserViewControllerDelegate : AnyObject {
-    
+    func soundChooserViewControllerWillDismiss(_ controller: SoundChooserViewController)
+    func soundChooserViewControllerWasDismissed(_ controller: SoundChooserViewController)
 }
 
-
-
 class SoundChooserViewController : UIViewController, SoundPickerTableViewControllerDelegate {
+
+    weak var delegate: SoundChooserViewControllerDelegate?
     
     let soundPreferenceIndex: SoundPreference.SoundIndex
     
@@ -131,7 +132,10 @@ class SoundChooserViewController : UIViewController, SoundPickerTableViewControl
     }
     
     func animateOff() {
-        
+        if let delegate = self.delegate {
+            delegate.soundChooserViewControllerWillDismiss(self)
+        }
+
         var destFrame = self.view.bounds
         destFrame.origin.x = destFrame.maxX
         
@@ -143,7 +147,10 @@ class SoundChooserViewController : UIViewController, SoundPickerTableViewControl
             self.removeFromParent()
             self.view.removeFromSuperview()
             self.blurView.alpha = 0.0
-//            self.setBlurViewVisible(false)
+
+            if let delegate = self.delegate {
+                delegate.soundChooserViewControllerWasDismissed(self)
+            }
         }
     }
     

@@ -15,7 +15,7 @@ protocol SoundChoicesViewDelegate : AnyObject {
                           fromView: UIView)
 }
 
-class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate {
+class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
     
     weak var delegate: SoundChoicesViewDelegate?
 
@@ -33,7 +33,7 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var firstSoundChoice: UIView = {
+    lazy var firstSoundChoice: SoundChoiceView = {
         let view = SoundChoiceView(frame: self.bounds,
                                    soundPreferenceIndex: .sound1,
                                    delegate: self)
@@ -41,7 +41,7 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate {
         return view
     }()
 
-    lazy var secondSoundChoice: UIView = {
+    lazy var secondSoundChoice: SoundChoiceView = {
         let view = SoundChoiceView(frame: self.bounds,
                                    soundPreferenceIndex: .sound2,
                                    delegate: self)
@@ -49,7 +49,7 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate {
         return view
     }()
 
-    lazy var thirdSoundChoice: UIView = {
+    lazy var thirdSoundChoice: SoundChoiceView = {
         let view = SoundChoiceView(frame: self.bounds,
                                    soundPreferenceIndex: .sound3,
                                    delegate: self)
@@ -60,10 +60,27 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate {
     
     func soundChoiceViewChooser(_ view: SoundChoiceView, buttonPressed button: UIButton) {
         if let delegate = self.delegate {
+            let chooser = SoundChooserViewController(withSoundPreferenceIndex: view.index)
+            chooser.delegate = self
+            
             delegate.soundChoicesView(self,
-                                      presentSoundChooser: SoundChooserViewController(withSoundPreferenceIndex: view.index),
+                                      presentSoundChooser: chooser,
                                       fromView: button)
         }
     }
+    
+    func refresh() {
+        self.firstSoundChoice.refresh()
+        self.secondSoundChoice.refresh()
+        self.thirdSoundChoice.refresh()
+    }
+    
+    func soundChooserViewControllerWasDismissed(_ controller: SoundChooserViewController) {
+    }
+    
+    func soundChooserViewControllerWillDismiss(_ controller: SoundChooserViewController) {
+        self.refresh()
+    }
+
 
 }

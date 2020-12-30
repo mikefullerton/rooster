@@ -38,6 +38,7 @@
 		B21DA1B4259BE488002A56C8 /* SoundPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */; };
 		B21DA1B8259BE4B2002A56C8 /* SoundPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1B7259BE4B2002A56C8 /* SoundPickerViewModel.swift */; };
 		B21DA1BC259BE5B5002A56C8 /* SoundPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */; };
+		B21DA1C2259BFC75002A56C8 /* SoundPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1C1259BFC75002A56C8 /* SoundPlayerButton.swift */; };
 		B227DE21256573630002C127 /* EventKitDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DE20256573630002C127 /* EventKitDataModel.swift */; };
 		B227DEFA256738C50002C127 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEF9256738C50002C127 /* Utilities.swift */; };
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -282,6 +283,7 @@
 		B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewController.swift; sourceTree = "<group>"; };
 		B21DA1B7259BE4B2002A56C8 /* SoundPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerViewModel.swift; sourceTree = "<group>"; };
 		B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewCell.swift; sourceTree = "<group>"; };
+		B21DA1C1259BFC75002A56C8 /* SoundPlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayerButton.swift; sourceTree = "<group>"; };
 		B227DE20256573630002C127 /* EventKitDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModel.swift; sourceTree = "<group>"; };
 		B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoosterAppKitPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RoosterAppKitPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -563,6 +565,20 @@
 			path = ViewLayout;
 			sourceTree = "<group>";
 		};
+		B21DA1C5259BFFCC002A56C8 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				B21DA1A9259BC064002A56C8 /* SoundChooserViewController.swift */,
+				B2A181B32598105200C1E7F0 /* SoundChoiceView.swift */,
+				B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */,
+				B21DA1B7259BE4B2002A56C8 /* SoundPickerViewModel.swift */,
+				B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */,
+				B21DA1C1259BFC75002A56C8 /* SoundPlayerButton.swift */,
+				B2A181BF2598125800C1E7F0 /* SoundChoicesView.swift */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		B227DEF1256738860002C127 /* AppKitPlugin */ = {
 			isa = PBXGroup;
 			children = (
@@ -832,19 +848,14 @@
 		B2C7423D2577225E006645A0 /* PreferencesWindow */ = {
 			isa = PBXGroup;
 			children = (
+				B21DA1C5259BFFCC002A56C8 /* Sounds */,
 				B2C7424225772435006645A0 /* PreferencesViewController.swift */,
 				B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */,
-				B2A181B32598105200C1E7F0 /* SoundChoiceView.swift */,
 				B2A181B7259810D200C1E7F0 /* UIButton+ImageButton.swift */,
-				B2A181BF2598125800C1E7F0 /* SoundChoicesView.swift */,
 				B2A181C32598134A00C1E7F0 /* NotificationChoicesView.swift */,
 				B2A181CF259907B700C1E7F0 /* TipView.swift */,
 				B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */,
 				B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */,
-				B21DA1A9259BC064002A56C8 /* SoundChooserViewController.swift */,
-				B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */,
-				B21DA1B7259BE4B2002A56C8 /* SoundPickerViewModel.swift */,
-				B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */,
 			);
 			path = PreferencesWindow;
 			sourceTree = "<group>";
@@ -1331,6 +1342,7 @@
 				B2965558257C1186008D1858 /* ReminderTableViewCell.swift in Sources */,
 				B20AACF42595308300F9B50C /* ItemPreference.swift in Sources */,
 				B2A58B37259288EA00188584 /* SoundPreference.swift in Sources */,
+				B21DA1C2259BFC75002A56C8 /* SoundPlayerButton.swift in Sources */,
 				B2E154A0257686D0008BE604 /* DelegateDividerSection.swift in Sources */,
 				B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */,
 				B2965569257C3481008D1858 /* EventKitItemTableViewCell+LeftSideContentView.swift in Sources */,

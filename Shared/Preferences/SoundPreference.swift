@@ -13,9 +13,27 @@ struct SoundPreference: Sequence {
     typealias Iterator = Array<Sound>.Iterator
     
     struct Sound {
-        var name: String
+        
+        var url: URL?
         var enabled: Bool
         var random: Bool
+        
+        init(url: URL?,
+             enabled: Bool,
+             random: Bool) {
+            
+            self.url = url
+            self.random = random
+            self.enabled = enabled && url != nil
+        }
+        
+        var name: String {
+            return self.url?.fileName ?? ""
+        }
+        
+        static var zero: Sound {
+            return Sound(url:nil, enabled: false, random: false)
+        }
     }
     
     static let RepeatEndlessly = AlarmSoundBehavior.RepeatEndlessly
@@ -97,5 +115,15 @@ extension SoundPreference {
     
     static var availableSoundURLs: [URL] {
         return Bundle.availableSoundResources
+    }
+    
+    static func urlForName(_ name: String) -> URL? {
+        for url in self.availableSoundURLs {
+            if url.fileName == name {
+                return url
+            }
+        }
+        
+        return nil
     }
 }

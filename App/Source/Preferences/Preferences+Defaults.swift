@@ -9,9 +9,18 @@ import Foundation
 
 extension SoundPreference {
     init() {
-        self.init(sound1: Sound(name: "Rooster Crowing", enabled: true, random: false),
-                  sound2: Sound(name: "Chickens", enabled: true, random: false),
-                  sound3: Sound(name: "Rooster Crowing", enabled: true, random: false),
+        if let defaultURL = SoundPreference.urlForName("Rooster Crowing") {
+            self.init(sound1: Sound(url: defaultURL, enabled: true, random: false),
+                      sound2: Sound.zero,
+                      sound3: Sound.zero,
+                      playCount: SoundPreference.RepeatEndlessly,
+                      startDelay: 3)
+            return
+        }
+        
+        self.init(sound1: Sound.zero,
+                  sound2: Sound.zero,
+                  sound3: Sound.zero,
                   playCount: SoundPreference.RepeatEndlessly,
                   startDelay: 3)
     }
