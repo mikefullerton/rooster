@@ -25,8 +25,6 @@ PLUGIN_INFO_FILE_PATH="${PLUGIN_DIR}/Info.plist"
 
 GIT_STATUS="`( cd "$MY_PATH/.." && git status )`"
 
-#echo "$GIT_STATUS"
-
 if [[ "${GIT_STATUS}" != *"nothing to commit"* ]]; then
     echo "Please commit changes before building a release!"
     exit 1
@@ -92,6 +90,8 @@ echo "New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}"
 write_build_number_to_file "${INFO_FILE_PATH}"
 
 write_build_number_to_file "${PLUGIN_INFO_FILE_PATH}"
+
+set -x
 
 cd "${MY_PATH}/.."
 git add "${INFO_FILE_PATH}" || {
