@@ -67,6 +67,7 @@
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
 		B233C45425A0FA13005A7FB3 /* TableViewRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C45325A0FA13005A7FB3 /* TableViewRowCell.swift */; };
 		B233C52E25A23A8D005A7FB3 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B28661CB258E8B2100D3A538 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
 		B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B256BC08258025EC00FA67DC /* CalendarsPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */; };
@@ -340,6 +341,7 @@
 		B233C4B225A224AC005A7FB3 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		B233C4B325A224F8005A7FB3 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B233C52625A22FA7005A7FB3 /* IncrementVersion.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = IncrementVersion.sh; path = "Other Files/IncrementVersion.sh"; sourceTree = SOURCE_ROOT; };
+		B233C54325A24ACD005A7FB3 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = file; name = dsa_pub.pem; path = "Other Files/dsa_pub.pem"; sourceTree = SOURCE_ROOT; };
 		B236FCD5255EFE0A00A2E58D /* EventKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chickens.mp3; sourceTree = "<group>"; };
@@ -747,6 +749,7 @@
 		B286627E258EC5E300D3A538 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B233C54325A24ACD005A7FB3 /* dsa_pub.pem */,
 				B28661D1258E8B9E00D3A538 /* Info.plist */,
 				B28661D2258E8B9E00D3A538 /* Podfile */,
 				B28661D3258E8B9F00D3A538 /* Rooster-Bridging-Header.h */,
@@ -1212,6 +1215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
+				B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */,
 				B21DA19E259BB6C9002A56C8 /* Localizable.strings in Resources */,
 				B2E15137255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
