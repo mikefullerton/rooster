@@ -97,3 +97,10 @@ write_build_number_to_file "${INFO_FILE_PATH}"
 
 write_build_number_to_file "${PLUGIN_INFO_FILE_PATH}"
 
+cd "${MY_PATH}/.."
+git add "${INFO_FILE_PATH}"
+git add "${PLUGIN_INFO_FILE_PATH}"
+git commit -m "Version ${VERSION_NUMBER}.${BUILD_NUMBER}"
+
+
+
