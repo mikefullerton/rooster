@@ -110,7 +110,7 @@ git commit -m "v${VERSION_NUMBER}.${BUILD_NUMBER}" || {
 echo "Committed plist files to git ok"
 
 GIT_TAG="Release-${VERSION_NUMBER}.${BUILD_NUMBER}"
-git tag -a "${GIT_TAG}" -m "${GIT_TAG}" "|| {
+git tag -a "${GIT_TAG}" -m "${GIT_TAG}" || {
     echo "Tagging release failed"
     exit 1
 }
