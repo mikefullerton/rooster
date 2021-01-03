@@ -14,7 +14,7 @@ MY_NAME="`basename "$0"`"
 VERSION_NUMBER=0
 BUILD_NUMBER=0
 
-INFO_FILE_PATH="${MY_PATH}/info.plist"
+INFO_FILE_PATH="${MY_PATH}/Info.plist"
 
 PLUGIN_DIR="`( cd "$MY_PATH/../AppKitPlugin" && pwd )`" || {
     echo "Can't find plugin dir"
