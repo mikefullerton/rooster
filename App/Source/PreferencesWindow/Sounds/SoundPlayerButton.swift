@@ -29,7 +29,6 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
         self.updateImage(self.playImage)
         self.contentHorizontalAlignment = .left
         self.addTarget(self, action: #selector(playSound(_:)), for: .touchUpInside)
-        self.isEnabled = false
         
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -39,7 +38,7 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateImage(_ image: UIImage?) {
+    private func updateImage(_ image: UIImage?) {
         if let updatedImage = image {
             self.setImage(updatedImage, for: .normal)
         }
@@ -52,7 +51,33 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
         }
     }
     
-    func refresh() {
+    override var isEnabled: Bool {
+        get { return super.isEnabled }
+        set(isEnabled) {
+            
+            if self.url == nil {
+                super.isEnabled = false
+            } else {
+                super.isEnabled = isEnabled
+            }
+            
+            if super.isEnabled {
+                self.imageView!.tintColor = UIColor.secondaryLabel
+            } else {
+                self.imageView!.tintColor = UIColor.quaternaryLabel
+            }
+        }
+    }
+    
+    private func refresh() {
+        
+        guard self.url != nil else {
+            self.isEnabled = false
+            return
+        }
+        
+        self.isEnabled = true
+        
         if let sound = self.sound {
             if sound.isPlaying {
                 self.updateImage(self.muteImage)
@@ -61,7 +86,6 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
             }
         } else {
             self.updateImage(self.playImage)
-            self.isEnabled = false
         }
     }
     
