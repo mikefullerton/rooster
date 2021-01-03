@@ -24,13 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     }
     
     enum UserActivities: String {
-        case preferences = "com.apple.rooster.preferences"
+//        case preferences = "com.apple.rooster.preferences"
         case main = "com.apple.rooster.main"
         case update = "com.apple.rooster.update"
     }
     
     enum SceneNames: String {
-        case preferences = "preferences"
+//        case preferences = "preferences"
         case main = "main"
     }
     
@@ -106,18 +106,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
 
     #if targetEnvironment(macCatalyst)
 
-    private var preferencesMenuItem : UIMenu {
-        let preferencesCommand = UICommand(title: "Preferences…",
-                                    image: nil,
-                                    action: #selector(self.showPreferences(_:)),
-                                    propertyList: nil)
-
-        return UIMenu(title: "",
-                      image: nil,
-                      identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
-                      options: [ UIMenu.Options.displayInline ],
-                      children: [ preferencesCommand ])
-    }
+//    private var preferencesMenuItem : UIMenu {
+//        let preferencesCommand = UICommand(title: "Preferences…",
+//                                    image: nil,
+//                                    action: #selector(self.showPreferences(_:)),
+//                                    propertyList: nil)
+//
+//        return UIMenu(title: "",
+//                      image: nil,
+//                      identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
+//                      options: [ UIMenu.Options.displayInline ],
+//                      children: [ preferencesCommand ])
+//    }
     
     @objc private func showPreferences(_ sender: AppDelegate) {
         self.showPreferences()

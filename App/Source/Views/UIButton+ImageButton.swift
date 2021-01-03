@@ -54,4 +54,14 @@ class CustomButton : UIButton {
 //        frame.size = self.preferredSize
 //        self.frame = frame
 //    }
+    
+    override var intrinsicContentSize: CGSize {
+        var size = super.intrinsicContentSize
+        
+        size.width *= 2
+        size.height *= 2
+        
+        return size
+    }
+
 }

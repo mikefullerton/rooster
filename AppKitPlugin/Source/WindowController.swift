@@ -64,7 +64,7 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
     @objc func appWillTerminate(_ notification: Notification) {
         self.logger.debug("Application is terminating")
         
-        self.autoSaveNames.removeAll()
+//        self.autoSaveNames.removeAll()
         NotificationCenter.default.removeObserver(self)
     }
     
