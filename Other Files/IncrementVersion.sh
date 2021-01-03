@@ -102,7 +102,7 @@ git add "${PLUGIN_INFO_FILE_PATH}" || {
     echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
     exit 1
 }
-git commit -m "Version ${VERSION_NUMBER}.${BUILD_NUMBER}" || {
+git commit -m "v${VERSION_NUMBER}.${BUILD_NUMBER}" || {
     echo "Commiting updated plist files failed"
     exit 1
 }
@@ -110,7 +110,7 @@ git commit -m "Version ${VERSION_NUMBER}.${BUILD_NUMBER}" || {
 echo "Committed plist files to git ok"
 
 GIT_TAG="Release-${VERSION_NUMBER}.${BUILD_NUMBER}"
-git tag -a "${GIT_TAG}" || {
+git tag -a "${GIT_TAG}" -m "${GIT_TAG}" "|| {
     echo "Tagging release failed"
     exit 1
 }
