@@ -9,6 +9,10 @@ import Foundation
 import UIKit
 
 class EventListTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
+    
+    
+    typealias DataType = EventKitEvent
+    
     private var event: EventKitEvent? = nil
     
     private var leftView: LeftSideContentView
@@ -40,8 +44,8 @@ class EventListTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
         self.rightView.prepareForReuse()
     }
     
-    func setEvent(_ event: EventKitEvent) {
-
+    func configureCell(withData event: EventKitEvent, indexPath: IndexPath, isSelected: Bool) {
+    
         self.event = event
         
         self.updateCalendarBar(withCalendar: event.calendar)

@@ -15,7 +15,7 @@ struct EventListViewModel : TableViewModelProtocol {
     init(withEvents events: [EventKitEvent],
          reminders: [EventKitReminder]) {
         
-        var sortedList:[Alarmable] = events + reminders
+        var sortedList:[EventKitItem] = events + reminders
         
         sortedList.sort { lhs, rhs in
             return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
@@ -24,12 +24,12 @@ struct EventListViewModel : TableViewModelProtocol {
         var sections: [TableViewSectionProtocol] = []
         for item in sortedList {
             if let event = item as? EventKitEvent {
-                let section = EventSection(withEvent: event)
+                let section = TableViewSection<EventKitEvent, EventListTableViewCell>(withRowData: [event])
                 sections.append(section)
             }
             
             if let reminder = item as? EventKitReminder {
-                let section = ReminderSection(withReminder: reminder)
+                let section = TableViewSection<EventKitReminder, ReminderTableViewCell>(withRowData: [reminder])
                 sections.append(section)
             }
         }

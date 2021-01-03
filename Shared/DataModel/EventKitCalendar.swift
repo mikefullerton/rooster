@@ -14,8 +14,10 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
     let ekCalendarID: String
     let sourceTitle: String
     let sourceIdentifier: String
-    let isSubscribed: Bool
     let cgColor: CGColor?
+    
+    // modifiable
+    var isSubscribed: Bool
     
     init(withIdentifier identifier: String,
          ekCalendarID: String,
@@ -48,16 +50,6 @@ struct EventKitCalendar: Identifiable, CustomStringConvertible, Equatable, Hasha
  
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
-    }
-
-    func calendarWithSubscriptionChange(isSubscribed: Bool) -> EventKitCalendar {
-        return EventKitCalendar(withIdentifier: self.id,
-                                ekCalendarID: self.ekCalendarID,
-                                title: self.title,
-                                sourceTitle: self.sourceTitle,
-                                sourceIdentifier: self.sourceIdentifier,
-                                isSubscribed: isSubscribed,
-                                color: self.cgColor)
     }
 }
 

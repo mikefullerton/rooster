@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class SoundPlayerButton : UIButton, AlarmSoundDelegate {
-    let defaultButtonSize:CGSize = CGSize(width: 30, height: 20)
     
     private(set) var sound: AVAlarmSound? = nil
     
@@ -25,44 +24,61 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
     }
     
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: self.defaultButtonSize.width, height: self.defaultButtonSize.height))
+        super.init(frame: CGRect.zero)
         self.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.setImage(self.playImage, for: .normal)
+        self.updateImage(self.playImage)
         self.contentHorizontalAlignment = .left
-        self.frame = CGRect(x: 0, y: 0, width: self.defaultButtonSize.width, height: self.defaultButtonSize.height)
         self.addTarget(self, action: #selector(playSound(_:)), for: .touchUpInside)
         self.isEnabled = false
+        
+        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateImage(_ image: UIImage?) {
+        if let updatedImage = image {
+            self.setImage(updatedImage, for: .normal)
+        }
+        if let imageView = self.imageView {
+            
+            self.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 22,weight: .regular),
+                                                 forImageIn: UIControl.State.normal)
+            
+            imageView.tintColor = UIColor.secondaryLabel
+        }
+    }
+    
     func refresh() {
         if let sound = self.sound {
             if sound.isPlaying {
-                self.setImage(self.muteImage, for: .normal)
+                self.updateImage(self.muteImage)
             } else {
-                self.setImage(self.playImage, for: .normal)
+                self.updateImage(self.playImage)
             }
         } else {
-            self.setImage(self.playImage, for: .normal)
+            self.updateImage(self.playImage)
             self.isEnabled = false
         }
     }
     
-    @objc func playSound(_ sender: UIButton) {
-//        print("Play sound: \(self.sound)")
-        
+    var isPlaying: Bool {
+        return self.sound?.isPlaying ?? false
+    }
+    
+    func togglePlayingState() {
         if let sound = self.sound {
             if sound.isPlaying {
                 sound.stop()
             } else {
-                self.setImage(self.muteImage, for: .normal)
+                self.updateImage(self.muteImage)
                 sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
             }
         } else if let url = self.url,
-           let sound = AVAlarmSound(withURL: url) {
+            let sound = AVAlarmSound(withURL: url) {
             self.sound = sound
             sound.delegate = self
             
@@ -71,14 +87,33 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
 
         self.refresh()
     }
+    
+    @objc func playSound(_ sender: UIButton) {
+        self.togglePlayingState()
+    }
 
     lazy var playImage : UIImage? = {
-        return UIImage(systemName: "speaker.fill")
+        return UIImage(systemName: "speaker")
     }()
 
     lazy var muteImage : UIImage? = {
-        return UIImage(systemName: "speaker.wave.3.fill")
+        return UIImage(systemName: "speaker.wave.3")
     }()
+    
+    private var _intrinsicSize: CGSize? = nil
+    
+    override var intrinsicContentSize: CGSize {
+        
+        if let size = self._intrinsicSize {
+            return size
+        }
+        
+        var size = super.intrinsicContentSize
+        size.width *= 2.0
+        self._intrinsicSize = size
+        
+        return size
+    }
     
     func soundWillStartPlaying(_ sound: AlarmSound) {
         self.refresh()

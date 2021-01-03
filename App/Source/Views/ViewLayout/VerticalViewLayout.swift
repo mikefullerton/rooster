@@ -9,57 +9,69 @@ import Foundation
 import UIKit
 
 
-struct VerticalViewLayout : ViewLayout {
+class VerticalViewLayout : ViewLayout {
     let hostView: UIView
     let insets:UIEdgeInsets
     let spacing:UIOffset
 
+    private(set) var didSetConstraints: Bool = false;
+    
+    private(set) var views:[UIView]
+    
     init(hostView view: UIView,
          insets: UIEdgeInsets,
          spacing: UIOffset) {
         self.hostView = view
         self.insets = insets
         self.spacing = spacing
+        self.views = []
     }
 
     private func addTopSubview(_ view: UIView) {
-        self.hostView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        let size = view.sizeThatFits(CGSize(width: self.hostView.frame.size.width,
-                                            height: CGFloat.greatestFiniteMagnitude))
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left),
             view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right),
             view.topAnchor.constraint(equalTo: self.hostView.topAnchor, constant: self.insets.top),
-            
-            view.heightAnchor.constraint(equalToConstant: size.height)
         ])
     }
     
     private func addSubview(_ view: UIView, belowView: UIView) {
-        
-        self.hostView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        
-        let size = view.sizeThatFits(CGSize(width: self.hostView.frame.size.width,
-                                            height: CGFloat.greatestFiniteMagnitude))
         
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left),
             view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right),
             view.topAnchor.constraint(equalTo: belowView.bottomAnchor, constant: self.spacing.vertical),
-            
-            view.heightAnchor.constraint(equalToConstant: size.height)
         ])
     }
     
-    func addSubview(_ view: UIView) {
-        if self.hostView.subviews.count == 0 {
-            self.addTopSubview(view)
-        } else {
-            self.addSubview(view, belowView: self.hostView.subviews.last!)
+    func updateConstraints() {
+        if !self.didSetConstraints {
+            self.didSetConstraints = true
+            
+            let subviews = self.views
+            
+            for (index, view) in subviews.enumerated() {
+                if index == 0 {
+                    self.addTopSubview(view)
+                } else {
+                    self.addSubview(view, belowView: subviews[ index - 1])
+                }
+            }
+            
         }
+    }
+    
+    func addView(_ view: UIView) {
+        self.views.append(view)
+        self.hostView.setNeedsUpdateConstraints()
+        self.hostView.invalidateIntrinsicContentSize()
+    }
+
+    var intrinsicContentSize: CGSize {
+        return self.verticalLayoutIntrinsicContentSize
     }
 }
 

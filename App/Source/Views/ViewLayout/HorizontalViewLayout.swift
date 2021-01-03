@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct HorizontalViewLayout: ViewLayout {
+class HorizontalViewLayout: ViewLayout {
     
     enum Alignment {
         case left
@@ -20,6 +20,9 @@ struct HorizontalViewLayout: ViewLayout {
     let spacing:UIOffset
     let alignment:Alignment
 
+    private(set) var views:[UIView]
+    private(set) var didSetConstraints: Bool = false
+
     init(hostView view: UIView,
          insets: UIEdgeInsets,
          spacing: UIOffset,
@@ -28,18 +31,18 @@ struct HorizontalViewLayout: ViewLayout {
         self.insets = insets
         self.spacing = spacing
         self.alignment = alignment
+        self.views = []
     }
     
-    private func addLeadingSubview(_ view: UIView) {
-        self.hostView.addSubview(view)
+    private func updateLeadingSubview(_ view: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let size = view.sizeThatFits(self.hostView.frame.size)
+//        let size = view.sizeThatFits(self.hostView.frame.size)
         
         NSLayoutConstraint.activate([
             view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
-            view.heightAnchor.constraint(equalToConstant: size.height),
-            view.widthAnchor.constraint(equalToConstant: size.width),
+//            view.heightAnchor.constraint(equalToConstant: size.height),
+//            view.widthAnchor.constraint(equalToConstant: size.width),
         ])
         
         switch(self.alignment) {
@@ -55,17 +58,15 @@ struct HorizontalViewLayout: ViewLayout {
         }
     }
     
-    private func addSubview(_ view: UIView, nextTo: UIView) {
-        
-        self.hostView.addSubview(view)
+    private func updateSubview(_ view: UIView, nextTo: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let size = view.sizeThatFits(self.hostView.frame.size)
+//        let size = view.sizeThatFits(self.hostView.frame.size)
         
         NSLayoutConstraint.activate([
             view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
-            view.heightAnchor.constraint(equalToConstant: size.height),
-            view.widthAnchor.constraint(equalToConstant: size.width),
+//            view.heightAnchor.constraint(equalToConstant: size.height),
+//            view.widthAnchor.constraint(equalToConstant: size.width),
         ])
         
         switch(self.alignment) {
@@ -80,13 +81,32 @@ struct HorizontalViewLayout: ViewLayout {
             ])
         }
     }
-    
-    func addSubview(_ view: UIView) {
-        if self.hostView.subviews.count == 0 {
-            self.addLeadingSubview(view)
-        } else {
-            self.addSubview(view, nextTo: self.hostView.subviews.last!)
+
+    func updateConstraints() {
+        if !self.didSetConstraints {
+            self.didSetConstraints = true
+            
+            let subviews = self.views
+            
+            for (index, view) in subviews.enumerated() {
+                if index == 0 {
+                    self.updateLeadingSubview(view)
+                } else {
+                    self.updateSubview(view, nextTo: subviews[ index - 1])
+                }
+            }
+            
         }
+    }
+    
+    func addView(_ view: UIView) {
+        self.views.append(view)
+        self.hostView.invalidateIntrinsicContentSize()
+        self.hostView.setNeedsUpdateConstraints()
+    }
+    
+    var intrinsicContentSize: CGSize {
+        return self.horizontalLayoutIntrinsicContentSize
     }
 }
 

@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Alarmable;
+@class EventKitItem;
 @protocol AppKitMenuBarControllerDelegate;
 
 @protocol AppKitMenuBarController <NSObject>

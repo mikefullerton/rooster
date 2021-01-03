@@ -47,13 +47,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
 
-        if  let activity = options.userActivities.first {
-            if activity.activityType == UserActivities.preferences.rawValue {
-                let configuration = UISceneConfiguration(name: UserActivities.preferences.rawValue, sessionRole: connectingSceneSession.role)
-                configuration.delegateClass = PreferencesSceneDelegate.self
-                return configuration
-            }
-        }
+//        if  let activity = options.userActivities.first {
+//            if activity.activityType == UserActivities.preferences.rawValue {
+//                let configuration = UISceneConfiguration(name: UserActivities.preferences.rawValue, sessionRole: connectingSceneSession.role)
+//                configuration.delegateClass = PreferencesSceneDelegate.self
+//                return configuration
+//            }
+//        }
 
         let configuration = UISceneConfiguration(name: UserActivities.main.rawValue, sessionRole: connectingSceneSession.role)
         configuration.delegateClass = MainSceneDelegate.self

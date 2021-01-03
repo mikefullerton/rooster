@@ -148,7 +148,7 @@ class EventKitDataModelController : EventKitControllerDelegate, Loggable {
             someItems.forEach { (someItem) in
                 if someItem.id == item.id {
                     
-                    if someItem == item {
+                    if someItem.isEqualTo(item) {
                         self.logger.log("event not changed, ignoring update: \(someItem)")
                     } else {
                         foundDifferentItem = true
@@ -229,37 +229,42 @@ class EventKitDataModelController : EventKitControllerDelegate, Loggable {
 
 extension EventKitEvent {
     func stopAlarm() {
+        var newAlarm = self.alarm
+        newAlarm.state = .finished
         
-        let updatedAlarm = self.alarm.alarmWithUpdatedState(.finished)
+        var newEvent = self
+        newEvent.alarm = newAlarm
         
-        let updatedEvent = self.itemWithUpdatedAlarm(updatedAlarm)
-        
-        EventKitDataModelController.instance.update(event: updatedEvent)
+        EventKitDataModelController.instance.update(event: newEvent)
     }
 }
 
 extension EventKitReminder {
     func stopAlarm() {
+        var newAlarm = self.alarm
+        newAlarm.state = .finished
         
-        let updatedAlarm = self.alarm.alarmWithUpdatedState(.finished)
+        var newReminder = self
+        newReminder.alarm = newAlarm
         
-        let updatedReminder = self.itemWithUpdatedAlarm(updatedAlarm)
-        
-        EventKitDataModelController.instance.update(reminder: updatedReminder)
+        EventKitDataModelController.instance.update(reminder: newReminder)
     }
     
     func snoozeAlarm() {
-        let updatedAlarm = self.alarm.alarmWithSnoozedInterval(60 * 60 * 2)
+        var updatedAlarm = self.alarm
+        updatedAlarm.snoozeInterval += 60 * 60 * 2
         
-        let updatedReminder = self.itemWithUpdatedAlarm(updatedAlarm)
+        var newReminder = self
+        newReminder.alarm = updatedAlarm
         
-        EventKitDataModelController.instance.update(reminder: updatedReminder)
+        EventKitDataModelController.instance.update(reminder: newReminder)
     }
 }
 
 extension EventKitCalendar {
     func set(subscribed: Bool) {
-        let updatedCalendar = self.calendarWithSubscriptionChange(isSubscribed: subscribed)
+        var updatedCalendar = self
+        updatedCalendar.isSubscribed = subscribed
         EventKitDataModelController.instance.update(calendar: updatedCalendar)
     }
 }

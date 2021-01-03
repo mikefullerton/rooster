@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 class CalendarListCell : UITableViewCell, TableViewRowCell {
+    
+    typealias DataType = EventKitCalendar
+    
     private var calendar: EventKitCalendar?
 
     private let padding:CGFloat = 8
@@ -100,7 +103,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     }
     #endif
     
-    func setCalendar(_ calendar: EventKitCalendar) {
+    func configureCell(withData calendar: EventKitCalendar, indexPath: IndexPath, isSelected: Bool) {
         self.calendar = calendar
         self.setCheckBoxTitle(calendar.title)
         self.checkBox.setOn(calendar.isSubscribed, animated:false)

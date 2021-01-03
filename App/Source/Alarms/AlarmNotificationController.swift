@@ -28,7 +28,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.dataModelReloader = DataModelReloader(for: self)
     }
     
-    func scheduleNotification(forItem item: Alarmable) {
+    func scheduleNotification(forItem item: EventKitItem) {
         if self.notifications.contains(where: { return $0.itemID == item.id }) {
             return
         }
@@ -65,7 +65,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
     }
     
-    func stopNotification(forItem item: Alarmable) {
+    func stopNotification(forItem item: EventKitItem) {
         self.notifications.forEach() { (notification) in
             if notification.itemID == item.id {
                 self.logger.log("Stopping alarm for: \(item.description)")
@@ -120,7 +120,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
     }
     
-    private func updateNotifications(forItems items: [Alarmable]) {
+    private func updateNotifications(forItems items: [EventKitItem]) {
         for item in items {
             if item.alarm.state == .firing {
                 // this will do nothing if already firing
@@ -135,7 +135,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
 
         self.logger.log("Updating alarms for \(self.notifications.count)")
         
-        let items:[Alarmable] = EventKitDataModelController.dataModel.events + EventKitDataModelController.dataModel.reminders
+        let items:[EventKitItem] = EventKitDataModelController.dataModel.events + EventKitDataModelController.dataModel.reminders
 
         var itemsSet = Set<String>()
         items.forEach { (item) in

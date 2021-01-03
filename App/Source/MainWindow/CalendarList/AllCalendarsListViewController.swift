@@ -8,13 +8,13 @@
 import Foundation
 import UIKit
 
-class AllCalendarsListViewController : EventKitTableViewController<AllCalendersListViewModel> {
-    
-    override func reloadViewModel() -> AllCalendersListViewModel? {
-        
-        let dataModel = EventKitDataModelController.dataModel
-        
-        return AllCalendersListViewModel(withCalendars: dataModel.calendars,
-                                     delegateCalendars: dataModel.delegateCalendars)
-    }
-}
+//class AllCalendarsListViewController : EventKitTableViewController<AllCalendersListViewModel> {
+//    
+//    override func reloadViewModel() -> AllCalendersListViewModel? {
+//        
+//        let dataModel = EventKitDataModelController.dataModel
+//        
+//        return AllCalendersListViewModel(withCalendars: dataModel.calendars,
+//                                     delegateCalendars: dataModel.delegateCalendars)
+//    }
+//}

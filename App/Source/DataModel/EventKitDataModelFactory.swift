@@ -68,7 +68,7 @@ struct EventKitDataModelFactory {
                 if  newItem.id == oldItem.id {
                     foundItem = true
                     
-                    let newAlarm = newItem.alarm
+                    var newAlarm = newItem.alarm
                     let oldAlarm = oldItem.alarm
                     
                     if newAlarm.isHappeningNow && oldAlarm.isHappeningNow {
@@ -76,7 +76,10 @@ struct EventKitDataModelFactory {
                         outItems.append(newItem)
                     } else {
                         // this always means the alarm is .neverFired
-                        let updatedItem = updateAlarmBlock(newItem, newAlarm.alarmWithUpdatedState(.neverFired))
+                        
+                        newAlarm.state = .neverFired
+                        
+                        let updatedItem = updateAlarmBlock(newItem, newAlarm)
                         outItems.append(updatedItem)
                     }
                     continue

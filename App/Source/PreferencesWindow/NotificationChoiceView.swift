@@ -20,7 +20,9 @@ class NotificationChoiceView : UIView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
 
-        self.layout.addSubview(self.checkbox)
+        self.addSubview(self.checkbox)
+        
+        self.layout.addView(self.checkbox)
         
         self.refresh()
     }
@@ -54,22 +56,23 @@ class NotificationChoiceView : UIView {
         return view
     }()
     
-    lazy var layout: ViewLayout = {
+    lazy var layout: VerticalViewLayout = {
         return VerticalViewLayout(hostView: self,
                                   insets: UIEdgeInsets.zero,
                                   spacing: UIOffset.zero)
         
     }()
     
+    override func updateConstraints() {
+        super.updateConstraints()
+        
+        self.layout.updateConstraints()
+    }
+    
     var value: Bool { return false }
 
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var outSize = size
-        outSize.height = self.layout.size.height
-        
-        print("Layout Size: \(outSize) for \(self)")
-        print("Views: \(self.subviews)")
-        return outSize
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
 }
 
@@ -80,7 +83,8 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
         super.init(frame: frame,
                    title: "AUTO_OPEN_LOCATIONS".localized)
         
-        self.layout.addSubview(self.locationTipView)
+        self.addSubview(self.locationTipView)
+        self.layout.addView(self.locationTipView)
     }
 
     required init?(coder: NSCoder) {

@@ -24,8 +24,11 @@ class TipView : UIView {
         self.tip = tip
         super.init(frame: frame)
         
-        self.layout.addSubview(self.tipImage)
-        self.layout.addSubview(self.textField)
+        self.addSubview(self.tipImage)
+        self.addSubview(self.textField)
+        
+        self.layout.addView(self.tipImage)
+        self.layout.addView(self.textField)
  }
     
     required init?(coder: NSCoder) {
@@ -49,22 +52,27 @@ class TipView : UIView {
         if self.tip.imageTintColor != nil {
             view.tintColor = self.tip.imageTintColor! // UIColor.systemBlue
         }
-        view.frame = CGRect(x: 0,y: 0,width: self.imageSize, height: self.imageSize)
+//        view.frame = CGRect(x: 0,y: 0,width: self.imageSize, height: self.imageSize)
         return view
     }()
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var outSize = size
-        outSize.height = self.layout.size.height
-        return outSize
+        
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
     
-    lazy var layout: ViewLayout = {
+    lazy var layout: HorizontalViewLayout = {
         return HorizontalViewLayout(hostView: self,
                                     insets: UIEdgeInsets(top: 2, left: 20, bottom: 10, right: 0),
                                     spacing: UIOffset(horizontal: 20, vertical: 20))
         
     }()
+
+    override func updateConstraints() {
+        super.updateConstraints()
+
+        self.layout.updateConstraints()
+        self.invalidateIntrinsicContentSize()
+    }
 
 
 }

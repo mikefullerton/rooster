@@ -20,11 +20,12 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserView
     init(frame: CGRect, delegate: SoundChoicesViewDelegate) {
         self.delegate = delegate
         super.init(frame: frame,
-                   title: "SOUNDS".localized)
+                   title: "SOUNDS".localized,
+                   insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 0))
         
-        self.layout.addSubview(self.firstSoundChoice)
-        self.layout.addSubview(self.secondSoundChoice)
-        self.layout.addSubview(self.thirdSoundChoice)
+        self.addContainedView(self.firstSoundChoice)
+        self.addContainedView(self.secondSoundChoice)
+        self.addContainedView(self.thirdSoundChoice)
     }
     
     required init?(coder: NSCoder) {
@@ -32,25 +33,25 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserView
     }
     
     lazy var firstSoundChoice: SingleSoundChoiceView = {
-        let view = SingleSoundChoiceView(frame: self.bounds,
-                                   soundPreferenceIndex: .sound1,
-                                   delegate: self)
+        let view = SingleSoundChoiceView(frame: CGRect.zero,
+                                         soundPreferenceIndex: .sound1,
+                                         delegate: self)
         
         return view
     }()
-
+    
     lazy var secondSoundChoice: SingleSoundChoiceView = {
-        let view = SingleSoundChoiceView(frame: self.bounds,
-                                   soundPreferenceIndex: .sound2,
-                                   delegate: self)
-
+        let view = SingleSoundChoiceView(frame: CGRect.zero,
+                                         soundPreferenceIndex: .sound2,
+                                         delegate: self)
+        
         return view
     }()
-
+    
     lazy var thirdSoundChoice: SingleSoundChoiceView = {
-        let view = SingleSoundChoiceView(frame: self.bounds,
-                                   soundPreferenceIndex: .sound3,
-                                   delegate: self)
+        let view = SingleSoundChoiceView(frame: CGRect.zero,
+                                         soundPreferenceIndex: .sound3,
+                                         delegate: self)
 
         
         return view
@@ -58,7 +59,7 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserView
     
     func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: UIButton) {
         if let delegate = self.delegate {
-            let chooser = ModalSoundChooserViewController(withSoundPreferenceIndex: view.index)
+            let chooser = SoundChooserViewController(withSoundPreferenceIndex: view.index)
             chooser.delegate = self
             
             let presentingViewController = delegate.soundChoicesViewPresentingViewController(self)

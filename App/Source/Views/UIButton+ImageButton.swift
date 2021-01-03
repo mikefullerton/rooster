@@ -29,27 +29,29 @@ extension UIButton {
 
 class CustomButton : UIButton {
     
-    var preferredSize:CGSize? = nil {
-        didSet {
-            if let preferredSize = self.preferredSize {
-                var frame = self.frame
-                frame.size = preferredSize
-                self.frame = frame
-            }
-        }
-    }
+    var preferredSize:CGSize = CGSize.zero
+//    {
+//        didSet {
+//            var frame = self.frame
+//            frame.size = self.preferredSize
+//            self.frame = frame
+//        }
+//    }
     
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return self.preferredSize ?? super.sizeThatFits(size)
-    }
-    
-    override func sizeToFit() {
-        if let preferredSize = self.preferredSize {
-            var frame = self.frame
-            frame.size = preferredSize
-            self.frame = frame
-        } else {
-            super.sizeToFit()
-        }
-    }
+//    override func sizeThatFits(_ size: CGSize) -> CGSize {
+//        
+//        let size = self.preferredSize
+//        
+//        if size.equalTo(CGSize.zero) {
+//            return super.sizeThatFits(size)
+//        }
+//        
+//        return size
+//    }
+//    
+//    override func sizeToFit() {
+//        var frame = self.frame
+//        frame.size = self.preferredSize
+//        self.frame = frame
+//    }
 }

@@ -8,48 +8,47 @@
 import Foundation
 import UIKit
 
-struct HorizontallyOpposedLayout: ViewLayout {
+class HorizontallyOpposedLayout: ViewLayout {
+    
     
     let hostView: UIView
     let insets:UIEdgeInsets
     let spacing:UIOffset
     
-    private func updateLayout() {
-        
-        let subviews = self.hostView.subviews
-        
-        if subviews.count < 2 {
-            return
-        }
-        
-        for view in subviews {
-            NSLayoutConstraint.deactivate(view.constraints)
-        }
-        
+    private(set) var didSetConstraints = false
+    private(set) var views: [UIView]
+    
+    init(hostView view: UIView,
+         insets: UIEdgeInsets,
+         spacing: UIOffset) {
+        self.hostView = view
+        self.insets = insets
+        self.spacing = spacing
+        self.views = []
+    }
+
+    private func setSubviewConstraints() {
         var lastView: UIView? = nil
         
-        for (index, view) in subviews.reversed().enumerated() {
-            let size = view.sizeThatFits(self.hostView.frame.size)
-
+        for (index, view) in self.views.reversed().enumerated() {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            
             NSLayoutConstraint.activate([
                 view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
-                view.heightAnchor.constraint(equalToConstant: size.height),
             ])
 
             if index == 0 {
                 NSLayoutConstraint.activate([
-                    view.widthAnchor.constraint(equalToConstant: size.width),
                     view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right)
                 ])
             } else if let nextToView = lastView {
-                if index == subviews.count - 1 {
+                if index == self.views.count - 1 {
                     NSLayoutConstraint.activate([
                         view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left),
                         view.trailingAnchor.constraint(equalTo: nextToView.leadingAnchor, constant: -self.spacing.horizontal)
                     ])
                 } else {
                     NSLayoutConstraint.activate([
-                        view.widthAnchor.constraint(equalToConstant: size.width),
                         view.trailingAnchor.constraint(equalTo: nextToView.leadingAnchor, constant: -self.spacing.horizontal)
                     ])
                 }
@@ -59,10 +58,21 @@ struct HorizontallyOpposedLayout: ViewLayout {
         }
     }
     
-    func addSubview(_ view: UIView) {
-        self.hostView.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        self.updateLayout()
+    func updateConstraints() {
+        if !self.didSetConstraints {
+            self.didSetConstraints = true
+            self.setSubviewConstraints()
+        }
+    }
+
+    func addView(_ view: UIView) {
+        self.views.append(view)
+        self.hostView.invalidateIntrinsicContentSize()
+        self.hostView.setNeedsUpdateConstraints()
+    }
+
+    var intrinsicContentSize: CGSize {
+        return self.horizontalLayoutIntrinsicContentSize
     }
 }
 

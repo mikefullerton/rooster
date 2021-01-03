@@ -9,7 +9,7 @@ import Foundation
 
 extension EventKitDataModel {
 
-    private func nextAlarmDateForSchedulingTimer(forItems items: [Alarmable]) -> Date? {
+    private func nextAlarmDateForSchedulingTimer(forItems items: [EventKitItem]) -> Date? {
         let now = Date()
         var nextDate = now.tomorrow
         

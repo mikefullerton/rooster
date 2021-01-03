@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 class ReminderTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
+    
+    typealias DataType = EventKitReminder
+    
     private var reminder: EventKitReminder? = nil
     
     private var leftView: LeftSideContentView
@@ -40,8 +43,8 @@ class ReminderTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
         self.rightView.prepareForReuse()
     }
     
-    func setReminder(_ reminder: EventKitReminder) {
-
+    func configureCell(withData reminder: EventKitReminder, indexPath: IndexPath, isSelected: Bool) {
+    
         self.reminder = reminder
         
         self.updateCalendarBar(withCalendar: reminder.calendar)

@@ -15,7 +15,10 @@ class TopBar : UIView {
     let preferredHeight:CGFloat = 40
     
     init(frame: CGRect, title: String) {
-        super.init(frame: frame)
+        var newFrame = frame
+        newFrame.size.height = self.preferredHeight
+        
+        super.init(frame: newFrame)
 
         self.backgroundColor = UIColor.clear
 
@@ -73,14 +76,13 @@ class TopBar : UIView {
         view.addSubview(self)
 
         self.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: self.preferredHeight),
             self.topAnchor.constraint(equalTo: view.topAnchor),
             self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             self.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
     }
     
 }

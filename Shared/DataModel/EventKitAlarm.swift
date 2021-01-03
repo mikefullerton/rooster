@@ -1,5 +1,5 @@
 //
-//  Alarmable.swift
+//  EventKitItem.swift
 //  Rooster (iOS)
 //
 //  Created by Mike Fullerton on 12/5/20.
@@ -17,8 +17,6 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
         case disabled = "disabled"
     }
 
-    let state: State
-    
     let originalStartDate: Date
     let originalEndDate: Date?
     
@@ -28,8 +26,10 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
     let startDate: Date
     let endDate: Date?
     
-    let isEnabled: Bool
-    let snoozeInterval: TimeInterval
+    // modifiable
+    var state: State
+    var isEnabled: Bool
+    var snoozeInterval: TimeInterval
     
     init(withState state: State,
          startDate originalStartDate: Date,
@@ -59,22 +59,6 @@ struct EventKitAlarm: Equatable, CustomStringConvertible {
                 lhs.isEnabled == rhs.isEnabled
     }
     
-    func alarmWithUpdatedState(_ state: State) -> EventKitAlarm {
-        return EventKitAlarm(withState: state,
-                             startDate: self.originalStartDate,
-                             endDate: self.originalEndDate,
-                             isEnabled: self.isEnabled,
-                             snoozeInterval: self.snoozeInterval)
-    }
-
-    func alarmWithSnoozedInterval(_ snoozeInterval: TimeInterval) -> EventKitAlarm {
-        return EventKitAlarm(withState: .neverFired,
-                             startDate: self.originalStartDate,
-                             endDate: self.originalEndDate,
-                             isEnabled: self.isEnabled,
-                             snoozeInterval: self.snoozeInterval + snoozeInterval)
-    }
-
     var description: String {
         var formatter = StringFormatter(withTitle: "EventKitAlarm")
         formatter.append("State", self.state)

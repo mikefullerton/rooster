@@ -20,7 +20,7 @@ class DemoAlarmNotification : AlarmNotification {
         return false
     }
 
-    override var item: Alarmable? {
+    override var item: EventKitItem? {
         return self.demoEvent
     }
         

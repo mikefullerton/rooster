@@ -11,31 +11,69 @@ import UIKit
 protocol ViewLayout {
     var insets:UIEdgeInsets { get }
     var spacing:UIOffset { get }
-    var size: CGSize { get }
+    var intrinsicContentSize: CGSize { get }
     var hostView: UIView { get }
     
-    func addSubview(_ view: UIView)
+    var didSetConstraints: Bool { get }
+    func updateConstraints()
+    
+    var views: [UIView] { get }
+    func addView(_ view: UIView)
+    
 }
 
 extension ViewLayout {
-    var size: CGSize {
-        self.hostView.setNeedsLayout()
-        self.hostView.layoutIfNeeded()
+    
+    var horizontalLayoutIntrinsicContentSize: CGSize {
+
+        if !self.didSetConstraints {
+            return CGSize.zero
+        }
+
+        var outSize = CGSize.zero
+
+        for view in self.views {
+            let size = view.intrinsicContentSize
+            
+            if size.height > outSize.height {
+                outSize.height = size.height
+            }
+            
+            outSize.width += size.width
+        }
+        
+        outSize.height += self.insets.top + self.insets.bottom
+        outSize.width += self.insets.left + self.insets.right
+
+//        outSize.height += (self.spacing.vertical * CGFloat(self.views.count - 1))
+        outSize.width += (self.spacing.horizontal * CGFloat(self.views.count - 1))
+
+        return outSize
+    }
+    
+    var verticalLayoutIntrinsicContentSize: CGSize {
+        
+        if !self.didSetConstraints {
+            return CGSize.zero
+        }
         
         var outSize = CGSize.zero
 
-        for view in self.hostView.subviews {
-            if view.frame.maxY > outSize.height {
-                outSize.height = view.frame.maxY
-            }
+        for view in self.views {
+            let size = view.intrinsicContentSize
+            outSize.height += size.height
             
-            if view.frame.maxX > outSize.width {
-                outSize.width = view.frame.maxX
+            if size.width > outSize.width {
+                outSize.width = size.width
             }
         }
         
-        outSize.height += self.insets.bottom
-        outSize.width += self.insets.right
+        outSize.height += self.insets.top + self.insets.bottom
+        outSize.width += self.insets.left + self.insets.right
+
+        outSize.height += (self.spacing.vertical * CGFloat(self.views.count - 1))
+//        outSize.width += (self.spacing.horizontal * CGFloat(self.views.count - 1))
+
         return outSize
     }
 }

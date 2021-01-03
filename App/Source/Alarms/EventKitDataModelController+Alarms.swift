@@ -26,10 +26,11 @@ extension EventKitDataModelController {
         
         for item in items {
             if item.alarm.state == .firing {
-                let updatedAlarm = item.alarm.alarmWithUpdatedState(.finished)
+                var updatedAlarm = item.alarm
+                updatedAlarm.state = .finished
                 
-                let updatedItem = item.itemWithUpdatedAlarm(updatedAlarm) as! T // wth, why do I need to cast this?
-                
+                var updatedItem = item
+                updatedItem.alarm = updatedAlarm
                 outList.append(updatedItem)
                 
                 madeChange = true
@@ -63,12 +64,14 @@ extension EventKitDataModelController {
             }
             
             if alarmState != alarm.state {
-                let updatedAlarm = alarm.alarmWithUpdatedState(alarmState)
                 
-                let updatedItem = item.itemWithUpdatedAlarm(updatedAlarm) as! T // wth, why do I need to cast this?
+                var updatedAlarm = alarm
+                updatedAlarm.state = alarmState
                 
+                var updatedItem = item
+                updatedItem.alarm = updatedAlarm
                 outList.append(updatedItem)
-                
+
                 madeChange = true
             } else {
                 outList.append(item)

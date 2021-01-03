@@ -26,10 +26,14 @@ class SingleSoundChoiceView : UIView {
         self.delegate = delegate
         self.index = index
         super.init(frame: frame)
-        
-        self.layout.addSubview(self.checkbox)
-        self.layout.addSubview(self.pencilButton)
-        self.layout.addSubview(self.playButton)
+
+        self.addSubview(self.checkbox)
+        self.addSubview(self.pencilButton)
+        self.addSubview(self.playButton)
+
+        self.layout.addView(self.checkbox)
+        self.layout.addView(self.pencilButton)
+        self.layout.addView(self.playButton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
 
@@ -50,8 +54,8 @@ class SingleSoundChoiceView : UIView {
     }
     
     func setEnabledStates() {
-        self.playButton.isEnabled = self.sound.enabled
-        self.pencilButton.isEnabled = self.sound.enabled
+        self.playButton.isEnabled = true
+        self.pencilButton.isEnabled = true
     }
     
     @objc func checkboxChanged(_ sender: UISwitch) {
@@ -93,22 +97,21 @@ class SingleSoundChoiceView : UIView {
 
     lazy var pencilButton: UIButton = {
         let button = UIButton.createImageButton(withImage: UIImage(systemName: "square.and.pencil"))
+        button.imageView?.tintColor = UIColor.secondaryLabel
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 18), forImageIn: .normal)
         button.frame = CGRect(x: 0, y: 0, width: self.buttonHeight, height: self.buttonHeight)
         button.addTarget(self, action: #selector(editSound(_:)), for: .touchUpInside)
         return button
     }()
 
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var outSize = size
-        outSize.height = self.layout.size.height
-        return outSize
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
 
-    lazy var layout: ViewLayout = {
+    lazy var layout: HorizontallyOpposedLayout = {
         return HorizontallyOpposedLayout(hostView: self,
-                                         insets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 10),
-                                         spacing: UIOffset(horizontal: 4, vertical: 0))
+                                         insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
+                                         spacing: UIOffset(horizontal: 10, vertical: 0))
     }()
 
     func refresh() {
@@ -130,4 +133,12 @@ class SingleSoundChoiceView : UIView {
             self.setEnabledStates()
         }
     }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+        
+        self.layout.updateConstraints()
+    }
+ 
+    
 }

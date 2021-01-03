@@ -9,14 +9,9 @@ import Foundation
 
 struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     
-    typealias ItemType = EventKitReminder
-    
     let calendar: EventKitCalendar
-    
     let id: String
     let ekReminderID: String
-    let isSubscribed: Bool
-    let alarm: EventKitAlarm
     let isCompleted: Bool
     let title: String
     let location: String?
@@ -25,7 +20,11 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
     let noteURLS: [URL]?
     let dueDate: Date
     let startDate: Date
-    
+
+    // modifiable
+    var isSubscribed: Bool
+    var alarm: EventKitAlarm
+
     init(withIdentifier identifier: String,
          ekReminderID: String,
          calendar: EventKitCalendar,
@@ -82,22 +81,10 @@ struct EventKitReminder: Identifiable, Hashable, EventKitItem {
         hasher.combine(self.id)
     }
     
-    func itemWithUpdatedAlarm(_ alarm: EventKitAlarm) -> EventKitReminder {
-        
-        return EventKitReminder(withIdentifier: self.id,
-                                ekReminderID: self.ekReminderID,
-                                calendar: self.calendar,
-                                subscribed: self.isSubscribed,
-                                completed: self.isCompleted,
-                                alarm: alarm,
-                                startDate: self.startDate,
-                                dueDate: self.dueDate,
-                                title: self.title,
-                                location: self.location,
-                                url: self.url,
-                                notes: self.notes,
-                                noteURLS: self.noteURLS)
+    func isEqualTo(_ item: EventKitItem) -> Bool {
+        if let comparingTo = item as? EventKitReminder {
+            return self == comparingTo
+        }
+        return false
     }
-    
-
 }

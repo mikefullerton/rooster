@@ -18,17 +18,17 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let layout = VerticalViewLayout(hostView: self.view,
-                                        insets: UIEdgeInsets(top: self.topBar.preferredHeight + 20, left: 20, bottom: 20, right: 20),
-                                        spacing: UIOffset(horizontal: 10, vertical: 10))
-        
-        layout.addSubview(self.soundChoices)
-        layout.addSubview(self.notificationChoices)
-        layout.addSubview(self.buttonsContainer)
+        self.view.addSubview(self.soundChoices)
+        self.view.addSubview(self.notificationChoices)
+        self.view.addSubview(self.buttonsContainer)
 
         self.topBar.addToView(self.view)
         self.bottomBar.addToView(self.view)
         self.bottomBar.doneButton.addTarget(self, action: #selector(doneButtonPressed(_:)), for: .touchUpInside)
+        
+        self.layout.addView(self.soundChoices)
+        self.layout.addView(self.notificationChoices)
+        self.layout.addView(self.buttonsContainer)
     }
 
     @objc func doneButtonPressed(_ sender: UIButton) {
@@ -36,8 +36,8 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
     }
     
     lazy var bottomBar = BottomBar(frame: self.view.bounds, withCancelButton: false)
-    lazy var topBar = TopBar(frame: self.view.bounds, title: "Preferences")
     
+    lazy var topBar = TopBar(frame: self.view.bounds, title: "Preferences")
     
     var calculatedSize: CGSize {
         var size:CGSize = CGSize.zero
@@ -48,5 +48,15 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
     
     func soundChoicesViewPresentingViewController(_ view: SoundChoicesView) -> UIViewController {
         return self
+    }
+    
+    lazy var layout = VerticalViewLayout(hostView: self.view,
+                                         insets: UIEdgeInsets(top: self.topBar.preferredHeight + 20, left: 20, bottom: 20, right: 20),
+                                         spacing: UIOffset(horizontal: 10, vertical: 10))
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        
+        self.layout.updateConstraints()
     }
 }

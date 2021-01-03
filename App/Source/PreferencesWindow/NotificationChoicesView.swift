@@ -14,9 +14,9 @@ class NotificationChoicesView : GroupBoxView {
         super.init(frame: frame,
                    title: "NOTIFICATIONS".localized )
         
-        self.layout.addSubview(self.automaticallyOpenLocationURLs)
-        self.layout.addSubview(self.bounceIconInDock)
-        self.layout.addSubview(self.useSystemNotifications)
+        self.addContainedView(self.automaticallyOpenLocationURLs)
+        self.addContainedView(self.bounceIconInDock)
+        self.addContainedView(self.useSystemNotifications)
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +34,6 @@ class NotificationChoicesView : GroupBoxView {
     lazy var useSystemNotifications : NotificationChoiceView = {
         return UseSystemNotificationsChoiceView(frame: self.bounds)
     }()
-    
     
     
 }

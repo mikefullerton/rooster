@@ -17,6 +17,8 @@ struct EventKitDataModel : CustomStringConvertible {
     let events: [EventKitEvent]
     let reminders: [EventKitReminder]
     let calendarLookup: [CalendarID: EventKitCalendar]
+    
+    let allItems: [EventKitItem]
         
     init(calendars: [CalendarSource: [EventKitCalendar]],
          delegateCalendars: [CalendarSource: [EventKitCalendar]],
@@ -28,6 +30,10 @@ struct EventKitDataModel : CustomStringConvertible {
         self.reminders = reminders
         self.calendarLookup = EventKitDataModel.createCalendarLookup(calendars: calendars,
                                                                      delegateCalendars: delegateCalendars)
+    
+        self.allItems = (self.events + self.reminders).sorted(by: { lhs, rhs in
+            return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
+        })
     }
     
     init() {
@@ -36,6 +42,7 @@ struct EventKitDataModel : CustomStringConvertible {
         self.events = []
         self.reminders = []
         self.calendarLookup = [:]
+        self.allItems = []
     }
     
     private static func createCalendarLookup(calendars: [CalendarSource: [EventKitCalendar]],
@@ -91,7 +98,7 @@ struct EventKitDataModel : CustomStringConvertible {
         return nil
     }
     
-    func item(forIdentifier identifer: String) -> Alarmable? {
+    func item(forIdentifier identifer: String) -> EventKitItem? {
         if let event = self.event(forIdentifier: identifer) {
             return event
         }
@@ -100,6 +107,5 @@ struct EventKitDataModel : CustomStringConvertible {
         }
         return nil
     }
-
 }
 

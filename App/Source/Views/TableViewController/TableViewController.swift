@@ -35,6 +35,10 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
         super.viewWillAppear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.viewModel = nil
@@ -100,7 +104,9 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
         self.tableView.register(row.cellClass, forCellReuseIdentifier: row.cellReuseIdentifer)
     
         if let cell = tableView.dequeueReusableCell(withIdentifier: row.cellReuseIdentifer)  {
-            row.willDisplay(cell: cell)
+            row.willDisplay(cell: cell,
+                            atIndexPath: indexPath,
+                            isSelected: tableView.indexPathForSelectedRow != nil ? tableView.indexPathForSelectedRow == indexPath : false)
             return cell
         }
         
@@ -109,7 +115,7 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let viewModel = self.viewModel,
-              let tableSection = viewModel[section] else {
+              let tableSection = viewModel.section(forIndex: section) else {
             return 0
         }
         

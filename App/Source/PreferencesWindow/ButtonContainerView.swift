@@ -112,10 +112,8 @@ class ButtonsContainerView : UIView {
         
     } ()
     
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var outSize = size
-//        let layout = ViewLayoutDescriptor.default
-        outSize.height = ButtonsContainerView.buttonSize // + layout.insets.top + layout.insets.bottom
-        return outSize
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: ButtonsContainerView.buttonSize)
     }
+
 }

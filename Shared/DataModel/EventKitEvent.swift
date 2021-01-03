@@ -8,12 +8,8 @@
 import Foundation
 
 struct EventKitEvent: Identifiable, Hashable, EventKitItem {
-    typealias ItemType = EventKitEvent
     
     let calendar: EventKitCalendar
-    
-    let isSubscribed: Bool
-    let alarm: EventKitAlarm
     
     let startDate: Date
     let endDate: Date
@@ -26,6 +22,10 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
     let notes: String?
     let noteURLS: [URL]?
 
+    // modifiable
+    var isSubscribed: Bool
+    var alarm: EventKitAlarm
+    
     init(withIdentifier identifier: String,
          ekEventID: String,
          calendar: EventKitCalendar,
@@ -82,20 +82,11 @@ struct EventKitEvent: Identifiable, Hashable, EventKitItem {
         hasher.combine(self.id)
     }
     
-    func itemWithUpdatedAlarm(_ alarm: EventKitAlarm) -> EventKitEvent {
-        return EventKitEvent(withIdentifier: self.id,
-                             ekEventID: self.ekEventID,
-                             calendar: self.calendar,
-                             subscribed: self.isSubscribed,
-                             alarm: alarm,
-                             startDate: self.startDate,
-                             endDate: self.endDate,
-                             title: self.title,
-                             location: self.location,
-                             url: self.url,
-                             notes: self.notes,
-                             noteURLS: self.noteURLS,
-                             organizer: self.organizer)
+    func isEqualTo(_ item: EventKitItem) -> Bool {
+        if let comparingTo = item as? EventKitEvent {
+            return self == comparingTo
+        }
+        return false
     }
 }
 
