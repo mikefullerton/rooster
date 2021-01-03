@@ -32,10 +32,6 @@ if [[ "${GIT_STATUS}" != *"nothing to commit"* ]]; then
     exit 1
 fi
 
-exit 0
-
-#set -x
-
 function get_version_number() {
     local SHORT_VERSION="$(defaults read "${INFO_FILE_PATH}" CFBundleShortVersionString)" || {
         echo "Unable to read CFBundleShortVersionString from file: ${INFO_FILE_PATH}"
@@ -98,9 +94,26 @@ write_build_number_to_file "${INFO_FILE_PATH}"
 write_build_number_to_file "${PLUGIN_INFO_FILE_PATH}"
 
 cd "${MY_PATH}/.."
-git add "${INFO_FILE_PATH}"
-git add "${PLUGIN_INFO_FILE_PATH}"
-git commit -m "Version ${VERSION_NUMBER}.${BUILD_NUMBER}"
+git add "${INFO_FILE_PATH}" || {
+    echo "Adding ${INFO_FILE_PATH} to git failed"
+    exit 1
+}
+git add "${PLUGIN_INFO_FILE_PATH}" || {
+    echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
+    exit 1
+}
+git commit -m "Version ${VERSION_NUMBER}.${BUILD_NUMBER}" || {
+    echo "Commiting updated plist files failed"
+    exit 1
+}
 
+echo "Committed plist files to git ok"
 
+GIT_TAG="Release-${VERSION_NUMBER}.${BUILD_NUMBER}"
+git tag -a "${GIT_TAG}" || {
+    echo "Tagging release failed"
+    exit 1
+}
+
+echo "Tagged release ok: ${GIT_TAG}"
 
