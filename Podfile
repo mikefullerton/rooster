@@ -2,7 +2,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 project 'Rooster'
-inhibit_all_warnings!
+#inhibit_all_warnings!
 use_frameworks!
 use_modular_headers!
 
@@ -19,9 +19,11 @@ target 'RoosterAppKitPlugin' do
   post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-        config.build_settings.delete 'MACOSX_DEPLOYMENT_TARGET'
-        config.build_settings.delete 'ARCHS'
-      
+        config.build_settings['EXCLUDED_ARCHS'] = 'arm64e'
+        config.build_settings['SDKROOT'] = 'macosx.internal'
+        config.build_settings['ARCHS'] = '$(ARCHS_STANDARD)'
+        config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = 11.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = 14.0
     end
   end
 end

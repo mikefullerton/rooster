@@ -13,10 +13,11 @@ protocol Loggable {
 }
 
 extension Loggable {
+    
     static var logger : Logger {
         let bundleIdentifier = Bundle.main.bundleIdentifier ?? "nil"
-        let type = "\(type(of: self))".replacingOccurrences(of: ".Type", with: "")
-        return Logger(subsystem: bundleIdentifier, category: type)
+        let category = "\(type(of: self))".replacingOccurrences(of: ".Type", with: "")
+        return Logger(subsystem: bundleIdentifier, category: category)
     }
     
     var logger: Logger {

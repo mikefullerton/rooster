@@ -65,7 +65,7 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
         self.logger.debug("Application is terminating")
         
 //        self.autoSaveNames.removeAll()
-        NotificationCenter.default.removeObserver(self)
+//        NotificationCenter.default.removeObserver(self)
     }
     
     func restoreWindowPosition(forWindow uiWindow: Any, windowName name: String) {
