@@ -103,6 +103,10 @@ git add "${PLUGIN_INFO_FILE_PATH}" || {
     exit 1
 }
 
+git status
+
+exit 0
+
 GIT_TAG="v${VERSION_NUMBER}.${BUILD_NUMBER}"
 
 git commit -m "Updated plist files for release: ${GIT_TAG}" || {
