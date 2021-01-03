@@ -23,6 +23,17 @@ PLUGIN_DIR="`( cd "$MY_PATH/../AppKitPlugin" && pwd )`" || {
 
 PLUGIN_INFO_FILE_PATH="${PLUGIN_DIR}/Info.plist"
 
+GIT_STATUS="`( cd "$MY_PATH/.." && git status )`"
+
+#echo "$GIT_STATUS"
+
+if [[ "${GIT_STATUS}" != *"nothing to commit"* ]]; then
+    echo "Please commit changes before building a release!"
+    exit 1
+fi
+
+exit 0
+
 #set -x
 
 function get_version_number() {
