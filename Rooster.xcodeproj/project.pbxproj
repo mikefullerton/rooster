@@ -68,6 +68,7 @@
 		B233C45425A0FA13005A7FB3 /* TableViewRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C45325A0FA13005A7FB3 /* TableViewRowCell.swift */; };
 		B233C52E25A23A8D005A7FB3 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B28661CB258E8B2100D3A538 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
+		B233C54825A282A5005A7FB3 /* Sound+DisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */; };
 		B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B256BC08258025EC00FA67DC /* CalendarsPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */; };
@@ -342,6 +343,7 @@
 		B233C4B325A224F8005A7FB3 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B233C52625A22FA7005A7FB3 /* IncrementVersion.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = IncrementVersion.sh; path = "Other Files/IncrementVersion.sh"; sourceTree = SOURCE_ROOT; };
 		B233C54325A24ACD005A7FB3 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = file; name = dsa_pub.pem; path = "Other Files/dsa_pub.pem"; sourceTree = SOURCE_ROOT; };
+		B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sound+DisplayName.swift"; sourceTree = "<group>"; };
 		B236FCD5255EFE0A00A2E58D /* EventKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chickens.mp3; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 				B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */,
 				B21DA22A259D398A002A56C8 /* BottomBar.swift */,
 				B21DA22E259D3B3A002A56C8 /* TopBar.swift */,
+				B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */,
 			);
 			path = PreferencesWindow;
 			sourceTree = "<group>";
@@ -1357,6 +1360,7 @@
 				B25B65EB258CFDB20006B771 /* AppKitPluginController.swift in Sources */,
 				B2E78A19259562A000DF0ACF /* URL+Utilities.swift in Sources */,
 				B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */,
+				B233C54825A282A5005A7FB3 /* Sound+DisplayName.swift in Sources */,
 				B2A181932597C4A300C1E7F0 /* DemoAlarmNotification.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,

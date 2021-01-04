@@ -20,7 +20,7 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     init(withPreference preference: SoundPreference) {
         self.sounds = AVAlarmSound.alarmSounds(withURLs: preference.soundURLs)
     
-        self.name = preference.sounds.map { $0.name }.joined(separator: ":")
+        self.name = preference.sounds.map { $0.fileName }.joined(separator: ":")
         self.behavior = AlarmSoundBehavior()
         self.identifier = ""
     }
@@ -61,7 +61,7 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
         return 0
     }
 
-    func playNextSound() {
+    private func playNextSound() {
         self.currentSoundIndex += 1
         
         if self.currentSoundIndex >= self.sounds.count {

@@ -35,7 +35,7 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    lazy var bottomBar = BottomBar(frame: self.view.bounds, withCancelButton: false)
+    lazy var bottomBar = BottomBar(frame: self.view.bounds)
     
     lazy var topBar = TopBar(frame: self.view.bounds, title: "Preferences")
     

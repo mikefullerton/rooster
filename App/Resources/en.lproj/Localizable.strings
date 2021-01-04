@@ -16,3 +16,14 @@
 "USE_SYSTEM_NOTIFICATIONS" = "Use macOS notifications";
 
 "SOUNDS" = "Sounds";
+
+"FILE_RADAR" = "File Radar";
+"CHECK_FOR_UPDATES" = "Check for updates...";
+
+"CANCEL" = "Cancel";
+"DONE" = "Done";
+"RANDOMIZED" = "Randomize";
+"RANDOM" = "Random";
+
+"SOUND_PICKER" = "Sound Picker";
+

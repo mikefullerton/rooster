@@ -25,8 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     
     enum UserActivities: String {
 //        case preferences = "com.apple.rooster.preferences"
-        case main = "com.apple.rooster.main"
-        case update = "com.apple.rooster.update"
+        case main = "com.commapps.rooster.main"
+        case update = "com.commapps.rooster.update"
+        case fileRadar = "com.commapps.rooster.file-radar"
     }
     
     enum SceneNames: String {
@@ -124,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     }
     
     private var updateMenuItem : UIMenu {
-        let command = UICommand(title: "Check for Updates",
+        let command = UICommand(title: "CHECK_FOR_UPDATES".localized,
                                 image: nil,
                                 action: #selector(self.checkForUpdates(_:)),
                                 propertyList: nil)
@@ -132,6 +133,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         return UIMenu(title: "",
                           image: nil,
                           identifier: UIMenu.Identifier(UserActivities.update.rawValue),
+                          options: [ UIMenu.Options.displayInline ],
+                          children: [ command ])
+    }
+    
+    @objc private func fileRadar(_ sender: AppDelegate) {
+        //        rdar://new/problem/componentid=1188232
+        
+        UIApplication.shared.open(URL(string: "rdar://new/problem/componentid=1188232")!,
+                                  options: [:],
+                                  completionHandler: nil)
+
+    }
+    
+    private var fileRadarMenuItem: UIMenu {
+
+        let command = UICommand(title: "FILE_RADAR".localized,
+                                image: nil,
+                                action: #selector(self.fileRadar(_:)),
+                                propertyList: nil)
+
+        return UIMenu(title: "",
+                          image: nil,
+                          identifier: UIMenu.Identifier(UserActivities.fileRadar.rawValue),
                           options: [ UIMenu.Options.displayInline ],
                           children: [ command ])
     }
@@ -144,6 +168,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         
         let updateMenuItem = self.updateMenuItem
         builder.insertSibling(updateMenuItem, afterMenu: .about)
+        
+        let fileRadar = self.fileRadarMenuItem
+        builder.insertChild(fileRadar, atEndOfMenu: .help)
         
     }
 

@@ -40,21 +40,14 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.setSelectedRow()
-//        for (index, url) in self.urls.enumerated() {
-//            if url.fileName == sound.name {
-//                self.tableView.selectRow(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .bottom)
-//                break
-//            }
-//        }
     }
     
     func setSelectedRow() {
         let sound = PreferencesController.instance.preferences.sounds[self.soundIndex]
         
         for (index, url) in self.urls.enumerated() {
-            if url.fileName == sound.name {
+            if url == sound.url {
                 self.tableView.selectRow(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .bottom)
                 break
             }
@@ -63,19 +56,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.setSelectedRow()
-
-//        if let selected = self.tableView.indexPathForSelectedRow {
-//            self.tableView.scrollToRow(at: selected, at: .bottom, animated: false)
-//
-//        }
-//
-//        if let cell = self.selectedCell {
-////            cell.becomeFirstResponder()
-//
-//            cell.isHighlighted = true
-//        }
     }
     
     var selectedCell: SoundPickerTableViewCell? {
@@ -87,15 +68,15 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         return nil
     }
     
-    func setChosenSound() {
+    var chosenSound : SoundPreference.Sound? {
         if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
             
             let url = self.urls[selectedIndexPath.item]
             
-            let newSound = SoundPreference.Sound(url: url, enabled: true, random: false)
-            
-            PreferencesController.instance.preferences.sounds[self.soundIndex] = newSound
+            return SoundPreference.Sound(url: url, enabled: true, random: false)
         }
+        
+        return nil
     }
 
     func togglePlayingOnCurrentCell() {
@@ -122,21 +103,4 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
             super.pressesBegan(presses, with: event)
         }
     }
-    
-//    override var keyCommands: [UIKeyCommand]? {
-//
-//        var commands = super.keyCommands
-//
-//        if commands == nil {
-//            commands = []
-//        }
-//
-//        commands!.append(
-//            [UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: .shift, action: #selector(dismiss), discoverabilityTitle: "Close modal view")]
-//        )
-//
-//
-//
-//        return
-//    }
 }

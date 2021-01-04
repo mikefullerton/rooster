@@ -16,10 +16,10 @@ extension SoundPreference.Sound {
     
     init?(withDictionary dictionary: [AnyHashable : Any]) {
     
-        self.url = URL(string:"")
         self.enabled = false
         self.random = false
-
+        self.url = URL(string:"")
+        
         if let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool {
             self.enabled = enabled
         }

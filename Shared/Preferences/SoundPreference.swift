@@ -14,7 +14,7 @@ struct SoundPreference: Sequence {
     
     struct Sound {
         
-        var url: URL?
+        private var _url: URL?
         var enabled: Bool
         var random: Bool
         
@@ -22,13 +22,29 @@ struct SoundPreference: Sequence {
              enabled: Bool,
              random: Bool) {
             
-            self.url = url
+            self._url = url
             self.random = random
             self.enabled = enabled && url != nil
         }
         
-        var name: String {
+        var fileName: String {
+            if self.random {
+                return "Randomized"
+            }
             return self.url?.fileName ?? ""
+        }
+        
+        var url: URL? {
+            get {
+                if self.random {
+                    return URL.randomizedSound
+                }
+                
+                return self._url
+            }
+            set(url) {
+                self._url = url
+            }
         }
         
         static var zero: Sound {
@@ -100,9 +116,15 @@ extension SoundPreference {
         let availableURLs = Bundle.availableSoundResources
         
         for sound in self {
+            
+            if sound.random {
+                outURLs.append(URL.randomizedSound)
+                continue
+            }
+            
             for url in availableURLs {
                 let fileName = url.fileName
-                if fileName == sound.name {
+                if fileName == sound.fileName {
                     outURLs.append(url)
                 }
             }
@@ -128,5 +150,16 @@ extension SoundPreference {
         }
         
         return nil
+    }
+}
+
+extension URL {
+    
+    static var randomizedSound: URL {
+        return URL(string: "rooster://randomized")!
+    }
+    
+    var isRandomizedSound: Bool {
+        return self == URL.randomizedSound
     }
 }

@@ -29,38 +29,16 @@ extension UIButton {
 
 class CustomButton : UIButton {
     
-    var preferredSize:CGSize = CGSize.zero
-//    {
-//        didSet {
-//            var frame = self.frame
-//            frame.size = self.preferredSize
-//            self.frame = frame
-//        }
-//    }
-    
-//    override func sizeThatFits(_ size: CGSize) -> CGSize {
-//        
-//        let size = self.preferredSize
-//        
-//        if size.equalTo(CGSize.zero) {
-//            return super.sizeThatFits(size)
-//        }
-//        
-//        return size
-//    }
-//    
-//    override func sizeToFit() {
-//        var frame = self.frame
-//        frame.size = self.preferredSize
-//        self.frame = frame
-//    }
-    
+    var preferredSize:CGSize = CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric) {
+        didSet {
+            self.invalidateIntrinsicContentSize()
+        }
+    }
+        
     override var intrinsicContentSize: CGSize {
         var size = super.intrinsicContentSize
-        
-        size.width *= 2
-        size.height *= 2
-        
+        size.width = self.preferredSize.width
+        size.height = self.preferredSize.height
         return size
     }
 

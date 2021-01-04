@@ -12,24 +12,33 @@ import UIKit
 class BottomBar : UIView {
     
     let preferredHeight: CGFloat = 60
-    
-    init(frame: CGRect, withCancelButton: Bool) {
-        var newFrame = frame
-        newFrame.size.height = self.preferredHeight
+    let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    let buttonSpacing: CGFloat = 10.0
+    let buttonSize = CGSize(width: 100, height: 60)
 
-        super.init(frame: newFrame)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
         self.backgroundColor = UIColor.clear
 
-        self.addSubview(self.doneButton)
-        self.layout.addView(self.doneButton)
-        if withCancelButton {
-            self.addSubview(self.cancelButton)
-            self.layout.addView(self.cancelButton)
-        }
+        let blurView = self.blurView
+        self.insertSubview(blurView, at: 0)
         
-        self.insertSubview(self.blurView, at: 0)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: self.topAnchor),
+            blurView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            blurView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        ])
         
+        let button = self.doneButton
+        button.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -self.insets.left),
+        ])
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +54,42 @@ class BottomBar : UIView {
         return visualEffectView
     }()
     
-    let buttonSize = CGSize(width: 100, height: 100)
+    func addLeftButton(title: String) -> UIButton {
+        
+        let button = self.leftButton
+        button.setTitle(title, for: .normal)
+        
+        self.addSubview(button)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.insets.left),
+        ])
+        
+        return button
+    }
+    
+    lazy var leftButton: UIButton = {
+        let view = CustomButton(type: .system)
+        view.role = .normal
+        view.preferredSize = self.buttonSize
+
+        return view
+    }()
+
+    func addCancelButton() -> UIButton {
+        let button = self.cancelButton
+        self.addSubview(button)
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            button.trailingAnchor.constraint(equalTo: self.doneButton.leadingAnchor, constant: -self.buttonSpacing),
+        ])
+
+        return button
+    }
     
     lazy var cancelButton: UIButton = {
         let view = CustomButton(type: .system)
@@ -72,31 +116,16 @@ class BottomBar : UIView {
         self.frame = frame
 
         self.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            self.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
     
-    lazy var layout = HorizontalViewLayout(hostView: self,
-                                           insets: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20),
-                                           spacing: UIOffset(horizontal: 10, vertical: 10),
-                                           alignment: .right)
-    
-    override func updateConstraints() {
-        super.updateConstraints()
-
-        NSLayoutConstraint.activate([
-            self.blurView.topAnchor.constraint(equalTo: self.topAnchor),
-            self.blurView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.blurView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.blurView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        ])
-
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: self.preferredHeight),
-            self.bottomAnchor.constraint(equalTo: self.superview!.bottomAnchor),
-            self.leadingAnchor.constraint(equalTo: self.superview!.leadingAnchor),
-            self.trailingAnchor.constraint(equalTo: self.superview!.trailingAnchor)
-        ])
-
-        self.layout.updateConstraints()
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: self.preferredHeight)
     }
-    
+
 }

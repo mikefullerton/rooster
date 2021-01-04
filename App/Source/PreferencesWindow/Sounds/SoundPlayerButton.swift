@@ -98,13 +98,12 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
             if sound.isPlaying {
                 sound.stop()
             } else {
-                self.updateImage(self.muteImage)
                 sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
             }
-        } else if let url = self.url,
-            let sound = AVAlarmSound(withURL: url) {
-            self.sound = sound
+        } else if let url = self.url {
+            let sound = AVAlarmSound(withURL: url) 
             sound.delegate = self
+            self.sound = sound
             
             sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
         }
@@ -144,6 +143,8 @@ class SoundPlayerButton : UIButton, AlarmSoundDelegate {
     }
     
     func soundDidStopPlaying(_ sound: AlarmSound) {
+        
+        self.sound = nil
         self.refresh()
     }
     

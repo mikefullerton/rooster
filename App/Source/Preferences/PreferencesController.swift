@@ -42,7 +42,7 @@ class PreferencesController: ObservableObject, Loggable {
     }
     
     func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
-        return ItemPreference()
+        return ItemPreference(soundPreference: self.preferences.sounds)
     }
     
     private func write() {

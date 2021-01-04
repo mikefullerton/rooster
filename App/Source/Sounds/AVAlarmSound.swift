@@ -30,47 +30,76 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     
     var identifier: String
     
-    private(set) var name: String
     private(set) var behavior: AlarmSoundBehavior
+    let url: URL
     
-    private let url: URL
-    private let player: AVAudioPlayer
+    private var player: AVAudioPlayer?
     private let stopTimer: SimpleTimer
     
     private(set) var isPlaying: Bool
     
-    init?(withURL url: URL) {
-        
-        guard let avFileType = url.AVFileType else {
-            AVAlarmSound.logger.error("Unexpected file type for url: \(url)")
-            return nil
-        }
-        
-        do {
-            self.player = try AVAudioPlayer(contentsOf: url, fileTypeHint: avFileType.rawValue)
-        } catch let error {
-            AVAlarmSound.logger.error("Failed to create sound for url: \(url), with error: \(error.localizedDescription)")
-            return nil
-        }
+    init(withURL url: URL) {
         self.url = url
-        self.name = url.fileName
         self.behavior = AlarmSoundBehavior()
         self.stopTimer = SimpleTimer()
         self.identifier = ""
         self.isPlaying = false
+        self.player = nil
         super.init()
-        self.player.delegate = self
-        self.updateVolume()
         
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
     }
     
     deinit {
-        self.player.stop()
+        if let player = self.player {
+            player.stop()
+        }
     }
     
-    func updateVolume() {
-        self.player.setVolume(PreferencesController.instance.preferences.sounds.volume, fadeDuration: 0)
+    var name: String {
+        if self.url.isRandomizedSound {
+            if let player = self.player {
+                return "randomized: \(player.url!.fileName)"
+            } else {
+                return "randomized: (not loadeded)"
+            }
+        }
+        
+        return self.url.fileName
+    }
+    
+    private func createPlayerIfNeeded() {
+        guard self.player == nil else {
+            return
+        }
+        
+        var url = self.url
+        if url.isRandomizedSound {
+            url = Bundle.availableSoundResources.randomElement()!
+        }
+        
+        guard let avFileType = url.AVFileType else {
+            AVAlarmSound.logger.error("Unexpected file type for url: \(url)")
+            return
+        }
+        
+        do {
+            let player = try AVAudioPlayer(contentsOf: url, fileTypeHint: avFileType.rawValue)
+            player.delegate = self
+            self.player = player
+            
+        } catch let error {
+            AVAlarmSound.logger.error("Failed to create sound for url: \(url), with error: \(error.localizedDescription)")
+            return
+        }
+        
+        self.updateVolume()
+    }
+    
+    private func updateVolume() {
+        if let player = self.player {
+            player.setVolume(PreferencesController.instance.preferences.sounds.volume, fadeDuration: 0)
+        }
     }
     
     @objc func preferencesDidChange(_ sender: Notification) {
@@ -78,19 +107,32 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     }
 
     var volume: Float {
-        return self.player.volume
+        if let player = self.player {
+            return player.volume
+        }
+        return 0
     }
     
     var duration: TimeInterval {
-        return self.player.duration
+        if let player = self.player {
+            return player.duration
+        }
+        
+        return 0
     }
     
     func set(volume: Float, fadeDuration: TimeInterval) {
-        self.player.setVolume(volume, fadeDuration:fadeDuration)
+        if let player = self.player {
+            player.setVolume(volume, fadeDuration:fadeDuration)
+        }
     }
     
     var currentTime: TimeInterval {
-        return self.player.currentTime
+        if let player = self.player {
+            return player.currentTime
+        }
+        
+        return 0
     }
         
     static func == (lhs: AVAlarmSound, rhs: AVAlarmSound) -> Bool {
@@ -98,26 +140,39 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     }
     
     func play(withBehavior behavior: AlarmSoundBehavior) {
+        self.createPlayerIfNeeded()
         self.isPlaying = true
         self.logger.log("Sound will start playing: \(self.name)")
         DispatchQueue.main.async {
-            self.player.numberOfLoops = 0
-            self.player.play()
+            if let player = self.player {
+                player.numberOfLoops = 0
+                player.play()
+            } else {
+                self.didStop()
+            }
         }
     }
     
     func stop() {
-        self.isPlaying = false
-        self.player.stop()
-        self.stopTimer.stop()
-        self.logger.log("Sound aborted: \(self.name)")
+        self.logger.log("Sound will be aborted: \(self.name)")
+        self.didStop()
     }
     
     private func didStop() {
+        self.logger.log("Sound stopped: \(self.name)")
         self.isPlaying = false
+        if let player = self.player {
+            player.stop()
+            
+            if self.url.isRandomizedSound {
+                player.delegate = nil
+                self.player = nil
+            }
+        }
+        self.stopTimer.stop()
+        
         if let delegate = self.delegate {
             delegate.soundDidStopPlaying(self)
-            self.logger.log("Sound stopped and notified delgate: \(self.name)")
         }
     }
     
@@ -146,14 +201,13 @@ extension AVAlarmSound {
     static func alarmSounds(withURLs urls:[URL]) -> [AlarmSound] {
         var sounds:[AlarmSound] = []
         for url in urls {
-            if let alarm = AVAlarmSound(withURL: url) {
-                sounds.append(alarm)
-                AVAlarmSound.logger.error("Loaded sound for URL: \(url)")
-            } else {
-                AVAlarmSound.logger.error("Failed to load sound for URL: \(url)")
-            }
+            let alarm = AVAlarmSound(withURL: url)
+            sounds.append(alarm)
+            AVAlarmSound.logger.error("Loaded sound for URL: \(url)")
         }
         return sounds
     }
     
 }
+
+

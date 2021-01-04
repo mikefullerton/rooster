@@ -68,7 +68,6 @@ class SingleSoundChoiceView : UIView {
     
     lazy var checkbox : UISwitch = {
         let view = UISwitch(frame: self.bounds)
-        view.title = self.sound.name
         
         #if targetEnvironment(macCatalyst)
         view.preferredStyle = .checkbox
@@ -115,11 +114,9 @@ class SingleSoundChoiceView : UIView {
     }()
 
     func refresh() {
-        
-        if let newURL = self.sound.url,
-           newURL.fileName.count > 0 {
-            
-            self.checkbox.title = newURL.fileName
+        let sound = self.sound
+        if let newURL = sound.url {
+            self.checkbox.title = sound.displayName
             self.checkbox.isOn = self.sound.enabled
             self.playButton.url = newURL
         
