@@ -38,12 +38,15 @@ class CalendarChooserViewController : UIViewController {
         
         if let tableView = controller.view as? UITableView {
             tableView.contentInsetAdjustmentBehavior = .never
-            tableView.contentInset = UIEdgeInsets(top: self.calendarChooserView.topBar.intrinsicContentSize.height,
+            
+            let topHeight = self.calendarChooserView.topBar.intrinsicContentSize.height + 1
+            
+            tableView.contentInset = UIEdgeInsets(top: topHeight,
                                                   left: 0,
                                                   bottom: self.calendarChooserView.bottomBar.intrinsicContentSize.height,
                                                   right: 0)
             
-            tableView.contentOffset = CGPoint(x: 0, y: -self.calendarChooserView.topBar.intrinsicContentSize.height)
+            tableView.contentOffset = CGPoint(x: 0, y: -topHeight)
         }
         
         self.view.invalidateIntrinsicContentSize()
