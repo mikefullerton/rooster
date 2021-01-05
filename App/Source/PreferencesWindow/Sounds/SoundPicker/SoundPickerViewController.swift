@@ -28,7 +28,7 @@ class SoundPickerViewController : UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var topBar = TopBar(frame: self.view.bounds, title: "SOUND_PICKER".localized)
+    lazy var topBar = TopBar(frame: self.view.bounds)
     lazy var bottomBar = BottomBar(frame: self.view.bounds)
     lazy var soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
     
@@ -77,6 +77,8 @@ class SoundPickerViewController : UIViewController {
         self.addSoundPicker()
         self.addTopBar()
         self.addBottomBar()
+        
+        self.topBar.addTitleView(withText: "SOUND_PICKER".localized)
     }
 
     func presentInViewController(_ viewController: UIViewController, fromView view: UIView) {

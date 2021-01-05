@@ -74,7 +74,7 @@
 		B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */; };
 		B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
-		B256BC08258025EC00FA67DC /* CalendarsPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */; };
+		B256BC08258025EC00FA67DC /* CalendarChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarChooserViewController.swift */; };
 		B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */; };
 		B256BC16258028BD00FA67DC /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC15258028BD00FA67DC /* CalendarListViewController.swift */; };
 		B256BC1C25802A0000FA67DC /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */; };
@@ -168,7 +168,6 @@
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
 		B2AFE6642569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6632569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
-		B2AFE6892569E286006B3C58 /* AllCalendarsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6882569E286006B3C58 /* AllCalendarsListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
 		B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE690256ACC05006B3C58 /* TableViewController.swift */; };
 		B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */; };
@@ -185,6 +184,9 @@
 		B2D1889A2579405800F812C5 /* EKDataModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D188992579405800F812C5 /* EKDataModelFactory.swift */; };
 		B2D1889E25794AE400F812C5 /* EventKitDataModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1889D25794AE400F812C5 /* EventKitDataModelFactory.swift */; };
 		B2D188A925794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D188A825794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift */; };
+		B2DBBCE725A4BD6800D509C9 /* StartDelayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DBBCE625A4BD6800D509C9 /* StartDelayView.swift */; };
+		B2DBBD0525A4D25600D509C9 /* CalendarToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DBBD0425A4D25600D509C9 /* CalendarToolbarView.swift */; };
+		B2DBBD0925A4DB4100D509C9 /* CalendarChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DBBD0825A4DB4100D509C9 /* CalendarChooserView.swift */; };
 		B2E15137255EED2B002672EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
 		B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E1545D2575B5F3008BE604 /* DividerView.swift */; };
 		B2E154622575B67C008BE604 /* SpacerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E154612575B67C008BE604 /* SpacerView.swift */; };
@@ -356,7 +358,7 @@
 		B236FCD5255EFE0A00A2E58D /* EventKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chickens.mp3; sourceTree = "<group>"; };
-		B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarsPopOverViewController.swift; sourceTree = "<group>"; };
+		B256BC07258025EC00FA67DC /* CalendarChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChooserViewController.swift; sourceTree = "<group>"; };
 		B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC15258028BD00FA67DC /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewModel.swift; sourceTree = "<group>"; };
@@ -441,7 +443,6 @@
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		B2AFE6632569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitDataModel+EventUtilities.swift"; sourceTree = "<group>"; };
 		B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
-		B2AFE6882569E286006B3C58 /* AllCalendarsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCalendarsListViewController.swift; sourceTree = "<group>"; };
 		B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
 		B2AFE690256ACC05006B3C58 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewModel.swift; sourceTree = "<group>"; };
@@ -461,6 +462,9 @@
 		B2D188992579405800F812C5 /* EKDataModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKDataModelFactory.swift; sourceTree = "<group>"; };
 		B2D1889D25794AE400F812C5 /* EventKitDataModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitDataModelFactory.swift; sourceTree = "<group>"; };
 		B2D188A825794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventKitDataModelFactory+IntermediateDataModel.swift"; sourceTree = "<group>"; };
+		B2DBBCE625A4BD6800D509C9 /* StartDelayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDelayView.swift; sourceTree = "<group>"; };
+		B2DBBD0425A4D25600D509C9 /* CalendarToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarToolbarView.swift; sourceTree = "<group>"; };
+		B2DBBD0825A4DB4100D509C9 /* CalendarChooserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChooserView.swift; sourceTree = "<group>"; };
 		B2E15121255EED2B002672EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2E15122255EED2B002672EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2E15127255EED2B002672EC /* Rooster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rooster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -623,6 +627,7 @@
 				B2A181BF2598125800C1E7F0 /* SoundPreferencesView.swift */,
 				B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */,
 				B260C83425A3D76400C03B2E /* SoundRepeatView.swift */,
+				B2DBBCE625A4BD6800D509C9 /* StartDelayView.swift */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -754,7 +759,9 @@
 		B286627D258EC5B700D3A538 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B2AFE696256AD0C1006B3C58 /* Calendars */,
 				B2C7423D2577225E006645A0 /* PreferencesWindow */,
+				B2F6B48625618787000BC78E /* EventListViewController */,
 				B2E1549225768619008BE604 /* Views */,
 				B2F6B50D2562F20E000BC78E /* MainWindow */,
 				B2F6B4F52562DD01000BC78E /* Utilities */,
@@ -899,17 +906,18 @@
 			path = "F SwiftUI";
 			sourceTree = "<group>";
 		};
-		B2AFE696256AD0C1006B3C58 /* CalendarList */ = {
+		B2AFE696256AD0C1006B3C58 /* Calendars */ = {
 			isa = PBXGroup;
 			children = (
-				B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */,
-				B2AFE6882569E286006B3C58 /* AllCalendarsListViewController.swift */,
+				B256BC07258025EC00FA67DC /* CalendarChooserViewController.swift */,
+				B2DBBD0825A4DB4100D509C9 /* CalendarChooserView.swift */,
 				B256BC15258028BD00FA67DC /* CalendarListViewController.swift */,
 				B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */,
 				B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */,
 				B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */,
+				B2DBBD0425A4D25600D509C9 /* CalendarToolbarView.swift */,
 			);
-			path = CalendarList;
+			path = Calendars;
 			sourceTree = "<group>";
 		};
 		B2AFE6B9256AE400006B3C58 /* TableViewController */ = {
@@ -930,9 +938,6 @@
 				B2A181C32598134A00C1E7F0 /* NotificationChoicesView.swift */,
 				B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */,
 				B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */,
-				B21DA22A259D398A002A56C8 /* BottomBar.swift */,
-				B21DA22E259D3B3A002A56C8 /* TopBar.swift */,
-				B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */,
 			);
 			path = PreferencesWindow;
 			sourceTree = "<group>";
@@ -995,6 +1000,9 @@
 		B2E1549225768619008BE604 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B21DA22A259D398A002A56C8 /* BottomBar.swift */,
+				B21DA22E259D3B3A002A56C8 /* TopBar.swift */,
+				B2965571257C36B1008D1858 /* EventKitTableView */,
 				B260C82825A3B7C500C03B2E /* ContentViewButton.swift */,
 				B21DA1C1259BFC75002A56C8 /* SoundPlayerButton.swift */,
 				B2A181CF259907B700C1E7F0 /* TipView.swift */,
@@ -1012,7 +1020,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		B2F6B48625618787000BC78E /* EventList */ = {
+		B2F6B48625618787000BC78E /* EventListViewController */ = {
 			isa = PBXGroup;
 			children = (
 				B296555D257C303A008D1858 /* Reminders */,
@@ -1021,7 +1029,7 @@
 				B2F817FB2576ABD900B28119 /* MainEventListViewController.swift */,
 				B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */,
 			);
-			path = EventList;
+			path = EventListViewController;
 			sourceTree = "<group>";
 		};
 		B2F6B4872561879D000BC78E /* DataModel */ = {
@@ -1055,6 +1063,7 @@
 		B2F6B4F52562DD01000BC78E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */,
 				B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */,
 				B2866250258EC04D00D3A538 /* EventKitCalendar+UIColor.swift */,
 				B21DA1A3259BB722002A56C8 /* String+Localized.swift */,
@@ -1066,9 +1075,6 @@
 		B2F6B50D2562F20E000BC78E /* MainWindow */ = {
 			isa = PBXGroup;
 			children = (
-				B2965571257C36B1008D1858 /* EventKitTableView */,
-				B2AFE696256AD0C1006B3C58 /* CalendarList */,
-				B2F6B48625618787000BC78E /* EventList */,
 				B227DF2825680C970002C127 /* MainViewController.swift */,
 				B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */,
 			);
@@ -1380,7 +1386,6 @@
 				B2A181C42598134A00C1E7F0 /* NotificationChoicesView.swift in Sources */,
 				B2F6B49725619705000BC78E /* AlarmScheduler.swift in Sources */,
 				B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */,
-				B2AFE6892569E286006B3C58 /* AllCalendarsListViewController.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
 				B2F6B51E256433F3000BC78E /* AVAlarmSound.swift in Sources */,
 				B2965512257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift in Sources */,
@@ -1392,6 +1397,7 @@
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,
 				B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */,
+				B2DBBCE725A4BD6800D509C9 /* StartDelayView.swift in Sources */,
 				B2A181B8259810D200C1E7F0 /* UIButton+ImageButton.swift in Sources */,
 				B2020A9E2577D88600F478CC /* Reloader.swift in Sources */,
 				B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */,
@@ -1424,11 +1430,12 @@
 				B2AFE6642569B1B0006B3C58 /* EventKitDataModel+EventUtilities.swift in Sources */,
 				B2F817E925768E4300B28119 /* TableViewRow.swift in Sources */,
 				B2F817DD25768E1700B28119 /* TableViewModelProtocol.swift in Sources */,
-				B256BC08258025EC00FA67DC /* CalendarsPopOverViewController.swift in Sources */,
+				B256BC08258025EC00FA67DC /* CalendarChooserViewController.swift in Sources */,
 				B2F6B49B25619A34000BC78E /* EventKitEvent.swift in Sources */,
 				B2D188A925794C0C00F812C5 /* EventKitDataModelFactory+IntermediateDataModel.swift in Sources */,
 				B2A181AC2597FC9600C1E7F0 /* AlarmNotification.swift in Sources */,
 				B21DA1BC259BE5B5002A56C8 /* SoundPickerTableViewCell.swift in Sources */,
+				B2DBBD0925A4DB4100D509C9 /* CalendarChooserView.swift in Sources */,
 				B20AACD92594F9C300F9B50C /* EventKitItem.swift in Sources */,
 				B2E78A2E259654D500DF0ACF /* CheckBox.swift in Sources */,
 				B2A58B732593B99100188584 /* TimeRemainingViewController_iOS.swift in Sources */,
@@ -1482,6 +1489,7 @@
 				B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */,
 				B20AACDD2594FDE800F9B50C /* Loggable.swift in Sources */,
 				B2A181112597B18600C1E7F0 /* Buttons.swift in Sources */,
+				B2DBBD0525A4D25600D509C9 /* CalendarToolbarView.swift in Sources */,
 				B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */,
 				B2A181C02598125800C1E7F0 /* SoundPreferencesView.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,

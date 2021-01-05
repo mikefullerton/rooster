@@ -93,7 +93,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     }
 
     @objc func calendarsButtonClicked(_ sender: Any) {
-        self.navigationViewController.pushViewController(CalendarsPopOverViewController(), animated: true)
+        self.navigationViewController.pushViewController(CalendarChooserViewController(), animated: true)
     }
 
     
@@ -207,56 +207,24 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
                 
             })
         } else {
-            let viewController = CalendarsPopOverViewController()
-            viewController.preferredContentSize = viewController.calculatedSize
-            self.showPopover(for: viewController,
-                             fromView: self.calendarButtonSourceView)
-        }
-    }
-
-    lazy var preferencesButtonSourceView: UIView = {
-        let view = UIView(frame: CGRect(x:0, y: 35, width:10, height: 10))
-        self.view.addSubview(view)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
-            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35.0),
-            view.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -72.0)
-        ])
-        
-        return view
-    }()
-    
-    @objc func togglePreferencesPopover(_ sender: Any?) {
-        
-        if self.presentedViewController != nil {
-            self.presentedViewController?.dismiss(animated: true, completion: {
-                
-            })
-        } else {
-            let viewController = PreferencesViewController()
+            let viewController = CalendarChooserViewController()
+//            self.showPopover(for: viewController,
+//                             fromView: self.calendarButtonSourceView)
             
-            viewController.modalPresentationStyle = .pageSheet
-            
-
-//            if let presentationController = viewController.popoverPresentationController {
-////                presentationController.permittedArrowDirections = .up
-////                presentationController.sourceView = view
-//                presentationController.canOverlapSourceViewRect = true
-//            }
-
+            viewController.modalPresentationStyle = .formSheet
             self.present(viewController, animated: true) {
             }
-            
-//            viewController.preferredContentSize = viewController.calculatedSize
-//            self.showPopover(for: viewController,
-//                             fromView: self.preferencesButtonSourceView)
+
         }
     }
 
+    @objc func togglePreferencesPopover(_ sender: Any?) {
+        let viewController = PreferencesViewController()
+        
+        viewController.modalPresentationStyle = .formSheet
+        self.present(viewController, animated: true) {
+        }
+    }
     
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         let identifiers: [NSToolbarItem.Identifier] = [

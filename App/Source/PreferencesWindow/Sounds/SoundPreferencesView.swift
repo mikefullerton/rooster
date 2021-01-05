@@ -17,16 +17,15 @@ class SoundPreferencesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooser
     
     weak var delegate: SoundChoicesViewDelegate?
 
-    init(frame: CGRect, delegate: SoundChoicesViewDelegate) {
-        self.delegate = delegate
+    init(frame: CGRect) {
         super.init(frame: frame,
                    title: "SOUNDS".localized)
         
         self.addContainedView(self.firstSoundChoice)
         self.addContainedView(self.secondSoundChoice)
         self.addContainedView(self.thirdSoundChoice)
-        
-//
+
+        self.addContainedView(self.startDelayView)
         self.addContainedView(self.soundRepeatView)
         self.addContainedView(self.soundVolumeView)
     }
@@ -79,6 +78,15 @@ class SoundPreferencesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooser
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+
+    lazy var startDelayView: StartDelayView = {
+        var view = StartDelayView(  fixedLabelWidth: self.fixedLabelWidth,
+                                     sliderRightInset: self.sliderRightInset)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     
     func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: UIButton) {
         if let delegate = self.delegate {
