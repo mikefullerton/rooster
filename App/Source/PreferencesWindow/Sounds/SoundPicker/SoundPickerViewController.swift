@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 protocol SoundChooserViewControllerDelegate : AnyObject {
-    func soundChooserViewControllerWillDismiss(_ controller: SoundChooserViewController)
-    func soundChooserViewControllerWasDismissed(_ controller: SoundChooserViewController)
+    func soundChooserViewControllerWillDismiss(_ controller: SoundPickerViewController)
+    func soundChooserViewControllerWasDismissed(_ controller: SoundPickerViewController)
 }
 
-class SoundChooserViewController : UIViewController {
+class SoundPickerViewController : UIViewController {
     
     weak var delegate: SoundChooserViewControllerDelegate?
     
@@ -21,7 +21,6 @@ class SoundChooserViewController : UIViewController {
     
     init(withSoundPreferenceIndex index: SoundPreference.SoundIndex) {
         self.soundPreferenceIndex = index
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,7 +33,6 @@ class SoundChooserViewController : UIViewController {
     lazy var soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
     
     func addSoundPicker() {
-        
         let soundPicker = self.soundPicker
         
         self.addChild(soundPicker)
@@ -58,12 +56,6 @@ class SoundChooserViewController : UIViewController {
     }
     
     @objc func cancelButtonClicked(_ sender: UIButton) {
-        
-        self.dismiss(animated: true, completion: nil)
-    }
-
-    @objc func randomButtonClicked(_ sender: UIButton) {
-        PreferencesController.instance.preferences.sounds[self.soundPreferenceIndex] = SoundPreference.Sound(url: URL.randomizedSound, enabled: true, random: true)
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -76,8 +68,6 @@ class SoundChooserViewController : UIViewController {
         let bottomBar = self.bottomBar
         bottomBar.doneButton.addTarget(self, action: #selector(doneButtonClicked(_:)), for: .touchUpInside)
         bottomBar.addCancelButton().addTarget(self, action: #selector(cancelButtonClicked(_:)), for: .touchUpInside)
-        bottomBar.addLeftButton(title: "RANDOMIZED".localized).addTarget(self, action: #selector(randomButtonClicked(_:)), for: .touchUpInside)
-        
         bottomBar.addToView(self.view)
     }
 

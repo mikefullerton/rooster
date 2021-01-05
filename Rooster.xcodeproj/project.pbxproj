@@ -57,7 +57,7 @@
 		B21DA1FD259CE8F7002A56C8 /* Small Dog.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DA259CE670002A56C8 /* Small Dog.mp3 */; };
 		B21DA1FE259CE8F7002A56C8 /* Stopwatch.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E5259CE671002A56C8 /* Stopwatch.mp3 */; };
 		B21DA1FF259CE8F7002A56C8 /* Vuvuzela.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E0259CE670002A56C8 /* Vuvuzela.mp3 */; };
-		B21DA217259CFF90002A56C8 /* SoundChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA216259CFF90002A56C8 /* SoundChooserViewController.swift */; };
+		B21DA217259CFF90002A56C8 /* SoundPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA216259CFF90002A56C8 /* SoundPickerViewController.swift */; };
 		B21DA21B259D0375002A56C8 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */; };
 		B21DA22B259D398A002A56C8 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22A259D398A002A56C8 /* BottomBar.swift */; };
 		B21DA22F259D3B3A002A56C8 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22E259D3B3A002A56C8 /* TopBar.swift */; };
@@ -69,6 +69,9 @@
 		B233C52E25A23A8D005A7FB3 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B28661CB258E8B2100D3A538 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
 		B233C54825A282A5005A7FB3 /* Sound+DisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */; };
+		B233C55925A3961F005A7FB3 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55825A3961F005A7FB3 /* SliderView.swift */; };
+		B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */; };
+		B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */; };
 		B236FCD6255EFE0A00A2E58D /* EventKitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EventKitController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
 		B256BC08258025EC00FA67DC /* CalendarsPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarsPopOverViewController.swift */; };
@@ -78,6 +81,9 @@
 		B25B65DB258CF7AF0006B771 /* MenuBarPopoverProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */; };
 		B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */; };
 		B25B65EB258CFDB20006B771 /* AppKitPluginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65E3258CFA6C0006B771 /* AppKitPluginController.swift */; };
+		B260C82925A3B7C500C03B2E /* ContentViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82825A3B7C500C03B2E /* ContentViewButton.swift */; };
+		B260C82F25A3CEED00C03B2E /* SoundVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */; };
+		B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C83425A3D76400C03B2E /* SoundRepeatView.swift */; };
 		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
 		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
 		B280E474259130AB00707E22 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B280E473259130AB00707E22 /* UIKit.framework */; };
@@ -147,7 +153,7 @@
 		B2A181B025980F8700C1E7F0 /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */; };
 		B2A181B42598105200C1E7F0 /* SingleSoundChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181B32598105200C1E7F0 /* SingleSoundChoiceView.swift */; };
 		B2A181B8259810D200C1E7F0 /* UIButton+ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181B7259810D200C1E7F0 /* UIButton+ImageButton.swift */; };
-		B2A181C02598125800C1E7F0 /* SoundChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181BF2598125800C1E7F0 /* SoundChoicesView.swift */; };
+		B2A181C02598125800C1E7F0 /* SoundPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181BF2598125800C1E7F0 /* SoundPreferencesView.swift */; };
 		B2A181C42598134A00C1E7F0 /* NotificationChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181C32598134A00C1E7F0 /* NotificationChoicesView.swift */; };
 		B2A181C8259813D200C1E7F0 /* ButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */; };
 		B2A181D0259907B700C1E7F0 /* TipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181CF259907B700C1E7F0 /* TipView.swift */; };
@@ -329,7 +335,7 @@
 		B21DA1E8259CE671002A56C8 /* Burp 3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Burp 3.wav"; sourceTree = "<group>"; };
 		B21DA1E9259CE671002A56C8 /* Burp 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Burp 1.wav"; sourceTree = "<group>"; };
 		B21DA1EA259CE671002A56C8 /* Doorbell.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Doorbell.mp3; sourceTree = "<group>"; };
-		B21DA216259CFF90002A56C8 /* SoundChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundChooserViewController.swift; sourceTree = "<group>"; };
+		B21DA216259CFF90002A56C8 /* SoundPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerViewController.swift; sourceTree = "<group>"; };
 		B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomBarVerticalLayout.swift; sourceTree = "<group>"; };
 		B21DA22A259D398A002A56C8 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		B21DA22E259D3B3A002A56C8 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
@@ -342,8 +348,11 @@
 		B233C4B225A224AC005A7FB3 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		B233C4B325A224F8005A7FB3 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		B233C52625A22FA7005A7FB3 /* IncrementVersion.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = IncrementVersion.sh; path = "Other Files/IncrementVersion.sh"; sourceTree = SOURCE_ROOT; };
-		B233C54325A24ACD005A7FB3 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = file; name = dsa_pub.pem; path = "Other Files/dsa_pub.pem"; sourceTree = SOURCE_ROOT; };
+		B233C54325A24ACD005A7FB3 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = text; name = dsa_pub.pem; path = "Other Files/dsa_pub.pem"; sourceTree = SOURCE_ROOT; };
 		B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sound+DisplayName.swift"; sourceTree = "<group>"; };
+		B233C55825A3961F005A7FB3 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Sizes.swift"; sourceTree = "<group>"; };
+		B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSliderView.swift; sourceTree = "<group>"; };
 		B236FCD5255EFE0A00A2E58D /* EventKitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
 		B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chickens.mp3; sourceTree = "<group>"; };
@@ -356,6 +365,9 @@
 		B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverProcotol.swift; sourceTree = "<group>"; };
 		B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPluginProtocol.swift; sourceTree = "<group>"; };
 		B25B65E3258CFA6C0006B771 /* AppKitPluginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPluginController.swift; sourceTree = "<group>"; };
+		B260C82825A3B7C500C03B2E /* ContentViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewButton.swift; sourceTree = "<group>"; };
+		B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundVolumeView.swift; sourceTree = "<group>"; };
+		B260C83425A3D76400C03B2E /* SoundRepeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundRepeatView.swift; sourceTree = "<group>"; };
 		B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPreferencesView.swift; sourceTree = "<group>"; };
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -414,7 +426,7 @@
 		B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxView.swift; sourceTree = "<group>"; };
 		B2A181B32598105200C1E7F0 /* SingleSoundChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSoundChoiceView.swift; sourceTree = "<group>"; };
 		B2A181B7259810D200C1E7F0 /* UIButton+ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+ImageButton.swift"; sourceTree = "<group>"; };
-		B2A181BF2598125800C1E7F0 /* SoundChoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundChoicesView.swift; sourceTree = "<group>"; };
+		B2A181BF2598125800C1E7F0 /* SoundPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPreferencesView.swift; sourceTree = "<group>"; };
 		B2A181C32598134A00C1E7F0 /* NotificationChoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationChoicesView.swift; sourceTree = "<group>"; };
 		B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonContainerView.swift; sourceTree = "<group>"; };
 		B2A181CF259907B700C1E7F0 /* TipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipView.swift; sourceTree = "<group>"; };
@@ -606,12 +618,11 @@
 		B21DA1C5259BFFCC002A56C8 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				B233C55325A3934A005A7FB3 /* SoundPicker */,
 				B2A181B32598105200C1E7F0 /* SingleSoundChoiceView.swift */,
-				B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */,
-				B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */,
-				B21DA1C1259BFC75002A56C8 /* SoundPlayerButton.swift */,
-				B2A181BF2598125800C1E7F0 /* SoundChoicesView.swift */,
-				B21DA216259CFF90002A56C8 /* SoundChooserViewController.swift */,
+				B2A181BF2598125800C1E7F0 /* SoundPreferencesView.swift */,
+				B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */,
+				B260C83425A3D76400C03B2E /* SoundRepeatView.swift */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -635,6 +646,16 @@
 				B233C4B325A224F8005A7FB3 /* Debug.xcconfig */,
 			);
 			path = "Config Files";
+			sourceTree = "<group>";
+		};
+		B233C55325A3934A005A7FB3 /* SoundPicker */ = {
+			isa = PBXGroup;
+			children = (
+				B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */,
+				B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */,
+				B21DA216259CFF90002A56C8 /* SoundPickerViewController.swift */,
+			);
+			path = SoundPicker;
 			sourceTree = "<group>";
 		};
 		B236FCE4255F1C9D00A2E58D /* Resources */ = {
@@ -974,6 +995,8 @@
 		B2E1549225768619008BE604 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B260C82825A3B7C500C03B2E /* ContentViewButton.swift */,
+				B21DA1C1259BFC75002A56C8 /* SoundPlayerButton.swift */,
 				B2A181CF259907B700C1E7F0 /* TipView.swift */,
 				B2A181B7259810D200C1E7F0 /* UIButton+ImageButton.swift */,
 				B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */,
@@ -983,6 +1006,8 @@
 				B2E1545D2575B5F3008BE604 /* DividerView.swift */,
 				B2E154612575B67C008BE604 /* SpacerView.swift */,
 				B296556E257C3698008D1858 /* Abandoned */,
+				B233C55825A3961F005A7FB3 /* SliderView.swift */,
+				B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1033,6 +1058,7 @@
 				B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */,
 				B2866250258EC04D00D3A538 /* EventKitCalendar+UIColor.swift */,
 				B21DA1A3259BB722002A56C8 /* String+Localized.swift */,
+				B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1345,7 +1371,7 @@
 				B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */,
 				B2866261258EC12700D3A538 /* EKCalendar+UniqueID.swift in Sources */,
 				B2CA1126258FD70000B8BF81 /* EKDataModel.swift in Sources */,
-				B21DA217259CFF90002A56C8 /* SoundChooserViewController.swift in Sources */,
+				B21DA217259CFF90002A56C8 /* SoundPickerViewController.swift in Sources */,
 				B21DA18B259BA6CB002A56C8 /* ViewLayout.swift in Sources */,
 				B2020AE72577E84500F478CC /* EventKitDataModelController.swift in Sources */,
 				B2F817E525768E3600B28119 /* TableViewSectionAdornment.swift in Sources */,
@@ -1353,6 +1379,7 @@
 				B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */,
 				B2A181C42598134A00C1E7F0 /* NotificationChoicesView.swift in Sources */,
 				B2F6B49725619705000BC78E /* AlarmScheduler.swift in Sources */,
+				B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */,
 				B2AFE6892569E286006B3C58 /* AllCalendarsListViewController.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
 				B2F6B51E256433F3000BC78E /* AVAlarmSound.swift in Sources */,
@@ -1364,6 +1391,7 @@
 				B2A181932597C4A300C1E7F0 /* DemoAlarmNotification.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,
+				B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */,
 				B2A181B8259810D200C1E7F0 /* UIButton+ImageButton.swift in Sources */,
 				B2020A9E2577D88600F478CC /* Reloader.swift in Sources */,
 				B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */,
@@ -1411,10 +1439,13 @@
 				B2F6A1B7257A78D8007C2858 /* EventListTableViewCell+RightSideContentView.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
 				B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */,
+				B233C55925A3961F005A7FB3 /* SliderView.swift in Sources */,
+				B260C82925A3B7C500C03B2E /* ContentViewButton.swift in Sources */,
 				B2F6B49E25619A43000BC78E /* EventKitReminder.swift in Sources */,
 				B202CBB8257AC2B300D33D8F /* StackViewCell.swift in Sources */,
 				B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */,
 				B2A181972597D53B00C1E7F0 /* EventKitCalendar+EKCalender.swift in Sources */,
+				B260C82F25A3CEED00C03B2E /* SoundVolumeView.swift in Sources */,
 				B296550E257BD2F2008D1858 /* UserDefaults+IdentifierList.swift in Sources */,
 				B2E78A2825964E6A00DF0ACF /* Preferences+Defaults.swift in Sources */,
 				B21DA1B4259BE488002A56C8 /* SoundPickerTableViewController.swift in Sources */,
@@ -1451,7 +1482,8 @@
 				B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */,
 				B20AACDD2594FDE800F9B50C /* Loggable.swift in Sources */,
 				B2A181112597B18600C1E7F0 /* Buttons.swift in Sources */,
-				B2A181C02598125800C1E7F0 /* SoundChoicesView.swift in Sources */,
+				B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */,
+				B2A181C02598125800C1E7F0 /* SoundPreferencesView.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,
 				B2A58B4F2592A2E200188584 /* UserNotificationCenterController.swift in Sources */,
 				B2A181C8259813D200C1E7F0 /* ButtonContainerView.swift in Sources */,

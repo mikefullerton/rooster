@@ -29,7 +29,7 @@ struct Preferences : CustomStringConvertible {
     }
     
     var description: String {
-        return "Prefs: useSystemNotifications: \(self.useSystemNotifications), bounce icon: \(self.bounceIconInDock), auto open Locaitions: \(self.autoOpenLocations)"
+        return "Prefs: useSystemNotifications: \(self.useSystemNotifications), bounce icon: \(self.bounceIconInDock), auto open Locaitions: \(self.autoOpenLocations), sounds: \(self.sounds.description)"
     }
     
 }

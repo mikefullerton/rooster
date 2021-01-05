@@ -10,22 +10,25 @@ import UIKit
 
 
 protocol SoundChoicesViewDelegate : AnyObject {
-    func soundChoicesViewPresentingViewController(_ view: SoundChoicesView) -> UIViewController
+    func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController
 }
 
-class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
+class SoundPreferencesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
     
     weak var delegate: SoundChoicesViewDelegate?
 
     init(frame: CGRect, delegate: SoundChoicesViewDelegate) {
         self.delegate = delegate
         super.init(frame: frame,
-                   title: "SOUNDS".localized,
-                   insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 0))
+                   title: "SOUNDS".localized)
         
         self.addContainedView(self.firstSoundChoice)
         self.addContainedView(self.secondSoundChoice)
         self.addContainedView(self.thirdSoundChoice)
+        
+//
+        self.addContainedView(self.soundRepeatView)
+        self.addContainedView(self.soundVolumeView)
     }
     
     required init?(coder: NSCoder) {
@@ -57,9 +60,29 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserView
         return view
     }()
     
+    
+    let fixedLabelWidth: CGFloat = 100
+    let sliderRightInset: CGFloat = 100
+    
+    lazy var soundVolumeView: LabeledSliderView = {
+        var view = SoundVolumeView(  fixedLabelWidth: self.fixedLabelWidth,
+                                     sliderRightInset: self.sliderRightInset)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var soundRepeatView: SoundRepeatView = {
+        var view = SoundRepeatView(  fixedLabelWidth: self.fixedLabelWidth,
+                                     sliderRightInset: self.sliderRightInset)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: UIButton) {
         if let delegate = self.delegate {
-            let chooser = SoundChooserViewController(withSoundPreferenceIndex: view.index)
+            let chooser = SoundPickerViewController(withSoundPreferenceIndex: view.index)
             chooser.delegate = self
             
             let presentingViewController = delegate.soundChoicesViewPresentingViewController(self)
@@ -68,9 +91,9 @@ class SoundChoicesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserView
         }
     }
     
-    func soundChooserViewControllerWasDismissed(_ controller: SoundChooserViewController) {
+    func soundChooserViewControllerWasDismissed(_ controller: SoundPickerViewController) {
     }
     
-    func soundChooserViewControllerWillDismiss(_ controller: SoundChooserViewController) {
+    func soundChooserViewControllerWillDismiss(_ controller: SoundPickerViewController) {
     }
 }

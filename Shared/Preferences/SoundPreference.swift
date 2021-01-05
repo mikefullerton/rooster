@@ -7,50 +7,10 @@
 
 import Foundation
 
-struct SoundPreference: Sequence {
+struct SoundPreference: Sequence, CustomStringConvertible {
     
     typealias Element = Sound
     typealias Iterator = Array<Sound>.Iterator
-    
-    struct Sound {
-        
-        private var _url: URL?
-        var enabled: Bool
-        var random: Bool
-        
-        init(url: URL?,
-             enabled: Bool,
-             random: Bool) {
-            
-            self._url = url
-            self.random = random
-            self.enabled = enabled && url != nil
-        }
-        
-        var fileName: String {
-            if self.random {
-                return "Randomized"
-            }
-            return self.url?.fileName ?? ""
-        }
-        
-        var url: URL? {
-            get {
-                if self.random {
-                    return URL.randomizedSound
-                }
-                
-                return self._url
-            }
-            set(url) {
-                self._url = url
-            }
-        }
-        
-        static var zero: Sound {
-            return Sound(url:nil, enabled: false, random: false)
-        }
-    }
     
     static let RepeatEndlessly = AlarmSoundBehavior.RepeatEndlessly
 
@@ -105,7 +65,59 @@ struct SoundPreference: Sequence {
         return try self.sounds.withContiguousStorageIfAvailable(body)
     }
 
+    var description: String {
+        return "Sound preference: Play Count: \(self.playCount), startDelay: \(self.startDelay), volume: \(self.volume), Sound1: \(self[SoundIndex.sound1]), Sound2: \(self[SoundIndex.sound2]), Sound3: \(self[SoundIndex.sound3])"
+    }
 }
+
+extension SoundPreference {
+    struct Sound : CustomStringConvertible {
+        
+        private var _url: URL?
+        var enabled: Bool
+        var random: Bool
+        
+        init(url: URL?,
+             enabled: Bool,
+             random: Bool) {
+            
+            self._url = url
+            self.random = random
+            self.enabled = enabled && url != nil
+        }
+        
+        var fileName: String {
+            if self.random {
+                return "Randomized"
+            }
+            return self.url?.fileName ?? ""
+        }
+        
+        var url: URL? {
+            get {
+                if self.random {
+                    return URL.randomizedSound
+                }
+                
+                return self._url
+            }
+            set(url) {
+                self._url = url
+            }
+        }
+        
+        static var zero: Sound {
+            return Sound(url:nil, enabled: false, random: false)
+        }
+        
+        var description: String {
+            return "Sound: \(self.url?.description ?? "nil" ), enabled: \(self.enabled), random: \(self.random)"
+        }
+    }
+    
+    
+}
+
 
 extension SoundPreference {
     

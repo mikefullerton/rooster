@@ -51,6 +51,8 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     }
     
     deinit {
+        self.stopTimer.stop()
+        
         if let player = self.player {
             player.stop()
         }
@@ -143,6 +145,10 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         self.createPlayerIfNeeded()
         self.isPlaying = true
         self.logger.log("Sound will start playing: \(self.name)")
+        if let delegate = self.delegate {
+            delegate.soundWillStartPlaying(self)
+        }
+
         DispatchQueue.main.async {
             if let player = self.player {
                 player.numberOfLoops = 0

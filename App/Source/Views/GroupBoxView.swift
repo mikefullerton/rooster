@@ -14,7 +14,7 @@ class GroupBoxView : UIView {
     let insets = UIEdgeInsets.zero
     let spacing: CGFloat = 0
     
-    static let defaultInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    static let defaultInsets = UIEdgeInsets.twenty
     
     init(frame: CGRect,
          title: String,
@@ -56,15 +56,15 @@ class GroupBoxView : UIView {
 
     lazy private var outlineView = OutlineView(frame:CGRect.zero, insets: self.layoutInsets)
     
-    lazy private var titleView: UITextField = {
-        let titleView = UITextField()
+    lazy private var titleView: UILabel = {
+        let titleView = UILabel()
         titleView.isUserInteractionEnabled = false
         titleView.textColor = UIColor.secondaryLabel
         titleView.textAlignment = .right
         titleView.translatesAutoresizingMaskIntoConstraints = false
         
-        titleView.sizeToFit()
-        
+        titleView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        titleView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return titleView
     }()
 
@@ -102,6 +102,9 @@ class OutlineView : UIView {
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor.separator.cgColor
         self.translatesAutoresizingMaskIntoConstraints = false
+        
+//        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
     
     required init?(coder: NSCoder) {

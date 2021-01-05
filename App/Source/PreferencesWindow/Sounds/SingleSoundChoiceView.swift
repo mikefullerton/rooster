@@ -18,8 +18,6 @@ class SingleSoundChoiceView : UIView {
 
     let index: SoundPreference.SoundIndex
     
-    let buttonHeight:CGFloat = 26
-    
     init(frame: CGRect,
          soundPreferenceIndex index: SoundPreference.SoundIndex,
          delegate: SoundChoiceViewDelegate) {
@@ -28,23 +26,26 @@ class SingleSoundChoiceView : UIView {
         super.init(frame: frame)
 
         self.addSubview(self.checkbox)
-        self.addSubview(self.pencilButton)
+        self.addSubview(self.soundPickerButton)
         self.addSubview(self.playButton)
+        self.addSubview(self.shuffleButton)
 
-        self.layout.addView(self.checkbox)
-        self.layout.addView(self.pencilButton)
-        self.layout.addView(self.playButton)
-        
+        self.setNeedsUpdateConstraints()
+
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
 
         self.refresh()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     @objc func preferencesDidChange(_ sender: Notification) {
         self.refresh()
     }
 
-    var sound: SoundPreference.Sound {
+    private var sound: SoundPreference.Sound {
         get {
             return PreferencesController.instance.preferences.sounds[self.index]
         }
@@ -53,12 +54,12 @@ class SingleSoundChoiceView : UIView {
         }
     }
     
-    func setEnabledStates() {
+    private func setEnabledStates() {
         self.playButton.isEnabled = true
-        self.pencilButton.isEnabled = true
+        self.soundPickerButton.isEnabled = true
     }
     
-    @objc func checkboxChanged(_ sender: UISwitch) {
+    @objc private func checkboxChanged(_ sender: UISwitch) {
         var sound = self.sound
         sound.enabled = sender.isOn
         self.sound = sound
@@ -66,52 +67,61 @@ class SingleSoundChoiceView : UIView {
         self.setEnabledStates()
     }
     
-    lazy var checkbox : UISwitch = {
+    private lazy var checkbox : UISwitch = {
         let view = UISwitch(frame: self.bounds)
-        
+        view.translatesAutoresizingMaskIntoConstraints = false
+
         #if targetEnvironment(macCatalyst)
         view.preferredStyle = .checkbox
         #endif
 
         view.isOn = self.sound.enabled
-        
         view.addTarget(self, action: #selector(checkboxChanged(_:)), for: .valueChanged)
         return view
     }()
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc func editSound(_ sender: UIButton) {
+    @objc private func editSound(_ sender: UIButton) {
         if let delegate = self.delegate {
             delegate.soundChoiceViewChooser(self, buttonPressed: sender)
         }
     }
 
-    lazy var playButton: SoundPlayerButton = {
+    @objc private func shuffleSounds(_ sender: UIButton) {
+        var sound = self.sound
+        sound.enabled = true
+        sound.random = true
+        self.sound = sound
+    }
+    
+    private lazy var playButton: SoundPlayerButton = {
         let button = SoundPlayerButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    lazy var pencilButton: UIButton = {
+    private lazy var soundPickerButton: UIButton = {
         let button = UIButton.createImageButton(withImage: UIImage(systemName: "square.and.pencil"))
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.imageView?.tintColor = UIColor.secondaryLabel
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 18), forImageIn: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: self.buttonHeight, height: self.buttonHeight)
         button.addTarget(self, action: #selector(editSound(_:)), for: .touchUpInside)
         return button
     }()
 
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
-    }
-
-    lazy var layout: HorizontallyOpposedLayout = {
-        return HorizontallyOpposedLayout(hostView: self,
-                                         insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0),
-                                         spacing: UIOffset(horizontal: 10, vertical: 0))
+    private lazy var shuffleButton: UIButton = {
+        let button = UIButton.createImageButton(withImage: UIImage(systemName: "shuffle"))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.imageView?.tintColor = UIColor.secondaryLabel
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 16), forImageIn: .normal)
+        button.addTarget(self, action: #selector(shuffleSounds(_:)), for: .touchUpInside)
+        return button
     }()
+
+    override var intrinsicContentSize: CGSize {
+        var outSize = CGSize(width: UIView.noIntrinsicMetric, height: self.checkbox.intrinsicContentSize.height)
+        outSize.height += 10
+        return outSize
+    }
 
     func refresh() {
         let sound = self.sound
@@ -134,7 +144,21 @@ class SingleSoundChoiceView : UIView {
     override func updateConstraints() {
         super.updateConstraints()
         
-        self.layout.updateConstraints()
+        NSLayoutConstraint.activate([
+            self.playButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.soundPickerButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.checkbox.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.shuffleButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            
+            self.playButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.soundPickerButton.trailingAnchor.constraint(equalTo: self.playButton.leadingAnchor, constant: -10),
+            self.shuffleButton.trailingAnchor.constraint(equalTo: self.soundPickerButton.leadingAnchor, constant: -10),
+            
+            self.checkbox.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.checkbox.trailingAnchor.constraint(equalTo: self.shuffleButton.leadingAnchor, constant: -10)
+        ])
+
+        self.invalidateIntrinsicContentSize()
     }
  
     

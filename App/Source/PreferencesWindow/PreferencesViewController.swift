@@ -13,7 +13,7 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
 
     lazy var buttonsContainer = ButtonsContainerView(frame: self.view.bounds)
     lazy var notificationChoices =  NotificationChoicesView(frame: self.view.bounds)
-    lazy var soundChoices = SoundChoicesView(frame: self.view.bounds, delegate: self)
+    lazy var soundChoices = SoundPreferencesView(frame: self.view.bounds, delegate: self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +46,7 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         return size
     }
     
-    func soundChoicesViewPresentingViewController(_ view: SoundChoicesView) -> UIViewController {
+    func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController {
         return self
     }
     
