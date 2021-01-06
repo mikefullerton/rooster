@@ -86,11 +86,9 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMe
         
         if AlarmNotificationController.instance.alarmsAreFiring {
             AlarmNotificationController.instance.stopAllNotifications()
-        } else {
-            AppKitPluginController.instance.utilities.bringAppToFront()
-            // show popover
         }
         
+        AppKitPluginController.instance.utilities.bringAppToFront()
 //        self.isPopoverHidden = !self.isPopoverHidden
     }
 }
