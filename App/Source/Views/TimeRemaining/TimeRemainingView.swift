@@ -25,6 +25,7 @@ class TimeRemainingView : UILabel {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -144,7 +145,7 @@ class TimeRemainingView : UILabel {
             self.stop()
         }
     }
-    
+
     private func timerDidFire() {
         self.updateCountDown()
     }
@@ -172,12 +173,12 @@ class TimeRemainingView_iOS : TimeRemainingView, DataModelAware {
             self.outOfRangeString = "No more meetings today! 🎉"
         }
 
-        self.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
-            return EventKitDataModelController.instance.dataModel.nextAlarmDate
+        self.startTimer(fireDate: DataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
+            return DataModelController.instance.dataModel.nextAlarmDate
         }
     }
     
-    func dataModelDidReload(_ dataModel: EventKitDataModel) {
+    func dataModelDidReload(_ dataModel: DataModel) {
         self.startTimer()
     }
 

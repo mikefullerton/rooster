@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-class ReminderTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
+class ReminderTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     
-    typealias DataType = EventKitReminder
+    typealias DataType = Reminder
     
-    private var reminder: EventKitReminder? = nil
+    private var reminder: Reminder? = nil
     
     private var leftView: LeftSideContentView
     private var rightView: RightSideContentView
@@ -43,7 +43,7 @@ class ReminderTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
         self.rightView.prepareForReuse()
     }
     
-    func configureCell(withData reminder: EventKitReminder, indexPath: IndexPath, isSelected: Bool) {
+    func configureCell(withData reminder: Reminder, indexPath: IndexPath, isSelected: Bool) {
     
         self.reminder = reminder
         

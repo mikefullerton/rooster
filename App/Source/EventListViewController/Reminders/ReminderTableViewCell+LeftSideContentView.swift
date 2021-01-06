@@ -12,7 +12,7 @@ extension ReminderTableViewCell {
     
     class LeftSideContentView : AbstractLeftSideContentView {
 
-        func setReminder(_ reminder: EventKitReminder) {
+        func setReminder(_ reminder: Reminder) {
             self.timeLabel.text = "Reminder Due at: \(reminder.alarm.startDate))"
             self.eventTitleLabel.text = reminder.title
 

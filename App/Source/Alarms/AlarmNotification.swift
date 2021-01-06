@@ -44,8 +44,8 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
         self.itemID = itemIdentifier
     }
    
-    var item: EventKitItem? {
-        let dataModel = EventKitDataModelController.dataModel
+    var item: CalendarItem? {
+        let dataModel = DataModelController.dataModel
         return dataModel.item(forIdentifier: self.itemID)
     }
     
@@ -166,7 +166,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     }
 }
 
-extension EventKitItem {
+extension CalendarItem {
     // TODO: Zoom, etc
     
     var bestLocationURL: URL? {

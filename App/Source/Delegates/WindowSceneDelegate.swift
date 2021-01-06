@@ -11,6 +11,7 @@ import UIKit
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var windowRestoreKey: String;
+    private(set) var initialWindowSize = CGSize.zero
     
     override init() {
         self.windowRestoreKey = ""
@@ -26,17 +27,28 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
     }
     
-    func set(window: UIWindow, restoreKey: String) {
+    func set(window: UIWindow, restoreKey: String, initialWindowSize: CGSize) {
         self.window = window
         self.windowRestoreKey = restoreKey
+        self.initialWindowSize = initialWindowSize
         self.window?.makeKeyAndVisible()
     }
     
     #if targetEnvironment(macCatalyst)
-
+    
+    func setWindowSize(_ size: CGSize){
+        AppKitPluginController.instance.windowController.setContentSize(size, forWindow: window as Any)
+    }
+    
     @objc func windowSceneDidBecomeVisible(_ notif: Notification) {
-        AppKitPluginController.instance.windowController.restoreWindowPosition(forWindow: (self.window as Any),
-                                                                               windowName: self.windowRestoreKey)
+        
+        if let fromWindow = notif.object as? UIWindow,
+           fromWindow == self.window {
+
+            AppKitPluginController.instance.windowController.restoreWindowPosition(forWindow: (self.window as Any),
+                                                                                   windowName: self.windowRestoreKey,
+                                                                                   initialSize: self.initialWindowSize)
+        }
     }
 
     #endif

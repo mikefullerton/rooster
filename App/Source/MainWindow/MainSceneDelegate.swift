@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-class MainSceneDelegate: WindowSceneDelegate {
-
+class MainSceneDelegate: WindowSceneDelegate, MainViewControllerDelegate {
+        
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
@@ -17,18 +17,21 @@ class MainSceneDelegate: WindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else {
             return
         }
-     
-        windowScene.sizeRestrictions?.minimumSize = CGSize(width: 400, height: 200.0)
-        windowScene.sizeRestrictions?.maximumSize = CGSize(
-          width: CGFloat.greatestFiniteMagnitude,
-          height: CGFloat.greatestFiniteMagnitude
-        )
+        let viewController = MainViewController()
+        
+        let _ = viewController.view // make sure it's loaded
+        
+//        windowScene.sizeRestrictions?.minimumSize = viewController.minimumContentSize
+//        windowScene.sizeRestrictions?.maximumSize = CGSize(
+//          width: CGFloat.greatestFiniteMagnitude,
+//          height: CGFloat.greatestFiniteMagnitude
+//        )
         
         let window = UIWindow(windowScene: windowScene)
-        let viewController = MainViewController()
+        viewController.delegate = self
         window.rootViewController = viewController
         
-        self.set(window: window, restoreKey: "mainWindowBounds")
+        self.set(window: window, restoreKey: "mainWindowBounds", initialWindowSize: viewController.preferredContentSize)
         
         #if targetEnvironment(macCatalyst)
         let toolbar = viewController.toolbar
@@ -41,6 +44,10 @@ class MainSceneDelegate: WindowSceneDelegate {
         DispatchQueue.main.async {
             AppDelegate.instance.mainWindowDidShow()
         }
+    }
+       
+    func mainViewController(_ viewController: MainViewController, preferredContentSizeDidChange size: CGSize) {
+        self.setWindowSize(size)
     }
 }
 

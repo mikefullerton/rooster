@@ -12,13 +12,22 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
     
     private weak var timer: Timer?
 
+    private lazy var dividerView = DividerView()
+
     private var reloader: DataModelReloader? = nil
+    
+    static let preferredHeight: CGFloat = 60
     
     lazy var timeRemainingLabel: TimeRemainingView = {
         let label = TimeRemainingView()
         label.textColor = UIColor.secondaryLabel
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.textAlignment = .center
+        return label
+    }()
+    
+    private func addTimeRemainingLabel() {
+        let label = self.timeRemainingLabel
         
         self.view.addSubview(label)
         
@@ -27,29 +36,44 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10),
+            label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+//            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10),
         ])
+    }
+    
+    func addDividerView() {
+        let dividerView = self.dividerView
+        self.view.addSubview(dividerView)
         
-        return label
-    }()
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            dividerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1),
+        ])
+    }
+    
+    override func loadView() {
+        self.view = ContentAwareView()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.systemBackground
         
+        self.addTimeRemainingLabel()
+        self.addDividerView()
+    
         self.timeRemainingLabel.prefixString = "Your next alarm will fire in "
         self.timeRemainingLabel.showSecondsWithMinutes = true
         self.timeRemainingLabel.outOfRangeString = "No more meetings today! 🎉"
     }
     
-    var viewHeight: CGFloat {
-        return 80
-    }
-    
     func startTimer() {
-        self.timeRemainingLabel.startTimer(fireDate: EventKitDataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
-            return EventKitDataModelController.instance.dataModel.nextAlarmDate
+        self.timeRemainingLabel.startTimer(fireDate: DataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
+            return DataModelController.instance.dataModel.nextAlarmDate
         }
     }
 
@@ -66,8 +90,17 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
         self.reloader = nil
     }
     
-    func dataModelDidReload(_ dataModel: EventKitDataModel) {
+    func dataModelDidReload(_ dataModel: DataModel) {
         self.startTimer()
+    }
+    
+    override var preferredContentSize: CGSize {
+        get {
+            return CGSize(width: self.view.frame.size.width, height: TimeRemainingViewController.preferredHeight)
+        }
+        set(size) {
+            
+        }
     }
 }
 

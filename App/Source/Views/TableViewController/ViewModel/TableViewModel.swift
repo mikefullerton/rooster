@@ -10,6 +10,7 @@ import UIKit
 
 protocol TableViewModelProtocol {
     var sections:[TableViewSectionProtocol] { get }
+    var height: CGFloat { get }
 }
 
 extension TableViewModelProtocol {
@@ -47,6 +48,16 @@ extension TableViewModelProtocol {
             return section.row(forIndex: indexPath.item)
         }
         return nil
+    }
+    
+    var height: CGFloat {
+        var height: CGFloat = 0
+        
+        for section in sections {
+            height += section.height
+        }
+        
+        return height
     }
 }
 

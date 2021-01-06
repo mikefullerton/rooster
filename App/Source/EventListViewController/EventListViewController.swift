@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 
-class EventListViewController : EventKitTableViewController<EventListViewModel> {
+class EventListViewController : CalendarItemTableViewController<EventListViewModel> {
     
     override func reloadViewModel() -> EventListViewModel? {
-        return EventListViewModel(withEvents: EventKitDataModelController.dataModel.events,
-                                  reminders: EventKitDataModelController.dataModel.reminders)
+        return EventListViewModel(withEvents: DataModelController.dataModel.events,
+                                  reminders: DataModelController.dataModel.reminders)
     }
+    
 }

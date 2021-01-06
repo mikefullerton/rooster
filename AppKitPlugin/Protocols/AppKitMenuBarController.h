@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class EventKitItem;
+@class CalendarItem;
 @protocol AppKitMenuBarControllerDelegate;
 
 @protocol AppKitMenuBarController <NSObject>

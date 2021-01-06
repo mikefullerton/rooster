@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CalendarPreferencesView: View {
 
-    @ObservedObject var dataModel: EventKitDataModel = EventKitDataModel.instance
+    @ObservedObject var dataModel: DataModel = DataModel.instance
     
     @State var calendars: SourceToCalendarMap
     @State var delegateCalendars: SourceToCalendarMap

@@ -20,22 +20,22 @@ class DemoAlarmNotification : AlarmNotification {
         return false
     }
 
-    override var item: EventKitItem? {
+    override var item: CalendarItem? {
         return self.demoEvent
     }
         
-    lazy var demoEvent: EventKitEvent = {
+    lazy var demoEvent: Event = {
         
         let startDate = Date().addingTimeInterval(-60)
         let endDate = startDate.addingTimeInterval(60 * 60)
         
-        let alarm = EventKitAlarm(withState: .firing,
+        let alarm = Alarm(withState: .firing,
                                   startDate: startDate,
                                   endDate: endDate,
                                   isEnabled: true,
                                   snoozeInterval: 0)
         
-        return EventKitEvent(withIdentifier: self.itemIdentifier,
+        return Event(withIdentifier: self.itemIdentifier,
                              ekEventID: "",
                              calendar: self.demoCalendar,
                              subscribed: true,
@@ -50,7 +50,7 @@ class DemoAlarmNotification : AlarmNotification {
                              organizer: nil)
     }()
     
-    lazy var demoCalendar = EventKitCalendar(withIdentifier: "DEMO_CALENDAR",
+    lazy var demoCalendar = Calendar(withIdentifier: "DEMO_CALENDAR",
                                              ekCalendarID: "",
                                              title: "Demo Calendar",
                                              sourceTitle: "Demo Source",

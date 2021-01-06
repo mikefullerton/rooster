@@ -12,9 +12,9 @@ extension EventListTableViewCell {
     
     class RightSideContentView : AbstractRightSideContentView {
         
-        private var event: EventKitEvent?
+        private var event: Event?
 
-        func setEvent(_ event: EventKitEvent) {
+        func setEvent(_ event: Event) {
             self.event = event
             
             self.setLocationURL(event.bestLocationURL)

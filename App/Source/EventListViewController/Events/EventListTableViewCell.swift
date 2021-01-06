@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-class EventListTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
+class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     
     
-    typealias DataType = EventKitEvent
+    typealias DataType = Event
     
-    private var event: EventKitEvent? = nil
+    private var event: Event? = nil
     
     private var leftView: LeftSideContentView
     private var rightView: RightSideContentView
@@ -44,7 +44,7 @@ class EventListTableViewCell : EventKitItemTableViewCell, TableViewRowCell {
         self.rightView.prepareForReuse()
     }
     
-    func configureCell(withData event: EventKitEvent, indexPath: IndexPath, isSelected: Bool) {
+    func configureCell(withData event: Event, indexPath: IndexPath, isSelected: Bool) {
     
         self.event = event
         

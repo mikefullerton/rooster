@@ -10,16 +10,33 @@ import UIKit
 
 class MainEventListViewController : UIViewController {
     
+    lazy var timeRemainingViewController = TimeRemainingViewController()
+    lazy var eventListViewController = EventListViewController()
+    
+    override func loadView() {
+        self.view = ContentAwareView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let _ = self.timeRemainingViewController
-        let _ = self.eventListViewController
+        self.addTimeRemainingView()
+        self.addEventListView()
+        
+        self.view.bringSubviewToFront(self.timeRemainingViewController.view)
     }
     
-    lazy var timeRemainingViewController: TimeRemainingViewController = {
+    var topOfWindowVerticalPadding: CGFloat {
+        #if targetEnvironment(macCatalyst)
+        return 52
+        #else
+        return 80
+        #endif
+    }
+    
+    func addTimeRemainingView() {
 
-        let timeRemainingViewController = TimeRemainingViewController()
+        let timeRemainingViewController = self.timeRemainingViewController
         let timeRemainingView = timeRemainingViewController.view!
 
         self.addChild(timeRemainingViewController)
@@ -28,27 +45,19 @@ class MainEventListViewController : UIViewController {
 
         timeRemainingView.translatesAutoresizingMaskIntoConstraints = false
 
-        #if targetEnvironment(macCatalyst)
-        let topBuffer:CGFloat = 10
-        #else
-        let topBuffer:CGFloat = 80
-        #endif
-        
         NSLayoutConstraint.activate([
             timeRemainingView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             timeRemainingView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            timeRemainingView.heightAnchor.constraint(equalToConstant: timeRemainingViewController.viewHeight),
-            timeRemainingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: topBuffer)
+            timeRemainingView.heightAnchor.constraint(equalToConstant: TimeRemainingViewController.preferredHeight),
+            timeRemainingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.topOfWindowVerticalPadding)
         ])
-        
-        return timeRemainingViewController
-    }()
+    }
     
-    lazy var eventListViewController: EventListViewController = {
+    func addEventListView() {
         
-        let eventListViewController = EventListViewController()
+        let eventListViewController = self.eventListViewController
         
-        let eventView = eventListViewController.view!
+        let eventView = eventListViewController.view as! UITableView
 
         self.addChild(eventListViewController)
 
@@ -59,11 +68,37 @@ class MainEventListViewController : UIViewController {
         NSLayoutConstraint.activate([
             eventView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             eventView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            eventView.topAnchor.constraint(equalTo: self.timeRemainingViewController.view.bottomAnchor),
+            eventView.topAnchor.constraint(equalTo: self.view.topAnchor),
             eventView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
         ])
         
-        return eventListViewController
-    }()
+        eventView.contentInset = UIEdgeInsets(top: TimeRemainingViewController.preferredHeight,
+                                              left: 0,
+                                              bottom: 0,
+                                              right: 0)
+        
+        eventView.contentOffset = CGPoint(x: 0, y: -TimeRemainingViewController.preferredHeight)
+
+    }
     
+    override var preferredContentSize: CGSize {
+        get {
+            let timeRemainingSize = self.timeRemainingViewController.preferredContentSize
+            let eventListSize = self.eventListViewController.preferredContentSize
+            
+            let heightBuffer: CGFloat = self.topOfWindowVerticalPadding
+            
+//            if eventListSize.height > 0 {
+//                heightBuffer += 20
+//            }
+//
+            let size = CGSize(width: self.view.frame.size.width,
+                              height: eventListSize.height + timeRemainingSize.height + heightBuffer )
+            
+            return size
+        }
+        set(size) {
+            
+        }
+    }
 }

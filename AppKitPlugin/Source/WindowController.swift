@@ -9,7 +9,6 @@ import Foundation
 import AppKit
 
 class WindowController : NSObject, AppKitWindowController, Loggable {
-    
     private var helper = WindowControllerHelper()
     
     private var autoSaveNames:Set<String> = Set<String>()
@@ -68,7 +67,9 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
 //        NotificationCenter.default.removeObserver(self)
     }
     
-    func restoreWindowPosition(forWindow uiWindow: Any, windowName name: String) {
+    func restoreWindowPosition(forWindow uiWindow: Any,
+                               windowName name: String,
+                               initialSize: CGSize) {
         if name.count > 0,
            let nsWindow = self.helper.hostWindow(forUIWindow: uiWindow) {
             
@@ -77,10 +78,17 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
             self.logger.log("Restoring window: \(nsWindow.title): before: \(NSStringFromRect(nsWindow.frame))")
             
             if let frameString = UserDefaults.standard.object(forKey: key) as? String {
-                let frame = NSRectFromString(frameString)
-                nsWindow.setFrame(frame, display: true)
-            }
+                var frame = NSRectFromString(frameString)
             
+                if initialSize != CGSize.zero {
+                    frame.size = initialSize
+                }
+                
+                nsWindow.setFrame(frame, display: true)
+            } else if initialSize != CGSize.zero {
+                nsWindow.setContentSize(initialSize)
+            }
+
             self.logger.log("Restored window: \(nsWindow.title): after: \(NSStringFromRect(nsWindow.frame))")
             
             self.autoSaveNames.insert(key)
@@ -94,8 +102,12 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
             
     }
     
-    
-    
+    func setContentSize(_ size: CGSize, forWindow window: Any) {
+        if let nsWindow = self.helper.hostWindow(forUIWindow: window) {
+            self.logger.log("Set size to: \(NSStringFromSize(size)) for window: \(nsWindow.title)")
+            nsWindow.setContentSize(size)
+        }
+    }
 }
 
 extension NSWindow {

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DataModelAware : AnyObject {
-    func dataModelDidReload(_ dataModel: EventKitDataModel)
+    func dataModelDidReload(_ dataModel: DataModel)
 }
 
 class DataModelReloader  {
@@ -18,13 +18,13 @@ class DataModelReloader  {
         self.target = target
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(notificationReceived(_:)),
-                                               name: EventKitDataModelController.DidChangeEvent,
+                                               name: DataModelController.DidChangeEvent,
                                                object: nil)
     }
     
     @objc private func notificationReceived(_ notif: Notification) {
         if let target = self.target {
-            target.dataModelDidReload(EventKitDataModelController.dataModel)
+            target.dataModelDidReload(DataModelController.dataModel)
         } else {
             NotificationCenter.default.removeObserver(self)
         }

@@ -12,9 +12,9 @@ extension ReminderTableViewCell {
     
     class RightSideContentView : AbstractRightSideContentView {
         
-        private var reminder: EventKitReminder?
+        private var reminder: Reminder?
 
-        func setReminder(_ reminder: EventKitReminder) {
+        func setReminder(_ reminder: Reminder) {
             self.reminder = reminder
             
             self.setLocationURL(reminder.bestLocationURL)

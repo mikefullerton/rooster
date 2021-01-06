@@ -1,0 +1,115 @@
+//
+//  CalendarItemTableViewCell.swift
+//  Rooster (iOS)
+//
+//  Created by Mike Fullerton on 12/5/20.
+//
+
+import Foundation
+import UIKit
+
+class CalendarItemTableViewCell : UITableViewCell {
+    
+    public static let horizontalInset: CGFloat = 20
+    public static let verticalInset: CGFloat = 10
+    public static let labelHeight:CGFloat = 20
+    public static let verticalPadding:CGFloat = 4
+
+    var dividerView: DividerView
+    var leftContentView : UIView?
+    var rightContentView: UIView?
+    
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        
+        self.leftContentView = nil
+        self.rightContentView = nil
+        self.dividerView = DividerView()
+        
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        self.addDividerView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addLeftView(_ view: UIView) {
+        self.contentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate( [
+            view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: EventListTableViewCell.verticalInset),
+            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
+
+            view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: 10),
+            view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
+
+            //            view.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+        ])
+        
+        self.leftContentView = view
+    }
+
+    func addRightView(_ view: UIView) {
+        self.contentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: EventListTableViewCell.verticalInset),
+            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
+            
+            view.widthAnchor.constraint(equalToConstant: 250),
+            view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
+        ])
+        
+        self.rightContentView = view
+    }
+
+    lazy var calendarColorBar: UIView = {
+        let view = UIView()
+        self.addSubview(view)
+
+        let width:CGFloat = 6.0
+        let heightInset:CGFloat = 10.0
+        let leftInset:CGFloat = 10.0
+        
+        view.layer.cornerRadius = width / 2.0;
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: width),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leftInset),
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: heightInset),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -heightInset),
+        ])
+        
+        return view
+    }()
+    
+    func addDividerView() {
+        let dividerView = self.dividerView
+        self.addSubview(dividerView)
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            dividerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            dividerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+        
+        self.dividerView = dividerView
+    }
+    
+    func updateCalendarBar(withCalendar calendar: Calendar) {
+        if let calendarColor = calendar.color {
+            self.calendarColorBar.isHidden = false
+            self.calendarColorBar.backgroundColor = calendarColor
+        } else {
+            self.calendarColorBar.isHidden = true
+        }
+
+    }
+}

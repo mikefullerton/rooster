@@ -12,7 +12,7 @@ extension EventListTableViewCell {
     
     class LeftSideContentView : AbstractLeftSideContentView {
 
-        func setEvent(_ event: EventKitEvent) {
+        func setEvent(_ event: Event) {
             let startTime = event.startDate.shortDateString
             let endTime = event.endDate.shortDateString
             

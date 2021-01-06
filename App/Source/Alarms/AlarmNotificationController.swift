@@ -28,7 +28,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.dataModelReloader = DataModelReloader(for: self)
     }
     
-    func scheduleNotification(forItem item: EventKitItem) {
+    func scheduleNotification(forItem item: CalendarItem) {
         if self.notifications.contains(where: { return $0.itemID == item.id }) {
             return
         }
@@ -65,7 +65,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
     }
     
-    func stopNotification(forItem item: EventKitItem) {
+    func stopNotification(forItem item: CalendarItem) {
         self.notifications.forEach() { (notification) in
             if notification.itemID == item.id {
                 self.logger.log("Stopping alarm for: \(item.description)")
@@ -86,7 +86,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         AppKitPluginController.instance.utilities.stopBouncingAppIcon()
         #endif
         
-        EventKitDataModelController.instance.stopAllAlarms()
+        DataModelController.instance.stopAllAlarms()
         
         self.notifyIfAlarmsStopped()
     }
@@ -120,7 +120,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
     }
     
-    private func updateNotifications(forItems items: [EventKitItem]) {
+    private func updateNotifications(forItems items: [CalendarItem]) {
         for item in items {
             if item.alarm.state == .firing {
                 // this will do nothing if already firing
@@ -131,11 +131,11 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
     }
     
-    func dataModelDidReload(_ dataModel: EventKitDataModel) {
+    func dataModelDidReload(_ dataModel: DataModel) {
 
         self.logger.log("Updating alarms for \(self.notifications.count)")
         
-        let items:[EventKitItem] = EventKitDataModelController.dataModel.events + EventKitDataModelController.dataModel.reminders
+        let items:[CalendarItem] = DataModelController.dataModel.events + DataModelController.dataModel.reminders
 
         var itemsSet = Set<String>()
         items.forEach { (item) in

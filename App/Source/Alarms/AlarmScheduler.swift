@@ -28,7 +28,7 @@ class AlarmScheduler: Loggable, DataModelAware {
     private func startTimerForNextEventTime() {
         self.timer.stop()
         
-        if let nextEventTime = EventKitDataModelController.dataModel.nextAlarmDateForSchedulingTimer {
+        if let nextEventTime = DataModelController.dataModel.nextAlarmDateForSchedulingTimer {
             self.startTimer(withDate: nextEventTime)
         }
     }
@@ -42,12 +42,12 @@ class AlarmScheduler: Loggable, DataModelAware {
     
     // MARK: data model interaction
 
-    func dataModelDidReload(_ dataModel: EventKitDataModel) {
+    func dataModelDidReload(_ dataModel: DataModel) {
         self.handleDataModelChanged()
     }
     
     private func handleDataModelChanged() {
-        EventKitDataModelController.instance.updateAlarmsIfNeeded()
+        DataModelController.instance.updateAlarmsIfNeeded()
         self.startTimerForNextEventTime()
     }
     

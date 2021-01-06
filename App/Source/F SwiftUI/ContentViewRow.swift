@@ -45,7 +45,7 @@ struct ButtonModifier : ViewModifier {
 }
 
 struct ContentViewRow: View {
-    var event: EventKitEvent
+    var event: Event
     var startDate: String = ""
     var endDate: String = ""
     var title: String = ""
@@ -55,7 +55,7 @@ struct ContentViewRow: View {
     var calendar: String
     var calendarSource: String
     
-    init(event: EventKitEvent, calendar: EventKitCalendar) {
+    init(event: Event, calendar: Calendar) {
         self.event = event
         self.title = event.title
         self.startDate = shortDateString(event.startDate)

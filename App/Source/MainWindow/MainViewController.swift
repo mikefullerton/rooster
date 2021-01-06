@@ -8,63 +8,32 @@
 import Foundation
 import UIKit
 
+protocol MainViewControllerDelegate : AnyObject {
+    func mainViewController(_ viewController: MainViewController, preferredContentSizeDidChange size: CGSize)
+}
+
+
 #if targetEnvironment(macCatalyst)
 protocol MainViewControllerMacProtocols : NSToolbarDelegate {}
 #else
 protocol MainViewControllerMacProtocols {}
 #endif
 
-class MainViewController : UIViewController, UIPopoverPresentationControllerDelegate, MainViewControllerMacProtocols {
-    var contentViewController: UIViewController?
-    var spinner: UIActivityIndicatorView?
+class MainViewController : UIViewController, UIPopoverPresentationControllerDelegate, MainViewControllerMacProtocols, DataModelAware {
     
-    func configure() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleCalenderAuthentication(_:)), name: AppDelegate.CalendarDidAuthenticateEvent, object: nil)
-    }
+    let minimumContentSize = CGSize(width: 600, height: TimeRemainingViewController.preferredHeight)
+     
+    private var reloader: DataModelReloader? = nil
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.configure()
-    }
+    weak var delegate: MainViewControllerDelegate?
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.configure()
-    }
-    
-    convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
-    
-    lazy var navigationViewController: UINavigationController = {
-        
-        let viewController = MainEventListViewController()
-        
-        let navigationItem = viewController.navigationItem
-        
-        let leftImage = UIImage(systemName: "gear")
-        
-        let leftButton = UIBarButtonItem(image: leftImage,
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(preferencesButtonClicked(_:)))
-                                         
-        navigationItem.leftBarButtonItem = leftButton
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "calendar"),
-                                                                                    style: .plain, target: self, action: #selector(calendarsButtonClicked(_:)))
-
-        navigationItem.title = "Rooster"
-        
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        
-        navigationViewController.setNavigationBarHidden(false, animated:false)
-        
-        return navigationViewController
-    }()
+    private var contentViewController: UIViewController?
     
     func createMainViewsIfNeeded() {
         if self.contentViewController == nil {
+            
+            self.removeLoadingView()
+            
             #if targetEnvironment(macCatalyst)
             self.contentViewController = MainEventListViewController()
             #else
@@ -85,69 +54,85 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
                     subview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
                 ])
             }
+            
+            self.adjustWindowSize()
         }
     }
     
-    @objc func preferencesButtonClicked(_ sender: Any) {
-        
-    }
+    var loadingView: LoadingView?
 
-    @objc func calendarsButtonClicked(_ sender: Any) {
-        self.navigationViewController.pushViewController(CalendarChooserViewController(), animated: true)
-    }
+    func addLoadingView() {
+        let view = LoadingView()
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
 
-    
-    func addSpinner() {
-        
-        if self.spinner != nil {
-            return
-        }
-        
-        let spinner = UIActivityIndicatorView(style: .large)
-        self.view.addSubview(spinner)
-        
-        spinner.sizeToFit()
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            spinner.widthAnchor.constraint(equalToConstant: spinner.frame.size.width),
-            spinner.heightAnchor.constraint(equalToConstant: spinner.frame.size.height),
-            spinner.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
         ])
-        
-        spinner.isHidden = false
-        spinner.startAnimating()
-        self.spinner = spinner
+
+        self.loadingView = view
     }
     
-    func removeSpinner() {
-        if self.spinner != nil {
-            self.spinner!.removeFromSuperview()
-            self.spinner = nil
+    func removeLoadingView() {
+        if let view = self.loadingView {
+            view.removeFromSuperview()
+            self.loadingView = nil
         }
     }
     
     override func loadView() {
-        let view = UIView()
+        let view = ContentAwareView()
         view.autoresizesSubviews = true
-        view.translatesAutoresizingMaskIntoConstraints = false
         self.view = view
     }
     
     override func viewDidLoad() {
-        self.addSpinner()
+        super.viewDidLoad()
+        self.addLoadingView()
+        self.preferredContentSize = CGSize(width: 200, height: 200)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCalenderAuthentication(_:)), name: AppDelegate.CalendarDidAuthenticateEvent, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func adjustWindowSize() {
+        
+        var size = CGSize.zero
+        
+        if let contentViewController = self.contentViewController {
+            size = contentViewController.preferredContentSize
+        }
+        
+        print("Adjusting window size to: \(size)")
+        self.preferredContentSize = self.adjustedSize(size)
+    }
+    
+
+    private func adjustedSize(_ size: CGSize) -> CGSize {
+        return  CGSize(width: max(self.minimumContentSize.width, size.width),
+                       height: max(self.minimumContentSize.height, size.height))
+    }
+    
+    override var preferredContentSize: CGSize {
+        get {
+            return super.preferredContentSize
+        }
+        set(size) {
+            super.preferredContentSize = size
+            if let delegate = self.delegate {
+                delegate.mainViewController(self, preferredContentSizeDidChange: size)
+            }
+        }
     }
     
     @objc func handleCalenderAuthentication(_ notif: Notification) {
-        self.removeSpinner()
         
-        if EventKitDataModelController.instance.isAuthenticated {
+        if DataModelController.instance.isAuthenticated {
             self.createMainViewsIfNeeded()
+            self.reloader = DataModelReloader(for: self)
         } else {
             let alertController = UIAlertController(title: "Failed to recieve permission to access calendars", message: "We can't do anything, we we will quit now", preferredStyle: UIAlertController.Style.alert)
             
@@ -158,9 +143,13 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
             self.present(alertController, animated: true)
         }
     }
-    
-    #if targetEnvironment(macCatalyst)
 
+    func dataModelDidReload(_ dataModel: DataModel) {
+        self.adjustWindowSize()
+    }
+
+    #if targetEnvironment(macCatalyst)
+    
     lazy var toolbar: NSToolbar = {
         let toolbar = NSToolbar(identifier: "main")
         toolbar.delegate = self
@@ -168,59 +157,16 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         
         return toolbar
     }()
-    
-    func showPopover(for viewController: UIViewController,
-                     fromView view: UIView) {
-        
-        viewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
-        if let presentationController = viewController.popoverPresentationController {
-            presentationController.permittedArrowDirections = .up
-            presentationController.sourceView = view
-            presentationController.canOverlapSourceViewRect = true
-        }
-
-        self.present(viewController, animated: true) {
-        }
-    }
-    
-    lazy var calendarButtonSourceView: UIView = {
-        let view = UIView(frame: CGRect(x:0, y: 35, width:10, height: 10))
-        self.view.addSubview(view)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
-            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 35.0),
-            view.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -32.0)
-        ])
-        
-        return view
-    }()
-    
     @objc func toggleCalendarsPopover(_ sender: Any?) {
-        
-        if self.presentedViewController != nil {
-            self.presentedViewController?.dismiss(animated: true, completion: {
-                
-            })
-        } else {
-            let viewController = CalendarChooserViewController()
-//            self.showPopover(for: viewController,
-//                             fromView: self.calendarButtonSourceView)
-            
-            viewController.modalPresentationStyle = .formSheet
-            self.present(viewController, animated: true) {
-            }
-
+        let viewController = CalendarChooserViewController()
+        viewController.modalPresentationStyle = .formSheet
+        self.present(viewController, animated: true) {
         }
     }
 
     @objc func togglePreferencesPopover(_ sender: Any?) {
         let viewController = PreferencesViewController()
-        
         viewController.modalPresentationStyle = .formSheet
         self.present(viewController, animated: true) {
         }
@@ -272,6 +218,42 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         return toolbarItem
     }
     
+    #else
+    lazy var navigationViewController: UINavigationController = {
+        
+        let viewController = MainEventListViewController()
+        
+        let navigationItem = viewController.navigationItem
+        
+        let leftImage = UIImage(systemName: "gear")
+        
+        let leftButton = UIBarButtonItem(image: leftImage,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(preferencesButtonClicked(_:)))
+                                         
+        navigationItem.leftBarButtonItem = leftButton
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "calendar"),
+                                                                                    style: .plain, target: self, action: #selector(calendarsButtonClicked(_:)))
+
+        navigationItem.title = "Rooster"
+        
+        let navigationViewController = UINavigationController(rootViewController: viewController)
+        
+        navigationViewController.setNavigationBarHidden(false, animated:false)
+        
+        return navigationViewController
+    }()
+
+    @objc func preferencesButtonClicked(_ sender: Any) {
+        
+    }
+
+    @objc func calendarsButtonClicked(_ sender: Any) {
+        self.navigationViewController.pushViewController(CalendarChooserViewController(), animated: true)
+    }
+
     #endif
 }
 

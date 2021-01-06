@@ -15,6 +15,8 @@ protocol TableViewSectionProtocol {
     var header: TableViewSectionAdornmentProtocol? { get }
     
     var footer: TableViewSectionAdornmentProtocol? { get }
+    
+    var height: CGFloat { get }
 }
 
 extension TableViewSectionProtocol {
@@ -38,6 +40,26 @@ extension TableViewSectionProtocol {
     var footer: TableViewSectionAdornmentProtocol? {
         return nil
     }
+    
+    var height: CGFloat {
+        
+        var height: CGFloat = 0
+        
+        if let header = self.header {
+            height += header.height
+        }
+        
+        if let footer = self.footer {
+            height += footer.height
+        }
+        
+        for row in self.rows {
+            height += row.height
+        }
+        
+        return height
+    }
+    
 }
 
 struct TableViewSection<DataType, ViewType> : TableViewSectionProtocol

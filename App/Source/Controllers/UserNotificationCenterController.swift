@@ -40,7 +40,7 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
         }
     }
     
-    func scheduleNotification(forItem item: EventKitItem) {
+    func scheduleNotification(forItem item: CalendarItem) {
 
         let center = UNUserNotificationCenter.current()
         

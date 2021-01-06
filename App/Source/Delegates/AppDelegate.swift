@@ -202,7 +202,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     public func mainWindowDidShow() {
         self.logger.log("Main Window did show")
 
-        EventKitDataModelController.instance.authenticate { (success) in
+        DataModelController.instance.authenticate { (success) in
             DispatchQueue.main.async {
                 self.didAuthenticate()
             }
