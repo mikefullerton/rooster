@@ -1588,7 +1588,7 @@
 				);
 				MODULEMAP_FILE = AppKitPlugin/RoosterAppKitPlugin.modulemap;
 				OTHER_LDFLAGS = "$(inherited) ";
-				PRODUCT_BUNDLE_IDENTIFIER = com.commapps.rooster.appkitplugin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.commapps.rooster.appkitplugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx.internal;
 				SKIP_INSTALL = YES;
@@ -1630,7 +1630,7 @@
 				);
 				MODULEMAP_FILE = AppKitPlugin/RoosterAppKitPlugin.modulemap;
 				OTHER_LDFLAGS = "$(inherited) ";
-				PRODUCT_BUNDLE_IDENTIFIER = com.commapps.rooster.appkitplugin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.commapps.rooster.appkitplugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx.internal;
 				SKIP_INSTALL = YES;
@@ -1823,7 +1823,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.commapps.rooster;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.commapps.rooster;
 				PRODUCT_NAME = Rooster;
 				PROVISIONING_PROFILE_SPECIFIER = "-";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -1858,7 +1858,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.commapps.rooster;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.commapps.rooster;
 				PRODUCT_NAME = Rooster;
 				PROVISIONING_PROFILE_SPECIFIER = "-";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
