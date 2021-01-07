@@ -120,6 +120,8 @@
 		B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662AD258F9C7C00D3A538 /* EventKitHelper.swift */; };
 		B28662BA258FA41100D3A538 /* SparkleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286612B258E700E00D3A538 /* SparkleController.swift */; };
 		B28662D3258FBB3900D3A538 /* EKController+ReloadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662CE258FBB0900D3A538 /* EKController+ReloadingState.swift */; };
+		B288E91325A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */; };
+		B288E91425A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */; };
 		B296550E257BD2F2008D1858 /* UserDefaults+IdentifierList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B296550D257BD2F2008D1858 /* UserDefaults+IdentifierList.swift */; };
 		B2965512257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965511257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift */; };
 		B2965516257BD3EC008D1858 /* DictionaryCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965515257BD3EC008D1858 /* DictionaryCodable.swift */; };
@@ -397,6 +399,7 @@
 		B28662B0258F9E8500D3A538 /* AppKitUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppKitUtilities.h; sourceTree = "<group>"; };
 		B28662B5258FA1FF00D3A538 /* AppKitInstallationUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppKitInstallationUpdater.h; sourceTree = "<group>"; };
 		B28662CE258FBB0900D3A538 /* EKController+ReloadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKController+ReloadingState.swift"; sourceTree = "<group>"; };
+		B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+CountDownStringFormatter.swift"; sourceTree = "<group>"; };
 		B296550D257BD2F2008D1858 /* UserDefaults+IdentifierList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+IdentifierList.swift"; sourceTree = "<group>"; };
 		B2965511257BD33A008D1858 /* UserDefaults+IdentifierDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+IdentifierDictionary.swift"; sourceTree = "<group>"; };
 		B2965515257BD3EC008D1858 /* DictionaryCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryCodable.swift; sourceTree = "<group>"; };
@@ -760,6 +763,7 @@
 				B20AACDC2594FDE800F9B50C /* Loggable.swift */,
 				B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */,
 				B2E78A18259562A000DF0ACF /* URL+Utilities.swift */,
+				B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1360,6 +1364,7 @@
 				B2866297258EC77200D3A538 /* Alarm.swift in Sources */,
 				B2866264258EC1F500D3A538 /* Date+Utilities.swift in Sources */,
 				B20AACE925950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */,
+				B288E91425A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */,
 				B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1411,6 +1416,7 @@
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,
 				B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */,
+				B288E91325A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */,
 				B2DBBCE725A4BD6800D509C9 /* StartDelayView.swift in Sources */,
 				B2A181B8259810D200C1E7F0 /* UIButton+ImageButton.swift in Sources */,
 				B2020A9E2577D88600F478CC /* Reloader.swift in Sources */,

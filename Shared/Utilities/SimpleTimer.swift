@@ -24,6 +24,8 @@ class SimpleTimer : CustomStringConvertible, Loggable {
     
     private static var idCounter:Int = 0
     
+    var logTimerEvents = true
+    
     init() {
         self.timer = nil
         self.requestedFireCount = 0
@@ -59,7 +61,9 @@ class SimpleTimer : CustomStringConvertible, Loggable {
     
     func stop() {
         if self.isTiming {
-            self.logger.log("Timer stopped: \(self.description)")
+            if self.logTimerEvents {
+                self.logger.log("Timer stopped: \(self.description)")
+            }
           
             self.stopTimer()
             self.isTiming = false
@@ -81,11 +85,15 @@ class SimpleTimer : CustomStringConvertible, Loggable {
         DispatchQueue.main.async {
             self.timer = Timer.scheduledTimer(withTimeInterval: self.interval, repeats: false) { (timer) in
                 self.stopTimer()
-                self.logger.log("timer fired: \(self.description)")
+                if self.logTimerEvents {
+                    self.logger.log("timer fired: \(self.description)")
+                }
 
                 self.fireCount += 1
                 if self.willFireAgain {
-                    self.logger.log("Rescheduling timer: \(self.description)")
+                    if self.logTimerEvents {
+                        self.logger.log("Rescheduling timer: \(self.description)")
+                    }
                     self.startTimer(completion: completion)
                 } else {
                     self.stop()
@@ -94,7 +102,9 @@ class SimpleTimer : CustomStringConvertible, Loggable {
                 completion(self)
             }
             
-            self.logger.log("scheduled timer: \(self.description)")
+            if self.logTimerEvents {
+                self.logger.log("scheduled timer: \(self.description)")
+            }
         }
     }
     
@@ -105,7 +115,9 @@ class SimpleTimer : CustomStringConvertible, Loggable {
         self.stop()
         
         if interval <= 0 {
-            self.logger.log("Timer fired after 0 seconds")
+            if self.logTimerEvents {
+                self.logger.log("Timer fired after 0 seconds")
+            }
             completion(self)
             return
         }
@@ -114,8 +126,10 @@ class SimpleTimer : CustomStringConvertible, Loggable {
         self.fireCount = 0
         self.isTiming = true
         self.interval = interval
-
-        self.logger.log("Starting timer: \(self.description)")
+        
+        if self.logTimerEvents {
+            self.logger.log("Starting timer: \(self.description)")
+        }
       
         self.startTimer(completion: completion)
     }

@@ -11,7 +11,6 @@ import EventKit
 
 /// interface to the AppKitPlugin
 class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMenuBarControllerDelegate {
-        
     static var instance = AppKitPluginController()
     
     private var plugin: RoosterAppKitPlugin?
@@ -90,6 +89,10 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMe
         
         AppKitPluginController.instance.utilities.bringAppToFront()
 //        self.isPopoverHidden = !self.isPopoverHidden
+    }
+
+    func appKitMenuBarControllerNextFireDate(_ controller: AppKitMenuBarController) -> Date? {
+        return DataModelController.instance.dataModel.nextAlarmDate
     }
 }
 

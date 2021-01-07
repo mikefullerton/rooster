@@ -31,10 +31,20 @@ extension NSImage {
     public weak var delegate: AppKitMenuBarControllerDelegate?
     
     private var statusBarItem: NSStatusItem? = nil
-    
-    var showingRedRooster = false
+    private let countDownTimer = SimpleTimer()
     
     private weak var timer: Timer?
+    
+    var showingRedRooster = false
+    var displayOptions: AppKitPluginMenuBarOptions = [.icon, .countDown] {
+        didSet {
+            self.updateMenuBarItemsVisibility()
+        }
+    }
+    deinit {
+        self.stopFlashingTimer()
+        self.countDownTimer.stop()
+    }
     
     var redRoosterImage : NSImage? {
         if let image = Bundle(for: type(of: self)).image(forResource: NSImage.Name("RedRoosterIcon")) {
@@ -65,20 +75,63 @@ extension NSImage {
     }
     
     func showIconInMenuBar() {
-        let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.squareLength))
         
-        if let button = statusBarItem.button,
-           let image = self.defaultRoosterImage {
+        if self.displayOptions.contains(.icon) && self.statusBarItem == nil {
+            let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
             
-            image.size = CGSize(width: 26, height: 26)
-            button.image = image
-            button.action = #selector(buttonClicked(_:))
-            button.target = self
-        
-            button.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+            if let button = statusBarItem.button,
+               let image = self.defaultRoosterImage {
+                
+                image.size = CGSize(width: 26, height: 26)
+                button.image = image
+                button.action = #selector(buttonClicked(_:))
+                button.target = self
+                button.imagePosition = .imageLeading
+            }
+            
+            if self.displayOptions.contains(.icon) {
+                self.updateCountdown()
+            }
+            
+            self.statusBarItem = statusBarItem
         }
         
-        self.statusBarItem = statusBarItem
+    }
+    
+    func hideIconInMenuBar() {
+        if let statusBarItem = self.statusBarItem {
+            NSStatusBar.system.removeStatusItem(statusBarItem)
+            self.statusBarItem = nil
+        }
+    }
+    
+    func updateCountdown() {
+        
+        if let delegate = self.delegate {
+        
+            if let statusBarItem = self.statusBarItem,
+               let button = statusBarItem.button {
+            
+                var title: String = ""
+                
+                if let nextFireDate = delegate.appKitMenuBarControllerNextFireDate(self) {
+                    let countDown = CountDown(withFireDate: nextFireDate,
+                                              formatter: LongCountDownStringFormatter(),
+                                              showSecondsWithMinutes: false)
+
+                    title = countDown.displayString
+                }
+                
+                button.title = title
+            }
+
+            self.countDownTimer.logTimerEvents = false
+            self.countDownTimer.start(withInterval: 1.0, fireCount: 1) { [weak self] timer in
+                if let strongSelf = self {
+                    strongSelf.updateCountdown()
+                }
+            }
+        }
     }
 
     @objc func buttonClicked(_ sender: AnyObject?) {
@@ -171,5 +224,9 @@ extension NSImage {
     
     func hideNowFiringItem(_ item: Any) {
         self.isPopoverHidden = true
+    }
+    
+    func updateMenuBarItemsVisibility() {
+        
     }
 }

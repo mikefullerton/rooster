@@ -95,52 +95,57 @@ class TimeRemainingView : UILabel {
             return
         }
         
-        let fireTime = fireDate.timeIntervalSinceReferenceDate
-        let nowInterval = Date().timeIntervalSinceReferenceDate
-        let interval = fireTime - nowInterval
+        let countDown = CountDown(withFireDate: fireDate,
+                                  formatter: LongCountDownStringFormatter(),
+                                  showSecondsWithMinutes: self.showSecondsWithMinutes)
+        
+        
+//        let fireTime = fireDate.timeIntervalSinceReferenceDate
+//        let nowInterval = Date().timeIntervalSinceReferenceDate
+//        let interval = fireTime - nowInterval
 
-        if interval > 0 {
+        if countDown.intervalUntilFire > 0 {
 
-            let minutes = interval / (60.0)
-            
-            let hours = floor(interval / (60.0 * 60.0))
+//            let minutes = interval / (60.0)
+//
+//            let hours = floor(interval / (60.0 * 60.0))
+//
+//            let displayMinutes = floor((interval - (hours * 60 * 60)) / 60)
+//            let displaySeconds = interval - (hours * 60 * 60) - (floor(minutes) * 60)
+//
+//            var shouldDisplaySeconds = false
+//            var text = ""
+//            if hours > 0 {
+//                text += "\(self.printableTimeComponent(interval: hours))\(self.hours)"
+//                if displayMinutes > 1 {
+//                    text += ", \(self.printableTimeComponent(interval: displayMinutes))\(self.minutes)"
+//                } else if displayMinutes == 1 {
+//                    text += ", 1 minute"
+//                }
+//            } else if displayMinutes == 1 {
+//                text += "1 minute"
+//            } else if displayMinutes > 0 {
+//                text += "\(self.printableTimeComponent(interval: displayMinutes))\(self.minutes)"
+//                shouldDisplaySeconds = self.showSecondsWithMinutes
+//
+//                if shouldDisplaySeconds {
+//                    text += ", "
+//                }
+//            } else {
+//                shouldDisplaySeconds = true
+//            }
+//
+//            if shouldDisplaySeconds {
+//                if displaySeconds > 1 {
+//                    text += "\(self.printableTimeComponent(interval: displaySeconds))\(self.seconds)"
+//                } else if displaySeconds == 1 {
+//                    text += "1 second"
+//                } else {
+//                    text += "0 seconds"
+//                }
+//            }
 
-            let displayMinutes = floor((interval - (hours * 60 * 60)) / 60)
-            let displaySeconds = interval - (hours * 60 * 60) - (floor(minutes) * 60)
-    
-            var shouldDisplaySeconds = false
-            var text = ""
-            if hours > 0 {
-                text += "\(self.printableTimeComponent(interval: hours))\(self.hours)"
-                if displayMinutes > 1 {
-                    text += ", \(self.printableTimeComponent(interval: displayMinutes))\(self.minutes)"
-                } else if displayMinutes == 1 {
-                    text += ", 1 minute"
-                }
-            } else if displayMinutes == 1 {
-                text += "1 minute"
-            } else if displayMinutes > 0 {
-                text += "\(self.printableTimeComponent(interval: displayMinutes))\(self.minutes)"
-                shouldDisplaySeconds = self.showSecondsWithMinutes
-
-                if shouldDisplaySeconds {
-                    text += ", "
-                }
-            } else {
-                shouldDisplaySeconds = true
-            }
-            
-            if shouldDisplaySeconds {
-                if displaySeconds > 1 {
-                    text += "\(self.printableTimeComponent(interval: displaySeconds))\(self.seconds)"
-                } else if displaySeconds == 1 {
-                    text += "1 second"
-                } else {
-                    text += "0 seconds"
-                }
-            }
-
-            self.text = self.prefixString + text
+            self.text = self.prefixString + countDown.displayString
         } else {
             self.stop()
         }

@@ -11,11 +11,19 @@ NS_ASSUME_NONNULL_BEGIN
 @class CalendarItem;
 @protocol AppKitMenuBarControllerDelegate;
 
+typedef NS_OPTIONS(NSInteger, AppKitPluginMenuBarOptions) {
+    AppKitPluginMenuBarOptionsNone          = 0,
+    AppKitPluginMenuBarOptionsIcon          = (1 << 0),
+    AppKitPluginMenuBarOptionsCountDown     = (1 << 1)
+};
+
 @protocol AppKitMenuBarController <NSObject>
 
 @property (readwrite, weak, nonatomic) id<AppKitMenuBarControllerDelegate> delegate;
 
 @property (readwrite, assign, nonatomic, getter=isPopoverHidden) BOOL popoverHidden;
+
+@property (readwrite, assign, nonatomic) AppKitPluginMenuBarOptions displayOptions;
 
 - (void)showIconInMenuBar;
 
@@ -31,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)menuBarButtonWasClicked:(id<AppKitMenuBarController>)popover;
 
 - (BOOL)appKitMenuBarControllerAreAlarmsFiring:(id<AppKitMenuBarController>)controller;
+
+- (nullable NSDate*)appKitMenuBarControllerNextFireDate:(id<AppKitMenuBarController>)controller;
 
 @end
 
