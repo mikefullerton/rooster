@@ -46,7 +46,6 @@ class DemoAlarmNotification : AlarmNotification {
                              location: "http://apple.com",
                              url: nil,
                              notes: nil,
-                             noteURLS: nil,
                              organizer: nil)
     }()
     

@@ -17,7 +17,7 @@ extension ReminderTableViewCell {
         func setReminder(_ reminder: Reminder) {
             self.reminder = reminder
             
-            self.setLocationURL(reminder.bestLocationURL)
+            self.setLocationURL(reminder.knownLocationURL)
 
             if reminder.alarm.isHappeningNow {
                 self.countDownLabel.stopTimer()

@@ -6,21 +6,27 @@
 //
 #import <Foundation/Foundation.h>
 
-
 NS_ASSUME_NONNULL_BEGIN
+
+@class CalendarItem;
 
 @protocol AppKitUtilities <NSObject>
 
-- (void)openURLDirectlyInAppIfPossible:(NSURL *)url completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
+- (void)openURLDirectlyInAppIfPossible:(NSURL *)url
+                            completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
 
 - (void)bringAppToFront;
-- (void)bringAnotherAppToFront:(NSString*)bundleIdentier;
+- (void)bringAnotherAppToFront:(NSString*)bundleIdentifier
+                    completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
 
 - (void)bounceAppIconOnce;
 - (void)startBouncingAppIcon;
 - (void)stopBouncingAppIcon;
 
 - (void)openNotificationSettings;
+
+- (void)openLocationURL:(NSURL *)url
+             completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
 @end
 
 NS_ASSUME_NONNULL_END

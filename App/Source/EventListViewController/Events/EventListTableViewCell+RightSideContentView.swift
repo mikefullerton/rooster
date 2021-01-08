@@ -17,7 +17,7 @@ extension EventListTableViewCell {
         func setEvent(_ event: Event) {
             self.event = event
             
-            self.setLocationURL(event.bestLocationURL)
+            self.setLocationURL(event.knownLocationURL)
 
             if event.alarm.isHappeningNow {
                 self.countDownLabel.stopTimer()
@@ -43,7 +43,10 @@ extension EventListTableViewCell {
         
         @objc override func handleLocationButtonClick(_ sender: UIButton) {
             if let event = self.event {
+                event.logger.log("open location button clicked")
                 event.openLocationURL()
+            } else {
+                print("Event is nil when location button clicked")
             }
         }
         

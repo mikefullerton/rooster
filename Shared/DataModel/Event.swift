@@ -20,8 +20,7 @@ struct Event: Identifiable, Hashable, CalendarItem {
     let location: String?
     let url: URL?
     let notes: String?
-    let noteURLS: [URL]?
-
+    
     // modifiable
     var isSubscribed: Bool
     var alarm: Alarm
@@ -37,7 +36,6 @@ struct Event: Identifiable, Hashable, CalendarItem {
          location: String?,
          url: URL?,
          notes: String?,
-         noteURLS: [URL]?,
          organizer: String?) {
         
         self.id = identifier
@@ -52,12 +50,6 @@ struct Event: Identifiable, Hashable, CalendarItem {
         self.location = location
         self.url = url
         self.notes = notes
-        
-        if notes != nil && noteURLS == nil {
-            self.noteURLS = notes!.detectURLs()
-        } else {
-            self.noteURLS = nil
-        }
     }
     
     var description: String {

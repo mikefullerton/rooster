@@ -166,37 +166,4 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     }
 }
 
-extension CalendarItem {
-    // TODO: Zoom, etc
-    
-    var bestLocationURL: URL? {
-        return self.findURL(containing: "webex")
-    }
-    
-    var bestAppBundle: String? {
-        if self.bestLocationURL != nil {
-            return "com.webex.meetingmanager"
-        }
-        
-        return nil
-    }
-
-    func openLocationURL() {
-        if let locationURL = self.bestLocationURL {
-            
-            self.logger.log("Opening location URL: \(locationURL) forItem: \(self.title)")
-            
-            UIApplication.shared.open(locationURL,
-                                      options: [:]) { (innerSuccess) in
-                
-            }
-            
-            #if targetEnvironment(macCatalyst)
-            if let bundleID = self.bestAppBundle {
-                AppKitPluginController.instance.utilities.bringAnotherApp(toFront: bundleID)
-            }
-            #endif
-        }
-    }
-}
 

@@ -73,8 +73,7 @@ extension Reminder {
                                 title: self.title,
                                 location: self.location,
                                 url: self.url,
-                                notes: self.notes,
-                                noteURLS: self.noteURLS)
+                                notes: self.notes)
 
     }
     
@@ -99,8 +98,7 @@ extension Reminder {
                   title: EKReminder.title,
                   location: EKReminder.location,
                   url: EKReminder.url,
-                  notes: EKReminder.notes,
-                  noteURLS: nil)
+                  notes: EKReminder.notes)
 
     }
 

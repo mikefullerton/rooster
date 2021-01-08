@@ -26,8 +26,7 @@ extension Reminder {
                   title: EKReminder.title,
                   location: EKReminder.location,
                   url: EKReminder.url,
-                  notes: EKReminder.notes,
-                  noteURLS: nil)
+                  notes: EKReminder.notes)
 
     }
     

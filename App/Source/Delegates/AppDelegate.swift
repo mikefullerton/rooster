@@ -193,7 +193,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         AppKitPluginController.instance.installationUpdater.configure(withAppBundle: Bundle.init(for: type(of:self)))
         #endif
 
-        AlarmScheduler.instance.start()
         AlarmNotificationController.instance.start()
         
         NotificationCenter.default.post(name: AppDelegate.CalendarDidAuthenticateEvent, object: self)

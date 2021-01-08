@@ -17,7 +17,6 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
     let location: String?
     let notes: String?
     let url: URL?
-    let noteURLS: [URL]?
     let dueDate: Date
     let startDate: Date
 
@@ -36,8 +35,7 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
          title: String,
          location: String?,
          url: URL?,
-         notes: String?,
-         noteURLS: [URL]?) {
+         notes: String?) {
 
         self.calendar = calendar
         self.id = identifier
@@ -51,12 +49,6 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
         self.location = location
         self.url = url
         self.notes = notes
-        
-        if notes != nil && noteURLS == nil {
-            self.noteURLS = notes!.detectURLs()
-        } else {
-            self.noteURLS = nil
-        }
     }
 
     var description: String {

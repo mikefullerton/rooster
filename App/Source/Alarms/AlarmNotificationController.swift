@@ -18,14 +18,17 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
     private var notifications: [AlarmNotification]
     
     private var dataModelReloader: DataModelReloader?
-    
+    private let nextAlarmTimer: SimpleTimer
+ 
     private init() {
         self.notifications = []
         self.dataModelReloader = nil
+        self.nextAlarmTimer = SimpleTimer()
     }
     
     func start() {
         self.dataModelReloader = DataModelReloader(for: self)
+        self.startTimerForNextEventTime()
     }
     
     func scheduleNotification(forItem item: CalendarItem) {
@@ -131,8 +134,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
     }
     
-    func dataModelDidReload(_ dataModel: DataModel) {
-
+    private func updateEventItems() {
         self.logger.log("Updating alarms for \(self.notifications.count)")
         
         let items:[CalendarItem] = DataModelController.dataModel.events + DataModelController.dataModel.reminders
@@ -145,6 +147,25 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.stopNotifications(forIdentifiersNotInSet: itemsSet)
         
         self.updateNotifications(forItems: items)
+        
+        self.startTimerForNextEventTime()
     }
+    
+    func dataModelDidReload(_ dataModel: DataModel) {
+        self.updateEventItems()
+    }
+    
+    private func startTimerForNextEventTime() {
+        self.nextAlarmTimer.stop()
+        
+        if let nextAlarmTime = DataModelController.dataModel.nextAlarmDateForSchedulingTimer {
+            self.logger.log("scheduling next alarm update for: \(nextAlarmTime)")
+            self.nextAlarmTimer.start(withDate: nextAlarmTime) { [weak self] (timer) in
+                self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval)")
+                self?.updateEventItems()
+            }
+        }
+    }
+    
 }
 

@@ -25,7 +25,6 @@ extension Event {
                   location: EKEvent.location,
                   url: EKEvent.url,
                   notes: EKEvent.notes,
-                  noteURLS: nil,
                   organizer: EKEvent.organizer?.name)
     }
 

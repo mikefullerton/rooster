@@ -73,7 +73,6 @@ extension Event {
                              location: self.location,
                              url: self.url,
                              notes: self.notes,
-                             noteURLS: self.noteURLS,
                              organizer: self.organizer)
 
     }
@@ -97,7 +96,6 @@ extension Event {
                   location: EKEvent.location,
                   url: EKEvent.url,
                   notes: EKEvent.notes,
-                  noteURLS: nil,
                   organizer: EKEvent.organizer?.name)
     }
     

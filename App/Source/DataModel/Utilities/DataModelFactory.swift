@@ -111,7 +111,6 @@ struct DataModelFactory {
                                  location: newEvent.location,
                                  url: newEvent.url,
                                  notes: newEvent.notes,
-                                 noteURLS: newEvent.noteURLS,
                                  organizer: newEvent.organizer)
 
         }
@@ -132,8 +131,7 @@ struct DataModelFactory {
                                     title: newReminder.title,
                                     location: newReminder.location,
                                     url: newReminder.url,
-                                    notes: newReminder.notes,
-                                    noteURLS: newReminder.noteURLS)
+                                    notes: newReminder.notes)
 
         }
     }
