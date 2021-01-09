@@ -175,6 +175,7 @@
 		B2AFE6E1256B2571006B3C58 /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6E0256B2571006B3C58 /* EventNotification.swift */; };
 		B2B70987257FC5E900C48ED5 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B70986257FC5E900C48ED5 /* StringFormatter.swift */; };
 		B2B7098F257FE2AB00C48ED5 /* Alarm+SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7098E257FE2AB00C48ED5 /* Alarm+SavedState.swift */; };
+		B2BAD32625AA21EA00C68027 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2BAD32525AA21EA00C68027 /* PreferencesView.swift */; };
 		B2C7424325772435006645A0 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C7424225772435006645A0 /* PreferencesViewController.swift */; };
 		B2CA1122258FD4D800B8BF81 /* EKController+DataModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA1121258FD4D800B8BF81 /* EKController+DataModelFactory.swift */; };
 		B2CA1126258FD70000B8BF81 /* EKDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA1125258FD70000B8BF81 /* EKDataModel.swift */; };
@@ -451,6 +452,7 @@
 		B2AFE6E0256B2571006B3C58 /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
 		B2B70986257FC5E900C48ED5 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		B2B7098E257FE2AB00C48ED5 /* Alarm+SavedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alarm+SavedState.swift"; sourceTree = "<group>"; };
+		B2BAD32525AA21EA00C68027 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		B2C7423E257723FD006645A0 /* PreferenceSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceSceneDelegate.swift; sourceTree = "<group>"; };
 		B2C7424225772435006645A0 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		B2CA1121258FD4D800B8BF81 /* EKController+DataModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKController+DataModelFactory.swift"; sourceTree = "<group>"; };
@@ -620,7 +622,6 @@
 		B21DA1C5259BFFCC002A56C8 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				B233C55325A3934A005A7FB3 /* SoundPicker */,
 				B2A181B32598105200C1E7F0 /* SingleSoundChoiceView.swift */,
 				B2A181BF2598125800C1E7F0 /* SoundPreferencesView.swift */,
 				B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */,
@@ -790,6 +791,7 @@
 			isa = PBXGroup;
 			children = (
 				B2AFE696256AD0C1006B3C58 /* CalendarListViewController */,
+				B233C55325A3934A005A7FB3 /* SoundPicker */,
 				B2C7423D2577225E006645A0 /* PreferencesViewController */,
 				B2F6B48625618787000BC78E /* EventListViewController */,
 				B2E1549225768619008BE604 /* Views */,
@@ -965,6 +967,7 @@
 			children = (
 				B21DA1C5259BFFCC002A56C8 /* Sounds */,
 				B2C7424225772435006645A0 /* PreferencesViewController.swift */,
+				B2BAD32525AA21EA00C68027 /* PreferencesView.swift */,
 				B2A181C32598134A00C1E7F0 /* NotificationChoicesView.swift */,
 				B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */,
 				B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */,
@@ -1514,6 +1517,7 @@
 				B2CA1122258FD4D800B8BF81 /* EKController+DataModelFactory.swift in Sources */,
 				B2F6B52125643434000BC78E /* SilenceAlarmSound.swift in Sources */,
 				B21DA1A4259BB722002A56C8 /* String+Localized.swift in Sources */,
+				B2BAD32625AA21EA00C68027 /* PreferencesView.swift in Sources */,
 				B21DA22B259D398A002A56C8 /* BottomBar.swift in Sources */,
 				B2965575257C3706008D1858 /* ReminderTableViewCell+RightSideContentView.swift in Sources */,
 				B29D056E25925A6D0027C152 /* Event+DictionaryCodable.swift in Sources */,
