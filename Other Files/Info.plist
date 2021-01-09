@@ -25,9 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
-	<string>We want to make alarms tracking your events</string>
+	<string>Rooster will help you be on time to online meetings!</string>
 	<key>NSRemindersUsageDescription</key>
-	<string>We want to make alarms tracking your reminders with due dates</string>
+	<string>Rooster will help you complete your reminders on time!</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.apple.rooster.staterestore.main</string>
