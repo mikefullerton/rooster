@@ -13,7 +13,7 @@
 "AUTO_OPEN_LOCATIONS" = "Automatically open location URLs";
 "SAFARI_TIP" = "Enable Safari Webex plugin to bypass Safari prompts";
 "BOUNCE_ICON" = "Bounce app icon in dock";
-"USE_SYSTEM_NOTIFICATIONS" = "Use macOS notifications";
+"USE_SYSTEM_NOTIFICATIONS" = "Send macOS user notification";
 
 "SOUNDS" = "Sounds";
 
