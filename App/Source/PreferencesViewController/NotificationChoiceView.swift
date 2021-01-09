@@ -22,11 +22,19 @@ class NotificationChoiceView : UIView {
 
         self.addSubview(self.checkbox)
         
-        self.layout.addView(self.checkbox)
-        
+        self.setNeedsUpdateConstraints()
         self.refresh()
     }
+    
+    override func updateConstraints() {
+        self.addViewsToLayout()
+        super.updateConstraints()
+    }
 
+    func addViewsToLayout() {
+        self.layout.setViews([ self.checkbox ])
+    }
+    
     @objc func preferencesDidChange(_ sender: Notification) {
         self.refresh()
     }
@@ -63,12 +71,6 @@ class NotificationChoiceView : UIView {
         
     }()
     
-    override func updateConstraints() {
-        super.updateConstraints()
-        
-        self.layout.updateConstraints()
-    }
-    
     var value: Bool { return false }
 
     override var intrinsicContentSize: CGSize {
@@ -84,13 +86,17 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
                    title: "AUTO_OPEN_LOCATIONS".localized)
         
         self.addSubview(self.locationTipView)
-        self.layout.addView(self.locationTipView)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func addViewsToLayout() {
+        self.layout.setViews([ self.checkbox,
+                               self.locationTipView])
+    }
+    
     @objc override func checkboxChanged(_ sender: UISwitch) {
 
         var prefs = PreferencesController.instance.preferences

@@ -14,7 +14,7 @@ class VerticalViewLayout : ViewLayout {
     let insets:UIEdgeInsets
     let spacing:UIOffset
 
-    private(set) var didSetConstraints: Bool = false;
+//    private(set) var didSetConstraints: Bool = false;
     
     private(set) var views:[UIView]
     
@@ -46,30 +46,25 @@ class VerticalViewLayout : ViewLayout {
             view.topAnchor.constraint(equalTo: belowView.bottomAnchor, constant: self.spacing.vertical),
         ])
     }
-    
-    func updateConstraints() {
-        if !self.didSetConstraints {
-            self.didSetConstraints = true
+        
+    func setViews(_ views: [UIView]) {
+        
+        self.views = views
+
+        for (index, view) in views.enumerated() {
             
-            let subviews = self.views
+            view.translatesAutoresizingMaskIntoConstraints = false
             
-            for (index, view) in subviews.enumerated() {
-                if index == 0 {
-                    self.addTopSubview(view)
-                } else {
-                    self.addSubview(view, belowView: subviews[ index - 1])
-                }
+            if index == 0 {
+                self.addTopSubview(view)
+            } else {
+                self.addSubview(view, belowView: views[ index - 1])
             }
-            
         }
-    }
-    
-    func addView(_ view: UIView) {
-        self.views.append(view)
-        self.hostView.setNeedsUpdateConstraints()
+        
         self.hostView.invalidateIntrinsicContentSize()
     }
-
+    
     var intrinsicContentSize: CGSize {
         return self.verticalLayoutIntrinsicContentSize
     }

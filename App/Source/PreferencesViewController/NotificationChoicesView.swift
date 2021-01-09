@@ -8,15 +8,16 @@
 import Foundation
 import UIKit
 
-class NotificationChoicesView : GroupBoxView {
+class NotificationChoicesView : SimpleVerticalStackView {
     
     init(frame: CGRect) {
-        super.init(frame: frame,
-                   title: "NOTIFICATIONS".localized )
+        super.init(frame: frame )
         
-        self.addContainedView(self.automaticallyOpenLocationURLs)
-        self.addContainedView(self.bounceIconInDock)
-        self.addContainedView(self.useSystemNotifications)
+        self.setContainedViews([
+            self.automaticallyOpenLocationURLs,
+            self.bounceIconInDock,
+            self.useSystemNotifications
+        ])
     }
     
     required init?(coder: NSCoder) {

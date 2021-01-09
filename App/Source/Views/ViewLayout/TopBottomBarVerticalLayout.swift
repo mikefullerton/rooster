@@ -16,7 +16,6 @@ class TopBottomBarVerticalLayout: ViewLayout {
     let spacing:UIOffset
     
     private(set) var views: [UIView]
-    private(set) var didSetConstraints: Bool = false
     
     init(hostView view: UIView,
          insets: UIEdgeInsets,
@@ -65,6 +64,8 @@ class TopBottomBarVerticalLayout: ViewLayout {
         }
         
         for view in subviews {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            
             NSLayoutConstraint.deactivate(view.constraints)
         }
         
@@ -87,17 +88,9 @@ class TopBottomBarVerticalLayout: ViewLayout {
         }
     }
     
-    func updateConstraints() {
-        if self.didSetConstraints {
-            self.didSetConstraints = true
-            
-            self.updateLayout()
-        }
-    }
-    
-    func addView(_ view: UIView) {
-        self.views.append(view)
-        self.hostView.invalidateIntrinsicContentSize()
+    func setViews(_ views: [UIView]) {
+        self.views = views
+        self.updateLayout()
         self.hostView.setNeedsUpdateConstraints()
     }
 

@@ -13,21 +13,21 @@ protocol SoundChoicesViewDelegate : AnyObject {
     func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController
 }
 
-class SoundPreferencesView : GroupBoxView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
+class SoundPreferencesView : SimpleVerticalStackView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
     
     weak var delegate: SoundChoicesViewDelegate?
 
     init(frame: CGRect) {
-        super.init(frame: frame,
-                   title: "SOUNDS".localized)
+        super.init(frame: frame)
         
-        self.addContainedView(self.firstSoundChoice)
-        self.addContainedView(self.secondSoundChoice)
-        self.addContainedView(self.thirdSoundChoice)
-
-        self.addContainedView(self.startDelayView)
-        self.addContainedView(self.soundRepeatView)
-        self.addContainedView(self.soundVolumeView)
+        self.setContainedViews([
+            self.firstSoundChoice,
+            self.secondSoundChoice,
+            self.thirdSoundChoice,
+            self.startDelayView,
+            self.soundRepeatView,
+            self.soundVolumeView
+        ])
     }
     
     required init?(coder: NSCoder) {

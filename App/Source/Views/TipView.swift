@@ -27,8 +27,10 @@ class TipView : UIView {
         self.addSubview(self.tipImage)
         self.addSubview(self.textField)
         
-        self.layout.addView(self.tipImage)
-        self.layout.addView(self.textField)
+        self.layout.setViews([
+            self.tipImage,
+            self.textField
+        ])
  }
     
     required init?(coder: NSCoder) {
@@ -66,19 +68,4 @@ class TipView : UIView {
                                     spacing: UIOffset(horizontal: 20, vertical: 20))
         
     }()
-
-    override func updateConstraints() {
-        super.updateConstraints()
-
-        self.layout.updateConstraints()
-        self.invalidateIntrinsicContentSize()
-    }
-
-
 }
-
-/*
- "exclamationmark.triangle.fill"
- 
- "info.circle.fill"
- */

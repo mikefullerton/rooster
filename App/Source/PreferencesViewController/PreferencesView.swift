@@ -9,6 +9,54 @@ import Foundation
 import UIKit
 
 class PreferencesView : UIView {
+    private var contentView: UIView?
+    lazy var topBar = TopBar(frame: CGRect.zero)
+    lazy var bottomBar = BottomBar(frame: CGRect.zero)
+        
+    init() {
+        super.init(frame: CGRect.zero)
+
+        self.topBar.addToView(self)
+        self.bottomBar.addToView(self)
+        self.topBar.addTitleView(withText: "Preferences")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addContentView(_ view: UIView) {
+        self.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: self.topBar.bottomAnchor),
+            view.bottomAnchor.constraint(equalTo: self.bottomBar.topAnchor),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        ])
+        
+        self.contentView = view
+        
+        self.invalidateIntrinsicContentSize()
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        
+        var size = CGSize(width: UIView.noIntrinsicMetric,
+                          height: self.topBar.intrinsicContentSize.height + self.bottomBar.intrinsicContentSize.height)
+        
+        if let contentView = self.contentView {
+            size.height += contentView.intrinsicContentSize.height
+            size.width = contentView.intrinsicContentSize.width
+        }
+        
+        return size
+    }
+}
+
+class OldPreferencesView : UIView {
     
     lazy var buttonsContainer = ButtonsContainerView(frame: CGRect.zero)
     lazy var notificationChoices =  NotificationChoicesView(frame: CGRect.zero)
@@ -23,16 +71,16 @@ class PreferencesView : UIView {
         self.addSubview(self.notificationChoices)
         self.addSubview(self.buttonsContainer)
         
-        self.layout.addView(self.soundChoices)
-        self.layout.addView(self.notificationChoices)
-        self.layout.addView(self.buttonsContainer)
-
+        self.layout.setViews([
+            self.soundChoices,
+            self.notificationChoices,
+            self.buttonsContainer
+        ])
+        
         self.topBar.addToView(self)
         self.bottomBar.addToView(self)
         
         self.topBar.addTitleView(withText: "Preferences")
-
-        self.setNeedsUpdateConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -50,13 +98,7 @@ class PreferencesView : UIView {
                                          spacing: UIOffset(horizontal: 10, vertical: 10))
     
     
-    override func updateConstraints() {
-        super.updateConstraints()
-        
-        self.layout.updateConstraints()
-        
-        self.invalidateIntrinsicContentSize()
-    }
 }
+
 
 

@@ -13,23 +13,12 @@ protocol ViewLayout {
     var spacing:UIOffset { get }
     var intrinsicContentSize: CGSize { get }
     var hostView: UIView { get }
-    
-    var didSetConstraints: Bool { get }
-    func updateConstraints()
-    
     var views: [UIView] { get }
-    func addView(_ view: UIView)
-    
 }
 
 extension ViewLayout {
     
     var horizontalLayoutIntrinsicContentSize: CGSize {
-
-        if !self.didSetConstraints {
-            return CGSize.zero
-        }
-
         var outSize = CGSize.zero
 
         for view in self.views {
@@ -52,10 +41,6 @@ extension ViewLayout {
     }
     
     var verticalLayoutIntrinsicContentSize: CGSize {
-        
-        if !self.didSetConstraints {
-            return CGSize.zero
-        }
         
         var outSize = CGSize.zero
 

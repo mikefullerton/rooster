@@ -21,7 +21,6 @@ class HorizontalViewLayout: ViewLayout {
     let alignment:Alignment
 
     private(set) var views:[UIView]
-    private(set) var didSetConstraints: Bool = false
 
     init(hostView view: UIView,
          insets: UIEdgeInsets,
@@ -37,12 +36,8 @@ class HorizontalViewLayout: ViewLayout {
     private func updateLeadingSubview(_ view: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
         
-//        let size = view.sizeThatFits(self.hostView.frame.size)
-        
         NSLayoutConstraint.activate([
             view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
-//            view.heightAnchor.constraint(equalToConstant: size.height),
-//            view.widthAnchor.constraint(equalToConstant: size.width),
         ])
         
         switch(self.alignment) {
@@ -81,28 +76,22 @@ class HorizontalViewLayout: ViewLayout {
             ])
         }
     }
-
-    func updateConstraints() {
-        if !self.didSetConstraints {
-            self.didSetConstraints = true
-            
-            let subviews = self.views
-            
-            for (index, view) in subviews.enumerated() {
-                if index == 0 {
-                    self.updateLeadingSubview(view)
-                } else {
-                    self.updateSubview(view, nextTo: subviews[ index - 1])
-                }
-            }
-            
-        }
-    }
     
-    func addView(_ view: UIView) {
-        self.views.append(view)
+    func setViews(_ views: [UIView]) {
+        
+        self.views = views
+
+        for (index, view) in views.enumerated() {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            
+            if index == 0 {
+                self.updateLeadingSubview(view)
+            } else {
+                self.updateSubview(view, nextTo: views[ index - 1])
+            }
+        }
+
         self.hostView.invalidateIntrinsicContentSize()
-        self.hostView.setNeedsUpdateConstraints()
     }
     
     var intrinsicContentSize: CGSize {

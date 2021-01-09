@@ -82,11 +82,11 @@ class GroupBoxView : UIView {
         return outSize
     }
    
-    func addContainedView(_ view: UIView) {
-        self.outlineView.addSubview(view)
-        self.outlineView.layout.addView(view)
-        
-        self.invalidateIntrinsicContentSize()
+    func setContainedViews(_ views: [UIView]) {
+        for view in views {
+            self.outlineView.addSubview(view)
+        }
+        self.outlineView.layout.setViews(views)
     }
 }
 
@@ -103,6 +103,7 @@ class OutlineView : UIView {
         self.layer.borderColor = UIColor.separator.cgColor
         self.translatesAutoresizingMaskIntoConstraints = false
         
+        self.backgroundColor = UIColor.secondarySystemBackground
 //        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
 //        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
@@ -120,12 +121,4 @@ class OutlineView : UIView {
                                   insets:  self.insets,
                                   spacing: UIOffset(horizontal: 10, vertical: 10))
     }()
-
-    override func updateConstraints() {
-        super.updateConstraints()
-
-        self.layout.updateConstraints()
-        self.invalidateIntrinsicContentSize()
-    }
-    
 }

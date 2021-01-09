@@ -15,7 +15,6 @@ class HorizontallyOpposedLayout: ViewLayout {
     let insets:UIEdgeInsets
     let spacing:UIOffset
     
-    private(set) var didSetConstraints = false
     private(set) var views: [UIView]
     
     init(hostView view: UIView,
@@ -58,16 +57,9 @@ class HorizontallyOpposedLayout: ViewLayout {
         }
     }
     
-    func updateConstraints() {
-        if !self.didSetConstraints {
-            self.didSetConstraints = true
-            self.setSubviewConstraints()
-        }
-    }
-
-    func addView(_ view: UIView) {
-        self.views.append(view)
-        self.hostView.invalidateIntrinsicContentSize()
+    func setViews(_ views: [UIView]) {
+        self.views = views
+        self.setSubviewConstraints()
         self.hostView.setNeedsUpdateConstraints()
     }
 
