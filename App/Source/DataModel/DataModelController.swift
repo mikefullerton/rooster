@@ -14,7 +14,12 @@ class DataModelController : EKControllerDelegate, Loggable {
 
     // public properties
     public static let instance = DataModelController()
-    private(set) var dataModel: DataModel
+    private(set) var dataModel: DataModel {
+        didSet {
+            self.updateAlarmsIfNeeded()
+        }
+    }
+
     private(set) var isAuthenticating : Bool
     private(set) var isAuthenticated: Bool
 
@@ -299,6 +304,17 @@ class DataModelController : EKControllerDelegate, Loggable {
         
         return madeChange ? outList : nil
     }
+    
+    private func updateAlarmsIfNeeded() {
+        if let updatedEvents = self.updateAlarms(forItems: self.dataModel.events)  {
+            self.update(someEvents: updatedEvents)
+        }
+    
+        if let updatedReminders = self.updateAlarms(forItems: self.dataModel.reminders) {
+            self.update(someReminders: updatedReminders)
+        }
+    }
+
 }
 
 extension Event {
