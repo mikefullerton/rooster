@@ -19,6 +19,8 @@ class PreferencesView : UIView {
         self.topBar.addToView(self)
         self.bottomBar.addToView(self)
         self.topBar.addTitleView(withText: "Preferences")
+        
+        let _ = self.bottomBar.addLeftButton(title: "Reset")
     }
     
     required init?(coder: NSCoder) {

@@ -48,12 +48,17 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         super.viewDidLoad()
     
         self.rootView.bottomBar.doneButton.addTarget(self, action: #selector(doneButtonPressed(_:)), for: .touchUpInside)
+        self.rootView.bottomBar.leftButton.addTarget(self, action: #selector(resetButtonPressed(_:)), for: .touchUpInside)
     }
 
     @objc func doneButtonPressed(_ sender: UIButton) {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
-    
+
+    @objc func resetButtonPressed(_ sender: UIButton) {
+        PreferencesController.instance.preferences = Preferences()
+    }
+
     func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController {
         return self
     }

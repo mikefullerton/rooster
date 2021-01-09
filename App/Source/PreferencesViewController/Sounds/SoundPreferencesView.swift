@@ -20,13 +20,28 @@ class SoundPreferencesView : SimpleVerticalStackView, SoundChoiceViewDelegate, S
     init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.setContainedViews([
+        
+        let sounds = GroupBoxView(frame: CGRect.zero, title: "Play up to 3 sounds sequentially when a meeting starts")
+        sounds.setContainedViews([
             self.firstSoundChoice,
             self.secondSoundChoice,
-            self.thirdSoundChoice,
-            self.startDelayView,
-            self.soundRepeatView,
-            self.soundVolumeView
+            self.thirdSoundChoice
+        ])
+
+        let repeatView =  GroupBoxView(frame: CGRect.zero, title: "How many times to play your sounds")
+        repeatView.setContainedViews([ self.self.soundRepeatView ])
+
+        let delay = GroupBoxView(frame: CGRect.zero, title: "How long to wait after a meeting starts before playing your sounds")
+        delay.setContainedViews([ self.startDelayView ])
+        
+        let volume = GroupBoxView(frame: CGRect.zero, title: "How loud to play your sounds")
+        volume.setContainedViews([ self.soundVolumeView ])
+        
+        self.setContainedViews([
+            sounds,
+            repeatView,
+            delay,
+            volume
         ])
     }
     

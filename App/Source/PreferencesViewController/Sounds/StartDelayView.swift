@@ -13,7 +13,7 @@ class StartDelayView : LabeledSliderView {
     init(fixedLabelWidth: CGFloat,
          sliderRightInset: CGFloat) {
         
-        super.init(frame: CGRect.zero, title: "Play Start Delay", fixedLabelWidth: fixedLabelWidth, sliderRightInset: sliderRightInset)
+        super.init(frame: CGRect.zero, title: "Play Delay", fixedLabelWidth: fixedLabelWidth, sliderRightInset: sliderRightInset)
     
         
         let button = FancyButton()
