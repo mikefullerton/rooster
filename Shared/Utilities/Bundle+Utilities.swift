@@ -7,34 +7,4 @@
 
 import Foundation
 
-extension Bundle {
-    
-    static var availableSoundResources: [URL] = {
-        let bundle = Bundle.main
-        if let resourcePath = bundle.resourceURL {
-            let soundsPath = resourcePath.appendingPathComponent("Sounds")
-            
-            do {
-                let contents = try FileManager.default.contentsOfDirectory(atPath: soundsPath.path)
-                
-                var outUrls:[URL] = []
-                
-                for file in contents {
-                    if file.hasPrefix(".") {
-                        continue
-                    }
-                    outUrls.append(soundsPath.appendingPathComponent(file))
-                }
-                
-                return outUrls.sorted { lhs, rhs in
-                    lhs.fileName.localizedCaseInsensitiveCompare(rhs.fileName) == ComparisonResult.orderedAscending
-                }
-                
-            } catch {
-            }
-        }
-        return []
-    }()
-    
-}
 

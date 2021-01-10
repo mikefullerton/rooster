@@ -52,22 +52,19 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     
     deinit {
         self.stopTimer.stop()
-        
-        if let player = self.player {
-            player.stop()
-        }
+        self.fadeOutAndStop()
     }
     
     var name: String {
         if self.url.isRandomizedSound {
             if let player = self.player {
-                return "randomized: \(player.url!.fileName)"
+                return "randomized: \(player.url!.soundName)"
             } else {
                 return "randomized: (not loadeded)"
             }
         }
         
-        return self.url.fileName
+        return self.url.soundName
     }
     
     private func createPlayerIfNeeded() {
@@ -152,6 +149,7 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         DispatchQueue.main.async {
             if let player = self.player {
                 player.numberOfLoops = 0
+                player.setVolume(1, fadeDuration: 0.2)
                 player.play()
             } else {
                 self.didStop()
@@ -164,11 +162,24 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
         self.didStop()
     }
     
+    func fadeOutAndStop() {
+        if let player = self.player,
+            player.isPlaying {
+            
+            player.setVolume(0, fadeDuration: 0.2)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(300)) {
+                player.stop()
+            }
+        }
+    
+    }
+    
     private func didStop() {
         self.logger.log("Sound stopped: \(self.name)")
         self.isPlaying = false
         if let player = self.player {
-            player.stop()
+            
+            self.fadeOutAndStop()
             
             if self.url.isRandomizedSound {
                 player.delegate = nil

@@ -8,16 +8,15 @@
 import Foundation
 import UIKit
 
-typealias SoundPickerTableViewModel = TableViewModel<URL, SoundPickerTableViewCell>
 
 class SoundPickerTableViewController : TableViewController<SoundPickerTableViewModel> {
     
     let soundIndex: SoundPreference.SoundIndex
-    let urls: [URL]
+    let soundFolder: SoundFolder
     
     init(withSoundIndex soundIndex: SoundPreference.SoundIndex) {
         self.soundIndex = soundIndex
-        self.urls = SoundPreference.availableSoundURLs
+        self.soundFolder = SoundFolder.loadFromBundle()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,7 +26,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     }
     
     override func reloadViewModel() -> SoundPickerTableViewModel? {
-        return SoundPickerTableViewModel(withData: self.urls)
+        return SoundPickerTableViewModel(with: self.soundFolder)
     }
 
     override func viewDidLoad() {
@@ -46,10 +45,12 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     func setSelectedRow() {
         let sound = PreferencesController.instance.preferences.sounds[self.soundIndex]
         
-        for (index, url) in self.urls.enumerated() {
-            if url == sound.url {
-                self.tableView.selectRow(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .bottom)
-                break
+        for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
+            for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
+                if soundURL == sound.url {
+                    self.tableView.selectRow(at: IndexPath(item: soundIndex, section: folderIndex), animated: true, scrollPosition: .bottom)
+                    break
+                }
             }
         }
     }
@@ -70,10 +71,14 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     
     var chosenSound : SoundPreference.Sound? {
         if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
-            
-            let url = self.urls[selectedIndexPath.item]
-            
-            return SoundPreference.Sound(url: url, enabled: true, random: false)
+            for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
+                for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
+                    if folderIndex == selectedIndexPath.section &&
+                        soundIndex == selectedIndexPath.item {
+                        return SoundPreference.Sound(url: soundURL, enabled: true, random: false)
+                    }
+                }
+            }
         }
         
         return nil

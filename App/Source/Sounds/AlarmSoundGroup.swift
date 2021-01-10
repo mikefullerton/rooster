@@ -20,7 +20,7 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     init(withPreference preference: SoundPreference) {
         self.sounds = AVAlarmSound.alarmSounds(withURLs: preference.soundURLs)
     
-        self.name = preference.sounds.map { $0.fileName }.joined(separator: ":")
+        self.name = preference.sounds.map { $0.soundName }.joined(separator: ":")
         self.behavior = AlarmSoundBehavior()
         self.identifier = ""
     }

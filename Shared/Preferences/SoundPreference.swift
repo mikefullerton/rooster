@@ -86,11 +86,11 @@ extension SoundPreference {
             self.enabled = enabled && url != nil
         }
         
-        var fileName: String {
+        var soundName: String {
             if self.random {
                 return "Randomized"
             }
-            return self.url?.fileName ?? ""
+            return self.url?.soundName ?? ""
         }
         
         var url: URL? {
@@ -116,53 +116,6 @@ extension SoundPreference {
     }
     
     
-}
-
-
-extension SoundPreference {
-    
-    var soundURLs: [URL] {
-        
-        var outURLs:[URL] = []
-        
-        let availableURLs = Bundle.availableSoundResources
-        
-        for sound in self {
-            
-            if sound.random {
-                outURLs.append(URL.randomizedSound)
-                continue
-            }
-            
-            for url in availableURLs {
-                let fileName = url.fileName
-                if fileName == sound.fileName {
-                    outURLs.append(url)
-                }
-            }
-        }
-        
-        return outURLs
-    }
-    
-    static var availableSounds: [String] {
-        let availableURLs = Bundle.availableSoundResources
-        return availableURLs.map { $0.fileName }
-    }
-    
-    static var availableSoundURLs: [URL] {
-        return Bundle.availableSoundResources
-    }
-    
-    static func urlForName(_ name: String) -> URL? {
-        for url in self.availableSoundURLs {
-            if url.fileName == name {
-                return url
-            }
-        }
-        
-        return nil
-    }
 }
 
 extension URL {

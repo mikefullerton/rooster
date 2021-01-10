@@ -13,6 +13,6 @@ extension SoundPreference.Sound {
             return "RANDOM".localized
         }
         
-        return self.fileName
+        return self.soundName
     }
 }

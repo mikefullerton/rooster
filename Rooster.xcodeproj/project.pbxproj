@@ -37,25 +37,6 @@
 		B21DA1BC259BE5B5002A56C8 /* SoundPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */; };
 		B21DA1C2259BFC75002A56C8 /* PlaySoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1C1259BFC75002A56C8 /* PlaySoundButton.swift */; };
 		B21DA1D3259CDCFA002A56C8 /* PreferencesAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1D2259CDCFA002A56C8 /* PreferencesAware.swift */; };
-		B21DA1ED259CE8F7002A56C8 /* Video Game.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DF259CE670002A56C8 /* Video Game.mp3 */; };
-		B21DA1EE259CE8F7002A56C8 /* Burp 1.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E9259CE671002A56C8 /* Burp 1.wav */; };
-		B21DA1EF259CE8F7002A56C8 /* Burp 2.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1D8259CE670002A56C8 /* Burp 2.wav */; };
-		B21DA1F0259CE8F7002A56C8 /* Burp 3.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E8259CE671002A56C8 /* Burp 3.wav */; };
-		B21DA1F1259CE8F7002A56C8 /* Burp 4.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DD259CE670002A56C8 /* Burp 4.wav */; };
-		B21DA1F2259CE8F7002A56C8 /* Cow.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E1259CE671002A56C8 /* Cow.mp3 */; };
-		B21DA1F3259CE8F7002A56C8 /* Clock Chime.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E2259CE671002A56C8 /* Clock Chime.mp3 */; };
-		B21DA1F4259CE8F7002A56C8 /* Dog Barking.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E6259CE671002A56C8 /* Dog Barking.mp3 */; };
-		B21DA1F5259CE8F7002A56C8 /* Donkey.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DE259CE670002A56C8 /* Donkey.mp3 */; };
-		B21DA1F6259CE8F7002A56C8 /* Doorbell.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1EA259CE671002A56C8 /* Doorbell.mp3 */; };
-		B21DA1F7259CE8F7002A56C8 /* Goat.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E7259CE671002A56C8 /* Goat.mp3 */; };
-		B21DA1F8259CE8F7002A56C8 /* Hyena.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DB259CE670002A56C8 /* Hyena.mp3 */; };
-		B21DA1F9259CE8F7002A56C8 /* Rooster Crowing.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1D9259CE670002A56C8 /* Rooster Crowing.mp3 */; };
-		B21DA1FA259CE8F7002A56C8 /* Pig.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E3259CE671002A56C8 /* Pig.mp3 */; };
-		B21DA1FB259CE8F7002A56C8 /* Scream.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E4259CE671002A56C8 /* Scream.wav */; };
-		B21DA1FC259CE8F7002A56C8 /* Woof.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DC259CE670002A56C8 /* Woof.mp3 */; };
-		B21DA1FD259CE8F7002A56C8 /* Small Dog.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1DA259CE670002A56C8 /* Small Dog.mp3 */; };
-		B21DA1FE259CE8F7002A56C8 /* Stopwatch.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E5259CE671002A56C8 /* Stopwatch.mp3 */; };
-		B21DA1FF259CE8F7002A56C8 /* Vuvuzela.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B21DA1E0259CE670002A56C8 /* Vuvuzela.mp3 */; };
 		B21DA217259CFF90002A56C8 /* SoundPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA216259CFF90002A56C8 /* SoundPickerViewController.swift */; };
 		B21DA21B259D0375002A56C8 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */; };
 		B21DA22B259D398A002A56C8 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22A259D398A002A56C8 /* BottomBar.swift */; };
@@ -132,6 +113,10 @@
 		B2965569257C3481008D1858 /* CalendarItemTableViewCell+LeftSideContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965568257C3481008D1858 /* CalendarItemTableViewCell+LeftSideContentView.swift */; };
 		B2965575257C3706008D1858 /* ReminderTableViewCell+RightSideContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965574257C3706008D1858 /* ReminderTableViewCell+RightSideContentView.swift */; };
 		B2965579257C371D008D1858 /* ReminderTableViewCell+LeftSideContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965578257C371D008D1858 /* ReminderTableViewCell+LeftSideContentView.swift */; };
+		B298C44925AB8C430085BBA0 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = B298C44825AB8C430085BBA0 /* Sounds */; };
+		B298C44D25AB8CB90085BBA0 /* SoundResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C44C25AB8CB90085BBA0 /* SoundResources.swift */; };
+		B298C45125AB97AD0085BBA0 /* SoundPickerTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C45025AB97AD0085BBA0 /* SoundPickerTableViewModel.swift */; };
+		B298C45425ABA64B0085BBA0 /* SoundResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C44C25AB8CB90085BBA0 /* SoundResources.swift */; };
 		B29D055C25924FF60027C152 /* DataModel+Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D055B25924FF60027C152 /* DataModel+Storage.swift */; };
 		B29D0561259251840027C152 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0560259251840027C152 /* Preferences.swift */; };
 		B29D0562259251840027C152 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0560259251840027C152 /* Preferences.swift */; };
@@ -160,7 +145,6 @@
 		B2A181DA2599276400C1E7F0 /* NotificationChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */; };
 		B2A58B37259288EA00188584 /* SoundPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B36259288EA00188584 /* SoundPreference.swift */; };
 		B2A58B38259288EA00188584 /* SoundPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B36259288EA00188584 /* SoundPreference.swift */; };
-		B2A58B3F25928B0000188584 /* Chickens.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */; };
 		B2A58B4525928F0C00188584 /* Bundle+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */; };
 		B2A58B48259290F700188584 /* AlarmSoundGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* AlarmSoundGroup.swift */; };
 		B2A58B4F2592A2E200188584 /* UserNotificationCenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4E2592A2E200188584 /* UserNotificationCenterController.swift */; };
@@ -261,35 +245,6 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B2A58B3B25928A4C00188584 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Sounds;
-			dstSubfolderSpec = 7;
-			files = (
-				B21DA1ED259CE8F7002A56C8 /* Video Game.mp3 in CopyFiles */,
-				B21DA1EE259CE8F7002A56C8 /* Burp 1.wav in CopyFiles */,
-				B21DA1EF259CE8F7002A56C8 /* Burp 2.wav in CopyFiles */,
-				B21DA1F0259CE8F7002A56C8 /* Burp 3.wav in CopyFiles */,
-				B21DA1F1259CE8F7002A56C8 /* Burp 4.wav in CopyFiles */,
-				B21DA1F2259CE8F7002A56C8 /* Cow.mp3 in CopyFiles */,
-				B21DA1F3259CE8F7002A56C8 /* Clock Chime.mp3 in CopyFiles */,
-				B21DA1F4259CE8F7002A56C8 /* Dog Barking.mp3 in CopyFiles */,
-				B21DA1F5259CE8F7002A56C8 /* Donkey.mp3 in CopyFiles */,
-				B21DA1F6259CE8F7002A56C8 /* Doorbell.mp3 in CopyFiles */,
-				B21DA1F7259CE8F7002A56C8 /* Goat.mp3 in CopyFiles */,
-				B21DA1F8259CE8F7002A56C8 /* Hyena.mp3 in CopyFiles */,
-				B21DA1F9259CE8F7002A56C8 /* Rooster Crowing.mp3 in CopyFiles */,
-				B21DA1FA259CE8F7002A56C8 /* Pig.mp3 in CopyFiles */,
-				B21DA1FB259CE8F7002A56C8 /* Scream.wav in CopyFiles */,
-				B21DA1FC259CE8F7002A56C8 /* Woof.mp3 in CopyFiles */,
-				B21DA1FD259CE8F7002A56C8 /* Small Dog.mp3 in CopyFiles */,
-				B21DA1FE259CE8F7002A56C8 /* Stopwatch.mp3 in CopyFiles */,
-				B21DA1FF259CE8F7002A56C8 /* Vuvuzela.mp3 in CopyFiles */,
-				B2A58B3F25928B0000188584 /* Chickens.mp3 in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -322,25 +277,6 @@
 		B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewCell.swift; sourceTree = "<group>"; };
 		B21DA1C1259BFC75002A56C8 /* PlaySoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundButton.swift; sourceTree = "<group>"; };
 		B21DA1D2259CDCFA002A56C8 /* PreferencesAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesAware.swift; sourceTree = "<group>"; };
-		B21DA1D8259CE670002A56C8 /* Burp 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Burp 2.wav"; sourceTree = "<group>"; };
-		B21DA1D9259CE670002A56C8 /* Rooster Crowing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Rooster Crowing.mp3"; sourceTree = "<group>"; };
-		B21DA1DA259CE670002A56C8 /* Small Dog.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Small Dog.mp3"; sourceTree = "<group>"; };
-		B21DA1DB259CE670002A56C8 /* Hyena.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Hyena.mp3; sourceTree = "<group>"; };
-		B21DA1DC259CE670002A56C8 /* Woof.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Woof.mp3; sourceTree = "<group>"; };
-		B21DA1DD259CE670002A56C8 /* Burp 4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Burp 4.wav"; sourceTree = "<group>"; };
-		B21DA1DE259CE670002A56C8 /* Donkey.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Donkey.mp3; sourceTree = "<group>"; };
-		B21DA1DF259CE670002A56C8 /* Video Game.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Video Game.mp3"; sourceTree = "<group>"; };
-		B21DA1E0259CE670002A56C8 /* Vuvuzela.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Vuvuzela.mp3; sourceTree = "<group>"; };
-		B21DA1E1259CE671002A56C8 /* Cow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Cow.mp3; sourceTree = "<group>"; };
-		B21DA1E2259CE671002A56C8 /* Clock Chime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Clock Chime.mp3"; sourceTree = "<group>"; };
-		B21DA1E3259CE671002A56C8 /* Pig.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Pig.mp3; sourceTree = "<group>"; };
-		B21DA1E4259CE671002A56C8 /* Scream.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Scream.wav; sourceTree = "<group>"; };
-		B21DA1E5259CE671002A56C8 /* Stopwatch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stopwatch.mp3; sourceTree = "<group>"; };
-		B21DA1E6259CE671002A56C8 /* Dog Barking.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Dog Barking.mp3"; sourceTree = "<group>"; };
-		B21DA1E7259CE671002A56C8 /* Goat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Goat.mp3; sourceTree = "<group>"; };
-		B21DA1E8259CE671002A56C8 /* Burp 3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Burp 3.wav"; sourceTree = "<group>"; };
-		B21DA1E9259CE671002A56C8 /* Burp 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Burp 1.wav"; sourceTree = "<group>"; };
-		B21DA1EA259CE671002A56C8 /* Doorbell.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Doorbell.mp3; sourceTree = "<group>"; };
 		B21DA216259CFF90002A56C8 /* SoundPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerViewController.swift; sourceTree = "<group>"; };
 		B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomBarVerticalLayout.swift; sourceTree = "<group>"; };
 		B21DA22A259D398A002A56C8 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
@@ -363,7 +299,6 @@
 		B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSliderView.swift; sourceTree = "<group>"; };
 		B236FCD5255EFE0A00A2E58D /* EKController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
-		B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chickens.mp3; sourceTree = "<group>"; };
 		B256BC07258025EC00FA67DC /* CalendarChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChooserViewController.swift; sourceTree = "<group>"; };
 		B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC15258028BD00FA67DC /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
@@ -415,6 +350,9 @@
 		B2965568257C3481008D1858 /* CalendarItemTableViewCell+LeftSideContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarItemTableViewCell+LeftSideContentView.swift"; sourceTree = "<group>"; };
 		B2965574257C3706008D1858 /* ReminderTableViewCell+RightSideContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReminderTableViewCell+RightSideContentView.swift"; sourceTree = "<group>"; };
 		B2965578257C371D008D1858 /* ReminderTableViewCell+LeftSideContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReminderTableViewCell+LeftSideContentView.swift"; sourceTree = "<group>"; };
+		B298C44825AB8C430085BBA0 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
+		B298C44C25AB8CB90085BBA0 /* SoundResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundResources.swift; sourceTree = "<group>"; };
+		B298C45025AB97AD0085BBA0 /* SoundPickerTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewModel.swift; sourceTree = "<group>"; };
 		B29D055B25924FF60027C152 /* DataModel+Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataModel+Storage.swift"; sourceTree = "<group>"; };
 		B29D0560259251840027C152 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		B29D0565259253990027C152 /* Preferences+DictionaryCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+DictionaryCodable.swift"; sourceTree = "<group>"; };
@@ -613,6 +551,7 @@
 				B236FCDA255F196E00A2E58D /* AlarmSound.swift */,
 				B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */,
 				B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */,
+				B298C44C25AB8CB90085BBA0 /* SoundResources.swift */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -699,6 +638,7 @@
 				B21DA1B3259BE488002A56C8 /* SoundPickerTableViewController.swift */,
 				B21DA1BB259BE5B5002A56C8 /* SoundPickerTableViewCell.swift */,
 				B21DA216259CFF90002A56C8 /* SoundPickerViewController.swift */,
+				B298C45025AB97AD0085BBA0 /* SoundPickerTableViewModel.swift */,
 			);
 			path = SoundPicker;
 			sourceTree = "<group>";
@@ -706,7 +646,7 @@
 		B236FCE4255F1C9D00A2E58D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B2A58B3A259289F300188584 /* Sounds */,
+				B298C44825AB8C430085BBA0 /* Sounds */,
 				B2E15122255EED2B002672EC /* Assets.xcassets */,
 				B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */,
 				B21DA1A0259BB6C9002A56C8 /* Localizable.strings */,
@@ -905,33 +845,6 @@
 				B2A181832597B5D600C1E7F0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		B2A58B3A259289F300188584 /* Sounds */ = {
-			isa = PBXGroup;
-			children = (
-				B21DA1DF259CE670002A56C8 /* Video Game.mp3 */,
-				B21DA1E9259CE671002A56C8 /* Burp 1.wav */,
-				B21DA1D8259CE670002A56C8 /* Burp 2.wav */,
-				B21DA1E8259CE671002A56C8 /* Burp 3.wav */,
-				B21DA1DD259CE670002A56C8 /* Burp 4.wav */,
-				B21DA1E1259CE671002A56C8 /* Cow.mp3 */,
-				B21DA1E2259CE671002A56C8 /* Clock Chime.mp3 */,
-				B21DA1E6259CE671002A56C8 /* Dog Barking.mp3 */,
-				B21DA1DE259CE670002A56C8 /* Donkey.mp3 */,
-				B21DA1EA259CE671002A56C8 /* Doorbell.mp3 */,
-				B21DA1E7259CE671002A56C8 /* Goat.mp3 */,
-				B21DA1DB259CE670002A56C8 /* Hyena.mp3 */,
-				B21DA1D9259CE670002A56C8 /* Rooster Crowing.mp3 */,
-				B21DA1E3259CE671002A56C8 /* Pig.mp3 */,
-				B21DA1E4259CE671002A56C8 /* Scream.wav */,
-				B21DA1DC259CE670002A56C8 /* Woof.mp3 */,
-				B21DA1DA259CE670002A56C8 /* Small Dog.mp3 */,
-				B21DA1E5259CE671002A56C8 /* Stopwatch.mp3 */,
-				B21DA1E0259CE670002A56C8 /* Vuvuzela.mp3 */,
-				B236FCDF255F1C2C00A2E58D /* Chickens.mp3 */,
-			);
-			path = Sounds;
 			sourceTree = "<group>";
 		};
 		B2AFE66F2569DFD6006B3C58 /* F SwiftUI */ = {
@@ -1215,7 +1128,6 @@
 				B2E15124255EED2B002672EC /* Frameworks */,
 				B2E15125255EED2B002672EC /* Resources */,
 				B227DF0E25673FF90002C127 /* CopyFiles */,
-				B2A58B3B25928A4C00188584 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1292,6 +1204,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B298C44925AB8C430085BBA0 /* Sounds in Resources */,
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
 				B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */,
 				B21DA19E259BB6C9002A56C8 /* Localizable.strings in Resources */,
@@ -1385,6 +1298,7 @@
 				B2866265258EC1F500D3A538 /* String+Utilities.swift in Sources */,
 				B28661DD258E8FA100D3A538 /* MenuBarController+ContentView.swift in Sources */,
 				B2866297258EC77200D3A538 /* Alarm.swift in Sources */,
+				B298C45425ABA64B0085BBA0 /* SoundResources.swift in Sources */,
 				B2866264258EC1F500D3A538 /* Date+Utilities.swift in Sources */,
 				B20AACE925950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */,
 				B288E91425A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */,
@@ -1514,6 +1428,7 @@
 				B2F6B48D256188FA000BC78E /* PreferencesDataStore.swift in Sources */,
 				B21DA1B0259BCB09002A56C8 /* HorizontallyOpposedLayout.swift in Sources */,
 				B29D055C25924FF60027C152 /* DataModel+Storage.swift in Sources */,
+				B298C45125AB97AD0085BBA0 /* SoundPickerTableViewModel.swift in Sources */,
 				B2A181B42598105200C1E7F0 /* SingleSoundChoiceView.swift in Sources */,
 				B21DA183259BA68B002A56C8 /* HorizontalViewLayout.swift in Sources */,
 				B2E1548F257681B8008BE604 /* VerticalStackView.swift in Sources */,
@@ -1535,6 +1450,7 @@
 				B2F818072576C05C00B28119 /* TimeRemainingView.swift in Sources */,
 				B20AACDD2594FDE800F9B50C /* Loggable.swift in Sources */,
 				B2A181112597B18600C1E7F0 /* Buttons.swift in Sources */,
+				B298C44D25AB8CB90085BBA0 /* SoundResources.swift in Sources */,
 				B2BAD32B25AA23A300C68027 /* VerticalTabViewController.swift in Sources */,
 				B2DBBD0525A4D25600D509C9 /* CalendarToolbarView.swift in Sources */,
 				B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */,

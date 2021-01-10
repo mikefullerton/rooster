@@ -20,7 +20,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         self.playButton.url = url
         self.playButton.isEnabled = true
         
-        if let fileName = self.url?.fileName {
+        if let fileName = self.url?.soundName {
             self.titleView.text = fileName
         }
     }
@@ -37,8 +37,8 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
     
     let buttonHeight:CGFloat = 20
 
-    lazy var titleView: UITextField = {
-        let titleView = UITextField()
+    lazy var titleView: UILabel = {
+        let titleView = UILabel()
         titleView.isUserInteractionEnabled = false
         titleView.textColor = UIColor.secondaryLabel
         titleView.textAlignment = .left
@@ -49,7 +49,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         titleView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            titleView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
+            titleView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 40),
             titleView.trailingAnchor.constraint(equalTo: self.playButton.leadingAnchor, constant: 20),
             titleView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             titleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
@@ -69,7 +69,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
 //        let size = button.sizeThatFits(self.contentView.bounds.size)
         
         NSLayoutConstraint.activate([
-            button.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: 0),
+            button.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             button.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
 
 //            button.widthAnchor.constraint(equalToConstant: size.width),

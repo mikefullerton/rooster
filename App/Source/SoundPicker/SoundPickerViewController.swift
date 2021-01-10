@@ -89,10 +89,15 @@ class SoundPickerViewController : UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        self.soundPicker.tableView.contentInset = UIEdgeInsets(top: self.topBar.frame.size.height,
+        let topHeight = self.topBar.frame.size.height
+        
+        self.soundPicker.tableView.contentInset = UIEdgeInsets(top: topHeight,
                                                                left: 0,
                                                                bottom: self.bottomBar.frame.size.height,
                                                                right: 0)
+        
+        self.soundPicker.tableView.contentOffset = CGPoint(x: 0, y: -topHeight)
+
     }
 }
 
