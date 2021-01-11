@@ -34,15 +34,13 @@ class TimeRemainingView : ContentAwareView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addBlurView()
-        self.addLabel()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addBlurView() {
+    func addBlurView() {
         self.backgroundColor = UIColor.clear
         let visualEffect = Theme(for: self).blurEffect
         
@@ -60,7 +58,7 @@ class TimeRemainingView : ContentAwareView {
         ])
     }
     
-    private func addLabel() {
+    func addLabel(labelVerticalOffset: CGFloat) {
         let view = self.label
         self.addSubview(view)
         
@@ -68,7 +66,7 @@ class TimeRemainingView : ContentAwareView {
 
         NSLayoutConstraint.activate([
 //            view.topAnchor.constraint(equalTo: self.topAnchor),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: labelVerticalOffset),
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor)
 //            view.centerYAnchor.constraint(equalTo: self.centerYAnchor),

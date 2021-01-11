@@ -38,6 +38,9 @@ class MainEventListViewController : UIViewController {
 
         let timeRemainingViewController = self.timeRemainingViewController
         let timeRemainingView = timeRemainingViewController.view!
+        
+        timeRemainingViewController.addBlurView()
+        timeRemainingViewController.addLabel(labelVerticalOffset: -20)
 
         self.addChild(timeRemainingViewController)
 

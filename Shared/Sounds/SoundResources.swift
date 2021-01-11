@@ -108,7 +108,7 @@ extension SoundPreference {
         
         var outURLs:[URL] = []
         
-        let availableURLs = Bundle.availableSoundResources
+//        let availableURLs = Bundle.availableSoundResources
         
         for sound in self {
             
@@ -116,12 +116,16 @@ extension SoundPreference {
                 outURLs.append(URL.randomizedSound)
                 continue
             }
-            
-            for url in availableURLs {
-                if url == sound.url {
-                    outURLs.append(url)
-                }
+
+            if let soundURL = sound.url {
+                outURLs.append(soundURL)
             }
+            
+//            for url in availableURLs {
+//                if url == sound.url {
+//                    outURLs.append(url)
+//                }
+//            }
         }
         
         return outURLs

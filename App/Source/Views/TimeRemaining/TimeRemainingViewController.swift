@@ -83,5 +83,13 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
             
         }
     }
+
+    func addLabel(labelVerticalOffset: CGFloat) {
+        self.timeRemainingLabel.addLabel(labelVerticalOffset: labelVerticalOffset)
+    }
+    
+    func addBlurView() {
+        self.timeRemainingLabel.addBlurView()
+    }
 }
 
