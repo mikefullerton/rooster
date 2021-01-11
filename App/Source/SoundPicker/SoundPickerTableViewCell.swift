@@ -23,6 +23,8 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         if let fileName = self.url?.soundName {
             self.titleView.text = fileName
         }
+//        self.backgroundColor = UIColor.clear
+//        self.contentView.backgroundColor = Theme(for: self).tableViewCellBackgroundColor
     }
 
     override func prepareForReuse() {
@@ -40,7 +42,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
     lazy var titleView: UILabel = {
         let titleView = UILabel()
         titleView.isUserInteractionEnabled = false
-        titleView.textColor = UIColor.secondaryLabel
+        titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.textAlignment = .left
 //        titleView.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         
@@ -86,6 +88,15 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         set(selected) {
             super.isSelected = selected
             self.titleView.isHighlighted = selected
+            
+//            if selected {
+//                self.backgroundColor = nil
+//                self.contentView.backgroundColor = nil
+//            } else {
+//                self.backgroundColor = UIColor.clear
+//                self.contentView.backgroundColor = Theme(for: self).tableViewCellBackgroundColor
+//            }
+            
         }
     }
 }

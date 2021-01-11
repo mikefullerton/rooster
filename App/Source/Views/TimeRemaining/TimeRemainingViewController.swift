@@ -16,30 +16,7 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
 
     private var reloader: DataModelReloader? = nil
     
-    static let preferredHeight: CGFloat = 60
-    
-    lazy var timeRemainingLabel: TimeRemainingView = {
-        let label = TimeRemainingView()
-        label.textColor = UIColor.secondaryLabel
-        label.font = UIFont.systemFont(ofSize: 14.0)
-        label.textAlignment = .center
-        return label
-    }()
-    
-    private func addTimeRemainingLabel() {
-        let label = self.timeRemainingLabel
-        
-        self.view.addSubview(label)
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            label.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-//            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10),
-        ])
-    }
+    static let preferredHeight: CGFloat = 100
     
     func addDividerView() {
         let dividerView = self.dividerView
@@ -55,15 +32,19 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
         ])
     }
     
+    
     override func loadView() {
-        self.view = ContentAwareView()
+        self.view = TimeRemainingView()
+    }
+
+    var timeRemainingLabel: TimeRemainingView {
+        return self.view as! TimeRemainingView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.systemBackground
+        self.view.backgroundColor = Theme(for: self.view).timeRemainingBackgroundColor
         
-        self.addTimeRemainingLabel()
         self.addDividerView()
     
         self.timeRemainingLabel.prefixString = "Your next alarm will fire in "

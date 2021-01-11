@@ -46,7 +46,7 @@ class SoundVolumeView : LabeledSliderView {
         let image = UIImage(systemName: name)
         let imageView = UIImageView(image: image)
         imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 16,weight: .regular)
-        imageView.tintColor = UIColor.secondaryLabel
+        imageView.tintColor = Theme(for: self).secondaryLabelColor
         return imageView
     }
 

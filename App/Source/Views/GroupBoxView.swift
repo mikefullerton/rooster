@@ -24,6 +24,7 @@ class GroupBoxView : UIView {
         
         super.init(frame: frame)
         
+        self.backgroundColor = UIColor.clear
         let titleView = self.titleView
         titleView.text = title
         
@@ -59,7 +60,7 @@ class GroupBoxView : UIView {
     lazy private var titleView: UILabel = {
         let titleView = UILabel()
         titleView.isUserInteractionEnabled = false
-        titleView.textColor = UIColor.tertiaryLabel
+        titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         titleView.textAlignment = .right
         titleView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,8 +102,9 @@ class OutlineView : UIView {
         
         self.layer.cornerRadius = 0
         self.layer.borderWidth = 1.0
-        self.layer.borderColor = UIColor.separator.cgColor
+        self.layer.borderColor = Theme(for: self).borderColor.cgColor
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = Theme(for: self).groupBackgroundColor
     }
     
     required init?(coder: NSCoder) {

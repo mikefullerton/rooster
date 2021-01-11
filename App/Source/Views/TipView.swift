@@ -41,7 +41,7 @@ class TipView : UIView {
         let titleView = UITextField(frame: self.bounds)
         titleView.text = self.tip.title
         titleView.isUserInteractionEnabled = false
-        titleView.textColor = UIColor.secondaryLabel
+        titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.textAlignment = .left
         titleView.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         return titleView

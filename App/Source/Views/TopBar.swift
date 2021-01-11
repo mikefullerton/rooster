@@ -31,8 +31,9 @@ class TopBar : UIView {
     }
     
     private func addBlurView() {
-        let visualEffect = UIBlurEffect(style: .systemThinMaterial)
-        
+        self.backgroundColor = UIColor.clear
+        let visualEffect = Theme(for: self).blurEffect
+
         let visualEffectView = UIVisualEffectView(effect: visualEffect)
         
         self.insertSubview(visualEffectView, at: 0)
@@ -50,7 +51,7 @@ class TopBar : UIView {
     lazy var titleView: UITextField = {
         let titleView = UITextField()
         titleView.isUserInteractionEnabled = false
-        titleView.textColor = UIColor.secondaryLabel
+        titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.textAlignment = .center
         return titleView
     }()

@@ -22,11 +22,11 @@ struct CalenderListViewModel : TableViewModelProtocol {
             
             let header = TableViewSectionAdornment(withTitle: source, height: 20)
             
-            let footer = SpacerAdornment(withHeight: 20)
+//            let footer = SpacerAdornment(withHeight: 20)
             
             let section = TableViewSection<Calendar, CalendarListCell>(withRowData:rowData,
                                                                                header: header,
-                                                                               footer: footer)
+                                                                               footer: nil /*footer*/)
             
             sections.append(section)
         }

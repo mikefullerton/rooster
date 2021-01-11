@@ -10,47 +10,50 @@ import UIKit
 
 class VerticalTabView : UIView {
     
-    let items: [VerticalTabItem]
+    private var buttonBar: UIView?
     
-    let buttonBar: VerticalButtonBarView
-    
-    let buttonBarInsets = UIEdgeInsets.zero
+    let buttonBarInsets = UIEdgeInsets.ten
     
     lazy var contentContainerView : UIView = {
         let view = UIView()
-        view.backgroundColor = VerticalButton.selectedBackgroundColor
+        view.backgroundColor = Theme(for: view).preferencesContentViewColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private var contentView: UIView?
 
-    init(with items: [VerticalTabItem]) {
-        self.items = items
-        self.buttonBar = VerticalButtonBarView(with: self.items)
-     
+    init() {
         super.init(frame: CGRect.zero)
-        
-        self.addButtonBar()
-        self.addContentContainerView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func addButtonBar() {
+    func addButtonBarView(_ view: UIView) {
         
-        self.addSubview(self.buttonBar)
+        self.addSubview(view)
         
-        self.buttonBar.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
        
+        let size = CGSize(width: 150, height: 0)
+        
+        //view.intrinsicContentSize.width
+        
         NSLayoutConstraint.activate([
-            self.buttonBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.buttonBarInsets.left),
-            self.buttonBar.topAnchor.constraint(equalTo: self.topAnchor, constant: self.buttonBarInsets.top),
-            self.buttonBar.widthAnchor.constraint(equalToConstant: self.buttonBar.intrinsicContentSize.width + self.buttonBarInsets.right),
-            self.buttonBar.heightAnchor.constraint(equalToConstant: self.buttonBar.intrinsicContentSize.height + self.buttonBarInsets.top)
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.buttonBarInsets.left),
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: self.buttonBarInsets.top),
+            view.widthAnchor.constraint(equalToConstant:size.width + self.buttonBarInsets.right),
+            
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.buttonBarInsets.bottom)
+            
+//            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height + self.buttonBarInsets.top)
         ])
+        
+        self.buttonBar = view
+        
+        self.addContentContainerView()
         
         self.invalidateIntrinsicContentSize()
     }
@@ -63,14 +66,20 @@ class VerticalTabView : UIView {
     
     func addContentContainerView() {
         let view = self.contentContainerView
+        
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = Theme(for: self).borderColor.cgColor
+        view.layer.cornerRadius = 6.0
+        view.backgroundColor = UIColor.clear
+        
         self.addSubview(view)
         
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.buttonBar.trailingAnchor),
-            view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            view.leadingAnchor.constraint(equalTo: self.buttonBar!.trailingAnchor, constant: self.buttonBarInsets.left),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -self.buttonBarInsets.right),
             
-            view.topAnchor.constraint(equalTo: self.topAnchor),
-            view.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: self.buttonBarInsets.top),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.buttonBarInsets.bottom)
         ])
     }
     
@@ -83,6 +92,7 @@ class VerticalTabView : UIView {
         
         self.contentContainerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.clear
         
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.contentContainerView.leadingAnchor),

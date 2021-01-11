@@ -56,10 +56,10 @@ class CalendarItemTableViewCell : UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: EventListTableViewCell.verticalInset),
-            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -EventListTableViewCell.verticalInset),
+            view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 0),
+            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0),
             
-            view.widthAnchor.constraint(equalToConstant: 250),
+//            view.widthAnchor.constraint(equalToConstant: 250),
             view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -EventListTableViewCell.horizontalInset),
         ])
         

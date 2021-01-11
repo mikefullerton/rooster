@@ -52,7 +52,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     #if os(iOS)
     private lazy var checkBoxTitleView : UILabel = {
         let view = UILabel()
-        view.textColor = UIColor.secondaryLabel
+        view.textColor = Theme(for: self).secondaryLabelColor
         self.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false

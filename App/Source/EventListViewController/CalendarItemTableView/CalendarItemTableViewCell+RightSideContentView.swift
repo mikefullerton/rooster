@@ -10,7 +10,7 @@ import UIKit
 
 extension CalendarItemTableViewCell {
 
-    class AbstractRightSideContentView : UIView {
+    class AbstractRightSideContentView : ContentViewStack {
         
         init() {
             super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
@@ -96,19 +96,16 @@ extension CalendarItemTableViewCell {
             view.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
-                view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
+//                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
+//                view.widthAnchor.constraint(equalToConstant: view.frame.size.width),
                 view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
                 view.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
             ])
         }
         
         lazy var countDownLabel: TimeRemainingView = {
-            let label = TimeRemainingView(frame:CGRect(x: 0, y: 0, width: 250, height: 26))
-            label.textColor = UIColor.secondaryLabel
-            label.textAlignment = .right
+            let label = TimeRemainingView()
             label.prefixString = "Alarm will fire in "
-
             return label
         }()
         
@@ -120,10 +117,8 @@ extension CalendarItemTableViewCell {
             view.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
                 view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                view.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
-                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
+                view.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
             ])
         }
 
@@ -138,7 +133,7 @@ extension CalendarItemTableViewCell {
                 titleLabel.textAlignment = .right
                 titleLabel.textColor = UIColor.systemBlue
             }
-            view.frame = CGRect(x: 0, y: 0, width: 60, height: 20)
+//            view.frame = CGRect(x: 0, y: 0, width: 60, height: 20)
             view.contentHorizontalAlignment = .right
             view.setTitleColor(UIColor.systemBlue, for: UIControl.State.normal)
             view.setTitleColor(UIColor.systemGray, for: UIControl.State.highlighted)
@@ -154,9 +149,9 @@ extension CalendarItemTableViewCell {
             view.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//                view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
                 view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
+//                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
                 view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
             ])
         }
@@ -169,7 +164,7 @@ extension CalendarItemTableViewCell {
                 let normalUrlText = NSAttributedString(string: "\(host)",
                                                  attributes: [
                                                     NSAttributedString.Key.font : UIFont.systemFont(ofSize: UIFont.labelFontSize),
-                                                    NSAttributedString.Key.foregroundColor : UIColor.secondaryLabel,
+                                                    NSAttributedString.Key.foregroundColor : Theme(for: self).secondaryLabelColor,
                                                     NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue])
 
                 let selectedUrlText = NSAttributedString(string: "\(host)",

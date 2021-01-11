@@ -102,7 +102,7 @@ class SingleSoundChoiceView : UIView {
     private lazy var soundPickerButton: UIButton = {
         let button = UIButton.createImageButton(withImage: UIImage(systemName: "square.and.pencil"))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.tintColor = UIColor.secondaryLabel
+        button.imageView?.tintColor = Theme(for: self).secondaryLabelColor
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 18), forImageIn: .normal)
         button.addTarget(self, action: #selector(editSound(_:)), for: .touchUpInside)
         return button
@@ -111,7 +111,7 @@ class SingleSoundChoiceView : UIView {
     private lazy var shuffleButton: UIButton = {
         let button = UIButton.createImageButton(withImage: UIImage(systemName: "shuffle"))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.tintColor = UIColor.secondaryLabel
+        button.imageView?.tintColor = Theme(for: self).secondaryLabelColor
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 16), forImageIn: .normal)
         button.addTarget(self, action: #selector(shuffleSounds(_:)), for: .touchUpInside)
         return button
@@ -139,6 +139,8 @@ class SingleSoundChoiceView : UIView {
             
             self.setEnabledStates()
         }
+        
+        
     }
     
     override func updateConstraints() {

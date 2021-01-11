@@ -61,7 +61,7 @@ class SectionHeaderView : UIView {
     lazy var titleView: UILabel = {
         let titleView = UILabel()
         titleView.isUserInteractionEnabled = false
-        titleView.textColor = UIColor.secondaryLabel
+        titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.textAlignment = .left
         titleView.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
 //        titleView.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
@@ -81,7 +81,8 @@ class SectionHeaderView : UIView {
     }()
     
     private func addBlurView() {
-        let visualEffect = UIBlurEffect(style: .systemThinMaterial)
+        self.backgroundColor = UIColor.clear
+        let visualEffect = Theme(for: self).blurEffect
         
         let visualEffectView = UIVisualEffectView(effect: visualEffect)
         

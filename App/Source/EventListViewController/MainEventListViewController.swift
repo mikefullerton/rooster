@@ -49,7 +49,7 @@ class MainEventListViewController : UIViewController {
             timeRemainingView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             timeRemainingView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             timeRemainingView.heightAnchor.constraint(equalToConstant: TimeRemainingViewController.preferredHeight),
-            timeRemainingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.topOfWindowVerticalPadding)
+            timeRemainingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0)
         ])
     }
     
@@ -76,7 +76,7 @@ class MainEventListViewController : UIViewController {
                                               left: 0,
                                               bottom: 0,
                                               right: 0)
-        
+
         eventView.contentOffset = CGPoint(x: 0, y: -TimeRemainingViewController.preferredHeight)
 
     }
@@ -86,7 +86,7 @@ class MainEventListViewController : UIViewController {
             let timeRemainingSize = self.timeRemainingViewController.preferredContentSize
             let eventListSize = self.eventListViewController.preferredContentSize
             
-            let heightBuffer: CGFloat = self.topOfWindowVerticalPadding
+            let heightBuffer: CGFloat = 0 // self.topOfWindowVerticalPadding
             
 //            if eventListSize.height > 0 {
 //                heightBuffer += 20

@@ -55,6 +55,10 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
                 ])
             }
             
+            for item in self.toolbar.items {
+                item.isEnabled = true
+            }
+            
             self.adjustWindowSize()
         }
     }
@@ -87,6 +91,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     override func loadView() {
         let view = ContentAwareView()
         view.autoresizesSubviews = true
+        view.backgroundColor = Theme(for: self).windowBackgroundColor
         self.view = view
     }
     
@@ -185,6 +190,26 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         return toolbarDefaultItemIdentifiers(toolbar)
     }
     
+    lazy var calendarToolbarItem: NSToolbarItem = {
+        let item = NSToolbarItem(itemIdentifier: .calendars)
+        item.image = UIImage(systemName: "calendar")
+        item.label = "Calendars"
+        item.action = #selector(toggleCalendarsPopover(_:))
+        item.target = self
+        item.isEnabled = false
+        return item
+    }()
+    
+    lazy var preferencesToolbarItem: NSToolbarItem = {
+        let item = NSToolbarItem(itemIdentifier: .preferences)
+        item.image = UIImage(systemName: "gear")
+        item.label = "Preferences"
+        item.action = #selector(togglePreferencesPopover(_:))
+        item.target = self
+        item.isEnabled = false
+        return item
+    }()
+    
     func toolbar(_ toolbar: NSToolbar,
                  itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
@@ -196,24 +221,16 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
             toolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
         
         case .calendars:
-            let item = NSToolbarItem(itemIdentifier: itemIdentifier)
-            item.image = UIImage(systemName: "calendar")
-            item.label = "Calendars"
-            item.action = #selector(toggleCalendarsPopover(_:))
-            item.target = self
-            toolbarItem = item
+            toolbarItem = self.calendarToolbarItem
 
         case .preferences:
-            let item = NSToolbarItem(itemIdentifier: itemIdentifier)
-            item.image = UIImage(systemName: "gear")
-            item.label = "Preferences"
-            item.action = #selector(togglePreferencesPopover(_:))
-            item.target = self
-            toolbarItem = item
+            toolbarItem = self.preferencesToolbarItem
 
         default:
             toolbarItem = nil
         }
+        
+        toolbarItem?.isEnabled = false
         
         return toolbarItem
     }

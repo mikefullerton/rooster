@@ -25,8 +25,10 @@ class CalendarItemTableViewController<ViewModel> : TableViewController<ViewModel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = Theme(for: self).windowBackgroundColor
         self.tableView.allowsSelection = false
         self.tableView.separatorStyle = .none
+        self.tableView.contentInsetAdjustmentBehavior = .never
     }
     
     func dataModelDidReload(_ dataModel: DataModel) {

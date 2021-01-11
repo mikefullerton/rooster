@@ -63,7 +63,12 @@ class FancyButton : UIButton {
         
         if let label = view as? UILabel {
             self.setTitle(label.text, for: .normal)
-            self.titleLabel?.textColor = label.textColor
+            
+//            if let titleLabel = self.titleColor(for: <#T##UIControl.State#>)
+            
+            self.setTitleColor(label.textColor, for: .normal)
+            
+//            self.titleLabel?.textColor = label.textColor
             self.titleLabel?.font = label.font
             self.titleLabel?.textAlignment = label.textAlignment
         }

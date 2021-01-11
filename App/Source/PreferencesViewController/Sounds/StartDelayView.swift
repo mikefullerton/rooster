@@ -50,7 +50,7 @@ class StartDelayView : LabeledSliderView {
     private func label(withTitle title: String) -> UILabel {
         let label = UILabel()
         label.text = title
-        label.textColor = UIColor.secondaryLabel
+        label.textColor = Theme(for: self).secondaryLabelColor
         return label
     }
 

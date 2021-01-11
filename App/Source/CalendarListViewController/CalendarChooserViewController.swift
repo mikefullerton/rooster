@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class CalendarChooserViewController : UIViewController {
-  
+class CalendarChooserViewController : UIViewController, CalendarToolbarViewDelegate {
     let preferredWidth:CGFloat = 450
 
     lazy var calendarsViewController = CalendarListViewController()
@@ -32,14 +31,14 @@ class CalendarChooserViewController : UIViewController {
         NSLayoutConstraint.activate([
             controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 16),
+            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor),
             controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
         
         if let tableView = controller.view as? UITableView {
             tableView.contentInsetAdjustmentBehavior = .never
             
-            let topHeight = self.calendarChooserView.topBar.intrinsicContentSize.height + 1
+            let topHeight = self.calendarChooserView.topBar.intrinsicContentSize.height
             
             tableView.contentInset = UIEdgeInsets(top: topHeight,
                                                   left: 0,
@@ -53,7 +52,10 @@ class CalendarChooserViewController : UIViewController {
     }
     
     override func loadView() {
-        self.view = CalendarChooserView()
+        let view = CalendarChooserView()
+        view.topBar.delegate = self
+        
+        self.view = view
     }
         
     override func viewDidLoad() {
@@ -115,12 +117,21 @@ class CalendarChooserViewController : UIViewController {
 
         delegateCalendarToolBarItem.tintColor = delegateCalendarsColor
 
-        self.calendarChooserView.topBar.toolbar.items = [ UIBarButtonItem.flexibleSpace(),
-                                                          calendarToolBarItem,
-                                                          delegateCalendarToolBarItem,
-                                                          UIBarButtonItem.flexibleSpace()]
+//        self.calendarChooserView.topBar.toolbar.items = [ UIBarButtonItem.flexibleSpace(),
+//                                                          calendarToolBarItem,
+//                                                          delegateCalendarToolBarItem,
+//                                                          UIBarButtonItem.flexibleSpace()]
         
     }
+    
+    func calendarToolbarView(_ toolbarView: CalendarToolbarView, didChangeSelectedIndex index: Int) {
+        if index == 0 {
+            self.userClickCalendarsButton(self)
+        } else {
+            self.userClickDelegateCalendarsButton(self)
+        }
+    }
+    
     
     
 }

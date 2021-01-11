@@ -21,8 +21,8 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         let notificationPreferencesViw = NotificationChoicesView(frame: CGRect.zero)
         
         let items = [
-            VerticalTabItem(title: "Sounds", view: soundPreferencesView),
-            VerticalTabItem(title: "Notifications", view: notificationPreferencesViw)
+            VerticalTabItem(title: "Sounds", icon: nil, view: soundPreferencesView),
+            VerticalTabItem(title: "Notifications", icon: nil, view: notificationPreferencesViw)
         ]
         
         self.tabViewController = VerticalTabViewController(with: items)
@@ -30,6 +30,8 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         super.init(nibName: nil, bundle: nil)
         
         soundPreferencesView.delegate = self
+        
+        self.preferredContentSize = CGSize(width: 800, height: 600)
     }
     
     required init?(coder: NSCoder) {
@@ -39,6 +41,8 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
     override func loadView() {
         self.view = self.rootView
         
+        self.view.backgroundColor = Theme(for: self.view).preferencesViewColor
+            
         self.addChild(self.tabViewController)
         
         self.rootView.addContentView(self.tabViewController.view)
@@ -68,6 +72,7 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         
 //        self.preferredContentSize = self.rootView.intrinsicContentSize
     }
+    
     
 }
 

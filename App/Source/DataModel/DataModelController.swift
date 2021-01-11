@@ -17,6 +17,7 @@ class DataModelController : EKControllerDelegate, Loggable {
     private(set) var dataModel: DataModel {
         didSet {
             self.updateAlarmsIfNeeded()
+            self.checkFirstRunIfNeeded()
         }
     }
 
@@ -26,6 +27,7 @@ class DataModelController : EKControllerDelegate, Loggable {
     // private stuff
     private let eventKitController: EKController
     private var needsNotify = false
+    private var checkedFirstRun = false
     
     private init() {
         self.eventKitController = EKController()
@@ -312,6 +314,36 @@ class DataModelController : EKControllerDelegate, Loggable {
     
         if let updatedReminders = self.updateAlarms(forItems: self.dataModel.reminders) {
             self.update(someReminders: updatedReminders)
+        }
+    }
+    
+    private func checkFirstRunIfNeeded() {
+        if !self.checkedFirstRun {
+            self.checkedFirstRun = true
+            var savedState = SavedState()
+            
+            savedState.lookedForCalendarOnFirstRun = false
+            
+            if !savedState.lookedForCalendarOnFirstRun {
+                savedState.lookedForCalendarOnFirstRun = true
+                self.findFirstCalendarSubscription()
+            }
+        }
+    }
+    
+    private func findFirstCalendarSubscription() {
+        for (calendarSource, calendars) in self.dataModel.calendars {
+            if calendarSource == "apple.com" {
+                for calendar in calendars {
+                    // TODO: no idea if this is what everyone's Apple calendar is
+                    if calendar.title == "Apple" {
+                        var newCalendar = calendar
+                        newCalendar.isSubscribed = true
+                        self.update(calendar: newCalendar)
+                        self.logger.log("Found first run calendar: \(calendar)")
+                    }
+                }
+            }
         }
     }
 

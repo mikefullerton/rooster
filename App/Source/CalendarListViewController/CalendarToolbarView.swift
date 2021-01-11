@@ -8,13 +8,17 @@
 import Foundation
 import UIKit
 
+protocol CalendarToolbarViewDelegate : AnyObject {
+    func calendarToolbarView(_ toolbarView: CalendarToolbarView, didChangeSelectedIndex index: Int)
+}
+
 class CalendarToolbarView : TopBar {
     
-    let insets = UIEdgeInsets.twenty
-        
-//    override var preferredHeight: CGFloat {
-//        return 80.0
-//    }
+    weak var delegate: CalendarToolbarViewDelegate?
+
+    override var preferredHeight:CGFloat {
+        return 50.0
+    }
     
     init() {
         super.init(frame: CGRect.zero)
@@ -25,36 +29,40 @@ class CalendarToolbarView : TopBar {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var toolbar: UIToolbar = {
-        let toolbar = UIToolbar()
-        
-        var appearance = UIToolbarAppearance()
-        appearance.configureWithTransparentBackground()
-        toolbar.standardAppearance = appearance
-        
-        let placeholder = UIBarButtonItem(title: "placeholder",
-                                                  style: .plain,
-                                                  target: nil,
-                                                  action: nil)
-        toolbar.items = [ UIBarButtonItem.flexibleSpace(), placeholder, placeholder,  UIBarButtonItem.flexibleSpace()]
-        return toolbar
-    }()
+    @objc func segmentedControllerDidChange(_ sender: UISegmentedControl) {
+        if let delegate = self.delegate {
+            delegate.calendarToolbarView(self, didChangeSelectedIndex: sender.selectedSegmentIndex)
+        }
+    }
     
+    lazy var toolbar: UISegmentedControl = {
+        var view = UISegmentedControl(items: [ "Calendars", "Delegate Calendars" ])
+        view.selectedSegmentIndex = 0
+        view.addTarget(self, action: #selector(segmentedControllerDidChange(_:)), for: .valueChanged)
+        return view
+    }()
+
     private func addToolbar() {
 
         let toolbar = self.toolbar
-        
+
         self.addSubview(toolbar)
-        
+
         toolbar.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            toolbar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            toolbar.topAnchor.constraint(equalTo: self.topAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            toolbar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            toolbar.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            
+//            toolbar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            toolbar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+//            toolbar.topAnchor.constraint(equalTo: self.topAnchor),
+//            toolbar.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
 
-        self.invalidateIntrinsicContentSize()
+//        self.invalidateIntrinsicContentSize()
     }
+    
+    
+    
 }

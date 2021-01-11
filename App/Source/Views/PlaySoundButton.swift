@@ -80,7 +80,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
             }
             
             if super.isEnabled {
-                self.imageView!.tintColor = UIColor.secondaryLabel
+                self.imageView!.tintColor = Theme(for: self).secondaryLabelColor
             } else {
                 self.imageView!.tintColor = UIColor.quaternaryLabel
             }
@@ -131,7 +131,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         let image = UIImage(systemName: name)
         let imageView = UIImageView(image: image)
         imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22,weight: .regular)
-        imageView.tintColor = UIColor.secondaryLabel
+        imageView.tintColor = Theme(for: self).secondaryLabelColor
         return imageView
     }
     

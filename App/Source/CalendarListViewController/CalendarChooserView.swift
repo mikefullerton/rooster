@@ -34,7 +34,7 @@ class CalendarChooserView : ContentAwareView {
         
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: view.preferredHeight),
-            view.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            view.topAnchor.constraint(equalTo: self.topAnchor),
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])

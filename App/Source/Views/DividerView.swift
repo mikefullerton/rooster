@@ -15,7 +15,7 @@ class DividerView : UIView {
         super.init(frame: frame)
 
         let view = UIView()
-        view.backgroundColor = UIColor.separator
+        view.backgroundColor = Theme(for: view).borderColor
         
         self.addSubview(view)
         

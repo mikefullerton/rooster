@@ -124,7 +124,7 @@ class VerticalStackView : UIView {
     
     func drawFrame(view: UIView) {
         view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.label.cgColor
+        view.layer.borderColor = Theme(for: self).borderColor.cgColor
         view.layer.cornerRadius = 0
     }
     

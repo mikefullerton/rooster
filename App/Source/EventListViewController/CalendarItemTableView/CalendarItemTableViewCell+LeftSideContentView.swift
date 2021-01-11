@@ -11,10 +11,9 @@ import UIKit
 
 extension CalendarItemTableViewCell {
 
-    class AbstractLeftSideContentView : UIView {
+    class AbstractLeftSideContentView : ContentViewStack {
         init() {
-            super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-            
+            super.init(frame: CGRect.zero)
             self.addTimeLabel()
             self.addEventTitleLabel()
             self.addCalendarTitleLabel()
@@ -26,13 +25,11 @@ extension CalendarItemTableViewCell {
         
         lazy var timeLabel: UILabel = {
             let label = UILabel()
-            label.textColor = UIColor.secondaryLabel
-            label.frame = CGRect(x: 0, y: 0, width: 100, height: 26)
+            label.textColor = Theme(for: self).secondaryLabelColor
             return label
         }()
         
         func addTimeLabel() {
-            
             let view = self.timeLabel
             
             self.addSubview(view)
@@ -41,16 +38,13 @@ extension CalendarItemTableViewCell {
             
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
                 view.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             ])
         }
         
         lazy var eventTitleLabel: UILabel = {
             let label = UILabel()
-            label.textColor = UIColor.label
-            label.frame = CGRect(x: 0, y: 0, width: 100, height: 26)
+            label.textColor = Theme(for: self).labelColor
             return label
         }()
         
@@ -63,16 +57,13 @@ extension CalendarItemTableViewCell {
             
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
                 view.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
             ])
         }
         
         lazy var calendarTitleLabel: UILabel = {
             let label = UILabel()
-            label.textColor = UIColor.secondaryLabel
-            label.frame = CGRect(x: 0, y: 0, width: 100, height: 26)
+            label.textColor = Theme(for: self).secondaryLabelColor
             return label
         }()
         
@@ -85,19 +76,13 @@ extension CalendarItemTableViewCell {
             
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
                 view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
             ])
         }
         
-       
-
         func prepareForReuse() {
 
         }
-
-
     }
 
 }

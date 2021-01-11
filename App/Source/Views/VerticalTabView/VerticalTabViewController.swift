@@ -10,11 +10,18 @@ import UIKit
 
 struct VerticalTabItem {
     let title: String
+    let icon: UIImage?
     let view: UIView
 }
 
-class VerticalTabViewController : UIViewController, VerticalButtonBarViewDelegate {
+class VerticalTabViewController : UIViewController, VerticalButtonBarViewControllerDelegate {
     let items: [VerticalTabItem]
+    
+    lazy var verticalButtonBarController : VerticalButtonBarViewController = {
+        let controller = VerticalButtonBarViewController(with: self.items)
+        controller.delegate = self
+        return controller
+    }()
     
     init(with items: [VerticalTabItem]) {
         self.items = items
@@ -30,20 +37,20 @@ class VerticalTabViewController : UIViewController, VerticalButtonBarViewDelegat
     }
     
     override func loadView() {
-        let view = VerticalTabView(with: self.items)
-        view.buttonBar.delegate = self;
+        let view = VerticalTabView()
+        
+        self.addChild(self.verticalButtonBarController)
+        view.addButtonBarView(self.verticalButtonBarController.view)
+        
+//        view.buttonBar.delegate = self;
         self.view = view
     }
 
-    func verticalButtonBarView(_ verticalButtonBarView: VerticalButtonBarView, didChooseItem item: VerticalTabItem) {
+    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonBarViewController,
+                                         didChooseItem item: VerticalTabItem) {
         self.verticalTabView.setContentView(item.view)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.verticalTabView.buttonBar.selectedIndex = 0
-    }
-    
     override var preferredContentSize: CGSize {
         get {
             return self.view.intrinsicContentSize

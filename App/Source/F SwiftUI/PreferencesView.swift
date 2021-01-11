@@ -185,7 +185,7 @@ struct SystemImageButtonBody: View {
 
             Text("Reset")
                 .font(.system(.footnote))
-                .foregroundColor(Color(UIColor.label))
+                .foregroundColor(Color(Theme(for: self).labelColor))
         }
     }
     
@@ -206,7 +206,7 @@ struct ImageButtonBody: View {
 
             Text(self.text)
                 .font(.system(.footnote))
-                .foregroundColor(Color(UIColor.label))
+                .foregroundColor(Color(Theme(for: self).labelColor))
         }
     }
     
