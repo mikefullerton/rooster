@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6F1A1ADB9608534DC1EE09A6 /* Pods_RoosterAppKitPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A80CBD42D61B0567A796B2 /* Pods_RoosterAppKitPlugin.framework */; };
 		B2020A9E2577D88600F478CC /* Reloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020A9D2577D88600F478CC /* Reloader.swift */; };
 		B2020AD72577DAC600F478CC /* CalendarItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AD62577DAC600F478CC /* CalendarItemTableViewController.swift */; };
 		B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */; };
@@ -50,7 +49,6 @@
 		B22EEAB825A62BEA00D2D19D /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22EEAB725A62BEA00D2D19D /* LoadingView.swift */; };
 		B22EEAC025A63B2F00D2D19D /* ContentAwareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22EEABF25A63B2F00D2D19D /* ContentAwareView.swift */; };
 		B233C45425A0FA13005A7FB3 /* TableViewRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C45325A0FA13005A7FB3 /* TableViewRowCell.swift */; };
-		B233C52E25A23A8D005A7FB3 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B28661CB258E8B2100D3A538 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
 		B233C54825A282A5005A7FB3 /* Sound+DisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */; };
 		B233C55925A3961F005A7FB3 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55825A3961F005A7FB3 /* SliderView.swift */; };
@@ -67,6 +65,9 @@
 		B25B65DB258CF7AF0006B771 /* MenuBarPopoverProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */; };
 		B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */; };
 		B25B65EB258CFDB20006B771 /* AppKitPluginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65E3258CFA6C0006B771 /* AppKitPluginController.swift */; };
+		B25B8E9525AE1BB900E8D1C9 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B25B8E9425AE1BB900E8D1C9 /* Sparkle.framework */; };
+		B25B8E9625AE1BBE00E8D1C9 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B25B8E9425AE1BB900E8D1C9 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B25B8E9C25AE1C9800E8D1C9 /* SparkleController_v2.x.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B8E9B25AE1C9800E8D1C9 /* SparkleController_v2.x.swift */; };
 		B260C82925A3B7C500C03B2E /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82825A3B7C500C03B2E /* FancyButton.swift */; };
 		B260C82F25A3CEED00C03B2E /* SoundVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */; };
 		B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C83425A3D76400C03B2E /* SoundRepeatView.swift */; };
@@ -75,7 +76,6 @@
 		B280E474259130AB00707E22 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B280E473259130AB00707E22 /* UIKit.framework */; };
 		B28661DC258E8FA100D3A538 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20955E2258CF14F00753C7B /* MenuBarController.swift */; };
 		B28661DD258E8FA100D3A538 /* MenuBarController+ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65D0258CF3760006B771 /* MenuBarController+ContentView.swift */; };
-		B28661E7258E921D00D3A538 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28661E6258E921D00D3A538 /* SwiftUI.framework */; };
 		B28661EF258E938800D3A538 /* AppKitPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B28661E0258E902F00D3A538 /* AppKitPlugin.m */; };
 		B28661F4258E962500D3A538 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B28661F3258E962500D3A538 /* Images.xcassets */; };
 		B28661FA258E9DDB00D3A538 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28661F9258E9DDB00D3A538 /* AppKit.framework */; };
@@ -102,7 +102,6 @@
 		B286629C258EC77200D3A538 /* Alarm+DictionaryCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965531257C0BD4008D1858 /* Alarm+DictionaryCodable.swift */; };
 		B28662A0258EC7C200D3A538 /* Alarm+SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7098E257FE2AB00C48ED5 /* Alarm+SavedState.swift */; };
 		B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662AD258F9C7C00D3A538 /* EventKitHelper.swift */; };
-		B28662BA258FA41100D3A538 /* SparkleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286612B258E700E00D3A538 /* SparkleController.swift */; };
 		B28662D3258FBB3900D3A538 /* EKController+ReloadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662CE258FBB0900D3A538 /* EKController+ReloadingState.swift */; };
 		B288E91325A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */; };
 		B288E91425A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */; };
@@ -242,7 +241,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B233C52E25A23A8D005A7FB3 /* Sparkle.framework in Embed Frameworks */,
+				B25B8E9625AE1BBE00E8D1C9 /* Sparkle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,8 +249,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5B04FAA4284A58C9D6C9446A /* Pods-RoosterAppKitPlugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoosterAppKitPlugin.release.xcconfig"; path = "Target Support Files/Pods-RoosterAppKitPlugin/Pods-RoosterAppKitPlugin.release.xcconfig"; sourceTree = "<group>"; };
-		8BB455D9D39027F825A60A5F /* Pods-RoosterAppKitPlugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoosterAppKitPlugin.debug.xcconfig"; path = "Target Support Files/Pods-RoosterAppKitPlugin/Pods-RoosterAppKitPlugin.debug.xcconfig"; sourceTree = "<group>"; };
 		B2020A9D2577D88600F478CC /* Reloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reloader.swift; sourceTree = "<group>"; };
 		B2020AD62577DAC600F478CC /* CalendarItemTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemTableViewController.swift; sourceTree = "<group>"; };
 		B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelReloader.swift; sourceTree = "<group>"; };
@@ -270,7 +267,6 @@
 		B20C4D4D25B39DD1000A3981 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		B20C4D5325B3A052000A3981 /* About */ = {isa = PBXFileReference; lastKnownFileType = folder; path = About; sourceTree = "<group>"; };
 		B21DA160259A69E7002A56C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B21DA16E259A6B6F002A56C8 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reachability.framework; sourceTree = "<group>"; };
 		B21DA182259BA68B002A56C8 /* HorizontalViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalViewLayout.swift; sourceTree = "<group>"; };
 		B21DA186259BA697002A56C8 /* VerticalViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalViewLayout.swift; sourceTree = "<group>"; };
 		B21DA18A259BA6CB002A56C8 /* ViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLayout.swift; sourceTree = "<group>"; };
@@ -314,6 +310,8 @@
 		B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverProcotol.swift; sourceTree = "<group>"; };
 		B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPluginProtocol.swift; sourceTree = "<group>"; };
 		B25B65E3258CFA6C0006B771 /* AppKitPluginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitPluginController.swift; sourceTree = "<group>"; };
+		B25B8E9425AE1BB900E8D1C9 /* Sparkle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sparkle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B25B8E9B25AE1C9800E8D1C9 /* SparkleController_v2.x.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SparkleController_v2.x.swift; sourceTree = "<group>"; };
 		B260C82825A3B7C500C03B2E /* FancyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyButton.swift; sourceTree = "<group>"; };
 		B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundVolumeView.swift; sourceTree = "<group>"; };
 		B260C83425A3D76400C03B2E /* SoundRepeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundRepeatView.swift; sourceTree = "<group>"; };
@@ -321,8 +319,7 @@
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B280E473259130AB00707E22 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.Internal.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		B286612B258E700E00D3A538 /* SparkleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleController.swift; sourceTree = "<group>"; };
-		B28661CB258E8B2100D3A538 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Pods/Sparkle/Sparkle.framework; sourceTree = "<group>"; };
+		B286612B258E700E00D3A538 /* SparkleController_v1.x.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleController_v1.x.swift; sourceTree = "<group>"; };
 		B28661D1258E8B9E00D3A538 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../Other Files/Info.plist"; sourceTree = "<group>"; };
 		B28661D2258E8B9E00D3A538 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B28661D3258E8B9F00D3A538 /* Rooster-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Rooster-Bridging-Header.h"; path = "../Other Files/Rooster-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -456,7 +453,6 @@
 		B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
 		B2F818062576C05C00B28119 /* TimeRemainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingView.swift; sourceTree = "<group>"; };
 		B2F818282576FB1100B28119 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
-		D3A80CBD42D61B0567A796B2 /* Pods_RoosterAppKitPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RoosterAppKitPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -464,10 +460,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B25B8E9525AE1BB900E8D1C9 /* Sparkle.framework in Frameworks */,
 				B2CA114A258FEB4500B8BF81 /* UIKitMacHelper.framework in Frameworks */,
 				B28661FA258E9DDB00D3A538 /* AppKit.framework in Frameworks */,
-				B28661E7258E921D00D3A538 /* SwiftUI.framework in Frameworks */,
-				6F1A1ADB9608534DC1EE09A6 /* Pods_RoosterAppKitPlugin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,25 +484,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		233328332EC297ECB3CF32BB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				8BB455D9D39027F825A60A5F /* Pods-RoosterAppKitPlugin.debug.xcconfig */,
-				5B04FAA4284A58C9D6C9446A /* Pods-RoosterAppKitPlugin.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		682CBAE243B2ABE20637E7B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B21DA16E259A6B6F002A56C8 /* Reachability.framework */,
+				B25B8E9425AE1BB900E8D1C9 /* Sparkle.framework */,
 				B280E473259130AB00707E22 /* UIKit.framework */,
 				B2CA1149258FEB4500B8BF81 /* UIKitMacHelper.framework */,
 				B28661F9258E9DDB00D3A538 /* AppKit.framework */,
 				B28661E6258E921D00D3A538 /* SwiftUI.framework */,
-				B28661CB258E8B2100D3A538 /* Sparkle.framework */,
-				D3A80CBD42D61B0567A796B2 /* Pods_RoosterAppKitPlugin.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -713,7 +697,8 @@
 			isa = PBXGroup;
 			children = (
 				B227DEF9256738C50002C127 /* Utilities.swift */,
-				B286612B258E700E00D3A538 /* SparkleController.swift */,
+				B286612B258E700E00D3A538 /* SparkleController_v1.x.swift */,
+				B25B8E9B25AE1C9800E8D1C9 /* SparkleController_v2.x.swift */,
 				B20955E2258CF14F00753C7B /* MenuBarController.swift */,
 				B25B65D0258CF3760006B771 /* MenuBarController+ContentView.swift */,
 				B2866204258EA45C00D3A538 /* MenuBarPopoverViewController.swift */,
@@ -931,7 +916,6 @@
 				B233C52325A22F12005A7FB3 /* Config Files */,
 				B2A1817B2597B5D500C1E7F0 /* UIHelper */,
 				B2E15128255EED2B002672EC /* Products */,
-				233328332EC297ECB3CF32BB /* Pods */,
 				682CBAE243B2ABE20637E7B0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -1093,7 +1077,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B227DEF5256738860002C127 /* Build configuration list for PBXNativeTarget "RoosterAppKitPlugin" */;
 			buildPhases = (
-				9DFC611B9B7FFD741C21BD22 /* [CP] Check Pods Manifest.lock */,
 				B227DEEC256738860002C127 /* Sources */,
 				B227DEED256738860002C127 /* Frameworks */,
 				B227DEEE256738860002C127 /* Resources */,
@@ -1222,28 +1205,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9DFC611B9B7FFD741C21BD22 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RoosterAppKitPlugin-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B233C52925A23885005A7FB3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1276,8 +1237,8 @@
 				B2E78A1E2595656500DF0ACF /* DataModel+NextAlarmDate.swift in Sources */,
 				B2866266258EC1F500D3A538 /* DictionaryCodable.swift in Sources */,
 				B28661DC258E8FA100D3A538 /* MenuBarController.swift in Sources */,
+				B25B8E9C25AE1C9800E8D1C9 /* SparkleController_v2.x.swift in Sources */,
 				B2866296258EC77200D3A538 /* Calendar.swift in Sources */,
-				B28662BA258FA41100D3A538 /* SparkleController.swift in Sources */,
 				B29D0562259251840027C152 /* Preferences.swift in Sources */,
 				B2866270258EC37A00D3A538 /* Reloader.swift in Sources */,
 				B2CA1146258FE95B00B8BF81 /* WindowController.swift in Sources */,
@@ -1517,7 +1478,6 @@
 /* Begin XCBuildConfiguration section */
 		B227DEF3256738860002C127 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BB455D9D39027F825A60A5F /* Pods-RoosterAppKitPlugin.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = YES;
@@ -1539,7 +1499,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MODULEMAP_FILE = AppKitPlugin/RoosterAppKitPlugin.modulemap;
-				OTHER_LDFLAGS = "$(inherited) ";
+				OTHER_LDFLAGS = "$(inherited)  ";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.commapps.rooster.appkitplugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx.internal;
@@ -1559,7 +1519,6 @@
 		};
 		B227DEF4256738860002C127 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B04FAA4284A58C9D6C9446A /* Pods-RoosterAppKitPlugin.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_MODULES_AUTOLINK = YES;
@@ -1581,7 +1540,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MODULEMAP_FILE = AppKitPlugin/RoosterAppKitPlugin.modulemap;
-				OTHER_LDFLAGS = "$(inherited) ";
+				OTHER_LDFLAGS = "$(inherited)  ";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.commapps.rooster.appkitplugin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx.internal;

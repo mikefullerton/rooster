@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Sparkle",
+        "repositoryURL": "https://github.com/sparkle-project/Sparkle.git",
+        "state": {
+          "branch": "2.x",
+          "revision": "6316c53abac5666d17aff44665d68bda404bb369",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
