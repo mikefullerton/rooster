@@ -84,8 +84,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     
     private func startPlayingSound() {
         
-        self.logger.log("starting alarm sound for \(self.description)")
-
+        
         let itemPrefs = PreferencesController.instance.preferences(forItemIdentifier: self.itemID)
         
         let sound = AlarmSoundGroup(withPreference: itemPrefs.soundPreference)
@@ -98,7 +97,11 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
                                                timeBetweenPlays: 0.1,
                                                fadeInTime: 0)
         
-        self.timer.start(withInterval: TimeInterval(soundPrefs.startDelay)) { (timer) in
+        let interval = TimeInterval(soundPrefs.startDelay)
+        
+        self.logger.log("starting alarm sound for \(self.description), with interval: \(interval)")
+
+        self.timer.start(withInterval:interval) { (timer) in
             
             self.logger.log("playing alarm sound: \(sound.name) for \(self.description)")
 

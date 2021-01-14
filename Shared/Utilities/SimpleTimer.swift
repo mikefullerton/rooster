@@ -79,27 +79,31 @@ class SimpleTimer : CustomStringConvertible, Loggable {
             self.timer = nil
         }
     }
+    private func timerFired(completion: @escaping (_ timer: SimpleTimer) -> Void) {
+        self.stopTimer()
+        if self.logTimerEvents {
+            self.logger.log("timer fired: \(self.description)")
+        }
+
+        self.fireCount += 1
+        if self.willFireAgain {
+            if self.logTimerEvents {
+                self.logger.log("Rescheduling timer: \(self.description)")
+            }
+            self.startTimer(completion: completion)
+        } else {
+            self.stop()
+        }
+        
+        completion(self)
+    }
     
-    private func startTimer(completion: @escaping (_ timer: SimpleTimer) -> Void) {
+    private func startTimer(withInterval interval: TimeInterval,
+                            completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: self.interval, repeats: false) { (timer) in
-                self.stopTimer()
-                if self.logTimerEvents {
-                    self.logger.log("timer fired: \(self.description)")
-                }
-
-                self.fireCount += 1
-                if self.willFireAgain {
-                    if self.logTimerEvents {
-                        self.logger.log("Rescheduling timer: \(self.description)")
-                    }
-                    self.startTimer(completion: completion)
-                } else {
-                    self.stop()
-                }
-                
-                completion(self)
+            self.timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] (timer) in
+                self?.timerFired(completion: completion)
             }
             
             if self.logTimerEvents {
