@@ -12,7 +12,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     
     private(set) var sound: AVAlarmSound? = nil
     private var _url: URL? = nil
-    private let timer = SimpleTimer()
+    private let timer = SimpleTimer(withName: "PlayButtonAnimationTimer")
     
     var url: URL? {
         get {

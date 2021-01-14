@@ -62,12 +62,12 @@ struct Alarm: Equatable, CustomStringConvertible {
     var description: String {
         var formatter = StringFormatter(withTitle: "Alarm")
         formatter.append("State", self.state)
-        formatter.append("Start Date", self.startDate.shortDateString)
-        formatter.append("End Date", self.endDate?.shortDateString)
-        formatter.append("Original Start Date", self.originalStartDate.shortDateString)
-        formatter.append("Original End Date", self.originalEndDate?.shortDateString)
-        formatter.append("Snoozed Start Date", self.snoozedStartDate?.shortDateString)
-        formatter.append("Snoozed End Date", self.snoozedEndDate?.shortDateString)
+        formatter.append("Start Date", self.startDate.shortTimeString)
+        formatter.append("End Date", self.endDate?.shortTimeString)
+        formatter.append("Original Start Date", self.originalStartDate.shortTimeString)
+        formatter.append("Original End Date", self.originalEndDate?.shortTimeString)
+        formatter.append("Snoozed Start Date", self.snoozedStartDate?.shortTimeString)
+        formatter.append("Snoozed End Date", self.snoozedEndDate?.shortTimeString)
         formatter.append("isEnabled", self.isEnabled)
         return formatter.string
     }

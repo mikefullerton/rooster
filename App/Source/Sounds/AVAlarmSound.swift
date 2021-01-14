@@ -41,7 +41,7 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     init(withURL url: URL) {
         self.url = url
         self.behavior = AlarmSoundBehavior()
-        self.stopTimer = SimpleTimer()
+        self.stopTimer = SimpleTimer(withName: "AVAlarmSoundStopTimer")
         self.identifier = ""
         self.isPlaying = false
         self.player = nil

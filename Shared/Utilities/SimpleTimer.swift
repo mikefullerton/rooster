@@ -24,14 +24,20 @@ class SimpleTimer : CustomStringConvertible, Loggable {
     
     private static var idCounter:Int = 0
     
+    private(set) var startDate: Date?
+    
+    private let name: String
+    
     var logTimerEvents = true
     
-    init() {
+    
+    init(withName name: String) {
         self.timer = nil
         self.requestedFireCount = 0
         self.fireCount = 0
         self.isTiming = false
         self.interval = 0
+        self.name = name
         
         SimpleTimer.idCounter += 1
         self.id = SimpleTimer.idCounter
@@ -80,34 +86,37 @@ class SimpleTimer : CustomStringConvertible, Loggable {
         }
     }
     private func timerFired(completion: @escaping (_ timer: SimpleTimer) -> Void) {
-        self.stopTimer()
+        self.fireCount += 1
+        
+        let willFireAgain = self.willFireAgain
+        
         if self.logTimerEvents {
-            self.logger.log("timer fired: \(self.description)")
+            self.logger.log("timer fired: \(self.description), will fire again: \(willFireAgain)")
         }
 
-        self.fireCount += 1
-        if self.willFireAgain {
-            if self.logTimerEvents {
-                self.logger.log("Rescheduling timer: \(self.description)")
-            }
-            self.startTimer(completion: completion)
-        } else {
+        if !willFireAgain{
             self.stop()
         }
         
         completion(self)
     }
     
-    private func startTimer(withInterval interval: TimeInterval,
+    private func startTimer(withNextDate date: Date,
                             completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
         DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] (timer) in
+            let timer = Timer(fire: date,
+                              interval: self.interval,
+                              repeats: true) { [weak self] (timer) in
                 self?.timerFired(completion: completion)
             }
             
+            self.timer = timer
+            
+            RunLoop.current.add(timer, forMode: .common)
+            
             if self.logTimerEvents {
-                self.logger.log("scheduled timer: \(self.description)")
+                self.logger.log("Started timer: \(self.description)")
             }
         }
     }
@@ -116,26 +125,10 @@ class SimpleTimer : CustomStringConvertible, Loggable {
                fireCount: Int,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
-        self.stop()
-        
-        if interval <= 0 {
-            if self.logTimerEvents {
-                self.logger.log("Timer fired after 0 seconds")
-            }
-            completion(self)
-            return
-        }
-        
-        self.requestedFireCount = max(fireCount, 1)
-        self.fireCount = 0
-        self.isTiming = true
-        self.interval = interval
-        
-        if self.logTimerEvents {
-            self.logger.log("Starting timer: \(self.description)")
-        }
-      
-        self.startTimer(completion: completion)
+        self.start(withDate: Date().addingTimeInterval(interval),
+                   interval: interval,
+                   fireCount: fireCount,
+                   completion: completion)
     }
 
     func start(withInterval interval: TimeInterval,
@@ -144,32 +137,46 @@ class SimpleTimer : CustomStringConvertible, Loggable {
     }
 
     func start(withDate date: Date,
+               interval: TimeInterval,
                fireCount: Int,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
+
+        self.stop()
         
-        let fireTime = date.timeIntervalSinceReferenceDate
-        let now = Date().timeIntervalSinceReferenceDate
+        if date.isEqualToOrBeforeDate(Date()) {
+            if self.logTimerEvents {
+                self.logger.log("Timer fired after 0 seconds")
+            }
+            completion(self)
+            return
+        }
         
-        let fireInterval = fireTime - now
-    
-        self.start(withInterval: fireInterval,
-                   fireCount: fireCount,
-                   completion: completion)
+        self.startDate = date
+        self.requestedFireCount = max(fireCount, 1)
+        self.fireCount = 0
+        self.isTiming = true
+        self.interval = interval
+        
+        self.startTimer(withNextDate: date,
+                        completion: completion)
     }
 
     func start(withDate date: Date,
                completion: @escaping (_ timer: SimpleTimer) -> Void) {
         
-        self.start(withDate: date, fireCount: 1, completion: completion)
+        self.start(withDate: date,
+                   interval: 0,
+                   fireCount: 1,
+                   completion: completion)
     }
     
     var description: String {
         
         let isValid = self.timer != nil ? "\(self.timer!.isValid)" : "nil"
         let interval = self.timer != nil ? "\(self.timer!.timeInterval)" : "nil"
-        let fireDate = self.timer != nil ? "\(self.timer!.fireDate)" : "nil"
+        let fireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndTimeString)" : "nil"
 
-        return "Timer: \(self.id), interval:\(self.interval), fireCount: \(self.fireCount), requestFireCount: \(self.requestedFireCount), timer: \(String(describing: self.timer )), timer is valid: \(isValid), timer interval: \(interval), timer fire date: \(fireDate)"
+        return "Timer: \(self.name):\(self.id), interval:\(self.interval), fireCount: \(self.fireCount), requestFireCount: \(self.requestedFireCount), timer: \(String(describing: self.timer )), timer is valid: \(isValid), timer interval: \(interval), timer fire date: \(fireDate)"
     }
 
 

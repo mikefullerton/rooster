@@ -44,8 +44,8 @@ class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
             self.countDownLabel.isHidden = false
         }
         
-        let startTime = event.startDate.shortDateString
-        let endTime = event.endDate.shortDateString
+        let startTime = event.startDate.shortTimeString
+        let endTime = event.endDate.shortTimeString
         
         self.timeLabel.text = "\(startTime) - \(endTime)"
         self.eventTitleLabel.text = event.title

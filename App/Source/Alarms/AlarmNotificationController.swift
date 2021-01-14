@@ -23,7 +23,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
     private init() {
         self.notifications = []
         self.dataModelReloader = nil
-        self.nextAlarmTimer = SimpleTimer()
+        self.nextAlarmTimer = SimpleTimer(withName: "NextAlarmTimer")
     }
     
     func start() {
@@ -159,9 +159,9 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.nextAlarmTimer.stop()
         
         if let nextAlarmTime = DataModelController.dataModel.nextAlarmDateForSchedulingTimer {
-            self.logger.log("scheduling next alarm update for: \(nextAlarmTime.shortDateString)")
+            self.logger.log("scheduling next alarm update for: \(nextAlarmTime.shortDateAndTimeString)")
             self.nextAlarmTimer.start(withDate: nextAlarmTime) { [weak self] (timer) in
-                self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval), scheduled for: \(nextAlarmTime.shortDateString)")
+                self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval), scheduled for: \(nextAlarmTime.shortDateAndTimeString)")
                 self?.updateEventItems()
             }
         }

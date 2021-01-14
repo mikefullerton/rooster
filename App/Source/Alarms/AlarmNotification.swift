@@ -39,7 +39,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
 
         self.id = "(AlarmNotification.idCounter)"
         self.state = .none
-        self.timer = SimpleTimer()
+        self.timer = SimpleTimer(withName: "AlarmNotificationTimer")
         self.sound = nil
         self.itemID = itemIdentifier
     }

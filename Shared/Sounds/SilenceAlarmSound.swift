@@ -29,7 +29,7 @@ class SilenceAlarmSound : AlarmSound {
         self.duration = duration
         self.sound = FakeSound(isPlaying: false, duration: duration, volume: 1.0, startTime: 0)
         self.name = "Silence"
-        self.timer = SimpleTimer()
+        self.timer = SimpleTimer(withName: "SilenceSoundTimer")
         self.behavior = AlarmSoundBehavior()
         self.playCount = 0
         self.identifier = ""

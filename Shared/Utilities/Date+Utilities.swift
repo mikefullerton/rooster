@@ -30,8 +30,12 @@ extension Date {
         return isBefore
     }
     
-    var shortDateString: String {
+    var shortTimeString: String {
         return DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
+    }
+    
+    var shortDateAndTimeString: String {
+        return DateFormatter.localizedString(from: self, dateStyle: .short, timeStyle: .short)
     }
     
     var tomorrow: Date? {

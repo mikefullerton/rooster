@@ -18,7 +18,7 @@ import Sparkle
     private var timer: SimpleTimer
     
     public override init() {
-        self.timer = SimpleTimer()
+        self.timer = SimpleTimer(withName: "SparkleControllerTimer")
     }
     
     let nextUpdateCheckDateKey = "nextUpdateCheckDateKey"
@@ -62,7 +62,7 @@ import Sparkle
     
 
     func startNextCheckTimer() {
-        self.logger.log("Starting next check timer at \(Date()), will check again at \(self.nextCheckDate)")
+        self.logger.log("Starting next check timer at \(Date().shortDateAndTimeString), will check again at \(self.nextCheckDate.shortDateAndTimeString)")
         self.timer.start(withDate: self.nextCheckDate) { [weak self] timer in
             self?.logger.log("Timer expired, will check for updates if needed")
             self?.checkForUpdatesIfNeeded()

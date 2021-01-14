@@ -19,7 +19,7 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
     private override init() {
         self.accessGranted = false
         self.identifiers = []
-        self.timer = SimpleTimer()
+        self.timer = SimpleTimer(withName: "UserNotificationRepeatTimer")
         
         super.init()
         UNUserNotificationCenter.current().delegate = self
@@ -55,9 +55,9 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
             let content = UNMutableNotificationContent()
             content.title = item.title
             
-            let endDate = item.alarm.endDate != nil ? " - \(item.alarm.endDate!.shortDateString)" : ""
+            let endDate = item.alarm.endDate != nil ? " - \(item.alarm.endDate!.shortTimeString)" : ""
             
-            content.body = "\(item.alarm.startDate.shortDateString)\(endDate)"
+            content.body = "\(item.alarm.startDate.shortTimeString)\(endDate)"
             
             if settings.alertSetting == .enabled {
                 // Schedule an alert-only notification.
