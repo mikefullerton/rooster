@@ -22,13 +22,6 @@ class ContentViewStack : UIView {
                 outSize.width = size.width
             }
         }
-        
-//            outSize.height += self.insets.top + self.insets.bottom
-//            outSize.width += self.insets.left + self.insets.right
-//
-//            outSize.height += (self.spacing.vertical * CGFloat(self.views.count - 1))
-//        outSize.width += (self.spacing.horizontal * CGFloat(self.views.count - 1))
-
         return outSize
     }
 

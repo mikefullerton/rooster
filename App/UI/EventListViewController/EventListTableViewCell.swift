@@ -73,6 +73,6 @@ class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     }
     
     override var muteButtonTitle : String {
-        return "Mute"
+        return "MUTE".localized
     }
 }

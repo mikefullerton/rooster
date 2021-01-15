@@ -30,21 +30,7 @@ extension String {
 }
 
 extension CalendarItem {
-    
-    func openLocationURL() {
-        if let url = self.knownLocationURL {
-            AppDelegate.instance.appKitPlugin.utilities.openLocationURL(url) { (success, error) in
-                self.logger.log("Opened URL: \(url). Success: \(success), error: \(error != nil ? error!.localizedDescription : "nil")")
-            }
-        } else {
-            self.logger.log("No location url found")
-        }
-    }
 
-    var knownLocationURL: URL? {
-        return self.findURL(containing: "appleinc.webex.com/appleinc")
-    }
-    
     func findURL(containing string: String) -> URL? {
         if let location = self.location,
            location.contains(string),

@@ -18,11 +18,11 @@ class PreferencesView : UIView {
 
         self.topBar.addToView(self)
         self.bottomBar.addToView(self)
-        self.topBar.addTitleView(withText: "Preferences")
+        self.topBar.addTitleView(withText: "PREFERENCES".localized)
         
         self.backgroundColor = UIColor.clear
         
-        let _ = self.bottomBar.addLeftButton(title: "Reset")
+        let _ = self.bottomBar.addLeftButton(title: "RESET".localized)
     }
     
     required init?(coder: NSCoder) {

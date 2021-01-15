@@ -21,8 +21,8 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
         let notificationPreferencesViw = NotificationChoicesView(frame: CGRect.zero)
         
         let items = [
-            VerticalTabItem(title: "Sounds", icon: nil, view: soundPreferencesView),
-            VerticalTabItem(title: "Notifications", icon: nil, view: notificationPreferencesViw)
+            VerticalTabItem(title: "SOUNDS".localized, icon: nil, view: soundPreferencesView),
+            VerticalTabItem(title: "NOTIFICATIONS".localized, icon: nil, view: notificationPreferencesViw)
         ]
         
         self.tabViewController = VerticalTabViewController(with: items)

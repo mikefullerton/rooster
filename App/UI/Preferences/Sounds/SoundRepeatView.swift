@@ -1,42 +1,37 @@
 //
-//  SoundDelayView.swift
+//  SoundRepeatView.swift
 //  Rooster
 //
-//  Created by Mike Fullerton on 1/5/21.
+//  Created by Mike Fullerton on 1/4/21.
 //
 
 import Foundation
 import UIKit
 
-class StartDelayView : LabeledSliderView {
+class SoundRepeatView : LabeledSliderView {
     
     init(fixedLabelWidth: CGFloat,
          sliderRightInset: CGFloat) {
         
-        super.init(frame: CGRect.zero, title: "Play Delay", fixedLabelWidth: fixedLabelWidth, sliderRightInset: sliderRightInset)
+        super.init(frame: CGRect.zero, title: "PLAY_COUNT".localized, fixedLabelWidth: fixedLabelWidth, sliderRightInset: sliderRightInset)
     
         
         let button = FancyButton()
         button.contentHorizontalAlignment = .leading
         button.contentViews = [
-            self.label(withTitle: "None"),
-            self.label(withTitle: "1 second"),
-            self.label(withTitle: "2 seconds"),
-            self.label(withTitle: "3 seconds"),
-            self.label(withTitle: "4 seconds"),
-            self.label(withTitle: "5 seconds"),
-            self.label(withTitle: "6 seconds"),
-            self.label(withTitle: "7 seconds"),
-            self.label(withTitle: "8 seconds"),
-            self.label(withTitle: "9 seconds"),
-            self.label(withTitle: "10 seconds"),
+            self.label(withTitle: "1x"),
+            self.label(withTitle: "2x"),
+            self.label(withTitle: "3x"),
+            self.label(withTitle: "4x"),
+            self.label(withTitle: "5x"),
+            self.label(withTitle: "Infinite"),
         ]
         
-        self.slider.minimumValue = 0 // 1 play count
-        self.slider.maximumValue = 10
+        self.slider.minimumValue = 1 // 1 play count
+        self.slider.maximumValue = Float(button.contentViews.count - 1)
         self.slider.maximumValueView = button
         self.slider.addTarget(self, action: #selector(repeatCountDidChange(_:)), for: .valueChanged)
-        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
+        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.playCount))
         
         self.updateVolumeSliderImage(withSliderView: self.slider)
         
@@ -56,15 +51,13 @@ class StartDelayView : LabeledSliderView {
 
     private func updateVolumeSliderImage(withSliderView sliderView: SliderView) {
         if let button = sliderView.maximumValueView as? FancyButton {
-            let startDelay = AppDelegate.instance.preferencesController.preferences.sounds.startDelay
+            let playCount = AppDelegate.instance.preferencesController.preferences.sounds.playCount
             
-            var index = startDelay
+            var index = playCount
             if index >= button.contentViewCount {
                 index = button.contentViewCount
             }
-            button.contentViewIndex = index
-            
-            print("start delay: \(startDelay), index: \(index)")
+            button.contentViewIndex = index - 1
         }
     }
     
@@ -73,7 +66,11 @@ class StartDelayView : LabeledSliderView {
         var soundPrefs = prefs.sounds
         
         let value = sender.value
-        soundPrefs.startDelay = Int(value)
+        if value == sender.maximumValue {
+            soundPrefs.playCount = SoundPreference.RepeatEndlessly
+        } else {
+            soundPrefs.playCount = Int(value.rounded())
+        }
         
         prefs.sounds = soundPrefs
         AppDelegate.instance.preferencesController.preferences = prefs
@@ -81,7 +78,7 @@ class StartDelayView : LabeledSliderView {
     }
     
     @objc func preferencesDidChange(_ sender: Notification) {
-        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
+        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.playCount))
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
 

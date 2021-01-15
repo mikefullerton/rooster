@@ -80,13 +80,7 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMe
     }
     
     func menuBarButtonWasClicked(_ popover: AppKitMenuBarController) {
-        
-        if AppDelegate.instance.alarmNotificationController.alarmsAreFiring {
-            AppDelegate.instance.alarmNotificationController.stopAllNotifications()
-        }
-        
-        AppDelegate.instance.appKitPlugin.utilities.bringAppToFront()
-//        self.isPopoverHidden = !self.isPopoverHidden
+        AppDelegate.instance.alarmNotificationController.handleUserClickedStopAll()
     }
 
     func appKitMenuBarControllerNextFireDate(_ controller: AppKitMenuBarController) -> Date? {

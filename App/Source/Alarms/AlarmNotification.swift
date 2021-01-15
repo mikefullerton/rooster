@@ -37,7 +37,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     init(withItemIdentifier itemIdentifier: String) {
         AlarmNotification.idCounter += 1
 
-        self.id = "(AlarmNotification.idCounter)"
+        self.id = "\(AlarmNotification.idCounter)"
         self.state = .none
         self.timer = SimpleTimer(withName: "AlarmNotificationTimer")
         self.sound = nil
@@ -59,6 +59,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
                 self.logger.log("auto opening location URL (if available) for \(self.description)")
                 
                 item.openLocationURL()
+                item.bringLocationAppsToFront()
             }
             
             if prefs.useSystemNotifications {
@@ -74,17 +75,10 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
                 AppDelegate.instance.appKitPlugin.utilities.startBouncingAppIcon()
             }
             #endif
-        
-        // Do we want this since you can just click in the menubar now?
-        //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
-        //            AppKitPlugin.instance.bringAppToFront()
-        //        }
         }
     }
     
     private func startPlayingSound() {
-        
-        
         let itemPrefs = AppDelegate.instance.preferencesController.preferences(forItemIdentifier: self.itemID)
         
         let sound = AlarmSoundGroup(withPreference: itemPrefs.soundPreference)
@@ -110,7 +104,6 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     }
 
     func start() {
-        
         self.state = .starting
         self.logger.log("starting alarm for \(self.description)")
 
@@ -123,7 +116,6 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
         if let delegate = self.delegate {
             delegate.alarmNotificationDidStart(self)
         }
-        
     }
     
     func stop() {
@@ -136,6 +128,10 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
             sound.stop()
         }
 
+        if let item = self.item {
+            AppDelegate.instance.userNotificationController.cancelNotifications(forItem: item)
+        }
+        
         if let delegate = self.delegate {
             delegate.alarmNotificationDidFinish(self)
         }

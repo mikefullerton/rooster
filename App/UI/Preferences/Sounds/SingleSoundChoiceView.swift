@@ -133,7 +133,7 @@ class SingleSoundChoiceView : UIView {
             self.setEnabledStates()
         } else {
             
-            self.checkbox.title = "None"
+            self.checkbox.title = "NONE".localized
             self.checkbox.isOn = false
             self.playButton.url = nil
             

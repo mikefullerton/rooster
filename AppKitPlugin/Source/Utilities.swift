@@ -162,7 +162,6 @@ import AppKit
     }
     
     func bringLocationAppsToFront(for url: URL) {
-//        AppKitPlugin.instance.bringAppToFront()
         self.bringAnotherApp(toFront: "com.apple.Safari", completion: nil)
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {

@@ -56,6 +56,8 @@
 		B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */; };
 		B236FCD6255EFE0A00A2E58D /* EKController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCD5255EFE0A00A2E58D /* EKController.swift */; };
 		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
+		B255349525B222C200E17EEF /* CalendarItem+LocationURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255349425B222C200E17EEF /* CalendarItem+LocationURL.swift */; };
+		B255349925B22C9200E17EEF /* AppControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255349825B22C9200E17EEF /* AppControllers.swift */; };
 		B256BC08258025EC00FA67DC /* CalendarChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC07258025EC00FA67DC /* CalendarChooserViewController.swift */; };
 		B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */; };
 		B256BC16258028BD00FA67DC /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC15258028BD00FA67DC /* CalendarListViewController.swift */; };
@@ -297,6 +299,8 @@
 		B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSliderView.swift; sourceTree = "<group>"; };
 		B236FCD5255EFE0A00A2E58D /* EKController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKController.swift; sourceTree = "<group>"; };
 		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
+		B255349425B222C200E17EEF /* CalendarItem+LocationURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarItem+LocationURL.swift"; sourceTree = "<group>"; };
+		B255349825B22C9200E17EEF /* AppControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllers.swift; sourceTree = "<group>"; };
 		B256BC07258025EC00FA67DC /* CalendarChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChooserViewController.swift; sourceTree = "<group>"; };
 		B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC15258028BD00FA67DC /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
@@ -528,6 +532,7 @@
 				B20AACD42594F41E00F9B50C /* AlarmNotification.swift */,
 				B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */,
 				B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */,
+				B255349425B222C200E17EEF /* CalendarItem+LocationURL.swift */,
 			);
 			path = Alarms;
 			sourceTree = "<group>";
@@ -650,6 +655,18 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		B255348F25B2191700E17EEF /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B2E1549225768619008BE604 /* Views */,
+				B2F6B50D2562F20E000BC78E /* MainWindow */,
+				B2F6B48625618787000BC78E /* EventListViewController */,
+				B2C7423D2577225E006645A0 /* Preferences */,
+				B2AFE696256AD0C1006B3C58 /* CalendarListViewController */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		B25B65FA258D028C0006B771 /* Can't get this to work */ = {
 			isa = PBXGroup;
 			children = (
@@ -737,12 +754,6 @@
 		B286627D258EC5B700D3A538 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B2AFE696256AD0C1006B3C58 /* CalendarListViewController */,
-				B233C55325A3934A005A7FB3 /* SoundPicker */,
-				B2C7423D2577225E006645A0 /* PreferencesViewController */,
-				B2F6B48625618787000BC78E /* EventListViewController */,
-				B2E1549225768619008BE604 /* Views */,
-				B2F6B50D2562F20E000BC78E /* MainWindow */,
 				B2F6B4F52562DD01000BC78E /* Utilities */,
 				B2F6B518256433C8000BC78E /* Sounds */,
 				B2CA1124258FD6D000B8BF81 /* DataModel */,
@@ -750,7 +761,6 @@
 				B286626A258EC25700D3A538 /* Controllers */,
 				B2020AFB2577FD0600F478CC /* Preferences */,
 				B2F6B4A72561B447000BC78E /* Delegates */,
-				B2AFE66F2569DFD6006B3C58 /* F SwiftUI */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -823,7 +833,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B2AFE66F2569DFD6006B3C58 /* F SwiftUI */ = {
+		B2AFE66F2569DFD6006B3C58 /* F SwiftUI (sorry SwiftUI) */ = {
 			isa = PBXGroup;
 			children = (
 				B2AFE6592569846F006B3C58 /* CheckBox.swift */,
@@ -834,7 +844,7 @@
 				B2E15121255EED2B002672EC /* ContentView.swift */,
 				B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */,
 			);
-			path = "F SwiftUI";
+			path = "F SwiftUI (sorry SwiftUI)";
 			sourceTree = "<group>";
 		};
 		B2AFE696256AD0C1006B3C58 /* CalendarListViewController */ = {
@@ -872,9 +882,10 @@
 			path = VerticalTabView;
 			sourceTree = "<group>";
 		};
-		B2C7423D2577225E006645A0 /* PreferencesViewController */ = {
+		B2C7423D2577225E006645A0 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				B233C55325A3934A005A7FB3 /* SoundPicker */,
 				B21DA1C5259BFFCC002A56C8 /* Sounds */,
 				B2C7424225772435006645A0 /* PreferencesViewController.swift */,
 				B2BAD32525AA21EA00C68027 /* PreferencesView.swift */,
@@ -882,7 +893,7 @@
 				B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */,
 				B2A181D92599276400C1E7F0 /* NotificationChoiceView.swift */,
 			);
-			path = PreferencesViewController;
+			path = Preferences;
 			sourceTree = "<group>";
 		};
 		B2CA1124258FD6D000B8BF81 /* DataModel */ = {
@@ -901,6 +912,7 @@
 			children = (
 				B286626C258EC2F600D3A538 /* Shared */,
 				B2E1511F255EED2B002672EC /* App */,
+				B2AFE66F2569DFD6006B3C58 /* F SwiftUI (sorry SwiftUI) */,
 				B227DEF1256738860002C127 /* AppKitPlugin */,
 				B233C52325A22F12005A7FB3 /* Config Files */,
 				B2A1817B2597B5D500C1E7F0 /* UIHelper */,
@@ -913,6 +925,7 @@
 		B2E1511F255EED2B002672EC /* App */ = {
 			isa = PBXGroup;
 			children = (
+				B255348F25B2191700E17EEF /* UI */,
 				B286627D258EC5B700D3A538 /* Source */,
 				B236FCE4255F1C9D00A2E58D /* Resources */,
 				B286627E258EC5E300D3A538 /* Supporting Files */,
@@ -989,6 +1002,7 @@
 			children = (
 				B2742C6925604A9B0087E4B6 /* AppDelegate.swift */,
 				B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */,
+				B255349825B22C9200E17EEF /* AppControllers.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -1382,6 +1396,7 @@
 				B22EEAB825A62BEA00D2D19D /* LoadingView.swift in Sources */,
 				B2965532257C0BD4008D1858 /* Alarm+DictionaryCodable.swift in Sources */,
 				B20AACD22594F3E900F9B50C /* AlarmNotificationController.swift in Sources */,
+				B255349525B222C200E17EEF /* CalendarItem+LocationURL.swift in Sources */,
 				B298C46E25ABCB940085BBA0 /* Theme.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
 				B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */,
@@ -1395,6 +1410,7 @@
 				B296550E257BD2F2008D1858 /* UserDefaults+IdentifierList.swift in Sources */,
 				B2E78A2825964E6A00DF0ACF /* Preferences+Defaults.swift in Sources */,
 				B21DA1B4259BE488002A56C8 /* SoundPickerTableViewController.swift in Sources */,
+				B255349925B22C9200E17EEF /* AppControllers.swift in Sources */,
 				B2F6B489256187CC000BC78E /* Calendar.swift in Sources */,
 				B2A1819B2597D57800C1E7F0 /* Event+EKEvent.swift in Sources */,
 				B256BC1C25802A0000FA67DC /* CalendarListViewModel.swift in Sources */,

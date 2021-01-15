@@ -13,7 +13,7 @@ class SoundVolumeView : LabeledSliderView {
     init(fixedLabelWidth: CGFloat,
          sliderRightInset: CGFloat) {
         
-        super.init(frame: CGRect.zero, title: "Volume", fixedLabelWidth: fixedLabelWidth, sliderRightInset: sliderRightInset)
+        super.init(frame: CGRect.zero, title: "VOLUME".localized, fixedLabelWidth: fixedLabelWidth, sliderRightInset: sliderRightInset)
     
         self.slider.minimumValue = 0
         self.slider.maximumValue = 1.0

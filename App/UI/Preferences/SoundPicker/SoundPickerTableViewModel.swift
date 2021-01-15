@@ -64,7 +64,6 @@ class SectionHeaderView : UIView {
         titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.textAlignment = .left
         titleView.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
-//        titleView.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         
         self.addSubview(titleView)
         

@@ -13,11 +13,13 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
     private var identifiers:[String]
     private let timer: SimpleTimer
     private var accessGranted: Bool
+    let preferencesController: PreferencesController
     
-    override init() {
+    init(preferencesController: PreferencesController) {
         self.accessGranted = false
         self.identifiers = []
-        self.timer = SimpleTimer(withName: "UserNotificationRepeatTimer")
+        self.timer = SimpleTimer(withName: "UserNotificationRescheduleTimer")
+        self.preferencesController = preferencesController
         
         super.init()
         UNUserNotificationCenter.current().delegate = self
@@ -25,14 +27,12 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
     
     func requestAccess() {
         let center = UNUserNotificationCenter.current()
-        // , .provisional
-//        UNAuthorizationOptionProvidesAppNotificationSettings
-        center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { granted, error in
+        center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings, .provisional]) { granted, error in
             
             if let error = error {
                 self.logger.error("Requesting notification access failed with error: \(error.localizedDescription)")
             } else {
-                self.logger.log("Granted access")
+                self.logger.log("Granted access to userNotifications")
                 self.accessGranted = true
             }
         }
@@ -46,9 +46,7 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
             guard (settings.authorizationStatus == .authorized) ||
                   (settings.authorizationStatus == .provisional) else { return }
         
-            let uuidString = UUID().uuidString
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+           let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
             
             let content = UNMutableNotificationContent()
             content.title = item.title
@@ -65,15 +63,13 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
                 content.badge = 1
             }
             
-            DispatchQueue.main.async {
-                UIApplication.shared.applicationIconBadgeNumber = 1
-            }
-            
             content.userInfo = ["item-id": item.id]
         
-            self.identifiers.append(uuidString)
-        
-            let request = UNNotificationRequest(identifier: uuidString,
+            self.identifiers.append(item.id)
+
+            UIApplication.shared.applicationIconBadgeNumber = self.identifiers.count
+            
+            let request = UNNotificationRequest(identifier: item.id,
                                                 content: content,
                                                 trigger: trigger)
 
@@ -83,10 +79,12 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
                 if error != nil {
                     self.logger.error("Error scheduling notification: \(error?.localizedDescription ?? "")")
                 } else {
-                    self.logger.log("Scheduled notification ok")
+                    let delay = self.preferencesController.preferences.systemNotificationDelay
                     
-                    self.timer.start(withInterval: 7) { timer in
-                        self.logger.log("Scheduler notification fired")
+                    self.logger.log("Scheduled notification ok, will fire again in \(delay) seconds")
+                    
+                    self.timer.start(withInterval: delay) { timer in
+                        self.logger.log("User notification rescheduler timer fired after delay of \(delay) seconds")
                         if self.identifiers.count > 0 {
                             self.scheduleNotification(forItem: item)
                         }
@@ -96,13 +94,29 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
         }
     }
     
-    func cancelNotifications() {
+    func cancelAllNotifications() {
         let center = UNUserNotificationCenter.current()
         center.removeAllDeliveredNotifications()
         center.removeAllPendingNotificationRequests()
         UIApplication.shared.applicationIconBadgeNumber = 0
         self.identifiers = []
         self.timer.stop()
+        
+        self.logger.log("Cancelled all user notifications")
+    }
+    
+    func cancelNotifications(forItem item: CalendarItem) {
+        let center = UNUserNotificationCenter.current()
+        center.removeDeliveredNotifications(withIdentifiers: [item.id])
+        center.removePendingNotificationRequests(withIdentifiers: [item.id])
+
+        if let index = self.identifiers.firstIndex(of: item.id) {
+            self.identifiers.remove(at: index)
+        }
+        
+        UIApplication.shared.applicationIconBadgeNumber = self.identifiers.count
+
+        self.logger.log("Cancelled user notification for item: \(item.description)")
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -114,14 +128,14 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        AppDelegate.instance.alarmNotificationController.stopAllNotifications()
-        
+        self.logger.log("Notification received response")
+        AppDelegate.instance.alarmNotificationController.stopAllNotifications(bringNotificationAppsForward: true)
         completionHandler()
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.badge, .banner])
+        completionHandler([.badge, .banner, .sound])
     }
 }

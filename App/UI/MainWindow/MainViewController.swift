@@ -139,9 +139,11 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
             self.createMainViewsIfNeeded()
             self.reloader = DataModelReloader(for: self)
         } else {
-            let alertController = UIAlertController(title: "Failed to recieve permission to access calendars", message: "We can't do anything, we we will quit now", preferredStyle: UIAlertController.Style.alert)
+            let alertController = UIAlertController(title: "CALENDAR_AUTHENTICATION_FAILED".localized,
+                                                    message: "CALENDAR_AUTHENTICATION_FAILED_ACTION".localized,
+                                                    preferredStyle: UIAlertController.Style.alert)
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+            alertController.addAction(UIAlertAction(title: "OK".localized, style: .default, handler: { _ in
                 exit(0)
             }))
             
@@ -193,7 +195,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     lazy var calendarToolbarItem: NSToolbarItem = {
         let item = NSToolbarItem(itemIdentifier: .calendars)
         item.image = UIImage(systemName: "calendar")
-        item.label = "Calendars"
+        item.label = "CALENDARS".localized
         item.action = #selector(toggleCalendarsPopover(_:))
         item.target = self
         item.isEnabled = false
@@ -203,7 +205,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     lazy var preferencesToolbarItem: NSToolbarItem = {
         let item = NSToolbarItem(itemIdentifier: .preferences)
         item.image = UIImage(systemName: "gear")
-        item.label = "Preferences"
+        item.label = "PREFERENCES".localized
         item.action = #selector(togglePreferencesPopover(_:))
         item.target = self
         item.isEnabled = false
@@ -252,9 +254,11 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         navigationItem.leftBarButtonItem = leftButton
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "calendar"),
-                                                                                    style: .plain, target: self, action: #selector(calendarsButtonClicked(_:)))
+                                                                            style: .plain,
+                                                                            target: self,
+                                                                            action: #selector(calendarsButtonClicked(_:)))
 
-        navigationItem.title = "Rooster"
+        navigationItem.title = "ROOSTER".localized
         
         let navigationViewController = UINavigationController(rootViewController: viewController)
         

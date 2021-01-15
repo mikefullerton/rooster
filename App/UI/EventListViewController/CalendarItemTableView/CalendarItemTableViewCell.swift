@@ -209,7 +209,6 @@ class CalendarItemTableViewCell : UITableViewCell {
             titleLabel.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
             
         }
-//            view.frame = CGRect(x: 0, y: 0, width: 60, height: 20)
         view.contentHorizontalAlignment = .right
         view.setTitleColor(UIColor.systemBlue, for: UIControl.State.normal)
         view.setTitleColor(UIColor.systemGray, for: UIControl.State.highlighted)
@@ -225,11 +224,8 @@ class CalendarItemTableViewCell : UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-//                view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -self.contentInsets.right),
-//                view.heightAnchor.constraint(equalToConstant: view.frame.size.height),
             view.firstBaselineAnchor.constraint(equalTo: self.calendarTitleLabel.firstBaselineAnchor)
-//            view.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -self.contentInsets.bottom),
         ])
     }
 

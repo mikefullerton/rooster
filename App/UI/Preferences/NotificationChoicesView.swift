@@ -13,7 +13,7 @@ class NotificationChoicesView : SimpleVerticalStackView {
     init(frame: CGRect) {
         super.init(frame: frame )
         
-        let notifs =  GroupBoxView(frame: CGRect.zero, title: "What to do when a meeting starts (in addition to playing sounds)")
+        let notifs =  GroupBoxView(frame: CGRect.zero, title: "NOTIFICATION_EXPLANATION".localized)
         notifs.setContainedViews([
             self.automaticallyOpenLocationURLs,
             self.bounceIconInDock,

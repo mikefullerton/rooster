@@ -6,24 +6,43 @@
   
 */
 
-// prefs
+// please keep in alphbetical order
 
-"NOTIFICATIONS" = "Notifications";
-
-"AUTO_OPEN_LOCATIONS" = "Automatically open location URLs";
-"SAFARI_TIP" = "Enable Safari Webex plugin to bypass Safari prompts";
-"BOUNCE_ICON" = "Bounce app icon in dock";
-"USE_SYSTEM_NOTIFICATIONS" = "Send macOS user notification";
-
-"SOUNDS" = "Sounds";
-
-"FILE_RADAR" = "File Radar";
-"CHECK_FOR_UPDATES" = "Check for updates...";
-
+// general
+"CALENDARS" = "Calendars";
+"CALENDAR_AUTHENTICATION_FAILED" = "Failed to recieve permission to access calendars";
+"CALENDAR_AUTHENTICATION_FAILED_ACTION" = "We can't do anything, buh bye.";
 "CANCEL" = "Cancel";
+"CHECK_FOR_UPDATES" = "Check for updates...";
 "DONE" = "Done";
-"RANDOMIZED" = "Randomize";
-"RANDOM" = "Random";
+"FILE_RADAR" = "File Radar";
+"MUTE" = "Mute";
+"NONE" = "None";
+"OK" = "OK";
+"ROOSTER" = "Rooster";
+"SNOOZE" = "Snooze";
 
+// prefs
+"AUTO_OPEN_LOCATIONS" = "Automatically open location URLs";
+"BOUNCE_ICON" = "Bounce app icon in dock";
+"NOTIFICATIONS" = "Notifications";
+"NOTIFICATION_EXPLANATION" = "What to do when a meeting starts (in addition to playing sounds)";
+"PLAY_COUNT" = "Play Count";
+"PLAY_DELAY" = "Play Delay";
+"PREFERENCES" = "Preferences";
+"RANDOM" = "Random";
+"RANDOMIZED" = "Randomize";
+"RESET" = "Reset";
+"SAFARI_TIP" = "Enable Safari Webex plugin to bypass Safari prompts";
+"SOUNDS" = "Sounds";
+"SOUND_CHOICE_EXPLANATION" = "Play up to 3 sounds sequentially when a meeting starts";
+"SOUND_DELAY_EXPLANATION" = "How long to wait after a meeting starts before playing your sounds";
 "SOUND_PICKER" = "Sound Picker";
+"SOUND_PLAYCOUNT_EXPLANATION" = "How many times to play your sounds";
+"SOUND_VOLUME_EXPLANATION" = "How loud to play your sounds";
+"USE_SYSTEM_NOTIFICATIONS" = "Send macOS user notification";
+"VOLUME" = "Volume";
+
+
+
 

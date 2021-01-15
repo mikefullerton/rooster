@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
+class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate, AppControllerAware {
     var window: UIWindow?
     var windowRestoreKey: String;
     private(set) var initialWindowSize = CGSize.zero
@@ -37,7 +37,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     #if targetEnvironment(macCatalyst)
     
     func setWindowSize(_ size: CGSize){
-        AppDelegate.instance.appKitPlugin.windowController.setContentSize(size, forWindow: window as Any)
+        self.appKitPlugin.windowController.setContentSize(size, forWindow: window as Any)
     }
     
     @objc func windowSceneDidBecomeVisible(_ notif: Notification) {
@@ -45,9 +45,9 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let fromWindow = notif.object as? UIWindow,
            fromWindow == self.window {
 
-            AppDelegate.instance.appKitPlugin.windowController.restoreWindowPosition(forWindow: (self.window as Any),
-                                                                                   windowName: self.windowRestoreKey,
-                                                                                   initialSize: self.initialWindowSize)
+            self.appKitPlugin.windowController.restoreWindowPosition(forWindow: (self.window as Any),
+                                                                     windowName: self.windowRestoreKey,
+                                                                     initialSize: self.initialWindowSize)
         }
     }
 

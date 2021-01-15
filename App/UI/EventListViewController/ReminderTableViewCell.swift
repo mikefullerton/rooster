@@ -67,6 +67,6 @@ class ReminderTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     }
     
     override var muteButtonTitle : String {
-        return "Snooze"
+        return "SNOOZE".localized
     }
 }

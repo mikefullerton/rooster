@@ -89,14 +89,8 @@ class MainEventListViewController : UIViewController {
             let timeRemainingSize = self.timeRemainingViewController.preferredContentSize
             let eventListSize = self.eventListViewController.preferredContentSize
             
-            let heightBuffer: CGFloat = 0 // self.topOfWindowVerticalPadding
-            
-//            if eventListSize.height > 0 {
-//                heightBuffer += 20
-//            }
-//
             let size = CGSize(width: self.view.frame.size.width,
-                              height: eventListSize.height + timeRemainingSize.height + heightBuffer )
+                              height: eventListSize.height + timeRemainingSize.height )
             
             return size
         }

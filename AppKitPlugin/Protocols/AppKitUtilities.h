@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)openLocationURL:(NSURL *)url
              completion:(nullable void (^)(BOOL success, NSError * _Nullable))completion;
+
+- (void)bringLocationAppsToFrontForURL:(NSURL *)url;
 @end
 
 NS_ASSUME_NONNULL_END

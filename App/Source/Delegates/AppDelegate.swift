@@ -14,26 +14,10 @@ protocol MacAppDelegateProtocols : AppKitInstallationUpdaterDelegate {}
 protocol MacAppDelegateProtocols {}
 #endif
 
+
+
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, Loggable {
-
-    public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
-
-    static var instance: AppDelegate {
-        return UIApplication.shared.delegate as! AppDelegate
-    }
-    
-    let alarmNotificationController = AlarmNotificationController()
-
-    let dataModelController = DataModelController(withDataModelStorage: DataModelStorage())
-    
-    let appKitPlugin = AppKitPluginController()
-    
-    let audioSessionController = AudioSessionController()
-
-    let userNotificationController = UserNotificationCenterController()
- 
-    let preferencesController = PreferencesController()
+class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, Loggable, AppControllerAware {
 
     enum UserActivities: String {
 //        case preferences = "com.apple.rooster.preferences"
@@ -45,6 +29,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     enum SceneNames: String {
 //        case preferences = "preferences"
         case main = "main"
+    }
+
+    public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
+
+    static var instance: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
     }
     
     func application(_ application: UIApplication,

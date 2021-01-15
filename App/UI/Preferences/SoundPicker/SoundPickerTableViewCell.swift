@@ -23,8 +23,6 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         if let fileName = self.url?.soundName {
             self.titleView.text = fileName
         }
-//        self.backgroundColor = UIColor.clear
-//        self.contentView.backgroundColor = Theme(for: self).tableViewCellBackgroundColor
     }
 
     override func prepareForReuse() {
@@ -44,7 +42,6 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         titleView.isUserInteractionEnabled = false
         titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.textAlignment = .left
-//        titleView.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         
         self.contentView.addSubview(titleView)
         
@@ -67,15 +64,10 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         self.contentView.addSubview(button)
 
         button.translatesAutoresizingMaskIntoConstraints = false
-        
-//        let size = button.sizeThatFits(self.contentView.bounds.size)
-        
+
         NSLayoutConstraint.activate([
             button.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             button.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-
-//            button.widthAnchor.constraint(equalToConstant: size.width),
-//            button.heightAnchor.constraint(equalToConstant: size.height)
         ])
 
         return button
@@ -88,15 +80,6 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         set(selected) {
             super.isSelected = selected
             self.titleView.isHighlighted = selected
-            
-//            if selected {
-//                self.backgroundColor = nil
-//                self.contentView.backgroundColor = nil
-//            } else {
-//                self.backgroundColor = UIColor.clear
-//                self.contentView.backgroundColor = Theme(for: self).tableViewCellBackgroundColor
-//            }
-            
         }
     }
 }

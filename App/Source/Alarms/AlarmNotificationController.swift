@@ -70,12 +70,17 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.notifyIfAlarmsStopped()
     }
     
-    func stopAllNotifications() {
+    func stopAllNotifications(bringNotificationAppsForward: Bool) {
         self.notifications.reversed().forEach() { (notification) in
             notification.stop()
+            
+            if bringNotificationAppsForward,
+               let item = notification.item {
+                item.bringLocationAppsToFront()
+            }
         }
 
-        AppDelegate.instance.userNotificationController.cancelNotifications()
+        AppDelegate.instance.userNotificationController.cancelAllNotifications()
         
         #if targetEnvironment(macCatalyst)
         AppDelegate.instance.appKitPlugin.utilities.stopBouncingAppIcon()
@@ -131,7 +136,6 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         }
         
         self.logger.log("Started alarms for \(startedCount) items")
-        
     }
     
     func dataModelDidReload(_ dataModel: DataModel) {
@@ -147,6 +151,16 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.stopNotifications(forIdentifiersNotInSet: itemsSet)
         
         self.updateNotifications(forItems: items)
+    }
+    
+    func handleUserClickedStopAll() {
+        AppDelegate.instance.appKitPlugin.utilities.bringAppToFront()
+
+        if self.alarmsAreFiring {
+            self.stopAllNotifications(bringNotificationAppsForward: true)
+        }
+        
+//        item.bringLocationAppsToFront()
     }
 }
 
