@@ -68,7 +68,7 @@ class ButtonsContainerView : UIView {
     }
     
     @objc func resetButtonPressed(_ sender: UIButton) {
-        PreferencesController.instance.preferences = Preferences()
+        AppDelegate.instance.preferencesController.preferences = Preferences()
     }
 
     @objc func tryItButtonPressed(_ sender: UIButton) {

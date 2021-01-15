@@ -11,11 +11,9 @@ import EventKit
 
 /// interface to the AppKitPlugin
 class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMenuBarControllerDelegate {
-    static var instance = AppKitPluginController()
-    
     private var plugin: RoosterAppKitPlugin?
     
-    private override init() {
+    override init() {
         self.plugin = AppKitPluginController.loadPlugin()
         super.init()
         
@@ -78,21 +76,21 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMe
     }
 
     func appKitMenuBarControllerAreAlarmsFiring(_ controller: AppKitMenuBarController) -> Bool {
-        return AlarmNotificationController.instance.alarmsAreFiring
+        return AppDelegate.instance.alarmNotificationController.alarmsAreFiring
     }
     
     func menuBarButtonWasClicked(_ popover: AppKitMenuBarController) {
         
-        if AlarmNotificationController.instance.alarmsAreFiring {
-            AlarmNotificationController.instance.stopAllNotifications()
+        if AppDelegate.instance.alarmNotificationController.alarmsAreFiring {
+            AppDelegate.instance.alarmNotificationController.stopAllNotifications()
         }
         
-        AppKitPluginController.instance.utilities.bringAppToFront()
+        AppDelegate.instance.appKitPlugin.utilities.bringAppToFront()
 //        self.isPopoverHidden = !self.isPopoverHidden
     }
 
     func appKitMenuBarControllerNextFireDate(_ controller: AppKitMenuBarController) -> Date? {
-        return DataModelController.instance.dataModel.nextAlarmDate
+        return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
     }
 }
 

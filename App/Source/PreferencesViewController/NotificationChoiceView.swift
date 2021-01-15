@@ -99,13 +99,13 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
     
     @objc override func checkboxChanged(_ sender: UISwitch) {
 
-        var prefs = PreferencesController.instance.preferences
+        var prefs = AppDelegate.instance.preferencesController.preferences
         prefs.autoOpenLocations = sender.isOn
-        PreferencesController.instance.preferences = prefs
+        AppDelegate.instance.preferencesController.preferences = prefs
     }
     
     override var value: Bool {
-        return PreferencesController.instance.preferences.autoOpenLocations
+        return AppDelegate.instance.preferencesController.preferences.autoOpenLocations
     }
 
     lazy var locationTipView : TipView = {
@@ -120,7 +120,7 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
     }()
     
     override func refresh() {
-        self.checkbox.isOn = PreferencesController.instance.preferences.autoOpenLocations
+        self.checkbox.isOn = AppDelegate.instance.preferencesController.preferences.autoOpenLocations
     }
 }
 
@@ -137,17 +137,17 @@ class BounceInDockChoiceView : NotificationChoiceView {
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
         
-        var prefs = PreferencesController.instance.preferences
+        var prefs = AppDelegate.instance.preferencesController.preferences
         prefs.bounceIconInDock = sender.isOn
-        PreferencesController.instance.preferences = prefs
+        AppDelegate.instance.preferencesController.preferences = prefs
     }
     
     override var value: Bool {
-        return PreferencesController.instance.preferences.bounceIconInDock
+        return AppDelegate.instance.preferencesController.preferences.bounceIconInDock
     }
     
     override func refresh() {
-        self.checkbox.isOn = PreferencesController.instance.preferences.bounceIconInDock
+        self.checkbox.isOn = AppDelegate.instance.preferencesController.preferences.bounceIconInDock
     }
 
 }
@@ -166,17 +166,17 @@ class UseSystemNotificationsChoiceView : NotificationChoiceView {
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
         
-        var prefs = PreferencesController.instance.preferences
+        var prefs = AppDelegate.instance.preferencesController.preferences
         prefs.useSystemNotifications = sender.isOn
-        PreferencesController.instance.preferences = prefs
+        AppDelegate.instance.preferencesController.preferences = prefs
     }
 
     override var value: Bool {
-        return PreferencesController.instance.preferences.useSystemNotifications
+        return AppDelegate.instance.preferencesController.preferences.useSystemNotifications
     }
     
     override func refresh() {
-        self.checkbox.isOn = PreferencesController.instance.preferences.useSystemNotifications
+        self.checkbox.isOn = AppDelegate.instance.preferencesController.preferences.useSystemNotifications
     }
 
 

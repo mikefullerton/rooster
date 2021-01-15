@@ -13,22 +13,13 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
 
     public static let AlarmsDidStopEvent = NSNotification.Name("AlarmsDidStopEvent")
     
-    static let instance = AlarmNotificationController()
-
     private var notifications: [AlarmNotification]
     
-    private var dataModelReloader: DataModelReloader?
-    private let nextAlarmTimer: SimpleTimer
+    private var dataModelReloader: DataModelReloader? = nil
  
-    private init() {
+    init() {
         self.notifications = []
-        self.dataModelReloader = nil
-        self.nextAlarmTimer = SimpleTimer(withName: "NextAlarmTimer")
-    }
-    
-    func start() {
         self.dataModelReloader = DataModelReloader(for: self)
-        self.startTimerForNextEventTime()
     }
     
     func scheduleNotification(forItem item: CalendarItem) {
@@ -84,12 +75,13 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
             notification.stop()
         }
 
-        UserNotificationCenterController.instance.cancelNotifications()
+        AppDelegate.instance.userNotificationController.cancelNotifications()
+        
         #if targetEnvironment(macCatalyst)
-        AppKitPluginController.instance.utilities.stopBouncingAppIcon()
+        AppDelegate.instance.appKitPlugin.utilities.stopBouncingAppIcon()
         #endif
         
-        DataModelController.instance.stopAllAlarms()
+        AppDelegate.instance.dataModelController.stopAllAlarms()
         
         self.notifyIfAlarmsStopped()
     }
@@ -124,20 +116,28 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
     }
     
     private func updateNotifications(forItems items: [CalendarItem]) {
+        self.logger.log("Updating alarms for \(items.count) items")
+        
+        var startedCount = 0
+        
         for item in items {
             if item.alarm.state == .firing {
+                startedCount += 1
                 // this will do nothing if already firing
-                AlarmNotificationController.instance.scheduleNotification(forItem: item)
+                self.scheduleNotification(forItem: item)
             } else {
-                AlarmNotificationController.instance.stopNotification(forItem: item)
+                self.stopNotification(forItem: item)
             }
         }
+        
+        self.logger.log("Started alarms for \(startedCount) items")
+        
     }
     
-    private func updateEventItems() {
-        self.logger.log("Updating alarms for \(self.notifications.count)")
+    func dataModelDidReload(_ dataModel: DataModel) {
+        self.logger.log("DataModel updated. Updating alarms, current alarm count: \(self.notifications.count)")
         
-        let items:[CalendarItem] = DataModelController.dataModel.events + DataModelController.dataModel.reminders
+        let items:[CalendarItem] = AppDelegate.instance.dataModelController.dataModel.events + AppDelegate.instance.dataModelController.dataModel.reminders
 
         var itemsSet = Set<String>()
         items.forEach { (item) in
@@ -147,25 +147,6 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         self.stopNotifications(forIdentifiersNotInSet: itemsSet)
         
         self.updateNotifications(forItems: items)
-        
-        self.startTimerForNextEventTime()
     }
-    
-    func dataModelDidReload(_ dataModel: DataModel) {
-        self.updateEventItems()
-    }
-    
-    private func startTimerForNextEventTime() {
-        self.nextAlarmTimer.stop()
-        
-        if let nextAlarmTime = DataModelController.dataModel.nextAlarmDateForSchedulingTimer {
-            self.logger.log("scheduling next alarm update for: \(nextAlarmTime.shortDateAndTimeString)")
-            self.nextAlarmTimer.start(withDate: nextAlarmTime) { [weak self] (timer) in
-                self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval), scheduled for: \(nextAlarmTime.shortDateAndTimeString)")
-                self?.updateEventItems()
-            }
-        }
-    }
-    
 }
 

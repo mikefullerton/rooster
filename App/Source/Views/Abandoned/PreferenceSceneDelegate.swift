@@ -19,7 +19,7 @@ class PreferencesSceneDelegate: WindowSceneDelegate {
         }
      
         
-        if EventKitDataModelController.instance.isAuthenticated {
+        if EventKitAppDelegate.instance.dataModelController.isAuthenticated {
         
             let viewController = PreferencesViewController()
 //            var size = viewController.calculatedSize

@@ -118,7 +118,7 @@
 		B298C46825ABBFD80085BBA0 /* VerticalButtonBarTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C46725ABBFD80085BBA0 /* VerticalButtonBarTableCell.swift */; };
 		B298C46E25ABCB940085BBA0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C46D25ABCB940085BBA0 /* Theme.swift */; };
 		B298C47425ABEA1D0085BBA0 /* ContentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C47325ABEA1D0085BBA0 /* ContentStackView.swift */; };
-		B29D055C25924FF60027C152 /* DataModel+Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D055B25924FF60027C152 /* DataModel+Storage.swift */; };
+		B29D055C25924FF60027C152 /* DataModelStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D055B25924FF60027C152 /* DataModelStorage.swift */; };
 		B29D0561259251840027C152 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0560259251840027C152 /* Preferences.swift */; };
 		B29D0562259251840027C152 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0560259251840027C152 /* Preferences.swift */; };
 		B29D0566259253990027C152 /* Preferences+DictionaryCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0565259253990027C152 /* Preferences+DictionaryCodable.swift */; };
@@ -352,7 +352,7 @@
 		B298C46725ABBFD80085BBA0 /* VerticalButtonBarTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalButtonBarTableCell.swift; sourceTree = "<group>"; };
 		B298C46D25ABCB940085BBA0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		B298C47325ABEA1D0085BBA0 /* ContentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentStackView.swift; sourceTree = "<group>"; };
-		B29D055B25924FF60027C152 /* DataModel+Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataModel+Storage.swift"; sourceTree = "<group>"; };
+		B29D055B25924FF60027C152 /* DataModelStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelStorage.swift; sourceTree = "<group>"; };
 		B29D0560259251840027C152 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		B29D0565259253990027C152 /* Preferences+DictionaryCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Preferences+DictionaryCodable.swift"; sourceTree = "<group>"; };
 		B29D056D25925A6D0027C152 /* Event+DictionaryCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+DictionaryCodable.swift"; sourceTree = "<group>"; };
@@ -596,7 +596,6 @@
 				B2D188A825794C0C00F812C5 /* DataModelFactory+IntermediateDataModel.swift */,
 				B29D057025925A7E0027C152 /* Reminder+DictionaryCodable.swift */,
 				B29D056D25925A6D0027C152 /* Event+DictionaryCodable.swift */,
-				B29D055B25924FF60027C152 /* DataModel+Storage.swift */,
 				B2EBBEC925A8CEBD0045E9C3 /* CalendarItem+FindURL.swift */,
 			);
 			path = Utilities;
@@ -890,6 +889,7 @@
 			isa = PBXGroup;
 			children = (
 				B2020AE62577E84500F478CC /* DataModelController.swift */,
+				B29D055B25924FF60027C152 /* DataModelStorage.swift */,
 				B22EEA4C25A620AB00D2D19D /* EventKit */,
 				B22EEA4B25A6208D00D2D19D /* Utilities */,
 			);
@@ -1403,7 +1403,7 @@
 				B2A181DA2599276400C1E7F0 /* NotificationChoiceView.swift in Sources */,
 				B2F6B48D256188FA000BC78E /* PreferencesDataStore.swift in Sources */,
 				B21DA1B0259BCB09002A56C8 /* HorizontallyOpposedLayout.swift in Sources */,
-				B29D055C25924FF60027C152 /* DataModel+Storage.swift in Sources */,
+				B29D055C25924FF60027C152 /* DataModelStorage.swift in Sources */,
 				B298C45125AB97AD0085BBA0 /* SoundPickerTableViewModel.swift in Sources */,
 				B2A181B42598105200C1E7F0 /* SingleSoundChoiceView.swift in Sources */,
 				B21DA183259BA68B002A56C8 /* HorizontalViewLayout.swift in Sources */,

@@ -19,12 +19,17 @@ struct DataModelFactory {
     private(set) var personalCalendars: [CalendarSource: [Calendar]]
     private(set) var delegateCalendars: [CalendarSource: [Calendar]]
     
+    let dataModelStorage: DataModelStorage
+    
     init(personalCalendarModel: EKDataModel,
          delegateCalendarModel: EKDataModel,
-         previousDataModel: DataModel) {
+         previousDataModel: DataModel,
+         dataModelStorage: DataModelStorage) {
         
-        let personalCalendarModel = IntermediateDataModel(model: personalCalendarModel)
-        let delegateCalendarModel = IntermediateDataModel(model: delegateCalendarModel)
+        self.dataModelStorage = dataModelStorage
+        
+        let personalCalendarModel = IntermediateDataModel(model: personalCalendarModel, dataModelStorage: dataModelStorage)
+        let delegateCalendarModel = IntermediateDataModel(model: delegateCalendarModel, dataModelStorage: dataModelStorage)
         
         self.personalCalendarModel = personalCalendarModel
         self.delegateCalendarModel = delegateCalendarModel

@@ -33,7 +33,7 @@ extension CalendarItem {
     
     func openLocationURL() {
         if let url = self.knownLocationURL {
-            AppKitPluginController.instance.utilities.openLocationURL(url) { (success, error) in
+            AppDelegate.instance.appKitPlugin.utilities.openLocationURL(url) { (success, error) in
                 self.logger.log("Opened URL: \(url). Success: \(success), error: \(error != nil ? error!.localizedDescription : "nil")")
             }
         } else {

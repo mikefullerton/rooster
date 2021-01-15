@@ -53,8 +53,8 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
     }
     
     func startTimer() {
-        self.timeRemainingLabel.startTimer(fireDate: DataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
-            return DataModelController.instance.dataModel.nextAlarmDate
+        self.timeRemainingLabel.startTimer(fireDate: AppDelegate.instance.dataModelController.dataModel.nextAlarmDate) { () -> Date? in
+            return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
         }
     }
 

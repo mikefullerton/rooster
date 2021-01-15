@@ -10,13 +10,11 @@ import UIKit
 
 class UserNotificationCenterController : NSObject, UNUserNotificationCenterDelegate, Loggable {
     
-    static var instance = UserNotificationCenterController()
-    
     private var identifiers:[String]
     private let timer: SimpleTimer
     private var accessGranted: Bool
     
-    private override init() {
+    override init() {
         self.accessGranted = false
         self.identifiers = []
         self.timer = SimpleTimer(withName: "UserNotificationRepeatTimer")
@@ -116,7 +114,7 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        AlarmNotificationController.instance.stopAllNotifications()
+        AppDelegate.instance.alarmNotificationController.stopAllNotifications()
         
         completionHandler()
     }

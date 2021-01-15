@@ -20,7 +20,11 @@ extension DataModelFactory {
         private(set) var reminders: [Reminder]
         private(set) var groupedCalendars: [CalendarSource: [Calendar]]
         
-        init(model: EKDataModel) {
+        let dataModelStorage: DataModelStorage
+        
+        init(model: EKDataModel,
+             dataModelStorage: DataModelStorage) {
+            self.dataModelStorage = dataModelStorage
             self.model = model
             self.calendars = []
             self.events = []
@@ -46,7 +50,7 @@ extension DataModelFactory {
                     }
                     
                     var eventKitEvent: Event? = nil
-                    if let savedState = DataModel.Storage.instance.eventState(forKey: ekEvent.uniqueID) {
+                    if let savedState = self.dataModelStorage.eventState(forKey: ekEvent.uniqueID) {
                         eventKitEvent = Event(withEvent: ekEvent,
                                                       calendar: calendar,
                                                       savedState: savedState)
@@ -71,7 +75,7 @@ extension DataModelFactory {
         private mutating func addCalendars() {
             for ekCalendar in self.model.calendars {
                 if ekCalendar.refresh() {
-                    let subscribed = DataModel.Storage.instance.isCalendarSubscribed(ekCalendar.uniqueID)
+                    let subscribed = self.dataModelStorage.isCalendarSubscribed(ekCalendar.uniqueID)
                     
                     let calendar = Calendar(withCalendar: ekCalendar,
                                                     subscribed:subscribed)
@@ -108,7 +112,7 @@ extension DataModelFactory {
                     }
                     
                     var reminder: Reminder? = nil
-                    if let savedState = DataModel.Storage.instance.reminderState(forKey: ekReminder.uniqueID) {
+                    if let savedState = self.dataModelStorage.reminderState(forKey: ekReminder.uniqueID) {
                         reminder = Reminder(withReminder: ekReminder,
                                                          calendar: calendar,
                                                          startDate: startDate!,

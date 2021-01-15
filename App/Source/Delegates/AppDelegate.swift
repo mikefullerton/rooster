@@ -23,6 +23,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         return UIApplication.shared.delegate as! AppDelegate
     }
     
+    let alarmNotificationController = AlarmNotificationController()
+
+    let dataModelController = DataModelController(withDataModelStorage: DataModelStorage())
+    
+    let appKitPlugin = AppKitPluginController()
+    
+    let audioSessionController = AudioSessionController()
+
+    let userNotificationController = UserNotificationCenterController()
+ 
+    let preferencesController = PreferencesController()
+
     enum UserActivities: String {
 //        case preferences = "com.apple.rooster.preferences"
         case main = "com.commapps.rooster.main"
@@ -39,8 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.logger.log("Application did finish launching")
-        AudioSessionController.instance.startAudioSession()
-        UserNotificationCenterController.instance.requestAccess()
+        
+        self.audioSessionController.startAudioSession()
+        self.userNotificationController.requestAccess()
         return true
     }
     
@@ -95,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
 //            if window.windowScene?.title == "Preferences" {
 //
 //                // Catalyst is extremely lame with window management
-//                AppKitPluginController.instance.windowController.bringWindow(toFront: window)
+//                AppDelegate.instance.appKitPlugin.windowController.bringWindow(toFront: window)
 //
 //                return
 //            }
@@ -175,7 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     }
 
     @objc private func checkForUpdates(_ sender: AppDelegate) {
-        AppKitPluginController.instance.installationUpdater.checkForUpdates()
+        self.appKitPlugin.installationUpdater.checkForUpdates()
     }
 
     func appKitInstallationUpdater(_ updater: AppKitInstallationUpdater, didCheckForUpdate updateAvailable: Bool, error: Error?) {
@@ -188,14 +201,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         self.logger.log("Application authenticate EventKit access")
 
         #if targetEnvironment(macCatalyst)
-        AppKitPluginController.instance.menuBarPopover.showIconInMenuBar()
-        AppKitPluginController.instance.installationUpdater.delegate = self
-        AppKitPluginController.instance.installationUpdater.configure(withAppBundle: Bundle.init(for: type(of:self)))
+        self.appKitPlugin.menuBarPopover.showIconInMenuBar()
+        self.appKitPlugin.installationUpdater.delegate = self
+        self.appKitPlugin.installationUpdater.configure(withAppBundle: Bundle.init(for: type(of:self)))
         #endif
 
         FirstRunController().handleFirstRunIfNeeded()
-        
-        AlarmNotificationController.instance.start()
         
         NotificationCenter.default.post(name: AppDelegate.CalendarDidAuthenticateEvent, object: self)
     }
@@ -203,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     public func mainWindowDidShow() {
         self.logger.log("Main Window did show")
 
-        DataModelController.instance.authenticate { (success) in
+        self.dataModelController.authenticate { (success) in
             DispatchQueue.main.async {
                 self.didAuthenticate()
             }

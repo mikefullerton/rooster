@@ -43,9 +43,9 @@ struct PreferencesView: View, Loggable {
 
 struct SoundPrefs: View {
     
-    @State var soundPreference1: String = PreferencesController.instance.preferences.sounds.sound(withIndex: 0)
-    @State var soundPreference2: String = PreferencesController.instance.preferences.sounds.sound(withIndex: 1)
-    @State var soundPreference3: String = PreferencesController.instance.preferences.sounds.sound(withIndex: 2)
+    @State var soundPreference1: String = AppDelegate.instance.preferencesController.preferences.sounds.sound(withIndex: 0)
+    @State var soundPreference2: String = AppDelegate.instance.preferencesController.preferences.sounds.sound(withIndex: 1)
+    @State var soundPreference3: String = AppDelegate.instance.preferencesController.preferences.sounds.sound(withIndex: 2)
 
     init() {
         
@@ -61,9 +61,9 @@ struct SoundPrefs: View {
 }
 
 struct NotificationPrefs: View {
-    @State var autoOpenLocations: Bool = PreferencesController.instance.preferences.autoOpenLocations
-    @State var bounceIconInDock: Bool = PreferencesController.instance.preferences.bounceIconInDock
-    @State var useSystemNotifications: Bool = PreferencesController.instance.preferences.useSystemNotifications
+    @State var autoOpenLocations: Bool = AppDelegate.instance.preferencesController.preferences.autoOpenLocations
+    @State var bounceIconInDock: Bool = AppDelegate.instance.preferencesController.preferences.bounceIconInDock
+    @State var useSystemNotifications: Bool = AppDelegate.instance.preferencesController.preferences.useSystemNotifications
 
     init() {
         
@@ -74,9 +74,9 @@ struct NotificationPrefs: View {
         CheckBox(title:"Automatically open location URLs",
                   isOn: $autoOpenLocations) { (isOn) in
             
-            let prefs = PreferencesController.instance.preferences
+            let prefs = AppDelegate.instance.preferencesController.preferences
             
-            PreferencesController.instance.preferences = Preferences(withSounds: prefs.sounds,
+            AppDelegate.instance.preferencesController.preferences = Preferences(withSounds: prefs.sounds,
                                                                  useSystemNotifications: prefs.useSystemNotifications,
                                                                  bounceIconInDock: prefs.useSystemNotifications,
                                                                  autoOpenLocations: isOn)
@@ -86,9 +86,9 @@ struct NotificationPrefs: View {
         CheckBox(title:"Bounce Icon in Dock",
                   isOn: $bounceIconInDock) { (isOn) in
             
-            let prefs = PreferencesController.instance.preferences
+            let prefs = AppDelegate.instance.preferencesController.preferences
 
-            PreferencesController.instance.preferences = Preferences(withSounds: prefs.sounds,
+            AppDelegate.instance.preferencesController.preferences = Preferences(withSounds: prefs.sounds,
                                                                  useSystemNotifications: prefs.useSystemNotifications,
                                                                  bounceIconInDock: isOn,
                                                                  autoOpenLocations: prefs.autoOpenLocations)
@@ -98,9 +98,9 @@ struct NotificationPrefs: View {
         CheckBox(title:"Use System Notifications",
                   isOn: $useSystemNotifications) { (isOn) in
 
-            let prefs = PreferencesController.instance.preferences
+            let prefs = AppDelegate.instance.preferencesController.preferences
 
-            PreferencesController.instance.preferences = Preferences(withSounds: prefs.sounds,
+            AppDelegate.instance.preferencesController.preferences = Preferences(withSounds: prefs.sounds,
                                                                  useSystemNotifications: isOn,
                                                                  bounceIconInDock: prefs.bounceIconInDock,
                                                                  autoOpenLocations: prefs.autoOpenLocations)
@@ -129,7 +129,7 @@ struct DemoButton: View {
             Spacer()
             
             Button(action: {
-                PreferencesController.instance.preferences = Preferences.defaults
+                AppDelegate.instance.preferencesController.preferences = Preferences.defaults
             }) {
                 SystemImageButtonBody(imageName: "arrow.triangle.2.circlepath", imageSize: CGSize(width: 36, height: 36))
             }

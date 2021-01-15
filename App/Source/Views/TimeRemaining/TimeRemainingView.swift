@@ -158,8 +158,8 @@ class TimeRemainingView_iOS : TimeRemainingView, DataModelAware {
             self.outOfRangeString = "No more meetings today! 🎉"
         }
 
-        self.startTimer(fireDate: DataModelController.instance.dataModel.nextAlarmDate) { () -> Date? in
-            return DataModelController.instance.dataModel.nextAlarmDate
+        self.startTimer(fireDate: AppDelegate.instance.dataModelController.dataModel.nextAlarmDate) { () -> Date? in
+            return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
         }
     }
     

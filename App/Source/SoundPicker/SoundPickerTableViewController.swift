@@ -43,7 +43,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     }
     
     func setSelectedRow() {
-        let sound = PreferencesController.instance.preferences.sounds[self.soundIndex]
+        let sound = AppDelegate.instance.preferencesController.preferences.sounds[self.soundIndex]
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
             for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {

@@ -18,7 +18,8 @@ extension EKController {
 
         let factory = DataModelFactory(personalCalendarModel: calendarDataModel,
                                                delegateCalendarModel: delegateCalendarModel,
-                                               previousDataModel: previousDataModel)
+                                               previousDataModel: previousDataModel,
+                                               dataModelStorage: self.dataModelStorage)
 
         let dataModel = factory.createDataModel()
         
@@ -56,10 +57,10 @@ extension EKController {
                            previousDataModel: DataModel,
                            completion: @escaping (_ dataModel: DataModel)-> Void) {
         
-        let storeHelper = EKDataModelFactory(store: userEventStore)
+        let storeHelper = EKDataModelFactory(store: userEventStore, dataModelStorage: self.dataModelStorage)
         let calendars = storeHelper.fetchCalendars()
         
-        let delegateStoreHelper = EKDataModelFactory(store: delegateEventStore)
+        let delegateStoreHelper = EKDataModelFactory(store: delegateEventStore, dataModelStorage: self.dataModelStorage)
         let delegateCalendars = self.removeDuplicateDelegateCalendars(calendars: calendars,
                                                                       delegateCalendars: delegateStoreHelper.fetchCalendars())
         

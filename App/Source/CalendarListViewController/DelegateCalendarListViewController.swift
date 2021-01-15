@@ -12,7 +12,7 @@ import UIKit
 class DelegateCalendarListViewController : CalendarItemTableViewController<CalenderListViewModel> {
     
     override func reloadViewModel() -> CalenderListViewModel? {
-        let dataModel = DataModelController.dataModel
+        let dataModel = AppDelegate.instance.dataModelController.dataModel
         return CalenderListViewModel(withCalendars: dataModel.delegateCalendars)
     }
 }

@@ -45,7 +45,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     }
    
     var item: CalendarItem? {
-        let dataModel = DataModelController.dataModel
+        let dataModel = AppDelegate.instance.dataModelController.dataModel
         return dataModel.item(forIdentifier: self.itemID)
     }
     
@@ -53,7 +53,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
 
         if let item = self.item {
             self.logger.log("performing start actions for \(self.description)")
-            let prefs = PreferencesController.instance.preferences
+            let prefs = AppDelegate.instance.preferencesController.preferences
             
             if prefs.autoOpenLocations {
                 self.logger.log("auto opening location URL (if available) for \(self.description)")
@@ -64,14 +64,14 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
             if prefs.useSystemNotifications {
                 self.logger.log("posting system notifications for \(self.description)")
 
-                UserNotificationCenterController.instance.scheduleNotification(forItem: item)
+                AppDelegate.instance.userNotificationController.scheduleNotification(forItem: item)
             }
             
             #if targetEnvironment(macCatalyst)
             if prefs.bounceIconInDock {
                 self.logger.log("bouncing app in dock for \(self.description)")
 
-                AppKitPluginController.instance.utilities.startBouncingAppIcon()
+                AppDelegate.instance.appKitPlugin.utilities.startBouncingAppIcon()
             }
             #endif
         
@@ -85,7 +85,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     private func startPlayingSound() {
         
         
-        let itemPrefs = PreferencesController.instance.preferences(forItemIdentifier: self.itemID)
+        let itemPrefs = AppDelegate.instance.preferencesController.preferences(forItemIdentifier: self.itemID)
         
         let sound = AlarmSoundGroup(withPreference: itemPrefs.soundPreference)
         sound.delegate = self

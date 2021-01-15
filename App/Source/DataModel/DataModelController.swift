@@ -13,11 +13,9 @@ class DataModelController : EKControllerDelegate, Loggable {
     static let DidChangeEvent = Notification.Name("DataModelDidChangeEvent")
 
     // public properties
-    public static let instance = DataModelController()
     private(set) var dataModel: DataModel {
         didSet {
-            self.updateAlarmsIfNeeded()
-            self.checkFirstRunIfNeeded()
+            self.dataModelWasReloaded()
         }
     }
 
@@ -28,20 +26,19 @@ class DataModelController : EKControllerDelegate, Loggable {
     private let eventKitController: EKController
     private var needsNotify = false
     private var checkedFirstRun = false
+    private let nextAlarmTimer: SimpleTimer
     
-    private init() {
-        self.eventKitController = EKController()
+    let dataModelStorage: DataModelStorage
+    
+    init(withDataModelStorage dataModelStorage: DataModelStorage) {
+        self.eventKitController = EKController(withDataModelStorage: dataModelStorage)
         self.dataModel = DataModel()
         self.isAuthenticating = false
         self.isAuthenticated = false
-        
-        self.eventKitController.delegate = self
-    }
+        self.nextAlarmTimer = SimpleTimer(withName: "NextAlarmTimer")
+        self.dataModelStorage = dataModelStorage
     
-    // MARK: convenience accessors
-
-    public static var dataModel: DataModel {
-        return DataModelController.instance.dataModel
+        self.eventKitController.delegate = self
     }
     
     // MARK: Methods
@@ -73,7 +70,7 @@ class DataModelController : EKControllerDelegate, Loggable {
                                                delegateCalendars: updatedDelegateList,
                                                events: dataModel.events,
                                                reminders: dataModel.reminders)
-            DataModel.Storage.instance.update(calendar: newCalendar)
+            self.dataModelStorage.update(calendar: newCalendar)
             
             self.logger.log("DataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
             
@@ -92,7 +89,7 @@ class DataModelController : EKControllerDelegate, Loggable {
                                            inItems: self.dataModel.events) {
             
             updatedEvents.forEach {
-                DataModel.Storage.instance.update(event: $0)
+                self.dataModelStorage.update(event: $0)
             }
             
             self.dataModel = DataModel(calendars: dataModel.calendars,
@@ -113,7 +110,7 @@ class DataModelController : EKControllerDelegate, Loggable {
                                               inItems: self.dataModel.reminders) {
             
             updatedReminders.forEach {
-                DataModel.Storage.instance.update(reminder: $0)
+                self.dataModelStorage.update(reminder: $0)
             }
             
             self.dataModel = DataModel(calendars: dataModel.calendars,
@@ -236,11 +233,11 @@ class DataModelController : EKControllerDelegate, Loggable {
     // MARK: Alarms
     
     func stopAllAlarms() {
-        if let updatedEvents = self.stopAlarms(forItems: DataModelController.dataModel.events)  {
+        if let updatedEvents = self.stopAlarms(forItems: AppDelegate.instance.dataModelController.dataModel.events)  {
             self.update(someEvents: updatedEvents)
         }
 
-        if let updatedReminders = self.stopAlarms(forItems: DataModelController.dataModel.reminders) {
+        if let updatedReminders = self.stopAlarms(forItems: AppDelegate.instance.dataModelController.dataModel.reminders) {
             self.update(someReminders: updatedReminders)
         }
     }
@@ -310,10 +307,12 @@ class DataModelController : EKControllerDelegate, Loggable {
     private func updateAlarmsIfNeeded() {
         if let updatedEvents = self.updateAlarms(forItems: self.dataModel.events)  {
             self.update(someEvents: updatedEvents)
+            self.logger.log("Updated alarms for \(updatedEvents.count) events")
         }
     
         if let updatedReminders = self.updateAlarms(forItems: self.dataModel.reminders) {
             self.update(someReminders: updatedReminders)
+            self.logger.log("Updated alarms for \(updatedReminders.count) events")
         }
     }
     
@@ -346,6 +345,24 @@ class DataModelController : EKControllerDelegate, Loggable {
             }
         }
     }
+    
+    private func dataModelWasReloaded() {
+        self.checkFirstRunIfNeeded()
+        self.updateAlarmsIfNeeded()
+        self.startTimerForNextEventTime()
+    }
+    
+    private func startTimerForNextEventTime() {
+        self.nextAlarmTimer.stop()
+        
+        if let nextAlarmTime = AppDelegate.instance.dataModelController.dataModel.nextAlarmDateForSchedulingTimer {
+            self.logger.log("scheduling next alarm update for: \(nextAlarmTime.shortDateAndTimeString)")
+            self.nextAlarmTimer.start(withDate: nextAlarmTime) { [weak self] (timer) in
+                self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval), scheduled for: \(nextAlarmTime.shortDateAndTimeString)")
+                self?.dataModelWasReloaded()
+            }
+        }
+    }
 
 }
 
@@ -357,7 +374,7 @@ extension Event {
         var newEvent = self
         newEvent.alarm = newAlarm
         
-        DataModelController.instance.update(event: newEvent)
+        AppDelegate.instance.dataModelController.update(event: newEvent)
     }
 }
 
@@ -369,7 +386,7 @@ extension Reminder {
         var newReminder = self
         newReminder.alarm = newAlarm
         
-        DataModelController.instance.update(reminder: newReminder)
+        AppDelegate.instance.dataModelController.update(reminder: newReminder)
     }
     
     func snoozeAlarm() {
@@ -379,7 +396,7 @@ extension Reminder {
         var newReminder = self
         newReminder.alarm = updatedAlarm
         
-        DataModelController.instance.update(reminder: newReminder)
+        AppDelegate.instance.dataModelController.update(reminder: newReminder)
     }
 }
 
@@ -387,6 +404,6 @@ extension Calendar {
     func set(subscribed: Bool) {
         var updatedCalendar = self
         updatedCalendar.isSubscribed = subscribed
-        DataModelController.instance.update(calendar: updatedCalendar)
+        AppDelegate.instance.dataModelController.update(calendar: updatedCalendar)
     }
 }

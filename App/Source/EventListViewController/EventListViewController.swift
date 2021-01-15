@@ -11,8 +11,8 @@ import UIKit
 class EventListViewController : CalendarItemTableViewController<EventListViewModel> {
     
     override func reloadViewModel() -> EventListViewModel? {
-        return EventListViewModel(withEvents: DataModelController.dataModel.events,
-                                  reminders: DataModelController.dataModel.reminders)
+        return EventListViewModel(withEvents: AppDelegate.instance.dataModelController.dataModel.events,
+                                  reminders: AppDelegate.instance.dataModelController.dataModel.reminders)
     }
     
 }

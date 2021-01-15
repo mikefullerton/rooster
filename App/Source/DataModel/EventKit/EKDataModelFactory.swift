@@ -13,8 +13,11 @@ import EventKit
 struct EKDataModelFactory: Loggable {
 
     private let store: EKEventStore?
+    let dataModelStorage: DataModelStorage
     
-    init(store: EKEventStore?) {
+    init(store: EKEventStore?,
+         dataModelStorage: DataModelStorage) {
+        self.dataModelStorage = dataModelStorage
         self.store = store
     }
     
@@ -57,7 +60,7 @@ struct EKDataModelFactory: Loggable {
         
         var subscribedCalendars: [EKCalendar] = []
         for calendar in calendars {
-            let subscribed = DataModel.Storage.instance.isCalendarSubscribed(calendar.uniqueID)
+            let subscribed = self.dataModelStorage.isCalendarSubscribed(calendar.uniqueID)
             if subscribed {
                 subscribedCalendars.append(calendar)
             }

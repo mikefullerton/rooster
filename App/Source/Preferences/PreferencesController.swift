@@ -11,16 +11,14 @@ class PreferencesController: ObservableObject, Loggable {
     static let DidChangeEvent = Notification.Name(rawValue: "PreferencesDidChangeEvent")
     
     private var storage: UserDefaults.IdentifierDictionary
-    
-    public static let instance = PreferencesController()
- 
+
     @Published var preferences: Preferences {
         didSet {
             self.write()
         }
     }
     
-    private init() {
+    init() {
         let storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "preferences")
         
         var prefs: Preferences? = nil

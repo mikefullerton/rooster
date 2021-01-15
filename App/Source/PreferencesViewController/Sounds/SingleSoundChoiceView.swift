@@ -47,10 +47,10 @@ class SingleSoundChoiceView : UIView {
 
     private var sound: SoundPreference.Sound {
         get {
-            return PreferencesController.instance.preferences.sounds[self.index]
+            return AppDelegate.instance.preferencesController.preferences.sounds[self.index]
         }
         set(newSound) {
-            PreferencesController.instance.preferences.sounds[self.index] = newSound
+            AppDelegate.instance.preferencesController.preferences.sounds[self.index] = newSound
         }
     }
     

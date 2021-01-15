@@ -135,7 +135,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     
     @objc func handleCalenderAuthentication(_ notif: Notification) {
         
-        if DataModelController.instance.isAuthenticated {
+        if AppDelegate.instance.dataModelController.isAuthenticated {
             self.createMainViewsIfNeeded()
             self.reloader = DataModelReloader(for: self)
         } else {

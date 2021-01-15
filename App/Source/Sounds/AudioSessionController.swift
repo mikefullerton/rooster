@@ -10,8 +10,6 @@ import AVFoundation
 
 class AudioSessionController: Loggable {
     
-    static var instance = AudioSessionController()
-
     private(set) var isActive = false
     
     func startAudioSession() {

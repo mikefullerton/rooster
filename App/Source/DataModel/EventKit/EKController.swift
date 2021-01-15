@@ -29,7 +29,10 @@ class EKController: Loggable {
     }
     private var authenticated: Bool
     
-    init() {
+    let dataModelStorage: DataModelStorage
+    
+    init(withDataModelStorage dataModelStorage: DataModelStorage) {
+        self.dataModelStorage = dataModelStorage
         self.store = EKEventStore()
         self.delegateEventStore = nil
         self.dataModel = DataModel()
@@ -144,7 +147,7 @@ class EKController: Loggable {
                                               completion: @escaping (_ success: Bool, _ eventStore: EKEventStore?, _ error: Error?) -> Void) {
         
         #if targetEnvironment(macCatalyst)
-        AppKitPluginController.instance.eventKitHelper.requestPermissionToDelegateCalendars(for: self.store, completion: completion)
+        AppDelegate.instance.appKitPlugin.eventKitHelper.requestPermissionToDelegateCalendars(for: self.store, completion: completion)
         #else
         self.logger.log("Delegate eventStore not available on iOS");
         
