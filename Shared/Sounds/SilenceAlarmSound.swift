@@ -57,10 +57,9 @@ class SilenceAlarmSound : AlarmSound {
     }
     
     private func startTimer(withDuration duration: TimeInterval) {
-        weak var weakSelf = self
-        self.timer.start(withInterval: duration) { (timer) in
+        self.timer.start(withInterval: duration) { [weak self] (timer) in
         
-            if let strongSelf = weakSelf {
+            if let strongSelf = self {
                 strongSelf.playCount += 1
                 
                 if  strongSelf.behavior.playCount == AlarmSoundBehavior.RepeatEndlessly ||
