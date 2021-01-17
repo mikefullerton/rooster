@@ -194,7 +194,9 @@ class EKController: Loggable {
                 successResults[1] = success
                 errorResults[1] = error
             
-                completion(success, error)
+                DispatchQueue.main.async {
+                    completion(success, error)
+                }
             }
         }
         
@@ -215,13 +217,17 @@ class EKController: Loggable {
                         self.logger.log("granted access to reminders in eventStore: \(store.eventStoreIdentifier)")
                     }
                     
-                    completion(success, error)
+                    DispatchQueue.main.async {
+                        completion(success, error)
+                    }
                 }
             } else {
                 
                 self.logger.error("failed to be granted access to store: \(store.eventStoreIdentifier) with error: \(error?.localizedDescription ?? "nil")")
                 
-                completion(success, error)
+                DispatchQueue.main.async {
+                    completion(success, error)
+                }
             }
         }
     }

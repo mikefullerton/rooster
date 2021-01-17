@@ -26,6 +26,8 @@
 		B20AACF42595308300F9B50C /* ItemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACF32595308300F9B50C /* ItemPreference.swift */; };
 		B20AACF52595308300F9B50C /* ItemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACF32595308300F9B50C /* ItemPreference.swift */; };
 		B20AAD0625954B2C00F9B50C /* AudioSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AAD0525954B2C00F9B50C /* AudioSessionController.swift */; };
+		B20C4D4E25B39DD1000A3981 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C4D4D25B39DD1000A3981 /* InfoViewController.swift */; };
+		B20C4D5425B3A052000A3981 /* About in Resources */ = {isa = PBXBuildFile; fileRef = B20C4D5325B3A052000A3981 /* About */; };
 		B21DA15F259A69E7002A56C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B21DA161259A69E7002A56C8 /* Localizable.strings */; };
 		B21DA183259BA68B002A56C8 /* HorizontalViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA182259BA68B002A56C8 /* HorizontalViewLayout.swift */; };
 		B21DA187259BA697002A56C8 /* VerticalViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA186259BA697002A56C8 /* VerticalViewLayout.swift */; };
@@ -265,6 +267,8 @@
 		B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundBehavior.swift; sourceTree = "<group>"; };
 		B20AACF32595308300F9B50C /* ItemPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPreference.swift; sourceTree = "<group>"; };
 		B20AAD0525954B2C00F9B50C /* AudioSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionController.swift; sourceTree = "<group>"; };
+		B20C4D4D25B39DD1000A3981 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		B20C4D5325B3A052000A3981 /* About */ = {isa = PBXFileReference; lastKnownFileType = folder; path = About; sourceTree = "<group>"; };
 		B21DA160259A69E7002A56C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B21DA16E259A6B6F002A56C8 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reachability.framework; sourceTree = "<group>"; };
 		B21DA182259BA68B002A56C8 /* HorizontalViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalViewLayout.swift; sourceTree = "<group>"; };
@@ -558,6 +562,14 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		B20C4D4C25B39DC0000A3981 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				B20C4D4D25B39DD1000A3981 /* InfoViewController.swift */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
 		B21DA17D259BA663002A56C8 /* ViewLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -647,6 +659,7 @@
 		B236FCE4255F1C9D00A2E58D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B20C4D5325B3A052000A3981 /* About */,
 				B298C44825AB8C430085BBA0 /* Sounds */,
 				B2E15122255EED2B002672EC /* Assets.xcassets */,
 				B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */,
@@ -658,6 +671,7 @@
 		B255348F25B2191700E17EEF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B20C4D4C25B39DC0000A3981 /* Info */,
 				B2E1549225768619008BE604 /* Views */,
 				B2F6B50D2562F20E000BC78E /* MainWindow */,
 				B2F6B48625618787000BC78E /* EventListViewController */,
@@ -1196,6 +1210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B20C4D5425B3A052000A3981 /* About in Resources */,
 				B298C44925AB8C430085BBA0 /* Sounds in Resources */,
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
 				B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */,
@@ -1426,6 +1441,7 @@
 				B2E1548F257681B8008BE604 /* VerticalStackView.swift in Sources */,
 				B2965520257BDBEB008D1858 /* Alarm.swift in Sources */,
 				B2A1819F2597D58300C1E7F0 /* Reminder+EKReminder.swift in Sources */,
+				B20C4D4E25B39DD1000A3981 /* InfoViewController.swift in Sources */,
 				B2F818012576ACB700B28119 /* TimeRemainingViewController.swift in Sources */,
 				B298C46825ABBFD80085BBA0 /* VerticalButtonBarTableCell.swift in Sources */,
 				B2D1889E25794AE400F812C5 /* DataModelFactory.swift in Sources */,

@@ -179,8 +179,30 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         }
     }
     
+    private lazy var infoUrl: URL? = {
+        if  let resourcePath = Bundle.main.resourceURL {
+            return resourcePath.appendingPathComponent("About/about.html")
+        }
+        
+        return nil
+    }()
+    
+    @objc func showHelp(_ sender: Any?) {
+        
+        if let url = self.infoUrl {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        
+//        let viewController = InfoViewController()
+//        viewController.modalPresentationStyle = .formSheet
+//        self.present(viewController, animated: true) {
+//        }
+    }
+    
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         let identifiers: [NSToolbarItem.Identifier] = [
+//            .info,
+//            .flexibleSpace,
             .preferences,
             .flexibleSpace,
             .calendars,
@@ -211,6 +233,16 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         item.isEnabled = false
         return item
     }()
+
+    lazy var infoToolbarItem: NSToolbarItem = {
+        let item = NSToolbarItem(itemIdentifier: .preferences)
+        item.image = UIImage(systemName: "info.circle")
+        item.label = "Info"
+        item.action = #selector(showHelp(_:))
+        item.target = self
+        item.isEnabled = false
+        return item
+    }()
     
     func toolbar(_ toolbar: NSToolbar,
                  itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -228,6 +260,9 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         case .preferences:
             toolbarItem = self.preferencesToolbarItem
 
+        case .info:
+            toolbarItem = self.infoToolbarItem
+            
         default:
             toolbarItem = nil
         }
@@ -280,7 +315,8 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
 
 #if targetEnvironment(macCatalyst)
 extension NSToolbarItem.Identifier {
-    static let preferences = NSToolbarItem.Identifier("com.apple.rooster.preferences")
-    static let calendars = NSToolbarItem.Identifier("com.apple.rooster.showCalendars")
+    static let info = NSToolbarItem.Identifier("com.apple.commapps.rooster.info")
+    static let preferences = NSToolbarItem.Identifier("com.apple.commapps.rooster.preferences")
+    static let calendars = NSToolbarItem.Identifier("com.apple.commapps.rooster.showCalendars")
 }
 #endif

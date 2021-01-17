@@ -20,10 +20,10 @@ protocol MacAppDelegateProtocols {}
 class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, Loggable, AppControllerAware {
 
     enum UserActivities: String {
-//        case preferences = "com.apple.rooster.preferences"
         case main = "com.commapps.rooster.main"
         case update = "com.commapps.rooster.update"
         case fileRadar = "com.commapps.rooster.file-radar"
+        case openRepo = "com.commapps.rooster.open-repo"
     }
     
     enum SceneNames: String {
@@ -92,40 +92,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
 //    }
 
     
-    func showPreferences () {
-        
-//        for window in UIApplication.shared.windows {
-//            if window.windowScene?.title == "Preferences" {
-//
-//                // Catalyst is extremely lame with window management
-//                AppDelegate.instance.appKitPlugin.windowController.bringWindow(toFront: window)
-//
-//                return
-//            }
-//        }
-//
-//        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
-//        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
-    }
-
     #if targetEnvironment(macCatalyst)
-
-//    private var preferencesMenuItem : UIMenu {
-//        let preferencesCommand = UICommand(title: "Preferences…",
-//                                    image: nil,
-//                                    action: #selector(self.showPreferences(_:)),
-//                                    propertyList: nil)
-//
-//        return UIMenu(title: "",
-//                      image: nil,
-//                      identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
-//                      options: [ UIMenu.Options.displayInline ],
-//                      children: [ preferencesCommand ])
-//    }
     
-    @objc private func showPreferences(_ sender: AppDelegate) {
-        self.showPreferences()
-    }
     
     private var updateMenuItem : UIMenu {
         let command = UICommand(title: "CHECK_FOR_UPDATES".localized,
@@ -149,6 +117,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
 
     }
     
+    @objc private func openRepoURL(_ sender: AppDelegate) {
+        UIApplication.shared.open(URL(string: "https://stashweb.sd.apple.com/users/mfullerton/repos/rooster")!,
+                                  options: [:],
+                                  completionHandler: nil)
+
+    }
+   
     private var fileRadarMenuItem: UIMenu {
 
         let command = UICommand(title: "FILE_RADAR".localized,
@@ -163,6 +138,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
                           children: [ command ])
     }
     
+    private var openRepoMenuItem: UIMenu {
+
+        let command = UICommand(title: "View Rooster's Code or submit a Pull Request!",
+                                image: nil,
+                                action: #selector(self.openRepoURL(_:)),
+                                propertyList: nil)
+
+        return UIMenu(title: "",
+                          image: nil,
+                          identifier: UIMenu.Identifier(UserActivities.openRepo.rawValue),
+                          options: [ UIMenu.Options.displayInline ],
+                          children: [ command ])
+    }
+   
     override func buildMenu(with builder: UIMenuBuilder) {
         super.buildMenu(with: builder)
 
@@ -174,6 +163,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
         
         let fileRadar = self.fileRadarMenuItem
         builder.insertChild(fileRadar, atEndOfMenu: .help)
+        
+        let openRepo = self.openRepoMenuItem
+        builder.insertChild(openRepo, atEndOfMenu: .help)
+        
         
     }
 
@@ -212,4 +205,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     }
 }
 
+//@objc private func showPreferences(_ sender: AppDelegate) {
+//    self.showPreferences()
+//}
 
+
+//func showPreferences () {
+//
+//        for window in UIApplication.shared.windows {
+//            if window.windowScene?.title == "Preferences" {
+//
+//                // Catalyst is extremely lame with window management
+//                AppDelegate.instance.appKitPlugin.windowController.bringWindow(toFront: window)
+//
+//                return
+//            }
+//        }
+//
+//        let activity = NSUserActivity(activityType: UserActivities.preferences.rawValue)
+//        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+//}
+
+//    private var preferencesMenuItem : UIMenu {
+//        let preferencesCommand = UICommand(title: "Preferences…",
+//                                    image: nil,
+//                                    action: #selector(self.showPreferences(_:)),
+//                                    propertyList: nil)
+//
+//        return UIMenu(title: "",
+//                      image: nil,
+//                      identifier: UIMenu.Identifier(UserActivities.preferences.rawValue),
+//                      options: [ UIMenu.Options.displayInline ],
+//                      children: [ preferencesCommand ])
+//    }
