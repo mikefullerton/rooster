@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Sparkle
+//import Sparkle
 
 @objc public class SparkleController : NSObject, AppKitInstallationUpdater, SPUUpdaterDelegate, Loggable {
     
@@ -17,7 +17,7 @@ import Sparkle
     private var timer: SimpleTimer
     
     public override init() {
-        self.timer = SimpleTimer()
+        self.timer = SimpleTimer(withName: "SparkleUpdateTimer")
     }
     
     let nextUpdateCheckDateKey = "nextUpdateCheckDateKey"

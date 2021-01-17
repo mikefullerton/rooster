@@ -19,53 +19,80 @@ protocol MainViewControllerMacProtocols : NSToolbarDelegate {}
 protocol MainViewControllerMacProtocols {}
 #endif
 
-class MainViewController : UIViewController, UIPopoverPresentationControllerDelegate, MainViewControllerMacProtocols, DataModelAware {
+class MainViewController : UIViewController, UIPopoverPresentationControllerDelegate, MainViewControllerMacProtocols, DataModelAware, FirstRunViewControllerDelegate, UIActivityItemsConfigurationReading {
     
     let minimumContentSize = CGSize(width: 600, height: TimeRemainingViewController.preferredHeight)
      
-    private var reloader: DataModelReloader? = nil
-    
     weak var delegate: MainViewControllerDelegate?
     
     private var contentViewController: UIViewController?
-    
-    func createMainViewsIfNeeded() {
-        if self.contentViewController == nil {
-            
-            self.removeLoadingView()
-            
-            #if targetEnvironment(macCatalyst)
-            self.contentViewController = MainEventListViewController()
-            #else
-            self.contentViewController = self.navigationViewController
-            #endif
-
-            self.addChild(self.contentViewController!)
-
-            if let subview = self.contentViewController!.view {
-                self.view.addSubview(subview)
-
-                subview.translatesAutoresizingMaskIntoConstraints = false
-
-                NSLayoutConstraint.activate([
-                    subview.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                    subview.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-                    subview.topAnchor.constraint(equalTo: self.view.topAnchor),
-                    subview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                ])
-            }
-            
-            for item in self.toolbar.items {
-                item.isEnabled = true
-            }
-            
-            self.adjustWindowSize()
+    private var loadingView: LoadingView?
+    private var reloader: DataModelReloader? = nil
+   
+    private func setToolbarItemsEnabled(_ enabled: Bool) {
+        for item in self.toolbar.items {
+            item.isEnabled = enabled
         }
     }
     
-    var loadingView: LoadingView?
+    private func addViewController(_ viewController: UIViewController) {
+        self.removeLoadingView()
 
-    func addLoadingView() {
+        self.addChild(viewController)
+
+        self.view.addSubview(viewController.view)
+
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            viewController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            viewController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            viewController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            viewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+        ])
+
+        self.adjustWindowSize()
+    }
+    
+    private func showEventListViewController() {
+        #if targetEnvironment(macCatalyst)
+        let viewController = MainEventListViewController()
+        #else
+        let viewController = self.navigationViewController
+        #endif
+        self.contentViewController = viewController
+
+        self.addViewController(viewController)
+    }
+    
+    func firstRunViewControllerShouldDismiss(_ firstRunViewController: FirstRunViewController) {
+        firstRunViewController.view.removeFromSuperview()
+        firstRunViewController.removeFromParent()
+        self.contentViewController = nil
+        self.showEventListViewController()
+    }
+    
+    func firstRunViewControllerShowHelp(_ firstRunViewController: FirstRunViewController) {
+        AppDelegate.instance.showHelp(self)
+    }
+    
+    func firstRunViewControllerShowSettings(_ firstRunViewController: FirstRunViewController) {
+        self.togglePreferencesPopover(self)
+    }
+    
+    func firstRunViewControllerShowCalendars(_ firstRunViewController: FirstRunViewController) {
+        self.toggleCalendarsPopover(self)
+    }
+
+    private func showFirstRunViewController() {
+        let viewController = FirstRunViewController()
+        viewController.delegate = self
+        
+        self.contentViewController = viewController
+        self.addViewController(viewController)
+    }
+    
+    private func addLoadingView() {
         let view = LoadingView()
         self.view.addSubview(view)
         
@@ -81,7 +108,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         self.loadingView = view
     }
     
-    func removeLoadingView() {
+    private func removeLoadingView() {
         if let view = self.loadingView {
             view.removeFromSuperview()
             self.loadingView = nil
@@ -115,7 +142,6 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         self.preferredContentSize = self.adjustedSize(size)
     }
     
-
     private func adjustedSize(_ size: CGSize) -> CGSize {
         return  CGSize(width: max(self.minimumContentSize.width, size.width),
                        height: max(self.minimumContentSize.height, size.height))
@@ -135,9 +161,20 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     
     @objc func handleCalenderAuthentication(_ notif: Notification) {
         
+        self.removeLoadingView()
+        self.setToolbarItemsEnabled(true)
+        
         if AppDelegate.instance.dataModelController.isAuthenticated {
-            self.createMainViewsIfNeeded()
-            self.reloader = DataModelReloader(for: self)
+            
+            var savedState = SavedState()
+            if savedState.bool(forKey: .firstRunWasPresented) {
+                self.showEventListViewController()
+                self.reloader = DataModelReloader(for: self)
+            } else {
+                savedState.setBool(true, forKey: .firstRunWasPresented)
+                self.showFirstRunViewController()
+            }
+            
         } else {
             let alertController = UIAlertController(title: "CALENDAR_AUTHENTICATION_FAILED".localized,
                                                     message: "CALENDAR_AUTHENTICATION_FAILED_ACTION".localized,
@@ -178,34 +215,41 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         self.present(viewController, animated: true) {
         }
     }
-    
-    private lazy var infoUrl: URL? = {
-        if  let resourcePath = Bundle.main.resourceURL {
-            return resourcePath.appendingPathComponent("About/about.html")
+
+    @objc func showShareSheet(_ sender: Any?) {
+
+        if let url = URL(string: "https://istweb.apple.com/rooster") {
+            
+            let shareSheet = UIActivityViewController(activityItems: [ "Rooster App:", url ],
+                                                      applicationActivities: nil)
+            
+            shareSheet.excludedActivityTypes = [
+                .postToFacebook,
+                .postToTwitter,
+                .postToWeibo,
+                .assignToContact,
+                .saveToCameraRoll,
+                .postToFlickr,
+                .postToVimeo,
+                .postToTencentWeibo,
+                .openInIBooks,
+                .markupAsPDF]
+            
+            shareSheet.modalPresentationStyle = .fullScreen
+            
+            self.present(shareSheet, animated: true) {
+            }
         }
-        
-        return nil
-    }()
-    
-    @objc func showHelp(_ sender: Any?) {
-        
-        if let url = self.infoUrl {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-        
-//        let viewController = InfoViewController()
-//        viewController.modalPresentationStyle = .formSheet
-//        self.present(viewController, animated: true) {
-//        }
     }
     
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         let identifiers: [NSToolbarItem.Identifier] = [
-//            .info,
-//            .flexibleSpace,
+            .flexibleSpace,
             .preferences,
             .flexibleSpace,
             .calendars,
+            .flexibleSpace,
+            .share,
         ]
         return identifiers
     }
@@ -226,21 +270,50 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     
     lazy var preferencesToolbarItem: NSToolbarItem = {
         let item = NSToolbarItem(itemIdentifier: .preferences)
-        item.image = UIImage(systemName: "gear")
+        
+        let image = UIImage(systemName: "gearshape")
+        item.image = image
         item.label = "PREFERENCES".localized
         item.action = #selector(togglePreferencesPopover(_:))
         item.target = self
         item.isEnabled = false
         return item
     }()
+    
+    var itemProvidersForActivityItemsConfiguration: [NSItemProvider] {
 
-    lazy var infoToolbarItem: NSToolbarItem = {
-        let item = NSToolbarItem(itemIdentifier: .preferences)
-        item.image = UIImage(systemName: "info.circle")
-        item.label = "Info"
-        item.action = #selector(showHelp(_:))
-        item.target = self
+        let textProvider = NSItemProvider()
+        textProvider.registerObject(ofClass: String.self, visibility: .all) { completion in
+            completion("Rooster App: ", nil)
+            return Progress.discreteProgress(totalUnitCount: 1)
+        }
+
+        
+        let urlProvider = NSItemProvider()
+        urlProvider.registerObject(ofClass: URL.self, visibility: .all) { completion in
+            completion(URL(string: "https://istweb.apple.com/rooster"), nil)
+            return Progress.discreteProgress(totalUnitCount: 1)
+        }
+        
+        return [
+            textProvider,
+            urlProvider
+        ]
+    }
+
+
+    lazy var shareToolbarItem: NSToolbarItem = {
+//        let item = NSToolbarItem(itemIdentifier: .share)
+//        item.image = UIImage(systemName: "square.and.arrow.up")
+//        item.label = "Share"
+//        item.action = #selector(showShareSheet(_:))
+//        item.target = self
+//        item.isEnabled = false
+//
+        let item = NSSharingServicePickerToolbarItem(itemIdentifier: .share)
+        item.image = UIImage(systemName: "square.and.arrow.up")
         item.isEnabled = false
+        item.activityItemsConfiguration = self
         return item
     }()
     
@@ -260,8 +333,8 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         case .preferences:
             toolbarItem = self.preferencesToolbarItem
 
-        case .info:
-            toolbarItem = self.infoToolbarItem
+        case .share:
+            toolbarItem = self.shareToolbarItem
             
         default:
             toolbarItem = nil
@@ -279,7 +352,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
         
         let navigationItem = viewController.navigationItem
         
-        let leftImage = UIImage(systemName: "gear")
+        let leftImage = UIImage(systemName: "gearshape")
         
         let leftButton = UIBarButtonItem(image: leftImage,
                                          style: .plain,
@@ -315,7 +388,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
 
 #if targetEnvironment(macCatalyst)
 extension NSToolbarItem.Identifier {
-    static let info = NSToolbarItem.Identifier("com.apple.commapps.rooster.info")
+    static let share = NSToolbarItem.Identifier("com.apple.commapps.rooster.share")
     static let preferences = NSToolbarItem.Identifier("com.apple.commapps.rooster.preferences")
     static let calendars = NSToolbarItem.Identifier("com.apple.commapps.rooster.showCalendars")
 }

@@ -17,7 +17,7 @@ class CalendarToolbarView : TopBar {
     weak var delegate: CalendarToolbarViewDelegate?
 
     override var preferredHeight:CGFloat {
-        return 50.0
+        return 60.0
     }
     
     init() {

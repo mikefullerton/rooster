@@ -5,3 +5,5 @@
 #import "RoosterAppKitPlugin.h"
 
 #import "WindowControllerHelper.h"
+
+#import <Sparkle/Sparkle.h>

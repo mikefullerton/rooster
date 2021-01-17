@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18099.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="mac" appearance="light" renderMode="macOS"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18077"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FirstRunViewController" customModule="Rooster" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="lkb-tc-t7p"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gVn-MX-MdF" customClass="CustomButton" customModule="Rooster" customModuleProvider="target">
+                    <rect key="frame" x="698" y="555" width="89" height="32"/>
+                    <accessibility key="accessibilityConfiguration" label="Continue"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="75" id="VWJ-RH-x50"/>
+                        <constraint firstAttribute="height" constant="20" id="zYs-SJ-fpa"/>
+                    </constraints>
+                    <state key="normal" title="Continue"/>
+                    <connections>
+                        <action selector="dismissSelf:" destination="-1" eventType="touchUpInside" id="KPK-f4-2x1"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Rooster" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUj-Lr-Kxi">
+                    <rect key="frame" x="20" y="40" width="760" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fr5-Ma-uq6">
+                    <rect key="frame" x="60" y="100" width="34" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="33" id="Cuy-JU-mHS"/>
+                        <constraint firstAttribute="width" constant="34" id="IY2-Az-Ldl"/>
+                    </constraints>
+                    <state key="normal">
+                        <imageReference key="image" image="info.circle" catalog="system" symbolScale="large"/>
+                    </state>
+                    <connections>
+                        <action selector="showMoreInfo:" destination="-1" eventType="touchUpInside" id="Oiu-NJ-mP1"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bry-Qp-quD">
+                    <rect key="frame" x="94" y="104" width="348" height="25"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <state key="normal" title="Rooster will make sure you're not late to your online meetings">
+                        <color key="titleColor" systemColor="labelColor"/>
+                    </state>
+                    <connections>
+                        <action selector="showMoreInfo:" destination="-1" eventType="touchUpInside" id="n1O-x9-vnr"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MmX-de-daG">
+                    <rect key="frame" x="60" y="153" width="34" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="33" id="Ixx-Ix-ntd"/>
+                        <constraint firstAttribute="width" constant="34" id="esr-Ol-eHV"/>
+                    </constraints>
+                    <state key="normal">
+                        <imageReference key="image" image="gearshape" catalog="system" symbolScale="large"/>
+                    </state>
+                    <connections>
+                        <action selector="showSettings:" destination="-1" eventType="touchUpInside" id="hhQ-m2-1lj"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a2b-8y-Ofz">
+                    <rect key="frame" x="94" y="157" width="236" height="25"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <state key="normal" title="Configure Rooster to make it work for you">
+                        <color key="titleColor" systemColor="labelColor"/>
+                    </state>
+                    <connections>
+                        <action selector="showSettings:" destination="-1" eventType="touchUpInside" id="x7C-jk-I8H"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f9q-ep-4vv">
+                    <rect key="frame" x="60" y="206" width="34" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="33" id="5J9-2L-lkI"/>
+                        <constraint firstAttribute="width" constant="34" id="W6N-7o-OY0"/>
+                    </constraints>
+                    <state key="normal">
+                        <imageReference key="image" image="calendar" catalog="system" symbolScale="large"/>
+                    </state>
+                    <connections>
+                        <action selector="showCalendars:" destination="-1" eventType="touchUpInside" id="Uav-sd-WZP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eto-I7-xKD">
+                    <rect key="frame" x="94" y="210" width="219" height="25"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <state key="normal" title="Choose which calendars Rooster uses ">
+                        <color key="titleColor" systemColor="labelColor"/>
+                    </state>
+                    <connections>
+                        <action selector="showCalendars:" destination="-1" eventType="touchUpInside" id="mHM-2e-21Y"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="eto-I7-xKD" firstAttribute="centerY" secondItem="f9q-ep-4vv" secondAttribute="centerY" id="0Qi-cO-PgY"/>
+                <constraint firstItem="f9q-ep-4vv" firstAttribute="top" secondItem="MmX-de-daG" secondAttribute="bottom" constant="20" id="3fF-m4-Rtf"/>
+                <constraint firstItem="MmX-de-daG" firstAttribute="top" secondItem="fr5-Ma-uq6" secondAttribute="bottom" constant="20" id="5cd-AG-z73"/>
+                <constraint firstItem="bry-Qp-quD" firstAttribute="leading" secondItem="fr5-Ma-uq6" secondAttribute="trailing" id="DlE-Ju-7Ux"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="gVn-MX-MdF" secondAttribute="trailing" constant="20" id="F8B-Ky-ciP"/>
+                <constraint firstItem="bry-Qp-quD" firstAttribute="centerY" secondItem="fr5-Ma-uq6" secondAttribute="centerY" id="LEB-1A-mx2"/>
+                <constraint firstItem="AUj-Lr-Kxi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="40" id="MJU-gc-yiz"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gVn-MX-MdF" secondAttribute="bottom" constant="20" id="N24-lh-TJs"/>
+                <constraint firstItem="fr5-Ma-uq6" firstAttribute="top" secondItem="AUj-Lr-Kxi" secondAttribute="bottom" constant="40" id="U7f-XU-W02"/>
+                <constraint firstItem="MmX-de-daG" firstAttribute="centerX" secondItem="fr5-Ma-uq6" secondAttribute="centerX" id="VAr-T8-nGy"/>
+                <constraint firstItem="a2b-8y-Ofz" firstAttribute="leading" secondItem="MmX-de-daG" secondAttribute="trailing" id="WHb-Jk-nAS"/>
+                <constraint firstItem="a2b-8y-Ofz" firstAttribute="centerY" secondItem="MmX-de-daG" secondAttribute="centerY" id="dUW-yC-LGQ"/>
+                <constraint firstItem="fr5-Ma-uq6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="60" id="g3P-wH-iEz"/>
+                <constraint firstItem="AUj-Lr-Kxi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="iYG-fG-hBJ"/>
+                <constraint firstItem="f9q-ep-4vv" firstAttribute="centerX" secondItem="MmX-de-daG" secondAttribute="centerX" id="oOj-sL-DuA"/>
+                <constraint firstItem="eto-I7-xKD" firstAttribute="leading" secondItem="f9q-ep-4vv" secondAttribute="trailing" id="yRU-7T-UwS"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="AUj-Lr-Kxi" secondAttribute="trailing" constant="20" id="yUf-v8-TWN"/>
+            </constraints>
+            <point key="canvasLocation" x="138.75" y="153"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="calendar" catalog="system" width="128" height="106"/>
+        <image name="gearshape" catalog="system" width="128" height="121"/>
+        <image name="info.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

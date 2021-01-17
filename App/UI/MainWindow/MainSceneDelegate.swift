@@ -55,7 +55,7 @@ class MainSceneDelegate: WindowSceneDelegate, MainViewControllerDelegate {
             if let titlebar = windowScene.titlebar {
                 titlebar.separatorStyle = .line
                 titlebar.toolbar = toolbar
-                titlebar.toolbarStyle = .unifiedCompact
+                titlebar.toolbarStyle = .unified
             }
         }
         #endif

@@ -21,6 +21,7 @@
 "OK" = "OK";
 "ROOSTER" = "Rooster";
 "SNOOZE" = "Snooze";
+"VIEW_CODE_MENU_ITEM" = "View Rooster's Code or submit a Pull Request!";
 
 // prefs
 "AUTO_OPEN_LOCATIONS" = "Automatically open location URLs";

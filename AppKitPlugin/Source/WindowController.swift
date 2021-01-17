@@ -112,6 +112,6 @@ class WindowController : NSObject, AppKitWindowController, Loggable {
 
 extension NSWindow {
     public var savedPositionKey: String {
-        return "saved-frame-\(self.title)"
+        return "windowFrame_\(self.title)"
     }
 }

@@ -51,49 +51,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
 
-//        if  let activity = options.userActivities.first {
-//            if activity.activityType == UserActivities.preferences.rawValue {
-//                let configuration = UISceneConfiguration(name: UserActivities.preferences.rawValue, sessionRole: connectingSceneSession.role)
-//                configuration.delegateClass = PreferencesSceneDelegate.self
-//                return configuration
-//            }
-//        }
-
         let configuration = UISceneConfiguration(name: UserActivities.main.rawValue, sessionRole: connectingSceneSession.role)
         configuration.delegateClass = MainSceneDelegate.self
         return configuration
     }
     
-//    func applicationWillTerminate(_ application: UIApplication) {
-//
-//        let windows = UIApplication.shared.windows
-//
-//        var session: UISceneSession? = nil
-//
-//        for window in windows {
-//            if let scene = window.windowScene,
-//               scene.title == "Preferences" {
-//
-//                session = scene.session
-//                break
-//            }
-//        }
-//
-//        if session != nil {
-//            let options =  UIWindowSceneDestructionRequestOptions()
-//            options.windowDismissalAnimation = .standard
-//
-//            UIApplication.shared.requestSceneSessionDestruction(session!,
-//                                                                options: options) { error in
-//
-//            }
-//        }
-//
-//    }
-
-    
     #if targetEnvironment(macCatalyst)
     
+    private lazy var infoUrl: URL? = {
+        if  let resourcePath = Bundle.main.resourceURL {
+            return resourcePath.appendingPathComponent("About/about.html")
+        }
+        
+        return nil
+    }()
+    
+    @objc func showHelp(_ sender: Any?) {
+        if let url = self.infoUrl {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
     
     private var updateMenuItem : UIMenu {
         let command = UICommand(title: "CHECK_FOR_UPDATES".localized,
@@ -140,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     
     private var openRepoMenuItem: UIMenu {
 
-        let command = UICommand(title: "View Rooster's Code or submit a Pull Request!",
+        let command = UICommand(title: "VIEW_CODE_MENU_ITEM".localized,
                                 image: nil,
                                 action: #selector(self.openRepoURL(_:)),
                                 propertyList: nil)
@@ -155,9 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     override func buildMenu(with builder: UIMenuBuilder) {
         super.buildMenu(with: builder)
 
-//        let preferencesMenuItem = self.preferencesMenuItem
-//        builder.insertSibling(preferencesMenuItem, afterMenu: .about)
-        
         let updateMenuItem = self.updateMenuItem
         builder.insertSibling(updateMenuItem, afterMenu: .about)
         
@@ -205,6 +179,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
     }
 }
 
+
+//        let preferencesMenuItem = self.preferencesMenuItem
+//        builder.insertSibling(preferencesMenuItem, afterMenu: .about)
+        
+
 //@objc private func showPreferences(_ sender: AppDelegate) {
 //    self.showPreferences()
 //}
@@ -238,3 +217,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
 //                      options: [ UIMenu.Options.displayInline ],
 //                      children: [ preferencesCommand ])
 //    }
+
+//    func applicationWillTerminate(_ application: UIApplication) {
+//
+//        let windows = UIApplication.shared.windows
+//
+//        var session: UISceneSession? = nil
+//
+//        for window in windows {
+//            if let scene = window.windowScene,
+//               scene.title == "Preferences" {
+//
+//                session = scene.session
+//                break
+//            }
+//        }
+//
+//        if session != nil {
+//            let options =  UIWindowSceneDestructionRequestOptions()
+//            options.windowDismissalAnimation = .standard
+//
+//            UIApplication.shared.requestSceneSessionDestruction(session!,
+//                                                                options: options) { error in
+//
+//            }
+//        }
+//
+//    }
+
+//        if  let activity = options.userActivities.first {
+//            if activity.activityType == UserActivities.preferences.rawValue {
+//                let configuration = UISceneConfiguration(name: UserActivities.preferences.rawValue, sessionRole: connectingSceneSession.role)
+//                configuration.delegateClass = PreferencesSceneDelegate.self
+//                return configuration
+//            }
+//        }
+
+
