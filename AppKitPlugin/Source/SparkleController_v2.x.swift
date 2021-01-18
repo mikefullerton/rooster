@@ -8,9 +8,15 @@
 import Foundation
 //import Sparkle
 
+#if targetEnvironment(macCatalyst)
+
+#else
+protocol AppKitInstallationUpdater {}
+#endif
+
 @objc public class SparkleController : NSObject, AppKitInstallationUpdater, SPUUpdaterDelegate, Loggable {
     
-    public weak var delegate: AppKitInstallationUpdaterDelegate?
+//    public weak var delegate: AppKitInstallationUpdaterDelegate?
     
     private var updater: SPUUpdater? = nil
     private var error: Error?
@@ -111,9 +117,9 @@ import Foundation
     public func configure(withAppBundle appBundle: Bundle) {
         
         let updater = SPUUpdater(hostBundle: appBundle,
-                                    applicationBundle: appBundle,
-                                    userDriver: self.sparkleUI.userDriver(for: appBundle),
-                                    delegate: self)
+                                 applicationBundle: appBundle,
+                                 userDriver: self.sparkleUI.userDriver(for: appBundle),
+                                 delegate: self)
 
         updater.sendsSystemProfile = false
         updater.automaticallyChecksForUpdates = false // this updates its check date if it fails. Dumb.

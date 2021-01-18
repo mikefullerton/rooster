@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1220"
+   LastUpgradeVersion = "1240"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B2E15126255EED2B002672EC"
+               BlueprintIdentifier = "B29492E925B5F4D000FCCF9E"
                BuildableName = "Rooster.app"
-               BlueprintName = "Rooster"
+               BlueprintName = "Rooster-macOS"
                ReferencedContainer = "container:Rooster.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,6 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B29492F825B5F4D100FCCF9E"
+               BuildableName = "Rooster-macOSTests.xctest"
+               BlueprintName = "Rooster-macOSTests"
+               ReferencedContainer = "container:Rooster.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B294930325B5F4D100FCCF9E"
+               BuildableName = "Rooster-macOSUITests.xctest"
+               BlueprintName = "Rooster-macOSUITests"
+               ReferencedContainer = "container:Rooster.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -39,21 +59,20 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      internalIOSLaunchStyle = "2">
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B2E15126255EED2B002672EC"
+            BlueprintIdentifier = "B29492E925B5F4D000FCCF9E"
             BuildableName = "Rooster.app"
-            BlueprintName = "Rooster"
+            BlueprintName = "Rooster-macOS"
             ReferencedContainer = "container:Rooster.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -62,9 +81,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B2E15126255EED2B002672EC"
+            BlueprintIdentifier = "B29492E925B5F4D000FCCF9E"
             BuildableName = "Rooster.app"
-            BlueprintName = "Rooster"
+            BlueprintName = "Rooster-macOS"
             ReferencedContainer = "container:Rooster.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

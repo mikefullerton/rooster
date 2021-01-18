@@ -8,9 +8,11 @@
 import Foundation
 import Sparkle
 
-@objc public class SparkleController : NSObject, AppKitInstallationUpdater, SUUpdaterDelegate, Loggable {
+//AppKitInstallationUpdater
+
+@objc public class SparkleController : NSObject, SUUpdaterDelegate, Loggable {
     
-    public weak var delegate: AppKitInstallationUpdaterDelegate?
+//    public weak var delegate: AppKitInstallationUpdaterDelegate?
     
     private var updater: SUUpdater? = nil
     private var error: Error?

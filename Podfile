@@ -12,7 +12,7 @@ use_modular_headers!
 #   platform :ios, '14.0'
 #end
 
-target 'RoosterAppKitPlugin' do
+target 'Rooster-macOS' do
   platform :osx, '11.0'
   pod 'Sparkle'
   
