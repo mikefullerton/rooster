@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Cocoa
 
 protocol MainViewControllerDelegate : AnyObject {
     func mainViewController(_ viewController: MainViewController, preferredContentSizeDidChange size: CGSize)
@@ -24,7 +25,7 @@ class MainViewController : NSViewController,
     weak var delegate: MainViewControllerDelegate?
     
     private var contentViewController: NSViewController?
-    private var loadingView: LoadingView?
+    private var mainWindowController: MainWindowController?
     private var reloader: DataModelReloader? = nil
    
     convenience init() {

@@ -1,0 +1,22 @@
+//
+//  LoadingViewController.swift
+//  Rooster-macOS
+//
+//  Created by Mike Fullerton on 1/18/21.
+//
+
+import Cocoa
+
+class LoadingViewController: NSWindowController {
+
+    @IBOutlet var spinner: NSProgressIndicator?
+    
+    override func windowDidLoad() {
+        super.windowDidLoad()
+
+        self.spinner?.startAnimation(self)
+        
+        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    }
+    
+}

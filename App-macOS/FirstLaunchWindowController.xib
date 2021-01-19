@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18099.1" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18099.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="FirstLaunchWindowController" customModule="Rooster" customModuleProvider="target">
+            <connections>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Welcome To Rooster" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
+            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3360" height="1865"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="KvR-Fd-iMZ">
+                        <rect key="frame" x="45" y="187" width="40" height="46"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="2ok-O3-1Fn"/>
+                            <constraint firstAttribute="height" constant="40" id="iyx-9j-uNE"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="info.circle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="J6l-SG-zQT">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="showMoreInfo:" target="-2" id="ugz-Ov-FQ9"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="asF-YC-lCd">
+                        <rect key="frame" x="99" y="203" width="327" height="14"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Rooster will make sure you're not late to your online meetings" id="y6R-mJ-Wai">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="S2h-ta-4i1">
+                        <rect key="frame" x="45" y="140" width="40" height="47"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="LCM-ga-Pgw"/>
+                            <constraint firstAttribute="width" constant="40" id="pa7-K4-9cY"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="gearshape" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="ZDg-zD-rBZ">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="showSettings:" target="-2" id="CaE-QR-dfg"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h0L-21-YNB">
+                        <rect key="frame" x="99" y="156" width="223" height="14"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Configure Rooster to make it work for you" id="nkF-Vn-d4K">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="sqo-dL-JTW">
+                        <rect key="frame" x="45" y="85.5" width="40" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="6bh-8b-5cJ"/>
+                            <constraint firstAttribute="height" constant="40" id="Zuj-2U-lyj"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="calendar" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="erA-DB-LSe">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="showCalendars:" target="-2" id="tqI-Kj-JBb"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gms-SN-f6d">
+                        <rect key="frame" x="99" y="101" width="204" height="14"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Choose which calendars Rooster uses" id="hVV-z5-KPK">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBJ-XL-1si">
+                        <rect key="frame" x="378" y="13" width="89" height="32"/>
+                        <buttonCell key="cell" type="push" title="Continue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HLi-s5-qVq">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="dismissSelf:" target="-2" id="Jlu-A8-GJH"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="sqo-dL-JTW" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="45" id="4Jx-s7-eeb"/>
+                    <constraint firstItem="Gms-SN-f6d" firstAttribute="centerY" secondItem="sqo-dL-JTW" secondAttribute="centerY" id="7Th-LM-ygt"/>
+                    <constraint firstItem="asF-YC-lCd" firstAttribute="centerY" secondItem="KvR-Fd-iMZ" secondAttribute="centerY" id="B78-vW-FqK"/>
+                    <constraint firstItem="S2h-ta-4i1" firstAttribute="top" secondItem="KvR-Fd-iMZ" secondAttribute="bottom" constant="7" id="Fkj-zp-3TZ"/>
+                    <constraint firstItem="asF-YC-lCd" firstAttribute="leading" secondItem="KvR-Fd-iMZ" secondAttribute="trailing" constant="16" id="G2f-ux-LkK"/>
+                    <constraint firstItem="h0L-21-YNB" firstAttribute="leading" secondItem="S2h-ta-4i1" secondAttribute="trailing" constant="16" id="Wwd-X3-4ww"/>
+                    <constraint firstItem="sqo-dL-JTW" firstAttribute="top" secondItem="S2h-ta-4i1" secondAttribute="bottom" constant="15" id="b83-kw-vK0"/>
+                    <constraint firstAttribute="bottom" secondItem="eBJ-XL-1si" secondAttribute="bottom" constant="20" symbolic="YES" id="cxt-8Z-rxI"/>
+                    <constraint firstAttribute="trailing" secondItem="eBJ-XL-1si" secondAttribute="trailing" constant="20" symbolic="YES" id="duf-73-bcy"/>
+                    <constraint firstItem="Gms-SN-f6d" firstAttribute="leading" secondItem="sqo-dL-JTW" secondAttribute="trailing" constant="16" id="fNH-Hm-r7i"/>
+                    <constraint firstItem="S2h-ta-4i1" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="45" id="iYe-9g-Vd1"/>
+                    <constraint firstItem="KvR-Fd-iMZ" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="45" id="kfu-3Y-3cP"/>
+                    <constraint firstItem="h0L-21-YNB" firstAttribute="centerY" secondItem="S2h-ta-4i1" secondAttribute="centerY" id="ocz-0u-y67"/>
+                    <constraint firstItem="KvR-Fd-iMZ" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="40" id="sxz-K0-s5P"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="-5" y="144"/>
+        </window>
+    </objects>
+    <resources>
+        <image name="calendar" catalog="system" width="16" height="14"/>
+        <image name="gearshape" catalog="system" width="16" height="16"/>
+        <image name="info.circle" catalog="system" width="15" height="15"/>
+    </resources>
+</document>
