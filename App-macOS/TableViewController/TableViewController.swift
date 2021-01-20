@@ -27,14 +27,35 @@ class TableViewController<ViewModel> : NSViewController,
     
     public func reloadData() {
         self.viewModel = self.reloadViewModel()
-        self.tableView.reloadData()
+        self.collectionView.reloadData()
     }
     
     // MARK: UIViewController
     
+    private func createLayout() -> NSCollectionViewLayout {
+//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+//                                             heightDimension: .fractionalHeight(1.0))
+//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//
+//        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+//                                              heightDimension: .absolute(20))
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+//                                                         subitems: [item])
+//
+//        let section = NSCollectionLayoutSection(group: group)
+//
+//        let layout = NSCollectionViewCompositionalLayout(section: section)
+
+        let layout = NSCollectionViewFlowLayout()
+
+        return layout
+    }
     
     override func loadView() {
-        let collectionView = self.collectionView
+        let collectionView = NSCollectionView()
+        collectionView.collectionViewLayout = self.createLayout()
+        
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view = collectionView
@@ -62,11 +83,16 @@ class TableViewController<ViewModel> : NSViewController,
     
     // MARK: Delegate
   
-    func collectionView(_ collectionView: NSCollectionView, willDisplay item: NSCollectionViewItem, forRepresentedObjectAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: NSCollectionView,
+                        willDisplay item: NSCollectionViewItem,
+                        forRepresentedObjectAt indexPath: IndexPath) {
         
     }
     
-    func collectionView(_ collectionView: NSCollectionView, willDisplaySupplementaryView view: NSView, forElementKind elementKind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) {
+    func collectionView(_ collectionView: NSCollectionView,
+                        willDisplaySupplementaryView view: NSView,
+                        forElementKind elementKind: NSCollectionView.SupplementaryElementKind,
+                        at indexPath: IndexPath) {
         
     }
 
@@ -120,54 +146,34 @@ class TableViewController<ViewModel> : NSViewController,
     
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+        guard let viewModel = self.viewModel,
+              let tableSection = viewModel.section(forIndex: section) else {
+            return 0
+        }
+
+        return tableSection.rowCount
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        
+        guard let viewModel = self.viewModel,
+              let row = viewModel.row(forIndexPath: indexPath) else {
+            return NSCollectionViewItem()
+        }
+        let identifier = NSUserInterfaceItemIdentifier(rawValue: row.cellReuseIdentifer)
+        self.collectionView.register(row.cellClass, forItemWithIdentifier:identifier)
+
+
+        let item = self.collectionView.makeItem(withIdentifier: identifier, for: indexPath)
+        row.willDisplay(cell: item,
+                        atIndexPath: indexPath,
+                        isSelected:  false) // tableView.indexPathForSelectedRow != nil ? tableView.indexPathForSelectedRow == indexPath :
+        return item
     }
     
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
-        
+        return self.viewModel == nil ? 0 : viewModel!.sectionCount
     }
-    
-//    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
-//        
-//        return nil
-//    }
-    
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//        guard let viewModel = self.viewModel,
-//              let row = viewModel.row(forIndexPath: indexPath) else {
-//            return UITableViewCell()
-//        }
-//
-//        self.tableView.register(row.cellClass, forCellReuseIdentifier: row.cellReuseIdentifer)
-//
-//        if let cell = tableView.dequeueReusableCell(withIdentifier: row.cellReuseIdentifer)  {
-//            row.willDisplay(cell: cell,
-//                            atIndexPath: indexPath,
-//                            isSelected: tableView.indexPathForSelectedRow != nil ? tableView.indexPathForSelectedRow == indexPath : false)
-//            return cell
-//        }
-//
-//        return UITableViewCell()
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard let viewModel = self.viewModel,
-//              let tableSection = viewModel.section(forIndex: section) else {
-//            return 0
-//        }
-//
-//        return tableSection.rowCount
-//    }
-//
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return self.viewModel == nil ? 0 : viewModel!.sectionCount
-//    }
-//
+        
 //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        guard let viewModel = self.viewModel,
 //              let header = viewModel.header(forSection:section) else {

@@ -14,7 +14,7 @@ use_modular_headers!
 
 target 'Rooster-macOS' do
   platform :osx, '11.0'
-  pod 'Sparkle'
+  pod 'Sparkle', '~> 1.0'
   
   post_install do |installer|
   installer.pods_project.targets.each do |target|

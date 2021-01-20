@@ -317,7 +317,7 @@ class MainViewController : NSViewController,
 
     lazy var shareToolbarItem: NSToolbarItem = {
 //        let item = NSToolbarItem(itemIdentifier: .share)
-//        item.image = UIImage(systemName: "square.and.arrow.up")
+//        item.image = NSImage(systemName: "square.and.arrow.up")
 //        item.label = "Share"
 //        item.action = #selector(showShareSheet(_:))
 //        item.target = self

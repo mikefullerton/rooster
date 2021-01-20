@@ -63,7 +63,7 @@ extension TableViewSectionProtocol {
 }
 
 struct TableViewSection<DataType, ViewType> : TableViewSectionProtocol
-            where ViewType: NSView, ViewType: TableViewRowCell {
+            where ViewType: NSCollectionViewItem, ViewType: TableViewRowCell {
     
     let rows: [TableViewRowProtocol]
     

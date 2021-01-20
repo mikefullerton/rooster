@@ -13,13 +13,13 @@ protocol TableViewRowProtocol  {
 
     var height: CGFloat { get }
 
-    var cellClass: NSView.Type { get }
+    var cellClass: NSCollectionViewItem.Type { get }
 
-    func willDisplay(cell: NSView, atIndexPath indexPath: IndexPath, isSelected: Bool)
+    func willDisplay(cell: NSCollectionViewItem, atIndexPath indexPath: IndexPath, isSelected: Bool)
 }
 
 struct TableViewRow<DataType, ViewType> : TableViewRowProtocol
-            where ViewType: NSView, ViewType: TableViewRowCell {
+            where ViewType: NSCollectionViewItem, ViewType: TableViewRowCell {
     
     let data: DataType
     
@@ -27,7 +27,7 @@ struct TableViewRow<DataType, ViewType> : TableViewRowProtocol
         self.data = data
     }
     
-    func willDisplay(cell: NSView, atIndexPath indexPath: IndexPath, isSelected: Bool) {
+    func willDisplay(cell: NSCollectionViewItem, atIndexPath indexPath: IndexPath, isSelected: Bool) {
         
         if let typedCell = cell as? ViewType,
            let data = self.data as? ViewType.DataType {
@@ -36,7 +36,7 @@ struct TableViewRow<DataType, ViewType> : TableViewRowProtocol
         }
     }
 
-    var cellClass: NSView.Type {
+    var cellClass: NSCollectionViewItem.Type {
         return ViewType.self
     }
 

@@ -60,7 +60,7 @@ class HorizontallyOpposedLayout: ViewLayout {
     func setViews(_ views: [NSView]) {
         self.views = views
         self.setSubviewConstraints()
-        self.hostView.setNeedsUpdateConstraints()
+//        self.hostView.setNeedsUpdateConstraints()
     }
 
     var intrinsicContentSize: CGSize {

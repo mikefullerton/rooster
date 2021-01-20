@@ -91,7 +91,7 @@ class TopBottomBarVerticalLayout: ViewLayout {
     func setViews(_ views: [NSView]) {
         self.views = views
         self.updateLayout()
-        self.hostView.setNeedsUpdateConstraints()
+//        self.hostView.setNeedsUpdateConstraints()
     }
 
     var intrinsicContentSize: CGSize {
