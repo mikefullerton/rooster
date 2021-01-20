@@ -27,7 +27,7 @@ class LabeledSliderView : NSView {
         self.addSubview(self.slider)
         self.slider.fixedMaxViewWidth = sliderRightInset
         
-        self.label.text = title
+        self.label.stringValue = title
         
         self.setNeedsUpdateConstraints()
     }

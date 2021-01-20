@@ -11,6 +11,7 @@ import Cocoa
 class TableViewController<ViewModel> : NSViewController,
                                        NSCollectionViewDataSource,
                                        NSCollectionViewDelegate,
+                                       NSCollectionViewDelegateFlowLayout,
                                        Reloadable where ViewModel: TableViewModelProtocol {
     
     private(set) var viewModel: ViewModel?
@@ -47,7 +48,9 @@ class TableViewController<ViewModel> : NSViewController,
 //        let layout = NSCollectionViewCompositionalLayout(section: section)
 
         let layout = NSCollectionViewFlowLayout()
-
+        layout.sectionHeadersPinToVisibleBounds = true
+        layout.sectionFootersPinToVisibleBounds = true
+        layout.scrollDirection = .vertical
         return layout
     }
     
@@ -96,34 +99,61 @@ class TableViewController<ViewModel> : NSViewController,
         
     }
 
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> NSSize {
+        
+        guard let viewModel = self.viewModel,
+              let row = viewModel.row(forIndexPath: indexPath) else {
+            return CGSize.zero
+        }
+
+        return CGSize(width: self.view.bounds.size.width, height: row.height)
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        insetForSectionAt section: Int) -> NSEdgeInsets {
+        
+        return NSEdgeInsets.zero
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> NSSize {
+        guard let viewModel = self.viewModel,
+              let header = viewModel.header(forSection:section) else {
+            
+            return NSSize.zero
+        }
+        
+        return CGSize(width: self.view.bounds.size.width, height: header.height)
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        referenceSizeForFooterInSection section: Int) -> NSSize {
+        guard let viewModel = self.viewModel,
+              let footer = viewModel.footer(forSection:section) else {
+
+            return NSSize.zero
+        }
+        return CGSize(width: self.view.bounds.size.width, height: footer.height)
+    }
+
     
-//    override func tableView(_ tableView: NSTableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//
-//        guard let viewModel = self.viewModel,
-//              let row = viewModel.row(forIndexPath: indexPath) else {
-//            return 0
-//        }
-//
-//        return row.height
-//    }
-//
-//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        guard let viewModel = self.viewModel,
-//              let header = viewModel.header(forSection:section) else {
-//            return 0
-//        }
-//        return header.height
-//    }
-//
-//
-//    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        guard let viewModel = self.viewModel,
-//              let footer = viewModel.footer(forSection:section) else {
-//            return 0
-//        }
-//        return footer.height
-//    }
-//
 //    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> NSView? {
 //        guard let viewModel = self.viewModel,
 //              let header = viewModel.header(forSection:section) else {

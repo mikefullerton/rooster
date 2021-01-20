@@ -143,19 +143,15 @@ class EKController: Loggable {
         }
     }
     
+    #if targetEnvironment(macCatalyst)
     private func requestAccessToDelegateStore(withUserStore store: EKEventStore,
                                               completion: @escaping (_ success: Bool, _ eventStore: EKEventStore?, _ error: Error?) -> Void) {
         
-        #if targetEnvironment(macCatalyst)
         AppDelegate.instance.appKitPlugin.eventKitHelper.requestPermissionToDelegateCalendars(for: self.store, completion: completion)
-        #else
-        self.logger.log("Delegate eventStore not available on iOS");
-        
-        completion(true, nil, nil)
-        
-        #if false
-        
-        // sigh, can't get delegate calendars on iOS
+    }
+    #elseif os(macOS)
+    private func requestAccessToDelegateStore(withUserStore store: EKEventStore,
+                                              completion: @escaping (_ success: Bool, _ eventStore: EKEventStore?, _ error: Error?) -> Void) {
         
         let sources = store.delegateSources
 
@@ -166,17 +162,24 @@ class EKController: Loggable {
         delegateEventStore.requestAccess(to: EKEntityType.event) { (success, error) in
             if success == false || error != nil {
                 self.logger.error("Failed to be granted access to delegate calendars with error: \(error?.localizedDescription ?? "nil")")
-                completion!(false, nil, error)
+                completion(false, nil, error)
             } else {
                 self.logger.log("Access granted to delegate calendars")
-                completion!(true, delegateEventStore, nil)
+                completion(true, delegateEventStore, nil)
             }
         }
-        #endif
-        
-        #endif
     }
-    
+    #else
+    private func requestAccessToDelegateStore(withUserStore store: EKEventStore,
+                                              completion: @escaping (_ success: Bool, _ eventStore: EKEventStore?, _ error: Error?) -> Void) {
+     
+        // sigh, can't get delegate calendars on iOS
+        self.logger.log("Delegate eventStore not available on iOS");
+        
+        completion(true, nil, nil)
+    }
+    #endif
+        
     private func fasterRequestAccess(toStore store: EKEventStore, completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         
         var count = 0

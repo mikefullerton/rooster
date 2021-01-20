@@ -11,13 +11,13 @@ import Cocoa
 class SimpleVerticalStackView : NSView {
  
     let insets: NSEdgeInsets
-    let spacing: UIOffset
+    let spacing: Offset
     
     static let defaultInsets = NSEdgeInsets.twenty
     
     init(frame: CGRect,
          insets: NSEdgeInsets = SimpleVerticalStackView.defaultInsets,
-         spacing: UIOffset = UIOffset(horizontal: 10, vertical: 10)) {
+         spacing: Offset = Offset(horizontal: 10, vertical: 10)) {
         
         self.insets = insets
         self.spacing = spacing

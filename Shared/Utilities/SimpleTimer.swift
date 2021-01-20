@@ -7,29 +7,24 @@
 
 import Foundation
 
-class SimpleTimer : CustomStringConvertible, Loggable {
+class SimpleTimer : CustomStringConvertible, CustomDebugStringConvertible, Loggable {
+    
     static let RepeatEndlessly: Int = Int.max
     
-    private weak var timer: Timer?
-    
-    private(set) var requestedFireCount: Int
-    
-    private(set) var fireCount: Int
-    
-    private(set) var isTiming: Bool
-    
-    private var interval: TimeInterval
-    
-    private var id: Int
-    
-    private static var idCounter:Int = 0
-    
-    private(set) var startDate: Date?
-    
-    private let name: String
-    
+    let name: String
     var logTimerEvents = true
     
+    private(set) var requestedFireCount: Int
+    private(set) var fireCount: Int
+    private(set) var isTiming: Bool
+    private(set) var startDate: Date?
+    private(set) var fireDate: Date?
+    
+    // private
+    private weak var timer: Timer?
+    private static var idCounter:Int = 0
+    private var interval: TimeInterval
+    private var id: Int
     
     init(withName name: String) {
         self.timer = nil
@@ -43,7 +38,7 @@ class SimpleTimer : CustomStringConvertible, Loggable {
         self.id = SimpleTimer.idCounter
     }
     
-    var fireDate: Date? {
+    var timerFireDate: Date? {
         if let timer = self.timer {
             return timer.fireDate
         }
@@ -76,15 +71,21 @@ class SimpleTimer : CustomStringConvertible, Loggable {
             self.requestedFireCount = 0
             self.fireCount = 0
             self.interval = 0
+            
+            self.fireDate = nil
+            self.startDate = nil
         }
     }
     
     private func stopTimer() {
-        if self.timer != nil {
-            self.timer?.invalidate()
+        if let timer = self.timer {
+            DispatchQueue.main.async {
+                timer.invalidate()
+            }
             self.timer = nil
         }
     }
+    
     private func timerFired(completion: @escaping (_ timer: SimpleTimer) -> Void) {
         self.fireCount += 1
         
@@ -101,23 +102,26 @@ class SimpleTimer : CustomStringConvertible, Loggable {
         completion(self)
     }
     
-    private func startTimer(withNextDate date: Date,
-                            completion: @escaping (_ timer: SimpleTimer) -> Void) {
+    private func startTimer(completion: @escaping (_ timer: SimpleTimer) -> Void) {
+        
+        let timer = Timer(fire: self.fireDate!,
+                          interval: self.interval,
+                          repeats: true) { [weak self] (timer) in
+            if timer === self?.timer && timer.isValid {
+                self?.timerFired(completion: completion)
+            } else {
+                self?.logger.log("Ignoring timer: \(timer)")
+            }
+        }
+        
+        self.timer = timer
+
+        if self.logTimerEvents {
+            self.logger.log("Starting timer: \(self.description)")
+        }
         
         DispatchQueue.main.async {
-            let timer = Timer(fire: date,
-                              interval: self.interval,
-                              repeats: true) { [weak self] (timer) in
-                self?.timerFired(completion: completion)
-            }
-            
-            self.timer = timer
-            
             RunLoop.current.add(timer, forMode: .common)
-            
-            if self.logTimerEvents {
-                self.logger.log("Started timer: \(self.description)")
-            }
         }
     }
     
@@ -151,14 +155,14 @@ class SimpleTimer : CustomStringConvertible, Loggable {
             return
         }
         
-        self.startDate = date
+        self.fireDate = date
+        self.startDate = Date()
         self.requestedFireCount = max(fireCount, 1)
         self.fireCount = 0
         self.isTiming = true
         self.interval = interval
         
-        self.startTimer(withNextDate: date,
-                        completion: completion)
+        self.startTimer(completion: completion)
     }
 
     func start(withDate date: Date,
@@ -170,14 +174,17 @@ class SimpleTimer : CustomStringConvertible, Loggable {
                    completion: completion)
     }
     
-    var description: String {
-        
+    var debugDescription: String {
         let isValid = self.timer != nil ? "\(self.timer!.isValid)" : "nil"
         let interval = self.timer != nil ? "\(self.timer!.timeInterval)" : "nil"
         let fireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndTimeString)" : "nil"
 
-        return "Timer: \(self.name):\(self.id), interval:\(self.interval), fireCount: \(self.fireCount), requestFireCount: \(self.requestedFireCount), timer: \(String(describing: self.timer )), timer is valid: \(isValid), timer interval: \(interval), timer fire date: \(fireDate)"
+        return "Timer: \(self.name):\(self.id), timer fire date: \(fireDate), interval:\(self.interval), fireCount: \(self.fireCount), requestFireCount: \(self.requestedFireCount), timer: \(String(describing: self.timer )), timer is valid: \(isValid), timer interval: \(interval)"
     }
-
-
+    
+    var description: String {
+        let timerFireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndTimeString)" : "nil"
+        let fireDate = self.fireDate != nil ? "\(self.fireDate!.shortDateAndTimeString)" : "nil"
+        return "Timer: \(self.name):\(self.id), started: \(self.startDate?.shortDateAndTimeString ?? "nil"), fire date: \(fireDate), timer fire date: \(timerFireDate)"
+    }
 }

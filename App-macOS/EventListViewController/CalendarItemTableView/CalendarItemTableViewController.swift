@@ -25,6 +25,7 @@ class CalendarItemTableViewController<ViewModel> : TableViewController<ViewModel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.wantsLayer = true
         self.view.layer?.backgroundColor = Theme(for: self.view).windowBackgroundColor.cgColor
 //        self.tableView.allowsSelection = false
 //        self.tableView.separatorStyle = .none

@@ -23,8 +23,18 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         self.dividerView = DividerView()
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    convenience init() {
+        self.init(nibName:nil, bundle: nil)
+    }
 
-        
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
+        self.view = NSView()
         
         // left
         self.addTimeLabel()
@@ -40,18 +50,6 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         self.addDividerView()
     }
     
-    convenience init() {
-        self.init(nibName:nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func loadView() {
-        self.view = NSView()
-    }
-    
     override func prepareForReuse() {
         self.countDownLabel.stopTimer()
         self.setLocationURL(nil)
@@ -65,6 +63,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         let heightInset:CGFloat = 10.0
         let leftInset:CGFloat = 10.0
         
+        view.wantsLayer = true
         view.layer?.cornerRadius = width / 2.0
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -186,12 +185,11 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         ])
     }
     
-    lazy var countDownLabel: TimeRemainingView = {
-        let label = TimeRemainingView()
-        label.addLabel(labelVerticalOffset: 0)
+    lazy var countDownLabel: CountdownTextField = {
+        let label = CountdownTextField()
         label.prefixString = "Alarm will fire in "
-        label.label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
-        label.label.alignment = .right
+        label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.alignment = .right
         return label
     }()
     
@@ -214,10 +212,19 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
     }
     
     lazy var locationButton: NSButton = {
-        let view = NSButton()
+        let view = LinkButton()
         
+        view.isTransparent = true
+        view.setButtonType(.momentaryPushIn)
+        view.isBordered = false
         view.target = self
         view.action = #selector(handleLocationButtonClick(_:))
+        
+        if let buttonCell = view.cell as? NSButtonCell {
+            buttonCell.highlightsBy = .pushInCellMask
+            buttonCell.backgroundColor = NSColor.clear
+        }
+//        view.bezelStyle = .shadowlessSquare
         
 //        if let titleLabel = view.titleLabel {
 //            titleLabel.text = ""
@@ -261,11 +268,12 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
             let selectedUrlText = NSAttributedString(string: "\(host)",
                                              attributes: [
                                                 NSAttributedString.Key.font : NSFont.systemFont(ofSize: NSFont.labelFontSize),
-                                                NSAttributedString.Key.foregroundColor : NSColor.placeholderTextColor,
+                                                NSAttributedString.Key.foregroundColor : NSColor.systemBlue, // placeholderTextColor,
                                                 NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue])
 
             self.locationButton.attributedTitle = normalUrlText
-            
+            self.locationButton.attributedAlternateTitle = selectedUrlText
+
 //            self.locationButton.setAttributedTitle(normalUrlText, for: NSControl.State.normal)
 //            self.locationButton.setAttributedTitle(selectedUrlText, for: NSControl.State.highlighted)
         } else {
@@ -280,6 +288,10 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         let label = NSTextField()
         label.textColor = Theme(for: self.view).secondaryLabelColor
         label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.isEditable = false
+        label.isBordered = false
+        label.drawsBackground = false
+
         return label
     }()
     
@@ -294,12 +306,18 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
             view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.contentInsets.left),
             view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.contentInsets.top),
         ])
+        
+//        view.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
     
     lazy var eventTitleLabel: NSTextField = {
         let label = NSTextField()
         label.textColor = Theme(for: self.view).labelColor
         label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.isEditable = false
+        label.isBordered = false
+        label.drawsBackground = false
+
         return label
     }()
     
@@ -320,6 +338,10 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         let label = NSTextField()
         label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
         label.textColor = Theme(for: self.view).secondaryLabelColor
+        label.isEditable = false
+        label.isBordered = false
+        label.drawsBackground = false
+
         return label
     }()
     

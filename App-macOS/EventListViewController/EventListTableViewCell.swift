@@ -52,6 +52,8 @@ class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
         
         let calendar = event.calendar
         self.calendarTitleLabel.stringValue = "Calendar: \(calendar.title) (\(calendar.sourceTitle))"
+        
+        self.view.needsLayout = true
     }
     
     override func prepareForReuse() {

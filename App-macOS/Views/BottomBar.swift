@@ -19,7 +19,7 @@ class BottomBar : NSView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.backgroundColor = NSColor.clear
+        self.layer?.backgroundColor = NSColor.clear.cgColor
 
         let blurView = self.blurView
         self.insertSubview(blurView, at: 0)

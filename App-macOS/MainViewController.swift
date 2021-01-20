@@ -47,6 +47,7 @@ class MainViewController : NSViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.red.cgColor
         
         self.addLoadingView()

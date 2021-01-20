@@ -33,6 +33,14 @@ extension CalendarItem {
     }
     
     var knownLocationURL: URL? {
-        return self.findURL(containing: "appleinc.webex.com/appleinc")
+        if let url = self.findURL(containing: "appleinc.webex.com/appleinc") {
+            return url
+        }
+        
+        if let url = self.findURL(containing: "appleinc.webex.com/meet") {
+            return url
+        }
+        
+        return nil
     }
 }
