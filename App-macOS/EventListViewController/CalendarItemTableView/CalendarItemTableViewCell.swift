@@ -19,12 +19,13 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
 
     var dividerView: DividerView
     
-    public init() {
-        
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         self.dividerView = DividerView()
         
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
+        
+        
         // left
         self.addTimeLabel()
         self.addEventTitleLabel()
@@ -38,11 +39,19 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
 
         self.addDividerView()
     }
+    
+    convenience init() {
+        self.init(nibName:nil, bundle: nil)
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func loadView() {
+        self.view = NSView()
+    }
+    
     override func prepareForReuse() {
         self.countDownLabel.stopTimer()
         self.setLocationURL(nil)
@@ -95,7 +104,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
     }
     
     lazy var alarmIcon: NSImageView = {
-        let image = NSImage(named: NSImage.Name("alarm"))
+        let image = NSImage(systemSymbolName: "alarm", accessibilityDescription: "alarm")
 //        (systemName: "alarm")
         
         let view = NSImageView(image:image!)
