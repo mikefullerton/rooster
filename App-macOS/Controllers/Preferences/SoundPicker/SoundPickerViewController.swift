@@ -28,6 +28,10 @@ class SoundPickerViewController : NSViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        self.view = NSView()
+    }
+    
     lazy var topBar = TopBar(frame: self.view.bounds)
     lazy var bottomBar = BottomBar(frame: self.view.bounds)
     lazy var soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
@@ -91,7 +95,7 @@ class SoundPickerViewController : NSViewController {
     }
 
     func presentInViewController(_ viewController: NSViewController, fromView view: NSView) {
-        viewController.presentAsSheet(viewController)
+        viewController.presentAsSheet(self)
     }
     
     override func viewDidLayout() {
