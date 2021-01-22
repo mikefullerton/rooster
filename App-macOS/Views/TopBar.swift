@@ -10,7 +10,7 @@ import Foundation
 import Cocoa
 
 
-class TopBar : NSView {
+class TopBar : BlurView {
     
     var preferredHeight:CGFloat {
         return 40.0
@@ -19,9 +19,6 @@ class TopBar : NSView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.backgroundColor = NSColor.clear
-        self.addBlurView()
-        
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
 //        self.setContentHuggingPriority(., for: .vertical)
     }
@@ -30,35 +27,20 @@ class TopBar : NSView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addBlurView() {
-        self.backgroundColor = NSColor.clear
-        let visualEffect = Theme(for: self).blurEffect
-
-        let visualEffectView = UIVisualEffectView(effect: visualEffect)
-        
-        self.insertSubview(visualEffectView, at: 0)
-        
-        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            visualEffectView.topAnchor.constraint(equalTo: self.topAnchor),
-            visualEffectView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            visualEffectView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            visualEffectView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        ])
-    }
-    
-    lazy var titleView: UITextField = {
-        let titleView = UITextField()
-        titleView.isUserInteractionEnabled = false
+    lazy var titleView: NSTextField = {
+        let titleView = NSTextField()
+        titleView.backgroundColor = NSColor.clear
         titleView.textColor = Theme(for: self).secondaryLabelColor
+        titleView.isBordered = false
+        titleView.drawsBackground = false
+        titleView.isEditable = false
         titleView.alignment = .center
         return titleView
     }()
         
     func addTitleView(withText text: String) {
         let titleView = self.titleView
-        titleView.text = text
+        titleView.stringValue = text
         
         self.addSubview(titleView)
         
@@ -67,14 +49,6 @@ class TopBar : NSView {
         NSLayoutConstraint.activate([
             titleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             titleView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            
-            
-            
-//            titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-//
-//            titleView.topAnchor.constraint(equalTo: self.topAnchor),
-//            titleView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 

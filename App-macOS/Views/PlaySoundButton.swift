@@ -10,7 +10,7 @@ import Cocoa
 
 class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     
-    private(set) var sound: AVAlarmSound? = nil
+    private(set) var alarmSound: AlarmSound? = nil
     private var _url: URL? = nil
     private let timer = SimpleTimer(withName: "PlayButtonAnimationTimer")
     
@@ -22,11 +22,11 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
             if url != self._url {
                 self._url = url
                 
-                if let sound = self.sound {
-                    sound.stop()
+                if let alarmSound = self.alarmSound {
+                    alarmSound.stop()
                 }
                 
-                self.sound = nil
+                self.alarmSound = nil
                 self.refresh()
             }
         }
@@ -42,12 +42,14 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
             self.imageView(withName: "speaker.wave.3"),
             self.imageView(withName: "speaker.wave.3"),
         ]
-        
-        self.contentHorizontalAlignment = .leading
+  
+        self.alignment = .left
+//        self.contentHorizontalAlignment = .leading
         
         self.contentViewIndex = 0
         
-        self.addTarget(self, action: #selector(playSound(_:)), for: .touchUpInside)
+        self.target = self
+        self.action = #selector(playSound(_:))
         
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -56,8 +58,8 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     deinit {
         self.timer.stop()
         
-        if let sound = self.sound {
-            sound.stop()
+        if let alarmSound = self.alarmSound {
+            alarmSound.stop()
         }
     }
     
@@ -80,9 +82,9 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
             }
             
             if super.isEnabled {
-                self.imageView!.tintColor = Theme(for: self).secondaryLabelColor
+                self.contentTintColor = Theme(for: self).secondaryLabelColor
             } else {
-                self.imageView!.tintColor = NSColor.quaternaryLabel
+                self.contentTintColor = Theme(for: self).disabledControlColor
             }
         }
     }
@@ -96,28 +98,28 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         }
         
         self.isEnabled = true
-        if self.sound == nil || !self.sound!.isPlaying {
+        if self.alarmSound == nil || !self.alarmSound!.isPlaying {
             self.contentViewIndex = 0
         }
     }
     
     var isPlaying: Bool {
-        return self.sound?.isPlaying ?? false
+        return self.alarmSound?.isPlaying ?? false
     }
     
     func togglePlayingState() {
-        if let sound = self.sound {
-            if sound.isPlaying {
-                sound.stop()
+        if let alarmSound = self.alarmSound {
+            if alarmSound.isPlaying {
+                alarmSound.stop()
             } else {
-                sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
+                alarmSound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
             }
         } else if let url = self.url {
-            let sound = AVAlarmSound(withURL: url) 
-            sound.delegate = self
-            self.sound = sound
+            let alarmSound = URLAlarmSound(withURL: url)
+            alarmSound.delegate = self
+            self.alarmSound = alarmSound
             
-            sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
+            alarmSound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
         }
 
         self.refresh()
@@ -127,15 +129,18 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         self.togglePlayingState()
     }
 
-    private func imageView(withName name: String) -> UIImageView {
-        let image = NSImage(systemName: name)
-        let imageView = UIImageView(image: image)
-        imageView.preferredSymbolConfiguration = NSImage.SymbolConfiguration(pointSize: 22,weight: .regular)
-        imageView.tintColor = Theme(for: self).secondaryLabelColor
+    private func imageView(withName name: String) -> NSImageView {
+        guard let image = NSImage(systemSymbolName: name, accessibilityDescription: name) else {
+            return NSImageView()
+        }
+        
+        let imageView = NSImageView(image: image)
+        imageView.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 22,weight: .regular)
+        imageView.contentTintColor = Theme(for: self).secondaryLabelColor
         return imageView
     }
     
-    func soundWillStartPlaying(_ sound: AlarmSound) {
+    func soundWillStartPlaying(_ alarmSound: AlarmSound) {
         self.refresh()
 
         self.timer.start(withInterval: 0.3, fireCount: SimpleTimer.RepeatEndlessly) { [weak self] timer in
@@ -151,9 +156,9 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         }
     }
     
-    func soundDidStopPlaying(_ sound: AlarmSound) {
+    func soundDidStopPlaying(_ alarmSound: AlarmSound) {
         self.timer.stop()
-        self.sound = nil
+        self.alarmSound = nil
         self.refresh()
     }
     

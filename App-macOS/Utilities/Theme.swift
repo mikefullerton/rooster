@@ -27,6 +27,8 @@ protocol ThemeProtocol {
     
     var tableViewCellBackgroundColor: NSColor { get }
     
+    var disabledControlColor: NSColor { get }
+    
 //    var blurEffect: NSBlurEffect { get }
 }
 
@@ -58,6 +60,8 @@ struct LightTheme : ThemeProtocol {
     
     var tableViewCellBackgroundColor: NSColor { NSColor.windowBackgroundColor }
 
+    var disabledControlColor: NSColor { NSColor.lightGray }
+
 //    var blurEffect: UIBlurEffect { UIBlurEffect(style: .systemThinMaterial) }
 
 }
@@ -81,7 +85,8 @@ struct DarkTheme : ThemeProtocol {
     
     var tableViewCellBackgroundColor: NSColor { NSColor.windowBackgroundColor }
 
-    
+    var disabledControlColor: NSColor { NSColor.lightGray }
+
 //    var windowBackgroundColor: NSColor { NSColor.systemBackground }
 //
 //    var groupBackgroundColor: NSColor { NSColor.systemBackground }

@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 
 
-class BottomBar : NSView {
+class BottomBar : BlurView {
     
     let preferredHeight: CGFloat = 60
     let insets = NSEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -18,46 +18,18 @@ class BottomBar : NSView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        self.layer?.backgroundColor = NSColor.clear.cgColor
-
-        let blurView = self.blurView
-        self.insertSubview(blurView, at: 0)
-        
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            blurView.topAnchor.constraint(equalTo: self.topAnchor),
-            blurView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            blurView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        ])
-        
-        let button = self.doneButton
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(button)
-        NSLayoutConstraint.activate([
-            button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -self.insets.left),
-        ])
+        self.addDoneButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var blurView: NSView = {
-        let visualEffect = UIBlurEffect(style: .systemThinMaterial)
-        
-        let visualEffectView = UIVisualEffectView(effect: visualEffect)
-        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
 
-        return visualEffectView
-    }()
-    
     func addLeftButton(title: String) -> NSButton {
         
         let button = self.leftButton
-        button.setTitle(title, for: .normal)
+        button.title = title
         
         self.addSubview(button)
         
@@ -71,9 +43,12 @@ class BottomBar : NSView {
     }
     
     lazy var leftButton: NSButton = {
-        let view = CustomButton(type: .system)
-        view.role = .normal
-        view.preferredSize = self.buttonSize
+        let view = NSButton(frame: NSRect.zero)
+        view.bezelStyle = .rounded
+        view.setButtonType(.momentaryPushIn)
+        view.isBordered = true
+        
+    //    view.preferredSize = self.buttonSize
 
         return view
     }()
@@ -92,21 +67,37 @@ class BottomBar : NSView {
     }
     
     lazy var cancelButton: NSButton = {
-        let view = CustomButton(type: .system)
-        view.setTitle("Cancel", for: .normal)
-        view.role = .cancel
-        view.preferredSize = self.buttonSize
+        let view = NSButton()
+        view.setButtonType(.momentaryPushIn)
+        view.bezelStyle = .rounded
+        view.isBordered = true
+        view.title = "Cancel"
+//        view.role = .cancel
+//        view.preferredSize = self.buttonSize
         return view
     }()
 
-    lazy var doneButton: CustomButton = {
-        let view = CustomButton(type: .system)
-        view.setTitle("Done", for: .normal)
-        view.role = .primary
-        view.preferredSize = self.buttonSize
+    lazy var doneButton: NSButton = {
+        let view = NSButton()
+        view.setButtonType(.momentaryPushIn)
+        view.bezelStyle = .rounded
+        view.isBordered = true
+        view.title = "Done"
+        view.keyEquivalent = "\r"
+//        view.preferredSize = self.buttonSize
         return view
     }()
     
+    func addDoneButton() {
+        let button = self.doneButton
+        button.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -self.insets.left),
+        ])
+    }
+   
     func addToView(_ view: NSView) {
         
         view.addSubview(self)

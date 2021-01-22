@@ -24,9 +24,11 @@ class GroupBoxView : NSView {
         
         super.init(frame: frame)
         
-        self.backgroundColor = NSColor.clear
+        self.wantsLayer = true
+        self.layer?.backgroundColor = NSColor.clear.cgColor
+        
         let titleView = self.titleView
-        titleView.text = title
+        titleView.stringValue = title
         
         self.addSubview(self.titleView)
         NSLayoutConstraint.activate([
@@ -59,14 +61,18 @@ class GroupBoxView : NSView {
     
     lazy private var titleView: NSTextField = {
         let titleView = NSTextField()
-        titleView.isUserInteractionEnabled = false
+        titleView.isEditable = false
         titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         titleView.alignment = .right
         titleView.translatesAutoresizingMaskIntoConstraints = false
-        
+        titleView.drawsBackground = false
+        titleView.isBordered = false
+
         titleView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         titleView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+
         return titleView
     }()
 
@@ -100,11 +106,12 @@ class OutlineView : NSView {
         self.insets = insets
         super.init(frame: frame)
         
-        self.layer.cornerRadius = 0
-        self.layer.borderWidth = 1.0
-        self.layer.borderColor = Theme(for: self).borderColor.cgColor
+        self.wantsLayer = true
+        self.layer?.cornerRadius = 0
+        self.layer?.borderWidth = 1.0
+        self.layer?.borderColor = Theme(for: self).borderColor.cgColor
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = Theme(for: self).groupBackgroundColor
+        self.layer?.backgroundColor = Theme(for: self).groupBackgroundColor.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -118,6 +125,6 @@ class OutlineView : NSView {
     lazy var layout: VerticalViewLayout = {
         return VerticalViewLayout(hostView: self,
                                   insets:  self.insets,
-                                  spacing: UIOffset(horizontal: 10, vertical: 10))
+                                  spacing: Offset(horizontal: 10, vertical: 10))
     }()
 }

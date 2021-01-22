@@ -37,24 +37,30 @@ class TipView : NSView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var textField: UITextField = {
-        let titleView = UITextField(frame: self.bounds)
-        titleView.text = self.tip.title
-        titleView.isUserInteractionEnabled = false
+    lazy var textField: NSTextField = {
+        let titleView = NSTextField()
+        titleView.stringValue = self.tip.title
+        titleView.isEditable = false
         titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.alignment = .left
         titleView.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
+        titleView.drawsBackground = false
+        titleView.isBordered = false
+
         return titleView
     }()
     
     let imageSize: CGFloat = 14.0
     
-    lazy var tipImage: UIImageView = {
-        let view = UIImageView(image: self.tip.image)
-        if self.tip.imageTintColor != nil {
-            view.tintColor = self.tip.imageTintColor! // NSColor.systemBlue
+    lazy var tipImage: NSImageView = {
+        guard let image = self.tip.image else {
+            return NSImageView()
         }
-//        view.frame = CGRect(x: 0,y: 0,width: self.imageSize, height: self.imageSize)
+        
+        let view = NSImageView(image: image)
+        if self.tip.imageTintColor != nil {
+            view.contentTintColor = self.tip.imageTintColor! // NSColor.systemBlue
+        }
         return view
     }()
         
@@ -65,7 +71,7 @@ class TipView : NSView {
     lazy var layout: HorizontalViewLayout = {
         return HorizontalViewLayout(hostView: self,
                                     insets: NSEdgeInsets(top: 2, left: 20, bottom: 10, right: 0),
-                                    spacing: UIOffset(horizontal: 20, vertical: 20))
+                                    spacing: Offset(horizontal: 20, vertical: 20))
         
     }()
 }

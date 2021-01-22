@@ -15,7 +15,10 @@ class FancyButton : NSButton {
     override init(frame: CGRect) {
         self.contentViews = []
         super.init(frame: frame)
-        self.contentHorizontalAlignment = .left
+        self.alignment = .left
+        self.isBordered = false
+        self.setButtonType(.momentaryPushIn)
+        self.imagePosition = .imageLeading
     }
     
     required init?(coder: NSCoder) {
@@ -52,25 +55,20 @@ class FancyButton : NSButton {
     
     private func setContentView(withView view: NSView) {
         
-        if let imageView = view as? UIImageView {
-            self.setTitle(nil, for: .normal)
-            self.setImage(imageView.image, for: .normal)
-            self.setPreferredSymbolConfiguration(imageView.preferredSymbolConfiguration, forImageIn: .normal)
-            self.imageView?.tintColor = imageView.tintColor
+        if let imageView = view as? NSImageView {
+            self.title = ""
+            self.image = imageView.image
+            self.symbolConfiguration = imageView.symbolConfiguration
+            self.contentTintColor = imageView.contentTintColor
         } else {
-            self.setImage(nil, for: .normal)
+            self.image = nil
         }
         
         if let label = view as? NSTextField {
-            self.setTitle(label.text, for: .normal)
-            
-//            if let titleLabel = self.titleColor(for: <#T##NSControl.State#>)
-            
-            self.setTitleColor(label.textColor, for: .normal)
-            
-//            self.titleLabel?.textColor = label.textColor
-            self.titleLabel?.font = label.font
-            self.titleLabel?.alignment = label.alignment
+            self.title = label.stringValue
+            self.contentTintColor = label.textColor
+            self.font = label.font
+            self.alignment = label.alignment
         }
     }
     
@@ -101,6 +99,17 @@ class FancyButton : NSButton {
                              height: maxSize.height)
         
         return outSize
+    }
+    
+    func defaultLabel(withTitle title: String) -> NSTextField {
+        let label = NSTextField()
+        label.isEditable = false
+        label.stringValue = title
+        label.textColor = Theme(for: self).secondaryLabelColor
+        label.drawsBackground = false
+        label.isBordered = false
+
+        return label
     }
 
 }

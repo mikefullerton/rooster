@@ -1,0 +1,91 @@
+//
+//  VerticalButtonBar.swift
+//  Rooster
+//
+//  Created by Mike Fullerton on 1/9/21.
+//
+
+import Foundation
+import Cocoa
+
+protocol VerticalButtonBarViewControllerDelegate : AnyObject {
+    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonBarViewController, didChooseItem item: VerticalTabItem)
+}
+
+typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonBarTableCell>
+
+class VerticalButtonBarViewController : TableViewController<VerticalButtonBarViewModel> {
+
+    weak var delegate : VerticalButtonBarViewControllerDelegate?
+    
+    private let tabItems: [VerticalTabItem]
+     
+    init(with items: [VerticalTabItem]) {
+        self.tabItems = items
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func reloadViewModel() -> VerticalButtonBarViewModel? {
+        return VerticalButtonBarViewModel(withData: self.tabItems)
+    }
+    
+    private var selectedIndex: Int {
+        get {
+            let selectedIndexPaths = self.collectionView.selectionIndexPaths
+            
+            if selectedIndexPaths.count == 1,
+               let indexPath = selectedIndexPaths.first {
+                return indexPath.item
+            }
+            
+            return NSNotFound
+        }
+        set(selectedIndex) {
+            self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: selectedIndex, section: 0)]),
+                                            scrollPosition: .nearestVerticalEdge)
+            
+//            selectRow(at: IndexPath(item: selectedIndex, section: 0), animated: true, scrollPosition: .top)
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.collectionView.allowsMultipleSelection = false
+        self.collectionView.isSelectable = true
+        self.collectionView.allowsEmptySelection = false
+        
+        self.view.wantsLayer = true
+        self.view.layer?.borderWidth = 1.0
+        self.view.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
+    }
+
+    override func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        if let delegate = self.delegate,
+           indexPaths.count == 1,
+           let indexPath = indexPaths.first {
+            
+            delegate.verticalButtonBarViewController(self, didChooseItem: self.tabItems[indexPath.item])
+        }
+    }
+    
+    public func collectionView(_ collectionView: NSCollectionView, shouldSelectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
+        
+        return indexPaths
+        
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        self.selectedIndex = 0
+        if let delegate = self.delegate {
+            delegate.verticalButtonBarViewController(self, didChooseItem: self.tabItems[0])
+        }
+    }
+}
+
