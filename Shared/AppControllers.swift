@@ -13,6 +13,8 @@ struct AppControllers {
     let userNotificationController: UserNotificationCenterController
     let preferencesController: PreferencesController
 
+    let menuBarController: MenuBarController
+    
     #if targetEnvironment(macCatalyst)
     let audioSessionController: AudioSessionController
     let appKitPlugin: AppKitPluginController
@@ -25,7 +27,8 @@ struct AppControllers {
         let alarmNotificationController = AlarmNotificationController()
         let dataModelController = DataModelController(withDataModelStorage: DataModelStorage())
         let userNotificationController = UserNotificationCenterController(preferencesController: preferencesController)
-
+        let menuBarController = MenuBarController()
+        
         #if targetEnvironment(macCatalyst)
         let audioSessionController = AudioSessionController()
         let appKitPlugin = AppKitPluginController()
@@ -37,6 +40,7 @@ struct AppControllers {
         self.dataModelController = dataModelController
         self.userNotificationController = userNotificationController
         self.preferencesController = preferencesController
+        self.menuBarController = menuBarController
     }
 }
 
@@ -70,5 +74,9 @@ extension AppControllerAware {
     
     var preferencesController: PreferencesController {
         return AppControllers.instance.preferencesController
+    }
+    
+    var menuBarController: MenuBarController {
+        return AppControllers.instance.menuBarController
     }
 }

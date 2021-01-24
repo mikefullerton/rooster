@@ -34,6 +34,8 @@ class MainWindowViewController : NSViewController, DataModelAware {
         self.reloader = DataModelReloader(for: self)
         
         self.addChild(self.eventListViewController)
+        
+        self.title = "Rooster"
     }
     
     lazy var noMoreMeetingsView: NSView = {

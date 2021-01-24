@@ -154,11 +154,6 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
     }
     
     func handleUserClickedStopAll() {
-        // FIXME
-        #if targetEnvironment(macCatalyst)
-        AppDelegate.instance.appKitPlugin.utilities.bringAppToFront()
-        #endif
-
         if self.alarmsAreFiring {
             self.stopAllNotifications(bringNotificationAppsForward: true)
         }

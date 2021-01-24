@@ -68,6 +68,9 @@
 		B25F6B0E25BC9AE50067C096 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */; };
 		B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */; };
 		B25F6B1E25BCC9600067C096 /* TableViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */; };
+		B25F6B4225BD091E0067C096 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4025BD09180067C096 /* MenuBarController.swift */; };
+		B25F6B4325BD091E0067C096 /* MenuBarPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4125BD09180067C096 /* MenuBarPopoverViewController.swift */; };
+		B25F6B4425BD091E0067C096 /* MenuBarController+ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B3F25BD09180067C096 /* MenuBarController+ContentView.swift */; };
 		B260C82925A3B7C500C03B2E /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82825A3B7C500C03B2E /* FancyButton.swift */; };
 		B260C82F25A3CEED00C03B2E /* SoundVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */; };
 		B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C83425A3D76400C03B2E /* SoundRepeatView.swift */; };
@@ -474,6 +477,9 @@
 		B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAdornmentView.swift; sourceTree = "<group>"; };
+		B25F6B3F25BD09180067C096 /* MenuBarController+ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuBarController+ContentView.swift"; sourceTree = "<group>"; };
+		B25F6B4025BD09180067C096 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		B25F6B4125BD09180067C096 /* MenuBarPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverViewController.swift; sourceTree = "<group>"; };
 		B260C82825A3B7C500C03B2E /* FancyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyButton.swift; sourceTree = "<group>"; };
 		B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundVolumeView.swift; sourceTree = "<group>"; };
 		B260C83425A3D76400C03B2E /* SoundRepeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundRepeatView.swift; sourceTree = "<group>"; };
@@ -909,6 +915,16 @@
 			path = CalendarList;
 			sourceTree = "<group>";
 		};
+		B25F6B3E25BD090A0067C096 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				B25F6B4025BD09180067C096 /* MenuBarController.swift */,
+				B25F6B3F25BD09180067C096 /* MenuBarController+ContentView.swift */,
+				B25F6B4125BD09180067C096 /* MenuBarPopoverViewController.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
 		B26F6B3525B7C47400EA2057 /* EventListViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -992,9 +1008,11 @@
 		B274F02C25BA3CD200F9D473 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B25F6B3E25BD090A0067C096 /* MenuBar */,
 				B274F03925BA3DCD00F9D473 /* App */,
 				B274F03525BA3DBC00F9D473 /* FirstLaunch */,
 				B274F02E25BA3DAE00F9D473 /* LoadingWindow */,
+				B26F6B3525B7C47400EA2057 /* EventListViewController */,
 				B274F02D25BA3D8500F9D473 /* MainWindow */,
 				B26F6B3F25B7C47400EA2057 /* Preferences */,
 				B26F6B5025B7C47400EA2057 /* CalendarChooser */,
@@ -1006,7 +1024,6 @@
 		B274F02D25BA3D8500F9D473 /* MainWindow */ = {
 			isa = PBXGroup;
 			children = (
-				B26F6B3525B7C47400EA2057 /* EventListViewController */,
 				B2E2250225B63B3C0052758C /* MainWindowViewController.swift */,
 				B2E224E725B62F550052758C /* MainWindowController.xib */,
 				B2E224E825B62F550052758C /* MainWindowController.swift */,
@@ -1923,6 +1940,7 @@
 				B2C0F7D825B613D7008EFA74 /* SparkleController_v1.x.swift in Sources */,
 				B2E2251C25B640BE0052758C /* HorizontalViewLayout.swift in Sources */,
 				B2FAD89225B5FB6F00598B9E /* AppControllers.swift in Sources */,
+				B25F6B4225BD091E0067C096 /* MenuBarController.swift in Sources */,
 				B26F6B5A25B7C47400EA2057 /* ContentStackView.swift in Sources */,
 				B274EFCD25BA21CC00F9D473 /* SoundRepeatView.swift in Sources */,
 				B2E224CB25B61B420052758C /* ItemPreference.swift in Sources */,
@@ -1960,6 +1978,7 @@
 				B2E224F925B635E20052758C /* Theme.swift in Sources */,
 				B25F6AF725BB673A0067C096 /* NSViewController+WindowController.swift in Sources */,
 				B294937325B5F71500FCCF9E /* Sound+DisplayName.swift in Sources */,
+				B25F6B4425BD091E0067C096 /* MenuBarController+ContentView.swift in Sources */,
 				B2FAD93425B6022300598B9E /* Reminder+EKReminder.swift in Sources */,
 				B2CEF19025B8B0A500CA01E2 /* ContentAwareView.swift in Sources */,
 				B2E2252125B640BE0052758C /* TableViewRowCell.swift in Sources */,
@@ -2020,6 +2039,7 @@
 				B29493A025B5F7F500FCCF9E /* DemoAlarmNotification.swift in Sources */,
 				B2FAD93F25B6022B00598B9E /* Event+DictionaryCodable.swift in Sources */,
 				B294936625B5F6F100FCCF9E /* AlarmSound.swift in Sources */,
+				B25F6B4325BD091E0067C096 /* MenuBarPopoverViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

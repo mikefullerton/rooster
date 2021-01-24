@@ -8,7 +8,13 @@ import Foundation
 import Cocoa
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable, NSWindowDelegate, FirstLaunchWindowControllerDelegate {
+class AppDelegate: NSObject,
+                   NSApplicationDelegate,
+                   AppControllerAware,
+                   Loggable,
+                   NSWindowDelegate,
+                   FirstLaunchWindowControllerDelegate,
+                   MenuBarControllerDelegate {
 
     private let sparkleController = SparkleController()
     
@@ -123,9 +129,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
         
         self.logger.log("Application authenticate EventKit access")
 
-        #if targetEnvironment(macCatalyst)
-        self.appKitPlugin.menuBarPopover.showIconInMenuBar()
-        #endif
+        self.menuBarController.delegate = self
+        self.menuBarController.showIconInMenuBar()
         
 //        self.sparkleController.delegate = self
         self.sparkleController.configure(withAppBundle: Bundle.init(for: type(of:self)))
@@ -140,5 +145,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
             self.showFirstRunWindow()
         }
     }
+    
+    func menuBarControllerButtonWasClicked(_ controller: MenuBarController) {
+        NSApp.activate(ignoringOtherApps: true)
+        self.alarmNotificationController.handleUserClickedStopAll()
+    }
+    
+    func menuBarControllerAreAlarmsFiring(_ controller: MenuBarController) -> Bool {
+        return self.alarmNotificationController.alarmsAreFiring
+    }
+    
+    func menuBarControllerNextFireDate(_ controller: MenuBarController) -> Date? {
+        return self.dataModelController.dataModel.nextAlarmDate
+    }
+
 }
 

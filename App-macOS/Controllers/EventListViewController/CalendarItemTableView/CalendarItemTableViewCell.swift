@@ -188,7 +188,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
     lazy var countDownLabel: CountdownTextField = {
         let label = CountdownTextField()
         label.prefixString = "Alarm will fire in "
-        label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
         label.alignment = .right
         return label
     }()
@@ -221,7 +221,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
         view.action = #selector(handleLocationButtonClick(_:))
         
         if let buttonCell = view.cell as? NSButtonCell {
-            buttonCell.highlightsBy = .pushInCellMask
+//            buttonCell.highlightsBy = .pushInCellMask
             buttonCell.backgroundColor = NSColor.clear
         }
 //        view.bezelStyle = .shadowlessSquare
@@ -230,7 +230,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
 //            titleLabel.text = ""
 //            titleLabel.alignment = .right
 //            titleLabel.textColor = NSColor.systemBlue
-//            titleLabel.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+//            titleLabel.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
 //
 //        }
         
@@ -261,13 +261,13 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
             
             let normalUrlText = NSAttributedString(string: "\(host)",
                                              attributes: [
-                                                NSAttributedString.Key.font : NSFont.systemFont(ofSize: NSFont.labelFontSize),
+                                                NSAttributedString.Key.font : NSFont.systemFont(ofSize: NSFont.systemFontSize),
                                                 NSAttributedString.Key.foregroundColor : Theme(for: self.view).secondaryLabelColor,
                                                 NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue])
 
             let selectedUrlText = NSAttributedString(string: "\(host)",
                                              attributes: [
-                                                NSAttributedString.Key.font : NSFont.systemFont(ofSize: NSFont.labelFontSize),
+                                                NSAttributedString.Key.font : NSFont.systemFont(ofSize: NSFont.systemFontSize),
                                                 NSAttributedString.Key.foregroundColor : NSColor.systemBlue, // placeholderTextColor,
                                                 NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue])
 
@@ -287,7 +287,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
     lazy var timeLabel: NSTextField = {
         let label = NSTextField()
         label.textColor = Theme(for: self.view).secondaryLabelColor
-        label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
         label.isEditable = false
         label.isBordered = false
         label.drawsBackground = false
@@ -313,7 +313,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
     lazy var eventTitleLabel: NSTextField = {
         let label = NSTextField()
         label.textColor = Theme(for: self.view).labelColor
-        label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
         label.isEditable = false
         label.isBordered = false
         label.drawsBackground = false
@@ -336,7 +336,7 @@ class CalendarItemTableViewCell : NSCollectionViewItem {
     
     lazy var calendarTitleLabel: NSTextField = {
         let label = NSTextField()
-        label.font = NSFont.systemFont(ofSize: NSFont.labelFontSize)
+        label.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
         label.textColor = Theme(for: self.view).secondaryLabelColor
         label.isEditable = false
         label.isBordered = false
