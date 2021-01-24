@@ -18,6 +18,17 @@ extension TableViewModelProtocol {
         return self.sections.count
     }
     
+    var rowCount: Int {
+        
+        var rowCount: Int = 0
+        
+        for section in self.sections {
+            rowCount += section.rowCount
+        }
+        
+        return rowCount
+    }
+    
     func section(forIndex index: Int) -> TableViewSectionProtocol? {
         guard index >= 0, index < self.sections.count else {
             return nil

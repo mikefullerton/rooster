@@ -27,21 +27,20 @@ class CalendarItemTableViewController<ViewModel> : TableViewController<ViewModel
         
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = Theme(for: self.view).windowBackgroundColor.cgColor
-//        self.tableView.allowsSelection = false
-//        self.tableView.separatorStyle = .none
-//        self.tableView.contentInsetAdjustmentBehavior = .never
+    
+        self.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
     
     func dataModelDidReload(_ dataModel: DataModel) {
         self.reloadData()
     }
 
-    override var preferredContentSize: CGSize {
+    override var calculatedContentSize: CGSize {
         get {
             if let viewModel = self.viewModel {
                 return CGSize(width: self.view.frame.size.width, height: viewModel.height)
             }
-            return super.preferredContentSize
+            return self.preferredContentSize
         }
         set(size) {
             

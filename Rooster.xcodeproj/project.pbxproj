@@ -481,7 +481,6 @@
 		B26F6B3725B7C47400EA2057 /* CalendarItemTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarItemTableViewController.swift; sourceTree = "<group>"; };
 		B26F6B3825B7C47400EA2057 /* CalendarItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarItemTableViewCell.swift; sourceTree = "<group>"; };
 		B26F6B3925B7C47400EA2057 /* ContentStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentStackView.swift; sourceTree = "<group>"; };
-		B26F6B3A25B7C47400EA2057 /* MainEventListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainEventListViewController.swift; sourceTree = "<group>"; };
 		B26F6B3B25B7C47400EA2057 /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
 		B26F6B3C25B7C47400EA2057 /* EventListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListViewModel.swift; sourceTree = "<group>"; };
 		B26F6B3D25B7C47400EA2057 /* EventListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListTableViewCell.swift; sourceTree = "<group>"; };
@@ -914,7 +913,6 @@
 			isa = PBXGroup;
 			children = (
 				B26F6B3625B7C47400EA2057 /* CalendarItemTableView */,
-				B26F6B3A25B7C47400EA2057 /* MainEventListViewController.swift */,
 				B26F6B3B25B7C47400EA2057 /* ReminderTableViewCell.swift */,
 				B26F6B3C25B7C47400EA2057 /* EventListViewModel.swift */,
 				B26F6B3D25B7C47400EA2057 /* EventListTableViewCell.swift */,

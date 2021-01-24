@@ -16,98 +16,108 @@ class MainWindowViewController : NSViewController, DataModelAware {
     
     weak var delegate: MainWindowViewControllerDelegate?
 
-    lazy var timeRemainingViewController = TimeRemainingViewController()
-
     lazy var eventListViewController = EventListViewController()
     
     private var reloader: DataModelReloader? = nil
   
     let minimumContentSize = CGSize(width: 600, height: TimeRemainingViewController.preferredHeight)
     
-    func addTimeRemainingView() {
-
-        let timeRemainingViewController = self.timeRemainingViewController
-
-        self.addChild(timeRemainingViewController)
-
-        self.view.addSubview(timeRemainingViewController.view)
-
-        timeRemainingViewController.view.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            timeRemainingViewController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            timeRemainingViewController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            timeRemainingViewController.view.heightAnchor.constraint(equalToConstant: TimeRemainingViewController.preferredHeight),
-            timeRemainingViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0)
-        ])
-    }
+    private var currentView: NSView?
     
     override func loadView() {
-        self.view = ContentAwareView(frame: CGRect(x: 0, y: 0, width: 500, height: 600))
+        let view = ContentAwareView(frame: CGRect.zero)
+        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        self.view = view
         
-        self.addTimeRemainingView()
-        self.addEventListView()
+        self.addNoMoreMeetingsView()
         
         self.reloader = DataModelReloader(for: self)
         
-        self.adjustWindowSize()
+        self.addChild(self.eventListViewController)
+    }
+    
+    lazy var noMoreMeetingsView: NSView = {
+        let view = NSTextField()
+        
+        view.textColor = Theme(for: self.view).secondaryLabelColor
+        view.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+        view.isEditable = false
+        view.isBordered = false
+        view.drawsBackground = false
+        view.stringValue = "No more meetings today! 🎉"
+        view.alignment = .center
+        
+        return view
+    }()
+    
+    func removeCurrentView() {
+        if let currentView = self.currentView {
+            currentView.removeFromSuperview()
+            
+            self.currentView = nil
+        }
+    }
+    
+    func addNoMoreMeetingsView() {
+        let view = self.noMoreMeetingsView
+        
+        if self.currentView != view {
+    
+            self.removeCurrentView()
+            
+            self.view.addSubview(view)
+            
+            view.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
+                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
+                view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20),
+                view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
+            ])
+            
+            self.currentView = view
+        }
     }
     
     func addEventListView() {
         
-        let eventListViewController = self.eventListViewController
-
-        self.addChild(eventListViewController)
-
-        self.view.addSubview(eventListViewController.view)
-
-        eventListViewController.view.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            eventListViewController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            eventListViewController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            eventListViewController.view.topAnchor.constraint(equalTo: self.timeRemainingViewController.view.bottomAnchor),
-//            eventListViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            eventListViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-        ])
+        let view = self.eventListViewController.view
         
+        if view != self.currentView {
+            
+            self.removeCurrentView()
+        
+            self.view.addSubview(view)
 
-    }
-    
-    func adjustScrollView() {
-        if let scrollView = self.eventListViewController.collectionView.enclosingScrollView {
-            
-            scrollView.automaticallyAdjustsContentInsets = false
-            
-            scrollView.contentInsets = NSEdgeInsets(top: TimeRemainingViewController.preferredHeight,
-                                                    left: 0,
-                                                    bottom: 0,
-                                                    right: 0)
+            view.translatesAutoresizingMaskIntoConstraints = false
 
-            scrollView.contentView.automaticallyAdjustsContentInsets = false
-            scrollView.contentView.scroll(to: CGPoint(x: 0, y: -TimeRemainingViewController.preferredHeight))
+            NSLayoutConstraint.activate([
+                view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                view.topAnchor.constraint(equalTo: self.view.topAnchor),
+                view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            ])
             
-//            contentOffset = CGPoint(x: 0, y: -TimeRemainingViewController.preferredHeight)
+            self.currentView = view
         }
-
     }
-    
+
     override func viewWillAppear() {
         super.viewWillAppear()
-        
-//        self.adjustScrollView()
-        
         self.adjustWindowSize()
     }
     
     func adjustWindowSize() {
         DispatchQueue.main.async {
             var size = CGSize.zero
-            
-            size.height = self.timeRemainingViewController.view.frame.maxY
-            
-            size.height += self.eventListViewController.preferredContentSize.height
-            
+
+            if self.currentView == self.noMoreMeetingsView {
+                size.height = self.noMoreMeetingsView.frame.size.height
+            } else {
+                size.height = self.eventListViewController.calculatedContentSize.height
+            }
+
             self.preferredContentSize = self.adjustedSize(size)
         }
     }
@@ -116,14 +126,14 @@ class MainWindowViewController : NSViewController, DataModelAware {
         return  CGSize(width: max(self.minimumContentSize.width, size.width),
                        height: max(self.minimumContentSize.height, size.height))
     }
-    
+
     override var preferredContentSize: CGSize {
         get {
             return super.preferredContentSize
         }
         set(size) {
             print("Adjusting window size to: \(size)")
-            
+
             super.preferredContentSize = size
             if let delegate = self.delegate {
                 delegate.mainWindowViewController(self, preferredContentSizeDidChange: size)
@@ -132,6 +142,11 @@ class MainWindowViewController : NSViewController, DataModelAware {
     }
 
     func dataModelDidReload(_ dataModel: DataModel) {
-        self.adjustWindowSize()
+        if AppDelegate.instance.dataModelController.dataModel.allItems.count > 0 {
+            self.addEventListView()
+            self.adjustWindowSize()
+        } else {
+            self.addNoMoreMeetingsView()
+        }
     }
 }

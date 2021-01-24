@@ -51,7 +51,7 @@ class VerticalTabViewController : UIViewController, VerticalButtonListViewContro
         self.verticalTabView.setContentView(item.view)
     }
 
-    override var preferredContentSize: CGSize {
+    override var calculatedContentSize: CGSize {
         get {
             return self.view.intrinsicContentSize
         }

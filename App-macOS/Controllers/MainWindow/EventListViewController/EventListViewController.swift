@@ -14,5 +14,11 @@ class EventListViewController : CalendarItemTableViewController<EventListViewMod
         return EventListViewModel(withEvents: AppDelegate.instance.dataModelController.dataModel.events,
                                   reminders: AppDelegate.instance.dataModelController.dataModel.reminders)
     }
-    
+ 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//        self.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
 }

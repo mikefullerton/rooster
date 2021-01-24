@@ -13,9 +13,11 @@ class MainWindowController: WindowController, MainWindowViewControllerDelegate {
         super.windowDidLoad()
         let viewController = MainWindowViewController()
         viewController.delegate = self
-        
         self.autosaveKey = "MainWindow"
         self.setContentViewController(viewController)
+        
+        viewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        
     }
     
     @IBAction @objc func showSettings(_ sender: Any) {

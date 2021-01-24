@@ -8,6 +8,38 @@
 import Foundation
 import Cocoa
 
+
+//class ScrollView : NSScrollView {
+//
+//
+//    override var intrinsicContentSize: NSSize {
+//        get {
+//            let size = self.contentSize
+//            return size
+//        }
+//        set(size) {
+//
+//        }
+//    }
+//
+//
+//}
+
+//class CollectionView : NSCollectionView {
+//
+//    override var intrinsicContentSize: NSSize {
+//        get {
+//            let size = self.contentSize
+//            return size
+//        }
+//        set(size) {
+//
+//        }
+//    }
+//
+//}
+
+
 class TableViewController<ViewModel> : NSViewController,
                                        NSCollectionViewDataSource,
                                        NSCollectionViewDelegate,
@@ -23,6 +55,8 @@ class TableViewController<ViewModel> : NSViewController,
     public func reloadData() {
         self.viewModel = self.reloadViewModel()
         self.collectionView.reloadData()
+        self.scrollView.invalidateIntrinsicContentSize()
+//        self.collectionView.invalidateIntrinsicContentSize()
     }
     
     private func createLayout() -> NSCollectionViewLayout {
@@ -47,6 +81,10 @@ class TableViewController<ViewModel> : NSViewController,
         return collectionView
     } ()
         
+    var rowCount: Int {
+        return self.viewModel?.rowCount ?? 0
+    }
+    
     override func loadView() {
         let scrollView = self.scrollView
         
@@ -230,18 +268,6 @@ class TableViewController<ViewModel> : NSViewController,
         
         return CGSize.zero
     }
-    
-//    override var preferredContentSize: CGSize {
-//        get {
-//            if let viewModel = self.viewModel {
-//                return CGSize(width: self.view.frame.size.width, height: viewModel.height)
-//            }
-//            return super.preferredContentSize
-//        }
-//        set(size) {
-//
-//        }
-//    }
 }
 
 
