@@ -9,7 +9,7 @@ import Foundation
 import Cocoa
 
 protocol TableViewSectionAdornmentProtocol {
-    var view: NSView? { get }
+    var viewClass: AnyClass { get }
     
     var height: CGFloat { get }
     
@@ -18,11 +18,11 @@ protocol TableViewSectionAdornmentProtocol {
 
 extension TableViewSectionAdornmentProtocol {
     
-    var view: NSView? {
-        return nil
-    }
-    
-    var title: String? {
-        return nil
-    }
+//    var view: NSView? {
+//        return nil
+//    }
+//
+//    var title: String? {
+//        return nil
+//    }
 }

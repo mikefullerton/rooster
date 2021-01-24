@@ -11,7 +11,7 @@ import UIKit
 class CalendarChooserViewController : UIViewController, CalendarToolbarViewDelegate {
     let preferredWidth:CGFloat = 450
 
-    lazy var calendarsViewController = CalendarListViewController()
+    lazy var calendarsViewController = PersonalCalendarListViewController()
     lazy var delegateCalendarsViewController = DelegateCalendarListViewController()
 
     private var calendarChooserView: CalendarChooserView {
@@ -56,6 +56,8 @@ class CalendarChooserViewController : UIViewController, CalendarToolbarViewDeleg
         view.topBar.delegate = self
         
         self.view = view
+        
+        self.title = "Calendars"
     }
         
     override func viewDidLoad() {

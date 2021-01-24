@@ -40,44 +40,13 @@ struct SoundPickerTableViewSection : TableViewSectionProtocol {
     }
     
     var header: TableViewSectionAdornmentProtocol? {
-        return TableViewSectionAdornment(withView: SectionHeaderView(with: self.folder.folderURL.soundName, disclosed: self.folder.disclosed),
+        return TableViewSectionAdornment(withTitle: self.folder.folderURL.soundName,
                                          height: 30)
+            
+            
+//            withView: SectionHeaderView(with: self.folder.folderURL.soundName, disclosed: self.folder.disclosed),
+//                                         height: 30)
     }
     
 }
 
-class SectionHeaderView : BlurView {
-    
-    init(with title: String, disclosed: Bool) {
-        super.init(frame: CGRect.zero)
-        self.titleView.stringValue = title
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    lazy var titleView: NSTextField = {
-        let titleView = NSTextField()
-        titleView.isEditable = false
-        titleView.textColor = Theme(for: self).secondaryLabelColor
-        titleView.alignment = .left
-        titleView.font = NSFont.boldSystemFont(ofSize: NSFont.labelFontSize)
-        titleView.drawsBackground = false
-        titleView.isBordered = false
-
-        self.addSubview(titleView)
-        
-        titleView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            titleView.topAnchor.constraint(equalTo: self.topAnchor),
-            titleView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
-
-        return titleView
-    }()
-    
-}

@@ -12,18 +12,40 @@ struct VerticalTabItem {
     let title: String
     let icon: NSImage?
     let view: NSView
+    let viewController: NSViewController?
+    
+    init(title: String,
+         icon: NSImage?,
+         view: NSView) {
+        
+        self.title = title
+        self.icon = icon
+        self.view = view
+        self.viewController = nil
+    }
+
+    init(title: String,
+         icon: NSImage?,
+         viewController: NSViewController) {
+        self.title = title
+        self.icon = icon
+        self.viewController = viewController
+        self.view = viewController.view
+    }
 }
 
-class VerticalTabViewController : NSViewController, VerticalButtonBarViewControllerDelegate {
+class VerticalTabViewController : NSViewController, VerticalButtonListViewControllerDelegate {
     let items: [VerticalTabItem]
     
-    lazy var verticalButtonBarController : VerticalButtonBarViewController = {
-        let controller = VerticalButtonBarViewController(with: self.items)
-        controller.delegate = self
-        return controller
-    }()
+    lazy var verticalButtonBarController = VerticalButtonListViewController(with: self.items)
+    private var contentView: NSView?
+
+    let buttonBarInsets = NSEdgeInsets.ten
+    let buttonListWidth:CGFloat
     
-    init(with items: [VerticalTabItem]) {
+    init(with items: [VerticalTabItem],
+         buttonListWidth: CGFloat) {
+        self.buttonListWidth = buttonListWidth
         self.items = items
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,31 +54,109 @@ class VerticalTabViewController : NSViewController, VerticalButtonBarViewControl
         fatalError("init(coder:) has not been implemented")
     }
     
-    var verticalTabView: VerticalTabView {
-        return self.view as! VerticalTabView
+    override func loadView() {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.clear.cgColor
+        
+        self.view = view
+        
+        view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .vertical)
+        view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .horizontal)
+
+        self.addButtonList()
+        self.addContentContainerView()
+        self.addChildViewControllers()
+        
+        self.verticalButtonBarController.delegate = self
+    }
+
+    lazy var contentContainerView : NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.clear.cgColor // Theme(for: view).preferencesContentViewColor.cgColor
+        view.layer?.borderWidth = 1.0
+        view.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
+        view.layer?.cornerRadius = 6.0
+        return view
+    }()
+
+    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController,
+                                         didChooseItem item: VerticalTabItem) {
+        self.setContentView(item.view)
+    }
+
+    private func addChildViewControllers() {
+        for tabItem in self.items {
+            if tabItem.viewController != nil {
+                self.addChild(tabItem.viewController!)
+            }
+        }
     }
     
-    override func loadView() {
-        let view = VerticalTabView()
+    private func addButtonList() {
+        let controller = self.verticalButtonBarController
         
-        self.addChild(self.verticalButtonBarController)
-        view.addButtonBarView(self.verticalButtonBarController.view)
+        self.addChild(controller)
         
-//        view.buttonBar.delegate = self;
-        self.view = view
-    }
-
-    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonBarViewController,
-                                         didChooseItem item: VerticalTabItem) {
-        self.verticalTabView.setContentView(item.view)
-    }
-
-    override var preferredContentSize: CGSize {
-        get {
-            return self.view.intrinsicContentSize
-        }
-        set (size) {
+        self.view.addSubview(controller.view)
+        
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+       
+        NSLayoutConstraint.activate([
+            controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.buttonBarInsets.left),
+            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.buttonBarInsets.top),
+            controller.view.widthAnchor.constraint(equalToConstant:self.buttonListWidth + self.buttonBarInsets.right),
             
+            controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -self.buttonBarInsets.bottom)
+        ])
+        
+        controller.view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+        controller.view.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+    }
+
+    private func addContentContainerView() {
+        let view = self.contentContainerView
+        
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.verticalButtonBarController.view.trailingAnchor, constant: self.buttonBarInsets.left),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.buttonBarInsets.right),
+            
+            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.buttonBarInsets.top),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -self.buttonBarInsets.bottom)
+        ])
+
+
+
+//        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+//        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    }
+    
+    func setContentView(_ view: NSView) {
+        if let contentView = self.contentView {
+            contentView.removeFromSuperview()
+            self.contentView = nil
         }
+        
+        self.contentContainerView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.frame = self.contentContainerView.bounds
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: self.contentContainerView.topAnchor),
+            view.bottomAnchor.constraint(equalTo: self.contentContainerView.bottomAnchor),
+
+            view.leadingAnchor.constraint(equalTo: self.contentContainerView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.contentContainerView.trailingAnchor),
+        ])
+       
+//        view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+//        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+        self.contentView = view
     }
 }

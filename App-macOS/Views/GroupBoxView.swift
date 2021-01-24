@@ -10,17 +10,28 @@ import Cocoa
 
 class GroupBoxView : NSView {
  
-    let layoutInsets: NSEdgeInsets
-    let insets = NSEdgeInsets.zero
-    let spacing: CGFloat = 0
+    let insets: NSEdgeInsets
+    let spacing: CGFloat
     
-    static let defaultInsets = NSEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+    private let outlineView: SimpleVerticalStackView
+    
+    static let defaultInsets = NSEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    static let defaultSpacing: CGFloat = 6
+    static let defaultGroupBoxInsets = NSEdgeInsets.twenty
+    static let defaultGroupBoxSpacing = Offset.ten
     
     init(frame: CGRect,
          title: String,
-         insets: NSEdgeInsets = GroupBoxView.defaultInsets) {
+         groupBoxInsets: NSEdgeInsets,
+         groupBoxSpacing: Offset,
+         insets: NSEdgeInsets = GroupBoxView.defaultInsets,
+         spacing: CGFloat = GroupBoxView.defaultSpacing) {
         
-        self.layoutInsets = insets
+        self.insets = insets
+        self.spacing = spacing
+        self.outlineView = SimpleVerticalStackView(frame: CGRect.zero,
+                                                   insets: groupBoxInsets,
+                                                   spacing: groupBoxSpacing)
         
         super.init(frame: frame)
         
@@ -30,34 +41,49 @@ class GroupBoxView : NSView {
         let titleView = self.titleView
         titleView.stringValue = title
         
-        self.addSubview(self.titleView)
-        NSLayoutConstraint.activate([
-            self.titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6 - 10),
-            self.titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: self.insets.top),
-        ])
+        self.addTitleView()
+        self.addOutlineView()
+        
+        self.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+        self.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
 
-        self.addSubview(self.outlineView)
-        NSLayoutConstraint.activate([
-            self.outlineView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.insets.left),
-            self.outlineView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -self.insets.right),
-            self.outlineView.topAnchor.constraint(equalTo: self.titleView.bottomAnchor, constant: self.spacing),
-            self.outlineView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.insets.bottom)
-        ])
-
-        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
-
-    }
-    
-    override convenience init(frame: CGRect) {
-        self.init(frame: frame, title: "")
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func addTitleView() {
+        let view = self.titleView
+        
+        self.addSubview(view)
+        NSLayoutConstraint.activate([
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6 - 10),
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: self.insets.top),
+        ])
+        view.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+        view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+    }
 
-    lazy private var outlineView = OutlineView(frame:CGRect.zero, insets: self.layoutInsets)
+    func addOutlineView() {
+        let view = self.outlineView
+        
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 0
+        view.layer?.borderWidth = 1.0
+        view.layer?.borderColor = Theme(for: self).borderColor.cgColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer?.backgroundColor = NSColor.clear.cgColor
+
+        self.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.insets.left),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -self.insets.right),
+            view.topAnchor.constraint(equalTo: self.titleView.bottomAnchor, constant: self.spacing),
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.insets.bottom)
+        ])
+    }
     
     lazy private var titleView: NSTextField = {
         let titleView = NSTextField()
@@ -68,11 +94,6 @@ class GroupBoxView : NSView {
         titleView.translatesAutoresizingMaskIntoConstraints = false
         titleView.drawsBackground = false
         titleView.isBordered = false
-
-        titleView.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        titleView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        
-
         return titleView
     }()
 
@@ -91,40 +112,7 @@ class GroupBoxView : NSView {
     }
    
     func setContainedViews(_ views: [NSView]) {
-        for view in views {
-            self.outlineView.addSubview(view)
-        }
-        self.outlineView.layout.setViews(views)
+        self.outlineView.setContainedViews(views)
     }
 }
 
-class OutlineView : NSView {
-
-    let insets: NSEdgeInsets
-    
-    init(frame: CGRect, insets: NSEdgeInsets) {
-        self.insets = insets
-        super.init(frame: frame)
-        
-        self.wantsLayer = true
-        self.layer?.cornerRadius = 0
-        self.layer?.borderWidth = 1.0
-        self.layer?.borderColor = Theme(for: self).borderColor.cgColor
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.layer?.backgroundColor = Theme(for: self).groupBackgroundColor.cgColor
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: NSView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
-    }
-
-    lazy var layout: VerticalViewLayout = {
-        return VerticalViewLayout(hostView: self,
-                                  insets:  self.insets,
-                                  spacing: Offset(horizontal: 10, vertical: 10))
-    }()
-}

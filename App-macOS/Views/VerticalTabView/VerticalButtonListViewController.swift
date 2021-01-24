@@ -8,15 +8,15 @@
 import Foundation
 import Cocoa
 
-protocol VerticalButtonBarViewControllerDelegate : AnyObject {
-    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonBarViewController, didChooseItem item: VerticalTabItem)
+protocol VerticalButtonListViewControllerDelegate : AnyObject {
+    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController, didChooseItem item: VerticalTabItem)
 }
 
-typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonBarTableCell>
+typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonListTableCell>
 
-class VerticalButtonBarViewController : TableViewController<VerticalButtonBarViewModel> {
+class VerticalButtonListViewController : TableViewController<VerticalButtonBarViewModel> {
 
-    weak var delegate : VerticalButtonBarViewControllerDelegate?
+    weak var delegate : VerticalButtonListViewControllerDelegate?
     
     private let tabItems: [VerticalTabItem]
      
@@ -46,9 +46,7 @@ class VerticalButtonBarViewController : TableViewController<VerticalButtonBarVie
         }
         set(selectedIndex) {
             self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: selectedIndex, section: 0)]),
-                                            scrollPosition: .nearestVerticalEdge)
-            
-//            selectRow(at: IndexPath(item: selectedIndex, section: 0), animated: true, scrollPosition: .top)
+                                            scrollPosition: .centeredVertically)
         }
     }
     
@@ -59,9 +57,10 @@ class VerticalButtonBarViewController : TableViewController<VerticalButtonBarVie
         self.collectionView.isSelectable = true
         self.collectionView.allowsEmptySelection = false
         
-        self.view.wantsLayer = true
-        self.view.layer?.borderWidth = 1.0
-        self.view.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
+        self.collectionView.wantsLayer = true
+        self.collectionView.layer?.borderWidth = 1.0
+        self.collectionView.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
+        self.collectionView.layer?.cornerRadius = 6.0
     }
 
     override func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
@@ -74,9 +73,7 @@ class VerticalButtonBarViewController : TableViewController<VerticalButtonBarVie
     }
     
     public func collectionView(_ collectionView: NSCollectionView, shouldSelectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
-        
         return indexPaths
-        
     }
     
     override func viewWillAppear() {

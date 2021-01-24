@@ -11,9 +11,15 @@ import Cocoa
 class NotificationChoicesView : SimpleVerticalStackView {
     
     init(frame: CGRect) {
-        super.init(frame: frame )
+        super.init(frame: frame,
+                   insets: NSEdgeInsets.ten,
+                   spacing: Offset.zero)
         
-        let notifs =  GroupBoxView(frame: CGRect.zero, title: "NOTIFICATION_EXPLANATION".localized)
+        let notifs =  GroupBoxView(frame: CGRect.zero,
+                                   title: "NOTIFICATION_EXPLANATION".localized,
+                                   groupBoxInsets: GroupBoxView.defaultGroupBoxInsets,
+                                   groupBoxSpacing: Offset(horizontal: 0, vertical: 14))
+        
         notifs.setContainedViews([
             self.automaticallyOpenLocationURLs,
             self.bounceIconInDock,
@@ -29,15 +35,15 @@ class NotificationChoicesView : SimpleVerticalStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var automaticallyOpenLocationURLs : NotificationChoiceView = {
+    lazy var automaticallyOpenLocationURLs : SingleNotificationChoiceView = {
         return AutomaticallyOpenLocationURLsChoiceView(frame: self.bounds)
     }()
 
-    lazy var bounceIconInDock : NotificationChoiceView = {
+    lazy var bounceIconInDock : SingleNotificationChoiceView = {
         return BounceInDockChoiceView(frame: self.bounds)
     }()
 
-    lazy var useSystemNotifications : NotificationChoiceView = {
+    lazy var useSystemNotifications : SingleNotificationChoiceView = {
         return UseSystemNotificationsChoiceView(frame: self.bounds)
     }()
     

@@ -14,7 +14,7 @@ protocol FirstLaunchWindowControllerDelegate : AnyObject {
     func firstLaunchWindowControllerShowCalendars(_ firstLaunchWindowController: FirstLaunchWindowController)
 }
 
-class FirstLaunchWindowController: NSWindowController {
+class FirstLaunchWindowController: ModalWindowController {
  
     weak var delegate: FirstLaunchWindowControllerDelegate?
     
@@ -41,5 +41,4 @@ class FirstLaunchWindowController: NSWindowController {
             delegate.firstLaunchWindowControllerShowCalendars(self)
         }
     }
-
 }

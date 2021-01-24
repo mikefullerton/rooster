@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="LoadingViewController" customModule="Rooster" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="LoadingWindowController">
             <connections>
                 <outlet property="spinner" destination="cGy-D5-CQh" id="TdB-Rb-yGp"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>

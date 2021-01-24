@@ -35,14 +35,6 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         self.collectionView.allowsEmptySelection = false
         self.collectionView.allowsMultipleSelection = false
         self.collectionView.isSelectable = true
-        
-//        self.tableView.allowsMultipleSelection = false
-//        self.tableView.selectionFollowsFocus = true
-    }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        self.setSelectedRow()
     }
     
     func setSelectedRow() {
@@ -53,7 +45,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
                 if soundURL == sound.url {
                     
                     self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundIndex, section: folderIndex) ]),
-                                                    scrollPosition: .nearestVerticalEdge)
+                                                    scrollPosition: .centeredVertically)
                     break
                 }
             }
@@ -105,6 +97,21 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
             cell.playButton.togglePlayingState()
         }
     }
+    
+    override func keyDown(with event: NSEvent) {
+        var didHandleEvent = false
+
+        if event.keyCode == 36 {
+            self.togglePlayingOnCurrentCell()
+            didHandleEvent = true
+        }
+        
+        if !didHandleEvent {
+            super.keyDown(with: event)
+        }
+    }
+    
+//    override - (void)keyDown:(NSEvent *)event
   
     /// TODO: Maybe
     

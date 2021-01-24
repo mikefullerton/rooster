@@ -113,6 +113,9 @@ class BottomBar : BlurView {
             self.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             self.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
     
     override var intrinsicContentSize: CGSize {

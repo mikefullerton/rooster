@@ -14,11 +14,11 @@ struct VerticalTabItem {
     let view: UIView
 }
 
-class VerticalTabViewController : UIViewController, VerticalButtonBarViewControllerDelegate {
+class VerticalTabViewController : UIViewController, VerticalButtonListViewControllerDelegate {
     let items: [VerticalTabItem]
     
-    lazy var verticalButtonBarController : VerticalButtonBarViewController = {
-        let controller = VerticalButtonBarViewController(with: self.items)
+    lazy var verticalButtonBarController : VerticalButtonListViewController = {
+        let controller = VerticalButtonListViewController(with: self.items)
         controller.delegate = self
         return controller
     }()
@@ -46,7 +46,7 @@ class VerticalTabViewController : UIViewController, VerticalButtonBarViewControl
         self.view = view
     }
 
-    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonBarViewController,
+    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController,
                                          didChooseItem item: VerticalTabItem) {
         self.verticalTabView.setContentView(item.view)
     }

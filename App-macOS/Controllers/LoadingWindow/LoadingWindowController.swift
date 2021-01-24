@@ -7,13 +7,12 @@
 
 import Cocoa
 
-class LoadingViewController: NSWindowController {
+class LoadingWindowController: WindowController {
 
     @IBOutlet var spinner: NSProgressIndicator?
     
     override func windowDidLoad() {
         super.windowDidLoad()
-
         self.spinner?.startAnimation(self)
     }
     

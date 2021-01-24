@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol SoundChoiceViewDelegate : AnyObject {
+protocol SingleSoundChoiceViewDelegate : AnyObject {
     func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: UIButton)
 }
 

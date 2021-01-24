@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-protocol VerticalButtonBarViewControllerDelegate : AnyObject {
-    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonBarViewController, didChooseItem item: VerticalTabItem)
+protocol VerticalButtonListViewControllerDelegate : AnyObject {
+    func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController, didChooseItem item: VerticalTabItem)
 }
 
-typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonBarTableCell>
+typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonListTableCell>
 
-class VerticalButtonBarViewController : TableViewController<VerticalButtonBarViewModel> {
+class VerticalButtonListViewController : TableViewController<VerticalButtonBarViewModel> {
 
-    weak var delegate : VerticalButtonBarViewControllerDelegate?
+    weak var delegate : VerticalButtonListViewControllerDelegate?
     
     private let tabItems: [VerticalTabItem]
      

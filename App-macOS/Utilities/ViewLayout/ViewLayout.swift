@@ -13,6 +13,8 @@ struct Offset {
     var vertical: CGFloat = 0
     
     static var zero: Offset = Offset(horizontal: 0, vertical: 0)
+    static var ten: Offset = Offset(horizontal: 10, vertical: 10)
+    static var twenty: Offset = Offset(horizontal: 20, vertical: 20)
 }
 
 protocol ViewLayout {

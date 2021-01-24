@@ -1,5 +1,5 @@
 //
-//  VerticalButtonBarTableCell.swift
+//  VerticalButtonListTableCell.swift
 //  Rooster
 //
 //  Created by Mike Fullerton on 1/10/21.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class VerticalButtonBarTableCell : UITableViewCell, TableViewRowCell {
+class VerticalButtonListTableCell : UITableViewCell, TableViewRowCell {
     
     typealias DataType = VerticalTabItem
     

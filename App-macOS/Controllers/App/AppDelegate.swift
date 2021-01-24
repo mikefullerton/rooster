@@ -10,8 +10,6 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable, NSWindowDelegate, FirstLaunchWindowControllerDelegate {
 
-//    @IBOutlet var window: NSWindow!
-
     private let sparkleController = SparkleController()
     
     public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
@@ -20,11 +18,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
         return NSApplication.shared.delegate as! AppDelegate
     }
     
-    private var loadingWindow: LoadingViewController?
     private var mainWindowController: MainWindowController?
-
+    private var launchWindow: NSWindowController?
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
+        self.showLoadingWindow()
+        NSApp.activate(ignoringOtherApps: true)
+
         self.userNotificationController.requestAccess()
         
         self.dataModelController.authenticate { (success) in
@@ -32,13 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
                 self.didAuthenticate()
             }
         }
-        
-        let loadingWindow = LoadingViewController(windowNibName: "LoadingViewController")
-        self.loadingWindow = loadingWindow
-        
-//        loadingWindow.window?.makeKeyAndOrderFront(self)
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.runModal(for: loadingWindow.window!)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -77,33 +70,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
     @IBAction @objc private func checkForUpdates(_ sender: AppDelegate) {
         self.sparkleController.checkForUpdates()
     }
-
-//    func appKitInstallationUpdater(_ updater: AppKitInstallationUpdater, didCheckForUpdate updateAvailable: Bool, error: Error?) {
-//
-//    }
+ 
+    func hideLaunchWindow() {
+        if let launchWindow = self.launchWindow {
+            launchWindow.close()
+            self.launchWindow = nil
+        }
+    }
     
-    private var firstRunWindow: FirstLaunchWindowController?
+    func showLoadingWindow() {
+        let window = LoadingWindowController()
+        self.launchWindow = window
+        window.showWindow(self)
+    }
     
     public func showFirstRunWindow() {
-        let firstRun = FirstLaunchWindowController(windowNibName: "FirstLaunchWindowController")
-        firstRun.delegate = self
-        NSApp.runModal(for: firstRun.window!)
+        self.hideLaunchWindow()
         
-        firstRun.window?.orderOut(self)
+        let window = FirstLaunchWindowController()
+        self.launchWindow = window
+        window.delegate = self
+        window.showWindow(self)
     }
     
     public func showMainWindow() {
-        
-        DispatchQueue.main.async {
-            let mainWindow = MainWindowController(windowNibName: "MainWindowController")
-            mainWindow.window?.makeKeyAndOrderFront(self)
+//        DispatchQueue.main.async {
+            self.hideLaunchWindow()
+            
+            let mainWindow = MainWindowController()
+            mainWindow.showWindow(self)
             
             self.mainWindowController = mainWindow
-        }
+//        }
     }
      
     func firstLaunchWindowControllerShouldDismiss(_ firstLaunchWindowController: FirstLaunchWindowController) {
-        NSApp.stopModal(withCode: .OK)
         self.showMainWindow()
     }
     
@@ -112,14 +113,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
     }
     
     func firstLaunchWindowControllerShowSettings(_ firstLaunchWindowController: FirstLaunchWindowController) {
-        let windowController = PreferencesWindowController(windowNibName: "PreferencesWindowController")
-        NSApp.runModal(for: windowController.window!)
+        PreferencesWindow().showWindow(self)
     }
     
     func firstLaunchWindowControllerShowCalendars(_ firstLaunchWindowController: FirstLaunchWindowController) {
-        let windowController = CalendarsWindowController(windowNibName: "CalendarsWindowController")
-        NSApp.runModal(for: windowController.window!)
-
     }
     
     public func didAuthenticate() {
@@ -134,10 +131,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, AppControllerAware, Loggable
         self.sparkleController.configure(withAppBundle: Bundle.init(for: type(of:self)))
         
         NotificationCenter.default.post(name: AppDelegate.CalendarDidAuthenticateEvent, object: self)
-        
-        NSApp.stopModal()
-        self.loadingWindow?.window?.orderOut(self)
-        self.loadingWindow = nil
         
         var savedState = SavedState()
         if savedState.bool(forKey: .firstRunWasPresented) {

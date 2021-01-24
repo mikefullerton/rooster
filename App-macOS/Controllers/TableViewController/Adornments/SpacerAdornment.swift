@@ -9,7 +9,6 @@ import Foundation
 import Cocoa
 
 struct SpacerAdornment :  TableViewSectionAdornmentProtocol {
-    
     let height: CGFloat
     
     init(withHeight height: CGFloat) {
@@ -20,8 +19,8 @@ struct SpacerAdornment :  TableViewSectionAdornmentProtocol {
         return nil
     }
 
-    var view: NSView? {
-        return SpacerView();
+    var viewClass: AnyClass {
+        return SpacerView.self
     }
     
 }

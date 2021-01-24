@@ -9,33 +9,35 @@ import Foundation
 import Cocoa
 
 
-protocol SoundChoicesViewDelegate : AnyObject {
-    func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> NSViewController
+protocol SoundPreferencesViewDelegate : AnyObject {
+    func soundPreferencesView(_ view: SoundPreferencesView,
+                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex,
+                              fromView: NSView)
 }
 
-class SoundPreferencesView : SimpleVerticalStackView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
+class SoundPreferencesView : SimpleVerticalStackView, SingleSoundChoiceViewDelegate {
     
-    weak var delegate: SoundChoicesViewDelegate?
+    weak var delegate: SoundPreferencesViewDelegate?
 
     init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: frame, insets: NSEdgeInsets.ten, spacing: Offset.zero)
+    
+        let sounds = GroupBoxView(frame: CGRect.zero,
+                                  title: "SOUND_CHOICE_EXPLANATION".localized,
+                                  groupBoxInsets: GroupBoxView.defaultGroupBoxInsets,
+                                  groupBoxSpacing: GroupBoxView.defaultGroupBoxSpacing)
         
-        
-        let sounds = GroupBoxView(frame: CGRect.zero, title: "SOUND_CHOICE_EXPLANATION".localized)
         sounds.setContainedViews([
             self.firstSoundChoice,
             self.secondSoundChoice,
             self.thirdSoundChoice
         ])
 
-        let repeatView =  GroupBoxView(frame: CGRect.zero, title: "SOUND_PLAYCOUNT_EXPLANATION".localized)
-        repeatView.setContainedViews([ self.self.soundRepeatView ])
+        let repeatView = self.groupBoxView(forTitle: "SOUND_PLAYCOUNT_EXPLANATION".localized, view: self.soundRepeatView)
 
-        let delay = GroupBoxView(frame: CGRect.zero, title: "SOUND_DELAY_EXPLANATION".localized)
-        delay.setContainedViews([ self.startDelayView ])
+        let delay = self.groupBoxView(forTitle: "SOUND_DELAY_EXPLANATION".localized, view: self.startDelayView)
         
-        let volume = GroupBoxView(frame: CGRect.zero, title: "SOUND_VOLUME_EXPLANATION".localized)
-        volume.setContainedViews([ self.soundVolumeView ])
+        let volume = self.groupBoxView(forTitle: "SOUND_VOLUME_EXPLANATION".localized, view: self.soundVolumeView)
         
         self.setContainedViews([
             sounds,
@@ -49,68 +51,40 @@ class SoundPreferencesView : SimpleVerticalStackView, SoundChoiceViewDelegate, S
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var firstSoundChoice: SingleSoundChoiceView = {
-        let view = SingleSoundChoiceView(frame: CGRect.zero,
-                                         soundPreferenceIndex: .sound1,
-                                         delegate: self)
+    func groupBoxView(forTitle title: String, view containedView: NSView) -> GroupBoxView {
+        let view = GroupBoxView(frame: CGRect.zero,
+                                title: title,
+                                groupBoxInsets: NSEdgeInsets(top:10, left: 0, bottom: 10, right: 0),
+                                groupBoxSpacing: Offset.zero)
+        
+        view.setContainedViews([ containedView ])
         
         return view
-    }()
+    }
     
-    lazy var secondSoundChoice: SingleSoundChoiceView = {
-        let view = SingleSoundChoiceView(frame: CGRect.zero,
-                                         soundPreferenceIndex: .sound2,
-                                         delegate: self)
-        
-        return view
-    }()
+    lazy var firstSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
+                                                      soundPreferenceIndex: .sound1,
+                                                      delegate: self)
     
-    lazy var thirdSoundChoice: SingleSoundChoiceView = {
-        let view = SingleSoundChoiceView(frame: CGRect.zero,
-                                         soundPreferenceIndex: .sound3,
-                                         delegate: self)
+    lazy var secondSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
+                                                       soundPreferenceIndex: .sound2,
+                                                       delegate: self)
+    
+    lazy var thirdSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
+                                                      soundPreferenceIndex: .sound3,
+                                                      delegate: self)
+    
+    lazy var soundVolumeView = SoundVolumeView()
+    
+    lazy var soundRepeatView = SoundRepeatView()
 
-        
-        return view
-    }()
-    
-    
-    let fixedLabelWidth: CGFloat = 100
-    let sliderRightInset: CGFloat = 100
-    
-    lazy var soundVolumeView: SoundVolumeView = {
-        var view = SoundVolumeView()
-        
-        return view
-    }()
-    
-    lazy var soundRepeatView: SoundRepeatView = {
-        var view = SoundRepeatView()
-        
-        return view
-    }()
+    lazy var startDelayView = StartDelayView()
 
-    lazy var startDelayView: StartDelayView = {
-        var view = StartDelayView()
-        
-        return view
-    }()
-
-    
     func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: NSButton) {
         if let delegate = self.delegate {
-            let chooser = SoundPickerViewController(withSoundPreferenceIndex: view.index)
-            chooser.delegate = self
-            
-            let presentingViewController = delegate.soundChoicesViewPresentingViewController(self)
-            
-            chooser.presentInViewController(presentingViewController, fromView: button)
+            delegate.soundPreferencesView(self,
+                                          presentSoundPickerForSoundIndex: view.index,
+                                          fromView: button)
         }
-    }
-    
-    func soundChooserViewControllerWasDismissed(_ controller: SoundPickerViewController) {
-    }
-    
-    func soundChooserViewControllerWillDismiss(_ controller: SoundPickerViewController) {
     }
 }

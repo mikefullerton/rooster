@@ -8,19 +8,19 @@
 import Foundation
 import Cocoa
 
-protocol SoundChoiceViewDelegate : AnyObject {
+protocol SingleSoundChoiceViewDelegate : AnyObject {
     func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: NSButton)
 }
 
 class SingleSoundChoiceView : NSView {
     
-    weak var delegate: SoundChoiceViewDelegate?
+    weak var delegate: SingleSoundChoiceViewDelegate?
 
     let index: SoundPreference.SoundIndex
     
     init(frame: CGRect,
          soundPreferenceIndex index: SoundPreference.SoundIndex,
-         delegate: SoundChoiceViewDelegate) {
+         delegate: SingleSoundChoiceViewDelegate) {
         self.delegate = delegate
         self.index = index
         super.init(frame: frame)

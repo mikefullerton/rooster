@@ -57,16 +57,6 @@ class CalendarToolbarView : TopBar {
         NSLayoutConstraint.activate([
             toolbar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             toolbar.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-            
-//            toolbar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            toolbar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-//            toolbar.topAnchor.constraint(equalTo: self.topAnchor),
-//            toolbar.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-
-//        self.invalidateIntrinsicContentSize()
     }
-    
-    
-    
 }

@@ -33,7 +33,7 @@
 "PREFERENCES" = "Preferences";
 "RANDOM" = "Random";
 "RANDOMIZED" = "Randomize";
-"RESET" = "Reset";
+"RESET" = "Reset To Defaults";
 "SAFARI_TIP" = "Enable Safari Webex plugin to bypass Safari prompts";
 "SOUNDS" = "Sounds";
 "SOUND_CHOICE_EXPLANATION" = "Play up to 3 sounds sequentially when a meeting starts";

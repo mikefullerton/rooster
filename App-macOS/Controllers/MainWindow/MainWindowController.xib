@@ -12,7 +12,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Rooster" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" toolbarStyle="unified" id="F0z-JX-Cv5">
+        <window title="Rooster" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="MainWindow" animationBehavior="default" toolbarStyle="unified" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="270"/>
             <rect key="screenRect" x="0.0" y="0.0" width="3360" height="1865"/>
@@ -45,8 +45,6 @@
                 <defaultToolbarItems>
                     <toolbarItem reference="HUv-62-BK3"/>
                     <toolbarItem reference="9D9-Lw-HmW"/>
-                    <toolbarItem reference="VP3-Ro-tqz"/>
-                    <toolbarItem reference="mAX-lm-qU0"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>

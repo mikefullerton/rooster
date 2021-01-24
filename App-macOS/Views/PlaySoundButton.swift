@@ -51,8 +51,8 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         self.target = self
         self.action = #selector(playSound(_:))
         
-        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        self.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+        self.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
     }
     
     deinit {

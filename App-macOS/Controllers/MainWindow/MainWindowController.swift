@@ -7,22 +7,25 @@
 
 import Cocoa
 
-class MainWindowController: NSWindowController {
-
+class MainWindowController: WindowController, MainWindowViewControllerDelegate {
     
     override func windowDidLoad() {
         super.windowDidLoad()
-        self.contentViewController = MainViewViewController()
+        let viewController = MainWindowViewController()
+        viewController.delegate = self
+        
+        self.autosaveKey = "MainWindow"
+        self.setContentViewController(viewController)
     }
     
     @IBAction @objc func showSettings(_ sender: Any) {
-        let windowController = PreferencesWindowController(windowNibName: "PreferencesWindowController")
-        NSApp.runModal(for: windowController.window!)
+        PreferencesWindow().showWindow(self)
     }
-
-    @IBAction @objc func showCalendars(_ sender: Any) {
-        let windowController = CalendarsWindowController(windowNibName: "CalendarsWindowController")
-        NSApp.runModal(for: windowController.window!)
+    
+    func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {
+        if let window = self.window {
+            window.setContentSize(size)
+        }
     }
 
 }

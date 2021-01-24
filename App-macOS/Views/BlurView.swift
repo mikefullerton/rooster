@@ -42,10 +42,9 @@ class BlurView : NSView {
     
     lazy var blurView: NSView = {
         let visualEffectView = NSVisualEffectView(frame: CGRect.zero)
-        visualEffectView.material = .headerView
-        
-        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-
+        visualEffectView.material =  .underWindowBackground //.titlebar //.headerView
+        visualEffectView.blendingMode = .withinWindow
+        visualEffectView.state = .active
         return visualEffectView
     }()
     

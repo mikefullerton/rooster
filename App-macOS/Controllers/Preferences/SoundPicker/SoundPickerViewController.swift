@@ -8,14 +8,14 @@
 import Foundation
 import Cocoa
 
-protocol SoundChooserViewControllerDelegate : AnyObject {
-    func soundChooserViewControllerWillDismiss(_ controller: SoundPickerViewController)
-    func soundChooserViewControllerWasDismissed(_ controller: SoundPickerViewController)
+protocol SoundPickerViewControllerDelegate : AnyObject {
+    func soundPickerViewControllerWillDismiss(_ controller: SoundPickerViewController)
+    func soundPickerViewControllerWasDismissed(_ controller: SoundPickerViewController)
 }
 
 class SoundPickerViewController : NSViewController {
     
-    weak var delegate: SoundChooserViewControllerDelegate?
+    weak var delegate: SoundPickerViewControllerDelegate?
     
     let soundPreferenceIndex: SoundPreference.SoundIndex
     
@@ -30,11 +30,27 @@ class SoundPickerViewController : NSViewController {
     
     override func loadView() {
         self.view = NSView()
+        
+        self.addSoundPicker()
+        self.addBottomBar()
+
+        self.title = "Sound Picker"
+        
+        self.preferredContentSize = CGSize(width: 500, height: 600)
     }
     
-    lazy var topBar = TopBar(frame: self.view.bounds)
-    lazy var bottomBar = BottomBar(frame: self.view.bounds)
-    lazy var soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
+    lazy var bottomBar = BottomBar()
+    
+    lazy var soundPicker: SoundPickerTableViewController = {
+        
+        let soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
+        
+        soundPicker.scrollView.contentInsets = NSEdgeInsets(top: 0,
+                                                            left: 0,
+                                                            bottom: self.bottomBar.preferredHeight,
+                                                            right: 0)
+        return soundPicker
+    } ()
     
     func addSoundPicker() {
         let soundPicker = self.soundPicker
@@ -57,20 +73,11 @@ class SoundPickerViewController : NSViewController {
             AppDelegate.instance.preferencesController.preferences.sounds[self.soundPreferenceIndex] = newSound
         }
         
-        self.presentingViewController?.dismiss(self)
-        
-//        self.dismiss(animated: true, completion: nil)
+        self.dismissWindow()
     }
     
     @objc func cancelButtonClicked(_ sender: NSButton) {
-        self.presentingViewController?.dismiss(self)
-
-//        self.dismiss(animated: true, completion: nil)
-    }
-
-    func addTopBar() {
-        let topBar = self.topBar
-        topBar.addToView(self.view)
+        self.dismissWindow()
     }
     
     func addBottomBar() {
@@ -83,37 +90,14 @@ class SoundPickerViewController : NSViewController {
         cancelButton.action = #selector(cancelButtonClicked(_:))
         bottomBar.addToView(self.view)
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.addSoundPicker()
-        self.addTopBar()
-        self.addBottomBar()
-        
-        self.topBar.addTitleView(withText: "SOUND_PICKER".localized)
-    }
-
-    func presentInViewController(_ viewController: NSViewController, fromView view: NSView) {
-        viewController.presentAsSheet(self)
-    }
-    
+ 
     override func viewDidLayout() {
         super.viewDidLayout()
-
-        let topHeight = self.topBar.frame.size.height
-        
-        if let scrollView = self.soundPicker.collectionView.enclosingScrollView {
-        
-            scrollView.contentInsets = NSEdgeInsets(top: topHeight,
-                                                    left: 0,
-                                                    bottom: self.bottomBar.frame.size.height,
-                                                    right: 0)
-            
-            self.soundPicker.collectionView.scrollToItems(at: Set<IndexPath>([ IndexPath(item: 0, section: 0)]),
-                                                          scrollPosition: .top)
-        }
-
     }
 }
 
+extension ModalWindowController {
+    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreference.SoundIndex) {
+        SoundPickerViewController(withSoundPreferenceIndex: soundPreference).presentInModalWindow()
+    }
+}

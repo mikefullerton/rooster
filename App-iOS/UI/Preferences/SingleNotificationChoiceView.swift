@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NotificationChoiceView : UIView {
+class SingleNotificationChoiceView : UIView {
     
     let title: String
     
@@ -78,7 +78,7 @@ class NotificationChoiceView : UIView {
     }
 }
 
-class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
+class AutomaticallyOpenLocationURLsChoiceView : SingleNotificationChoiceView {
     
     
     init(frame: CGRect) {
@@ -125,7 +125,7 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceView {
 }
 
 
-class BounceInDockChoiceView : NotificationChoiceView {
+class BounceInDockChoiceView : SingleNotificationChoiceView {
     init(frame: CGRect) {
         super.init(frame: frame,
                    title: "BOUNCE_ICON".localized)
@@ -153,7 +153,7 @@ class BounceInDockChoiceView : NotificationChoiceView {
 }
 
 
-class UseSystemNotificationsChoiceView : NotificationChoiceView {
+class UseSystemNotificationsChoiceView : SingleNotificationChoiceView {
 
     init(frame: CGRect) {
         super.init(frame: frame,

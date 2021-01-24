@@ -29,15 +29,15 @@ class NotificationChoicesView : SimpleVerticalStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var automaticallyOpenLocationURLs : NotificationChoiceView = {
+    lazy var automaticallyOpenLocationURLs : SingleNotificationChoiceView = {
         return AutomaticallyOpenLocationURLsChoiceView(frame: self.bounds)
     }()
 
-    lazy var bounceIconInDock : NotificationChoiceView = {
+    lazy var bounceIconInDock : SingleNotificationChoiceView = {
         return BounceInDockChoiceView(frame: self.bounds)
     }()
 
-    lazy var useSystemNotifications : NotificationChoiceView = {
+    lazy var useSystemNotifications : SingleNotificationChoiceView = {
         return UseSystemNotificationsChoiceView(frame: self.bounds)
     }()
     

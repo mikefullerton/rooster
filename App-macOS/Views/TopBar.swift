@@ -19,7 +19,7 @@ class TopBar : BlurView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        self.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
 //        self.setContentHuggingPriority(., for: .vertical)
     }
     

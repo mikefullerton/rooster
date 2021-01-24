@@ -20,7 +20,7 @@ struct DividerAdornment :  TableViewSectionAdornmentProtocol {
         return nil
     }
 
-    var view: NSView? {
-        return DividerView();
+    var viewClass: AnyClass {
+        return DividerView.self
     }
 }

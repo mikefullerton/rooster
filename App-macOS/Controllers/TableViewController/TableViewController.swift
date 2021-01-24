@@ -16,37 +16,16 @@ class TableViewController<ViewModel> : NSViewController,
     
     private(set) var viewModel: ViewModel?
     
-    var collectionView: NSCollectionView {
-        return self.view as! NSCollectionView
-    }
-    
     func reloadViewModel() -> ViewModel? {
         return nil
     }
-    
-    // MARK: TableView
     
     public func reloadData() {
         self.viewModel = self.reloadViewModel()
         self.collectionView.reloadData()
     }
     
-    // MARK: UIViewController
-    
     private func createLayout() -> NSCollectionViewLayout {
-//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-//                                             heightDimension: .fractionalHeight(1.0))
-//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//
-//        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-//                                              heightDimension: .absolute(20))
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-//                                                         subitems: [item])
-//
-//        let section = NSCollectionLayoutSection(group: group)
-//
-//        let layout = NSCollectionViewCompositionalLayout(section: section)
-
         let layout = NSCollectionViewFlowLayout()
         layout.sectionHeadersPinToVisibleBounds = true
         layout.sectionFootersPinToVisibleBounds = true
@@ -54,28 +33,42 @@ class TableViewController<ViewModel> : NSViewController,
         return layout
     }
     
-    override func loadView() {
+    lazy var scrollView : NSScrollView = {
+        let view = NSScrollView()
+        view.automaticallyAdjustsContentInsets = false
+        return view
+    }()
+
+    lazy var collectionView: NSCollectionView = {
         let collectionView = NSCollectionView()
         collectionView.collectionViewLayout = self.createLayout()
-        
-        
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.view = collectionView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        self.tableView.contentInset = NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
+        return collectionView
+    } ()
+        
+    override func loadView() {
+        let scrollView = self.scrollView
+        
+        scrollView.documentView = self.collectionView
+        self.view = scrollView
     }
     
     override func viewWillAppear() {
         self.reloadData()
         super.viewWillAppear()
+        
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
+    
+        let contentInsets = self.scrollView.contentInsets
+        
+        if contentInsets.top > 0 {
+            self.scrollView.contentView.scroll(NSPoint(x: 0, y: -contentInsets.top))
+            self.scrollView.reflectScrolledClipView(self.scrollView.contentView)
+        }
     }
     
     override func viewDidDisappear() {
@@ -157,26 +150,50 @@ class TableViewController<ViewModel> : NSViewController,
     
     }
     
-//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> NSView? {
-//        guard let viewModel = self.viewModel,
-//              let header = viewModel.header(forSection:section) else {
-//            return nil
-//        }
-//
-//        return header.view
-//    }
-//
-//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> NSView? {
-//        guard let viewModel = self.viewModel,
-//              let footer = viewModel.footer(forSection:section) else {
-//            return nil
-//        }
-//
-//        return footer.view
-//    }
+    func collectionView(_ collectionView: NSCollectionView,
+                        viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
+                        at indexPath: IndexPath) -> NSView {
+        
+        if kind == NSCollectionView.elementKindSectionHeader,
+           let viewModel = self.viewModel,
+           let header = viewModel.header(forSection:indexPath.section) {
+            
+            let identifier = NSUserInterfaceItemIdentifier(NSStringFromClass(header.viewClass))
+            
+            self.collectionView.register(header.viewClass,
+                                         forSupplementaryViewOfKind: kind,
+                                         withIdentifier: identifier)
+            
+            if let view = self.collectionView.makeSupplementaryView(ofKind: kind,
+                                                             withIdentifier: identifier,
+                                                             for: indexPath) as? TableViewAdornmentView {
+                view.setContents(header)
+                return view as! NSView
+            }
+        }
 
-    // MARK: Data Source
+        if kind == NSCollectionView.elementKindSectionFooter,
+           let viewModel = self.viewModel,
+           let footer = viewModel.footer(forSection:indexPath.section) {
+
+            let identifier = NSUserInterfaceItemIdentifier(NSStringFromClass(footer.viewClass))
+            
+            self.collectionView.register(footer.viewClass,
+                                         forSupplementaryViewOfKind: kind,
+                                         withIdentifier: identifier)
+            
+            if let view = self.collectionView.makeSupplementaryView(ofKind: kind,
+                                                                    withIdentifier: identifier,
+                                                                    for: indexPath) as? TableViewAdornmentView {
+                view.setContents(footer)
+                return view as! NSView
+            }
+        }
+
+        return NSView()
+    }
     
+    // MARK: Data Source
     
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let viewModel = self.viewModel,
@@ -195,7 +212,6 @@ class TableViewController<ViewModel> : NSViewController,
         let identifier = NSUserInterfaceItemIdentifier(rawValue: row.cellReuseIdentifer)
         self.collectionView.register(row.cellClass, forItemWithIdentifier:identifier)
 
-
         let item = self.collectionView.makeItem(withIdentifier: identifier, for: indexPath)
         row.willDisplay(cell: item,
                         atIndexPath: indexPath,
@@ -206,24 +222,25 @@ class TableViewController<ViewModel> : NSViewController,
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         return self.viewModel == nil ? 0 : viewModel!.sectionCount
     }
+    
+    var calculatedContentSize: CGSize {
+        if let viewModel = self.viewModel {
+            return CGSize(width: self.view.frame.size.width, height: viewModel.height)
+        }
         
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        guard let viewModel = self.viewModel,
-//              let header = viewModel.header(forSection:section) else {
-//            return nil
+        return CGSize.zero
+    }
+    
+//    override var preferredContentSize: CGSize {
+//        get {
+//            if let viewModel = self.viewModel {
+//                return CGSize(width: self.view.frame.size.width, height: viewModel.height)
+//            }
+//            return super.preferredContentSize
 //        }
+//        set(size) {
 //
-//        return header.title
-//    }
-//
-//    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-//
-//        guard let viewModel = self.viewModel,
-//              let footer = viewModel.footer(forSection:section) else {
-//            return nil
 //        }
-//
-//        return footer.title
 //    }
 }
 

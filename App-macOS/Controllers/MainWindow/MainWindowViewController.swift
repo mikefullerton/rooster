@@ -8,12 +8,22 @@
 import Foundation
 import Cocoa
 
-class MainViewViewController : NSViewController {
+protocol MainWindowViewControllerDelegate : AnyObject {
+    func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize)
+}
+
+class MainWindowViewController : NSViewController, DataModelAware {
     
+    weak var delegate: MainWindowViewControllerDelegate?
+
     lazy var timeRemainingViewController = TimeRemainingViewController()
 
     lazy var eventListViewController = EventListViewController()
-
+    
+    private var reloader: DataModelReloader? = nil
+  
+    let minimumContentSize = CGSize(width: 600, height: TimeRemainingViewController.preferredHeight)
+    
     func addTimeRemainingView() {
 
         let timeRemainingViewController = self.timeRemainingViewController
@@ -33,10 +43,14 @@ class MainViewViewController : NSViewController {
     }
     
     override func loadView() {
-        self.view = NSView(frame: CGRect(x: 0, y: 0, width: 500, height: 600))
+        self.view = ContentAwareView(frame: CGRect(x: 0, y: 0, width: 500, height: 600))
         
         self.addTimeRemainingView()
         self.addEventListView()
+        
+        self.reloader = DataModelReloader(for: self)
+        
+        self.adjustWindowSize()
     }
     
     func addEventListView() {
@@ -82,10 +96,42 @@ class MainViewViewController : NSViewController {
         super.viewWillAppear()
         
 //        self.adjustScrollView()
+        
+        self.adjustWindowSize()
     }
     
+    func adjustWindowSize() {
+        DispatchQueue.main.async {
+            var size = CGSize.zero
+            
+            size.height = self.timeRemainingViewController.view.frame.maxY
+            
+            size.height += self.eventListViewController.preferredContentSize.height
+            
+            self.preferredContentSize = self.adjustedSize(size)
+        }
+    }
     
-    //            self.showEventListViewController()
-    //            self.reloader = DataModelReloader(for: self)
+    private func adjustedSize(_ size: CGSize) -> CGSize {
+        return  CGSize(width: max(self.minimumContentSize.width, size.width),
+                       height: max(self.minimumContentSize.height, size.height))
+    }
+    
+    override var preferredContentSize: CGSize {
+        get {
+            return super.preferredContentSize
+        }
+        set(size) {
+            print("Adjusting window size to: \(size)")
+            
+            super.preferredContentSize = size
+            if let delegate = self.delegate {
+                delegate.mainWindowViewController(self, preferredContentSizeDidChange: size)
+            }
+        }
+    }
 
+    func dataModelDidReload(_ dataModel: DataModel) {
+        self.adjustWindowSize()
+    }
 }
