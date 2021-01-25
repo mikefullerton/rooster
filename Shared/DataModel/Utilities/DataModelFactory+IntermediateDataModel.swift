@@ -94,13 +94,9 @@ extension DataModelFactory {
                     }
 
                     var startDate: Date? = nil
-                    var endDate: Date? = nil
                     
                     if ekReminder.startDateComponents != nil {
                         startDate = ekReminder.startDateComponents!.date
-                        
-                        endDate = ekReminder.dueDateComponents?.date ?? nil
-                        
                     } else if ekReminder.dueDateComponents != nil {
                         startDate = ekReminder.dueDateComponents!.date
                     } else {
@@ -110,6 +106,9 @@ extension DataModelFactory {
                     if startDate == nil || ekReminder.isCompleted {
                         continue
                     }
+                    
+                    // TODO: hardcoded to 15 minutes
+                    let endDate = startDate!.addingTimeInterval(60 * 60 * 15)
                     
                     var reminder: Reminder? = nil
                     if let savedState = self.dataModelStorage.reminderState(forKey: ekReminder.uniqueID) {

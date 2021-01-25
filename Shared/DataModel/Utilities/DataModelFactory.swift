@@ -106,17 +106,18 @@ struct DataModelFactory {
         
         return self.mergeItems(newEvents, withOldItems: oldEvents) { newEvent, newAlarm in
             return Event(withIdentifier: newEvent.id,
-                                 ekEventID: newEvent.ekEventID,
-                                 calendar: newEvent.calendar,
-                                 subscribed: newEvent.isSubscribed,
-                                 alarm: newAlarm,
-                                 startDate: newEvent.startDate,
-                                 endDate: newEvent.endDate,
-                                 title: newEvent.title,
-                                 location: newEvent.location,
-                                 url: newEvent.url,
-                                 notes: newEvent.notes,
-                                 organizer: newEvent.organizer)
+                         ekEventID: newEvent.ekEventID,
+                         externalIdentifier: newEvent.externalIdentifier,
+                         calendar: newEvent.calendar,
+                         subscribed: newEvent.isSubscribed,
+                         alarm: newAlarm,
+                         startDate: newEvent.startDate,
+                         endDate: newEvent.endDate,
+                         title: newEvent.title,
+                         location: newEvent.location,
+                         url: newEvent.url,
+                         notes: newEvent.notes,
+                         organizer: newEvent.organizer)
 
         }
     }
@@ -126,17 +127,18 @@ struct DataModelFactory {
         
         return self.mergeItems(newReminders, withOldItems: oldReminders) { newReminder, newAlarm in
             return Reminder(withIdentifier: newReminder.id,
-                                    ekReminderID: newReminder.ekReminderID,
-                                    calendar: newReminder.calendar,
-                                    subscribed: newReminder.isSubscribed,
-                                    completed: newReminder.isCompleted,
-                                    alarm: newAlarm,
-                                    startDate: newReminder.startDate,
-                                    dueDate: newReminder.dueDate,
-                                    title: newReminder.title,
-                                    location: newReminder.location,
-                                    url: newReminder.url,
-                                    notes: newReminder.notes)
+                            ekReminderID: newReminder.ekReminderID,
+                            externalIdentifier: newReminder.externalIdentifier,
+                            calendar: newReminder.calendar,
+                            subscribed: newReminder.isSubscribed,
+                            completed: newReminder.isCompleted,
+                            alarm: newAlarm,
+                            startDate: newReminder.startDate,
+                            dueDate: newReminder.dueDate,
+                            title: newReminder.title,
+                            location: newReminder.location,
+                            url: newReminder.url,
+                            notes: newReminder.notes)
 
         }
     }

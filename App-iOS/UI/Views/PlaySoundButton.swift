@@ -143,7 +143,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
                 var index = myself.contentViewIndex
                 index += 1
                 if index > myself.maxIndex {
-                    index = 0 // Image.play2.rawValue
+                    index = 0 // SDKImage.play2.rawValue
                 }
 
                 myself.contentViewIndex = index

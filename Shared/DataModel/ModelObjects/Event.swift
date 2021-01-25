@@ -20,6 +20,7 @@ struct Event: Identifiable, Hashable, CalendarItem {
     let location: String?
     let url: URL?
     let notes: String?
+    let externalIdentifier: String
     
     // modifiable
     var isSubscribed: Bool
@@ -27,6 +28,7 @@ struct Event: Identifiable, Hashable, CalendarItem {
     
     init(withIdentifier identifier: String,
          ekEventID: String,
+         externalIdentifier: String,
          calendar: Calendar,
          subscribed: Bool,
          alarm: Alarm,
@@ -38,6 +40,7 @@ struct Event: Identifiable, Hashable, CalendarItem {
          notes: String?,
          organizer: String?) {
         
+        self.externalIdentifier = externalIdentifier
         self.id = identifier
         self.ekEventID = ekEventID
         self.calendar = calendar
@@ -67,7 +70,8 @@ struct Event: Identifiable, Hashable, CalendarItem {
                 lhs.location == rhs.location &&
                 lhs.url == rhs.url &&
                 lhs.notes == rhs.notes &&
-                lhs.organizer == rhs.organizer
+                lhs.organizer == rhs.organizer &&
+                lhs.externalIdentifier == rhs.externalIdentifier
     }
 
     func hash(into hasher: inout Hasher) {
@@ -82,6 +86,17 @@ struct Event: Identifiable, Hashable, CalendarItem {
     }
 }
 
+extension Event {
+    func stopAlarmButtonClicked() {
+        self.stopAlarm()
+    }
 
+    var timeLabelDisplayString: String {
+        let startTime = self.startDate.shortTimeString
+        let endTime = self.endDate.shortTimeString
+
+        return "\(startTime) - \(endTime)"
+    }
+}
 
 

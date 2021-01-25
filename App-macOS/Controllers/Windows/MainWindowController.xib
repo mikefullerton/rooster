@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18099.1" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18099.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="Rooster" customModuleProvider="target">
+            <connections>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Rooster" separatorStyle="line" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="MainWindow" animationBehavior="default" toolbarStyle="compact" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES"/>
+            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3360" height="1865"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            </view>
+            <toolbar key="toolbar" implicitIdentifier="F9B5FEA4-B3E8-40C0-ABD2-0C868599F9AB" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="qnW-CR-TDi">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="HUv-62-BK3"/>
+                    <toolbarItem implicitItemIdentifier="7CD86BFD-42A0-404B-A368-228A4447BB64" label="Settings" paletteLabel="Settings" tag="-1" image="gearshape" catalog="system" id="9D9-Lw-HmW">
+                        <size key="minSize" width="39" height="32"/>
+                        <size key="maxSize" width="39" height="32"/>
+                        <connections>
+                            <action selector="showSettings:" target="-2" id="wtj-Hi-Crx"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="FA403BF5-96A7-4B23-9001-EFECE1ACA246" label="Calendar" paletteLabel="Calendars" tag="-1" image="calendar" catalog="system" id="VP3-Ro-tqz">
+                        <size key="minSize" width="25.5" height="21"/>
+                        <size key="maxSize" width="25.5" height="21"/>
+                        <connections>
+                            <action selector="showCalendars:" target="-2" id="U6y-NH-b1M"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="E70D67C6-9AD7-4E4C-826E-AFBDCE31FC78" label="Share" paletteLabel="Share" tag="-1" image="square.and.arrow.up" catalog="system" id="mAX-lm-qU0">
+                        <size key="minSize" width="35.5" height="34"/>
+                        <size key="maxSize" width="35.5" height="34"/>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="HUv-62-BK3"/>
+                    <toolbarItem reference="9D9-Lw-HmW"/>
+                </defaultToolbarItems>
+            </toolbar>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="-232" y="96"/>
+        </window>
+    </objects>
+    <resources>
+        <image name="calendar" catalog="system" width="16" height="14"/>
+        <image name="gearshape" catalog="system" width="16" height="16"/>
+        <image name="square.and.arrow.up" catalog="system" width="15" height="17"/>
+    </resources>
+</document>

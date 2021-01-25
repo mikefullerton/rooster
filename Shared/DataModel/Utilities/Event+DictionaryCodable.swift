@@ -64,6 +64,7 @@ extension Event {
         
         return Event(withIdentifier: self.id,
                              ekEventID: self.ekEventID,
+                             externalIdentifier: self.externalIdentifier,
                              calendar: self.calendar,
                              subscribed: state.isSubscribed,
                              alarm: alarm,
@@ -87,6 +88,7 @@ extension Event {
 
         self.init(withIdentifier: EKEvent.uniqueID,
                   ekEventID: EKEvent.eventIdentifier,
+                  externalIdentifier: EKEvent.calendarItemExternalIdentifier,
                   calendar: calendar,
                   subscribed: savedState.isSubscribed,
                   alarm: alarm,

@@ -7,9 +7,16 @@
 
 import Foundation
 
-protocol CalendarItem: CustomStringConvertible, Loggable {
+protocol CalendarItemBehavior {
+    func stopAlarmButtonClicked()
+    var timeLabelDisplayString: String { get }
+}
+
+protocol CalendarItem: CustomStringConvertible, Loggable, CalendarItemBehavior {
     var id: String { get }
 
+    var externalIdentifier: String { get }
+    
     var alarm: Alarm { get set }
     var title: String { get }
     var calendar: Calendar { get }
@@ -19,5 +26,7 @@ protocol CalendarItem: CustomStringConvertible, Loggable {
     var isSubscribed: Bool { get set }
     
     func isEqualTo(_ item: CalendarItem) -> Bool
+    
+    
 }
 

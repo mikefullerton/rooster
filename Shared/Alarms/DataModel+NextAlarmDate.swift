@@ -17,8 +17,8 @@ extension DataModel {
 
             let alarm = item.alarm
             
-            if let endDate = alarm.endDate,
-               endDate.isAfterDate(now),
+            let endDate = alarm.endDate
+            if endDate.isAfterDate(now),
                (nextDate == nil || endDate.isBeforeDate(nextDate!)) {
                 nextDate = endDate
             }

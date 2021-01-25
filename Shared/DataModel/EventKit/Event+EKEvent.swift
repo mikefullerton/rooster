@@ -16,6 +16,7 @@ extension Event {
 
         self.init(withIdentifier: EKEvent.uniqueID,
                   ekEventID: EKEvent.eventIdentifier,
+                  externalIdentifier: EKEvent.calendarItemExternalIdentifier,
                   calendar: calendar,
                   subscribed: subscribed,
                   alarm: alarm,

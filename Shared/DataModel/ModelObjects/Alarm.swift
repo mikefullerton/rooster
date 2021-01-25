@@ -18,13 +18,13 @@ struct Alarm: Equatable, CustomStringConvertible {
     }
 
     let originalStartDate: Date
-    let originalEndDate: Date?
+    let originalEndDate: Date
     
-    let snoozedStartDate: Date?
-    let snoozedEndDate: Date?
+    let snoozedStartDate: Date
+    let snoozedEndDate: Date
 
     let startDate: Date
-    let endDate: Date?
+    let endDate: Date
     
     // modifiable
     var state: State
@@ -33,12 +33,12 @@ struct Alarm: Equatable, CustomStringConvertible {
     
     init(withState state: State,
          startDate originalStartDate: Date,
-         endDate originalEndDate: Date?,
+         endDate originalEndDate: Date,
          isEnabled: Bool,
          snoozeInterval: TimeInterval) {
 
-        let snoozedStartDate = snoozeInterval > 0 ? originalStartDate.addingTimeInterval(snoozeInterval) : nil
-        let snoozedEndDate = snoozeInterval > 0 && originalEndDate != nil ? originalEndDate!.addingTimeInterval(snoozeInterval) : nil
+        let snoozedStartDate = snoozeInterval > 0 ? originalStartDate.addingTimeInterval(snoozeInterval) : originalStartDate
+        let snoozedEndDate = snoozeInterval > 0 ? originalEndDate.addingTimeInterval(snoozeInterval) : originalEndDate
 
         self.isEnabled = isEnabled
         self.state = state
@@ -47,8 +47,8 @@ struct Alarm: Equatable, CustomStringConvertible {
         self.snoozeInterval = snoozeInterval
         self.snoozedStartDate = snoozedStartDate
         self.snoozedEndDate = snoozedEndDate
-        self.startDate = snoozedStartDate != nil ? snoozedStartDate! : originalStartDate
-        self.endDate = snoozedEndDate != nil ? snoozedEndDate : originalEndDate
+        self.startDate = snoozedStartDate
+        self.endDate = snoozedEndDate
     }
 
     static func == (lhs: Alarm, rhs: Alarm) -> Bool {
@@ -63,11 +63,11 @@ struct Alarm: Equatable, CustomStringConvertible {
         var formatter = StringFormatter(withTitle: "Alarm")
         formatter.append("State", self.state)
         formatter.append("Start Date", self.startDate.shortTimeString)
-        formatter.append("End Date", self.endDate?.shortTimeString)
+        formatter.append("End Date", self.endDate.shortTimeString)
         formatter.append("Original Start Date", self.originalStartDate.shortTimeString)
-        formatter.append("Original End Date", self.originalEndDate?.shortTimeString)
-        formatter.append("Snoozed Start Date", self.snoozedStartDate?.shortTimeString)
-        formatter.append("Snoozed End Date", self.snoozedEndDate?.shortTimeString)
+        formatter.append("Original End Date", self.originalEndDate.shortTimeString)
+        formatter.append("Snoozed Start Date", self.snoozedStartDate.shortTimeString)
+        formatter.append("Snoozed End Date", self.snoozedEndDate.shortTimeString)
         formatter.append("isEnabled", self.isEnabled)
         return formatter.string
     }
@@ -78,7 +78,8 @@ struct Alarm: Equatable, CustomStringConvertible {
 
     var isHappeningNow: Bool {
         let now = Date()
-        return (self.startDate.isBeforeDate(now) && (self.endDate == nil || self.endDate!.isAfterDate(now)))
+        return self.startDate.isEqualToOrBeforeDate(now) && now.isEqualToOrBeforeDate(self.endDate)
+        
     }
     
     var willFireInTheFuture: Bool {

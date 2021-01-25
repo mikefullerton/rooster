@@ -67,6 +67,16 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
                 AppDelegate.instance.userNotificationController.scheduleNotification(forItem: item)
             }
             
+            #if os(macOS)
+            
+            if prefs.bounceIconInDock {
+                self.logger.log("bouncing app in dock for \(self.description)")
+
+                AppDelegate.instance.systemUtilities.startBouncingAppIcon()
+            }
+            
+            #endif
+            
             #if targetEnvironment(macCatalyst)
             if prefs.bounceIconInDock {
                 self.logger.log("bouncing app in dock for \(self.description)")

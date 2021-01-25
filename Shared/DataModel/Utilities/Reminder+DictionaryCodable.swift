@@ -60,10 +60,11 @@ extension Reminder {
 
         let alarm = Alarm(withSavedState: savedState.alarmState,
                                   startDate: self.dueDate,
-                                  endDate: nil)
+                                  endDate: self.dueDate.addingTimeInterval(60 * 60 * 15))
 
         return Reminder(withIdentifier: self.id,
                                 ekReminderID:self.ekReminderID,
+                                externalIdentifier: self.externalIdentifier,
                                 calendar: self.calendar,
                                 subscribed: savedState.isSubscribed,
                                 completed: self.isCompleted,
@@ -80,7 +81,7 @@ extension Reminder {
     init(withReminder EKReminder: EKReminder,
          calendar: Calendar,
          startDate: Date,
-         endDate: Date?,
+         endDate: Date,
          savedState: SavedState) {
         
         let alarm = Alarm(withSavedState: savedState.alarmState,
@@ -89,6 +90,7 @@ extension Reminder {
         
         self.init(withIdentifier: EKReminder.uniqueID,
                   ekReminderID: EKReminder.calendarItemIdentifier,
+                  externalIdentifier: EKReminder.calendarItemExternalIdentifier,
                   calendar: calendar,
                   subscribed: savedState.isSubscribed,
                   completed: EKReminder.isCompleted,

@@ -11,6 +11,13 @@ extension CalendarItem {
     
     func openLocationURL() {
         if let url = self.knownLocationURL {
+            
+            #if os(macOS)
+            AppDelegate.instance.systemUtilities.openLocationURL(url) { (success, error) in
+                self.logger.log("Opened URL: \(url). Success: \(success), error: \(error != nil ? error!.localizedDescription : "nil")")
+            }
+            #endif
+
             #if targetEnvironment(macCatalyst)
             AppDelegate.instance.appKitPlugin.utilities.openLocationURL(url) { (success, error) in
                 self.logger.log("Opened URL: \(url). Success: \(success), error: \(error != nil ? error!.localizedDescription : "nil")")
@@ -23,6 +30,10 @@ extension CalendarItem {
 
     func bringLocationAppsToFront() {
         if let url = self.knownLocationURL {
+            #if os(macOS)
+            AppDelegate.instance.systemUtilities.bringLocationAppsToFront(for: url)
+            #endif
+
             #if targetEnvironment(macCatalyst)
             AppDelegate.instance.appKitPlugin.utilities.bringLocationAppsToFront(for: url)
             #endif

@@ -62,7 +62,7 @@ extension Alarm {
     
     init(withSavedState state: SavedState,
          startDate: Date,
-         endDate: Date?) {
+         endDate: Date) {
         
         self.init(withState: state.state,
                   startDate: startDate,

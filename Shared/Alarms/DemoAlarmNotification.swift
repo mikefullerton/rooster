@@ -39,17 +39,18 @@ class DemoAlarmNotification : AlarmNotification {
                                   snoozeInterval: 0)
         
         return Event(withIdentifier: self.itemIdentifier,
-                             ekEventID: "",
-                             calendar: self.demoCalendar,
-                             subscribed: true,
-                             alarm: alarm,
-                             startDate: startDate,
-                             endDate: endDate,
-                             title: "Demo Event",
-                             location: "http://apple.com",
-                             url: nil,
-                             notes: nil,
-                             organizer: nil)
+                     ekEventID: "",
+                     externalIdentifier: "",
+                     calendar: self.demoCalendar,
+                     subscribed: true,
+                     alarm: alarm,
+                     startDate: startDate,
+                     endDate: endDate,
+                     title: "Demo Event",
+                     location: "http://apple.com",
+                     url: nil,
+                     notes: nil,
+                     organizer: nil)
     }()
     
     #if os(macOS)
@@ -59,7 +60,7 @@ class DemoAlarmNotification : AlarmNotification {
                                              sourceTitle: "Demo Source",
                                              sourceIdentifier: "Demo",
                                              isSubscribed: true,
-                                             color: NSColor.systemOrange.cgColor)
+                                             color: SDKColor.systemOrange.cgColor)
 
     #else
     lazy var demoCalendar = Calendar(withIdentifier: "DEMO_CALENDAR",

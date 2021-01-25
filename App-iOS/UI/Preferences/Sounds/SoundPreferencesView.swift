@@ -13,7 +13,7 @@ protocol SoundChoicesViewDelegate : AnyObject {
     func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController
 }
 
-class SoundPreferencesView : SimpleVerticalStackView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
+class SoundPreferencesView : SimpleStackView, SoundChoiceViewDelegate, SoundChooserViewControllerDelegate {
     
     weak var delegate: SoundChoicesViewDelegate?
 

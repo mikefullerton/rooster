@@ -86,6 +86,10 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         AppDelegate.instance.appKitPlugin.utilities.stopBouncingAppIcon()
         #endif
         
+        #if os(macOS)
+        AppDelegate.instance.systemUtilities.stopBouncingAppIcon()
+        #endif
+        
         AppDelegate.instance.dataModelController.stopAllAlarms()
         
         self.notifyIfAlarmsStopped()

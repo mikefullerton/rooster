@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NotificationChoicesView : SimpleVerticalStackView {
+class NotificationChoicesView : SimpleStackView {
     
     init(frame: CGRect) {
         super.init(frame: frame )

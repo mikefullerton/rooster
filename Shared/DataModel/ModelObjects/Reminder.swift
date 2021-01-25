@@ -19,13 +19,15 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
     let url: URL?
     let dueDate: Date
     let startDate: Date
-
+    let externalIdentifier: String
+    
     // modifiable
     var isSubscribed: Bool
     var alarm: Alarm
 
     init(withIdentifier identifier: String,
          ekReminderID: String,
+         externalIdentifier: String,
          calendar: Calendar,
          subscribed: Bool,
          completed: Bool,
@@ -37,6 +39,7 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
          url: URL?,
          notes: String?) {
 
+        self.externalIdentifier = externalIdentifier
         self.calendar = calendar
         self.id = identifier
         self.ekReminderID = ekReminderID
@@ -66,7 +69,8 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
                 lhs.notes == rhs.notes &&
                 lhs.isCompleted == rhs.isCompleted &&
                 lhs.dueDate == rhs.dueDate &&
-                lhs.startDate == rhs.startDate
+                lhs.startDate == rhs.startDate  &&
+                lhs.externalIdentifier == rhs.externalIdentifier
     }
     
     func hash(into hasher: inout Hasher) {
@@ -78,5 +82,15 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
             return self == comparingTo
         }
         return false
+    }
+}
+
+extension Reminder {
+    func stopAlarmButtonClicked() {
+        self.snoozeAlarm()
+    }
+
+    var timeLabelDisplayString: String {
+        return "Reminder Due at: \(self.alarm.startDate))"
     }
 }

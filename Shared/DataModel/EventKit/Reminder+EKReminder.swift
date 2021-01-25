@@ -17,6 +17,7 @@ extension Reminder {
         
         self.init(withIdentifier: EKReminder.uniqueID,
                   ekReminderID: EKReminder.calendarItemIdentifier,
+                  externalIdentifier: EKReminder.calendarItemExternalIdentifier,
                   calendar: calendar,
                   subscribed: subscribed,
                   completed: EKReminder.isCompleted,

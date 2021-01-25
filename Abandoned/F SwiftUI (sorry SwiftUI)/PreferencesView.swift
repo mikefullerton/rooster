@@ -175,7 +175,7 @@ struct SystemImageButtonBody: View {
     
     var body: some View {
         VStack {
-            Image(systemName: self.imageName)
+            SDKImage(systemName: self.imageName)
 //                .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: self.imageSize.width,
@@ -200,7 +200,7 @@ struct ImageButtonBody: View {
     
     var body: some View {
         VStack {
-            Image(self.imageName)
+            SDKImage(self.imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
 
