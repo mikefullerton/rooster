@@ -21,7 +21,7 @@ PLUGIN_DIR="`( cd "$MY_PATH/../AppKitPlugin" && pwd )`" || {
     exit 1
 }
 
-PLUGIN_INFO_FILE_PATH="${PLUGIN_DIR}/Info.plist"
+#PLUGIN_INFO_FILE_PATH="${PLUGIN_DIR}/Info.plist"
 
 GIT_STATUS="`( cd "$MY_PATH/.." && git status )`"
 
@@ -89,7 +89,7 @@ echo "New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}"
 
 write_build_number_to_file "${INFO_FILE_PATH}"
 
-write_build_number_to_file "${PLUGIN_INFO_FILE_PATH}"
+#write_build_number_to_file "${PLUGIN_INFO_FILE_PATH}"
 
 set -x
 

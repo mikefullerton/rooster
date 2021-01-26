@@ -1743,6 +1743,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B294931125B5F4D100FCCF9E /* Build configuration list for PBXNativeTarget "Rooster-macOS" */;
 			buildPhases = (
+				B225CE0825C0A31D00F3BA15 /* ShellScript */,
 				2385907B422B7F7935CFCC94 /* [CP] Check Pods Manifest.lock */,
 				B29492E625B5F4D000FCCF9E /* Sources */,
 				B29492E725B5F4D000FCCF9E /* Frameworks */,
@@ -1968,6 +1969,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Rooster-macOS/Pods-Rooster-macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B225CE0825C0A31D00F3BA15 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/Other Files/IncrementVersion.sh\" || {\n    echo \"Failed to increment version\"\n    exit 1\n}\n";
 			showEnvVarsInLog = 0;
 		};
 		B233C52925A23885005A7FB3 /* ShellScript */ = {
