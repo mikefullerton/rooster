@@ -16,10 +16,10 @@ BUILD_NUMBER=0
 
 INFO_FILE_PATH="${MY_PATH}/Info.plist"
 
-PLUGIN_DIR="`( cd "$MY_PATH/../AppKitPlugin" && pwd )`" || {
-    echo "Can't find plugin dir"
-    exit 1
-}
+#PLUGIN_DIR="`( cd "$MY_PATH/../AppKitPlugin" && pwd )`" || {
+#    echo "Can't find plugin dir"
+#    exit 1
+#}
 
 #PLUGIN_INFO_FILE_PATH="${PLUGIN_DIR}/Info.plist"
 
@@ -98,10 +98,11 @@ git add "${INFO_FILE_PATH}" || {
     echo "Adding ${INFO_FILE_PATH} to git failed"
     exit 1
 }
-git add "${PLUGIN_INFO_FILE_PATH}" || {
-    echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
-    exit 1
-}
+
+#git add "${PLUGIN_INFO_FILE_PATH}" || {
+#    echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
+#    exit 1
+#}
 
 git status
 
