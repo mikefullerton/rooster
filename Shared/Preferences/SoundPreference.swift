@@ -68,6 +68,16 @@ struct SoundPreference: Sequence, CustomStringConvertible {
     var description: String {
         return "Sound preference: Play Count: \(self.playCount), startDelay: \(self.startDelay), volume: \(self.volume), Sound1: \(self[SoundIndex.sound1]), Sound2: \(self[SoundIndex.sound2]), Sound3: \(self[SoundIndex.sound3])"
     }
+    
+    var isEnabled: Bool {
+        for sound in self.sounds {
+            if sound.enabled {
+                return true
+            }
+        }
+        
+        return false
+    }
 }
 
 extension SoundPreference {

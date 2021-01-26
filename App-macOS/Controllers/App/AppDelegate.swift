@@ -52,7 +52,41 @@ class AppDelegate: NSObject,
         return nil
     }()
     
-    @IBAction @objc func showHelp(_ sender: Any?) {
+    @IBAction @objc func showHelp(_ sender: Any) {
+        self.showHelp()
+    }
+    
+    func showRadarAlert() {
+
+        let alert: NSAlert = NSAlert()
+        alert.messageText = "Would you like to file a Radar?"
+        alert.informativeText = "All bugs or suggestions are welcome!"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.addButton(withTitle: "Cancel")
+        if alert.runModal() == .alertFirstButtonReturn {
+            NSWorkspace.shared.open(URL(string: "rdar://new/problem/componentid=1188232")!,
+                                    configuration: NSWorkspace.OpenConfiguration(),
+                                    completionHandler: nil)
+        }
+    }
+    
+    func showCodeAlert() {
+        
+        let alert: NSAlert = NSAlert()
+        alert.messageText = "Would you like to get involved in Rooster's development?"
+        alert.informativeText = "Pull requests are wecome! \n\n(Contact mfullerton@apple.com if you don't have web access to code)"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Go To Code")
+        alert.addButton(withTitle: "Cancel")
+        if alert.runModal() == .alertFirstButtonReturn {
+            NSWorkspace.shared.open(URL(string: "https://stashweb.sd.apple.com/users/mfullerton/repos/rooster")!,
+                                    configuration: NSWorkspace.OpenConfiguration(),
+                                    completionHandler: nil)
+        }
+    }
+    
+    func showHelp() {
         if let url = self.infoUrl {
             NSWorkspace.shared.open(url,
                                     configuration: NSWorkspace.OpenConfiguration(),
@@ -60,23 +94,22 @@ class AppDelegate: NSObject,
         }
     }
     
-    @IBAction @objc private func fileRadar(_ sender: AppDelegate) {
-        NSWorkspace.shared.open(URL(string: "rdar://new/problem/componentid=1188232")!,
-                                configuration: NSWorkspace.OpenConfiguration(),
-                                completionHandler: nil)
-
+    @IBAction @objc func fileRadar(_ sender: Any) {
+        self.showRadarAlert()
     }
     
-    @IBAction @objc private func openRepoURL(_ sender: AppDelegate) {
-        NSWorkspace.shared.open(URL(string: "https://stashweb.sd.apple.com/users/mfullerton/repos/rooster")!,
-                                configuration: NSWorkspace.OpenConfiguration(),
-                                completionHandler: nil)
+    @IBAction @objc func openRepoURL(_ sender: Any) {
+        self.showCodeAlert()
     }
    
-    @IBAction @objc private func checkForUpdates(_ sender: AppDelegate) {
+    @IBAction @objc func checkForUpdates(_ sender: Any) {
         self.sparkleController.checkForUpdates()
     }
- 
+    
+    @IBAction @objc func showPreferences(_ sender: Any) {
+        PreferencesWindow.show()
+    }
+
     func hideLaunchWindow() {
         if let launchWindow = self.launchWindow {
             launchWindow.close()

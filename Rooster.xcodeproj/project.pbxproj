@@ -35,6 +35,11 @@
 		B21DA21B259D0375002A56C8 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */; };
 		B21DA22B259D398A002A56C8 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22A259D398A002A56C8 /* BottomBar.swift */; };
 		B21DA22F259D3B3A002A56C8 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22E259D3B3A002A56C8 /* TopBar.swift */; };
+		B225CDA225C073E800F3BA15 /* SDKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225CDA125C073E800F3BA15 /* SDKAlert.swift */; };
+		B225CDA325C073E800F3BA15 /* SDKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225CDA125C073E800F3BA15 /* SDKAlert.swift */; };
+		B225CDA725C0763A00F3BA15 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B225CDA925C0763A00F3BA15 /* MainWindowController.xib */; };
+		B225CDB625C0801400F3BA15 /* SwayAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225CDB525C0801400F3BA15 /* SwayAnimation.swift */; };
+		B225CDB725C0801400F3BA15 /* SwayAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225CDB525C0801400F3BA15 /* SwayAnimation.swift */; };
 		B227DEFA256738C50002C127 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DEF9256738C50002C127 /* Utilities.swift */; };
 		B227DF13256741CA0002C127 /* RoosterAppKitPlugin.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B227DF2925680C970002C127 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B227DF2825680C970002C127 /* MainViewController.swift */; };
@@ -309,7 +314,6 @@
 		B2E224D925B61E610052758C /* LoadingWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224D725B61E610052758C /* LoadingWindowController.swift */; };
 		B2E224DF25B624CD0052758C /* FirstLaunchWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2E224DD25B624CD0052758C /* FirstLaunchWindowController.xib */; };
 		B2E224E025B624CD0052758C /* FirstLaunchWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224DE25B624CD0052758C /* FirstLaunchWindowController.swift */; };
-		B2E224E925B62F550052758C /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2E224E725B62F550052758C /* MainWindowController.xib */; };
 		B2E224EA25B62F550052758C /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224E825B62F550052758C /* MainWindowController.swift */; };
 		B2E224F325B635600052758C /* TimeRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224F125B635600052758C /* TimeRemainingViewController.swift */; };
 		B2E224F925B635E20052758C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224F825B635E20052758C /* Theme.swift */; };
@@ -491,6 +495,10 @@
 		B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomBarVerticalLayout.swift; sourceTree = "<group>"; };
 		B21DA22A259D398A002A56C8 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		B21DA22E259D3B3A002A56C8 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
+		B225CDA125C073E800F3BA15 /* SDKAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKAlert.swift; sourceTree = "<group>"; };
+		B225CDA825C0763A00F3BA15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindowController.xib; sourceTree = "<group>"; };
+		B225CDAE25C0763F00F3BA15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainWindowController.strings; sourceTree = "<group>"; };
+		B225CDB525C0801400F3BA15 /* SwayAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwayAnimation.swift; sourceTree = "<group>"; };
 		B227DEF0256738860002C127 /* RoosterAppKitPlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoosterAppKitPlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227DEF8256738C50002C127 /* RoosterAppKitPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RoosterAppKitPlugin-Bridging-Header.h"; sourceTree = "<group>"; };
 		B227DEF9256738C50002C127 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -704,7 +712,6 @@
 		B2E224D725B61E610052758C /* LoadingWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWindowController.swift; sourceTree = "<group>"; };
 		B2E224DD25B624CD0052758C /* FirstLaunchWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstLaunchWindowController.xib; sourceTree = "<group>"; };
 		B2E224DE25B624CD0052758C /* FirstLaunchWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchWindowController.swift; sourceTree = "<group>"; };
-		B2E224E725B62F550052758C /* MainWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
 		B2E224E825B62F550052758C /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		B2E224F125B635600052758C /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
 		B2E224F825B635E20052758C /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -952,10 +959,12 @@
 			isa = PBXGroup;
 			children = (
 				B26F6B3825B7C47400EA2057 /* CalendarItemTableViewCell.swift */,
+				B24ED37925BF362100F0B809 /* CountdownHeaderView.swift */,
 				B26F6B3D25B7C47400EA2057 /* EventListTableViewCell.swift */,
 				B26F6B3B25B7C47400EA2057 /* ReminderTableViewCell.swift */,
-				B24ED37925BF362100F0B809 /* CountdownHeaderView.swift */,
 				B24ED38925BF4FBD00F0B809 /* TimePassingView.swift */,
+				B24C5F5225BE156500F51FE7 /* CalendarItemIconBar.swift */,
+				B26F6B3925B7C47400EA2057 /* ContentStackView.swift */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -1036,6 +1045,7 @@
 				B24ED39225BF682700F0B809 /* SDKSwitch.swift */,
 				B24ED39825BF684200F0B809 /* SDKCustomButton.swift */,
 				B24ED3A825BF7FEB00F0B809 /* TrackingButton.swift */,
+				B225CDA125C073E800F3BA15 /* SDKAlert.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -1091,8 +1101,6 @@
 			children = (
 				B24ED36D25BF22C000F0B809 /* TableCell */,
 				B26F6B3725B7C47400EA2057 /* CalendarItemTableViewController.swift */,
-				B26F6B3925B7C47400EA2057 /* ContentStackView.swift */,
-				B24C5F5225BE156500F51FE7 /* CalendarItemIconBar.swift */,
 			);
 			path = CalendarItemTableView;
 			sourceTree = "<group>";
@@ -1172,7 +1180,7 @@
 				B2E224D725B61E610052758C /* LoadingWindowController.swift */,
 				B25F6B0B25BC9AE50067C096 /* PreferencesWindow.swift */,
 				B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */,
-				B2E224E725B62F550052758C /* MainWindowController.xib */,
+				B225CDA925C0763A00F3BA15 /* MainWindowController.xib */,
 				B2E224E825B62F550052758C /* MainWindowController.swift */,
 			);
 			path = Windows;
@@ -1464,6 +1472,7 @@
 				B26F6B8725B7C6EB00EA2057 /* TipView.swift */,
 				B26F6B8A25B7C6EB00EA2057 /* TopBar.swift */,
 				B274EFC125BA1D0300F9D473 /* VerticalTabView */,
+				B225CDB525C0801400F3BA15 /* SwayAnimation.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1880,7 +1889,7 @@
 				B294931E25B5F5C700FCCF9E /* dsa_pub.pem in Resources */,
 				B25F6AEF25BB60740067C096 /* WindowController.xib in Resources */,
 				B2E224DF25B624CD0052758C /* FirstLaunchWindowController.xib in Resources */,
-				B2E224E925B62F550052758C /* MainWindowController.xib in Resources */,
+				B225CDA725C0763A00F3BA15 /* MainWindowController.xib in Resources */,
 				B25F6B0E25BC9AE50067C096 /* PreferencesWindow.xib in Resources */,
 				B294932425B5F5D400FCCF9E /* Sounds in Resources */,
 				B2CEF19E25B8C5EA00CA01E2 /* Localizable.strings in Resources */,
@@ -2084,6 +2093,7 @@
 				B24ED37B25BF362100F0B809 /* CountdownHeaderView.swift in Sources */,
 				B2FAD8F125B601DB00598B9E /* Alarm+SavedState.swift in Sources */,
 				B2E224C525B61B420052758C /* Preferences.swift in Sources */,
+				B225CDB725C0801400F3BA15 /* SwayAnimation.swift in Sources */,
 				B2E2252625B640BE0052758C /* TableViewSectionAdornmentProtocol.swift in Sources */,
 				B2E224E025B624CD0052758C /* FirstLaunchWindowController.swift in Sources */,
 				B294935225B5F6E400FCCF9E /* Date+CountDownStringFormatter.swift in Sources */,
@@ -2130,6 +2140,7 @@
 				B274EFB125BA191700F9D473 /* SliderView.swift in Sources */,
 				B2FAD92E25B6022300598B9E /* EKDataModel.swift in Sources */,
 				B274EF8D25BA0F6800F9D473 /* BlurView.swift in Sources */,
+				B225CDA325C073E800F3BA15 /* SDKAlert.swift in Sources */,
 				B274EF8425BA0CFC00F9D473 /* TopBar.swift in Sources */,
 				B25F6AC525BB3E9B0067C096 /* ModalWindowController.swift in Sources */,
 				B294935325B5F6E400FCCF9E /* URL+Utilities.swift in Sources */,
@@ -2235,6 +2246,7 @@
 				B2FAD94025B6022B00598B9E /* Reminder+DictionaryCodable.swift in Sources */,
 				B2E224C625B61B420052758C /* SoundPreferences+DictionaryCodable.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
+				B225CDB625C0801400F3BA15 /* SwayAnimation.swift in Sources */,
 				B2F6B51E256433F3000BC78E /* AVAlarmSound.swift in Sources */,
 				B2FAD90025B601DB00598B9E /* Alarm+DictionaryCodable.swift in Sources */,
 				B2FAD94625B6022B00598B9E /* DataModelFactory+IntermediateDataModel.swift in Sources */,
@@ -2249,6 +2261,7 @@
 				B233C54825A282A5005A7FB3 /* Sound+DisplayName.swift in Sources */,
 				B2FAD92525B6022300598B9E /* EKController+DataModelFactory.swift in Sources */,
 				B2A181932597C4A300C1E7F0 /* DemoAlarmNotification.swift in Sources */,
+				B225CDA225C073E800F3BA15 /* SDKAlert.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2E224CE25B61B420052758C /* PreferencesDataStore.swift in Sources */,
 				B2FAD90825B601DB00598B9E /* Reminder.swift in Sources */,
@@ -2414,6 +2427,15 @@
 				B21DA160259A69E7002A56C8 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		B225CDA925C0763A00F3BA15 /* MainWindowController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B225CDA825C0763A00F3BA15 /* Base */,
+				B225CDAE25C0763F00F3BA15 /* en */,
+			);
+			name = MainWindowController.xib;
 			sourceTree = "<group>";
 		};
 		B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */ = {

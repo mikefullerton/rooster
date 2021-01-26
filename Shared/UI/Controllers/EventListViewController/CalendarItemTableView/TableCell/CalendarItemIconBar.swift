@@ -17,7 +17,7 @@ class CalendarItemIconBar : SimpleStackView {
     let insets = SDKEdgeInsets.ten
     let spacing = SDKOffset(horizontal: 10, vertical: 0)
     
-    private var calendarItem: CalendarItem?
+    private var calendarItem: CalendarItem? = nil
     
     init() {
         super.init(frame: CGRect.zero,
@@ -67,7 +67,6 @@ class CalendarItemIconBar : SimpleStackView {
 
     @objc func handleAlarmButtonClicked(_ sender: SDKCustomButton) {
         self.calendarItem?.stopAlarmButtonClicked()
-//        self.calendarItem?.stopAlarmButtonClicked()
     }
 
     lazy var alarmIcon: SDKCustomButton = {
@@ -79,26 +78,11 @@ class CalendarItemIconBar : SimpleStackView {
         view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-//        let pulseAnimation = CABasicAnimation(keyPath: "opacity")
-//        pulseAnimation.duration = 0.4
-//        pulseAnimation.fromValue = 0.5
-//        pulseAnimation.toValue = 1.0
-//        pulseAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-//        pulseAnimation.autoreverses = true
-//        pulseAnimation.repeatCount = .greatestFiniteMagnitude
-//        view.layer.add(pulseAnimation, forKey: nil)
-//
-//        let pulse = CASpringAnimation(keyPath: "transform.scale")
-//        pulse.duration = 0.4
-//        pulse.fromValue = 1.0
-//        pulse.toValue = 1.12
-//        pulse.autoreverses = true
-//        pulse.repeatCount = .infinity
-//        pulse.initialVelocity = 0.5
-//        pulse.damping = 0.8
-//        view.layer.add(pulse, forKey: nil)
-        
         return view
+    }()
+    
+    lazy var swayAnimation: SwayAnimation = {
+        return SwayAnimation(withView:self.alarmIcon)
     }()
 
 // TODO: need to create an iCal file to send to Calendar.app
@@ -136,12 +120,14 @@ class CalendarItemIconBar : SimpleStackView {
     
     func update(withCalendarItem calendarItem: CalendarItem) {
         
+        self.alarmIcon.isEnabled = calendarItem.alarm.isFiring
+        
         self.calendarItem = calendarItem
         
         var views:[SDKView] = []
 
         if let locationURL = calendarItem.knownLocationURL {
-            self.locationButton.toolTip = locationURL.absoluteString
+            self.locationButton.toolTip = "Meeting URL: \(locationURL.absoluteString)"
             views.append(self.locationButton)
         }
         
@@ -161,8 +147,5 @@ class CalendarItemIconBar : SimpleStackView {
         self.calendarItem = nil
         self.locationButton.toolTip = ""
     }
-    
-
-    
 }
 

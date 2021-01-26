@@ -24,6 +24,8 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate {
 
         self.init(frame: CGRect.zero)
         
+        self.wantsLayer = true
+        
         self.target = target
         self.action = action
         self.toolTip = toolTip

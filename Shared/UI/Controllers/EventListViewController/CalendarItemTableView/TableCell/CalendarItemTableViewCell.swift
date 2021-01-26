@@ -269,8 +269,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
             view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.contentInsets.left),
             view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.contentInsets.top),
         ])
-        
-//        view.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
     
     lazy var eventTitleLabel: SDKTextField = {
@@ -319,6 +317,8 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
         self.startCountDownLabel.stopCountdown()
         self.endCountDownLabel.stopCountdown()
 
+        
+        
         if calendarItem.alarm.isHappeningNow {
             self.startCountDownLabel.isHidden = true
             self.endCountDownLabel.isHidden = false

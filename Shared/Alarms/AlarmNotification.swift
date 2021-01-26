@@ -88,13 +88,16 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     }
     
     private func startPlayingSound() {
-        let itemPrefs = AppDelegate.instance.preferencesController.preferences(forItemIdentifier: self.itemID)
+        let soundPrefs = AppDelegate.instance.preferencesController.preferences(forItemIdentifier: self.itemID).soundPreference
         
-        let sound = AlarmSoundGroup(withPreference: itemPrefs.soundPreference)
+        guard soundPrefs.isEnabled else {
+            self.logger.log("sounds disabled not playing sound")
+            return
+        }
+        
+        let sound = AlarmSoundGroup(withPreference: soundPrefs)
         sound.delegate = self
         self.sound = sound
-        
-        let soundPrefs = itemPrefs.soundPreference
         
         let soundBehavior = AlarmSoundBehavior(playCount: soundPrefs.playCount,
                                                timeBetweenPlays: 0.1,

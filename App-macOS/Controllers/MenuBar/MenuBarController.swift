@@ -139,9 +139,9 @@ class MenuBarController: NSObject, Loggable {
 
     @objc func buttonClicked(_ sender: AnyObject?) {
         self.logger.log("MenuBar button was clicked")
-        if let delegate = self.delegate {
-            delegate.menuBarControllerButtonWasClicked(self)
-        }
+//        if let delegate = self.delegate {
+//            delegate.menuBarControllerButtonWasClicked(self)
+//        }
         
         if self.isPopoverHidden == false {
             self.isPopoverHidden = true

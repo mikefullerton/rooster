@@ -24,6 +24,15 @@ class MainWindowController: WindowController, MainWindowViewControllerDelegate {
         PreferencesWindow.show()
     }
     
+    @IBAction @objc func fileRadar(_ sender: Any) {
+        AppDelegate.instance.showRadarAlert()
+    }
+
+    @IBAction @objc func getInvolved(_ sender: Any) {
+        AppDelegate.instance.showCodeAlert()
+    }
+
+    
     func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {
         if let window = self.window {
             window.setContentSize(size)
