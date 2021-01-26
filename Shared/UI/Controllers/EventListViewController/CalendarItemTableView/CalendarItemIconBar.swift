@@ -25,6 +25,8 @@ class CalendarItemIconBar : SimpleStackView {
                    insets: self.insets,
                    spacing: self.spacing)
         
+        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -40,12 +42,14 @@ class CalendarItemIconBar : SimpleStackView {
         }
     }
 
-    lazy var locationButton: SDKImageButton = {
-        let view = SDKImageButton(systemImageName: "mappin.and.ellipse",
+    lazy var locationButton: SDKCustomButton = {
+        let view = SDKCustomButton(systemImageName: "mappin.and.ellipse",
                                   target: self,
                                   action: #selector(handleLocationButtonClick(_:)),
                                   toolTip: "")
         
+        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         return view
     }()
 
@@ -53,26 +57,28 @@ class CalendarItemIconBar : SimpleStackView {
         self.calendarItem?.stopAlarmButtonClicked()
     }
     
-    lazy var stopButton: SDKImageButton = {
-        let view = SDKImageButton(systemImageName: "speaker.wave.3",
+    lazy var stopButton: SDKCustomButton = {
+        let view = SDKCustomButton(systemImageName: "speaker.wave.3",
                                   target: self,
                                   action: #selector(handleMuteButtonClick(_:)),
                                   toolTip: "Silence Alarm")
         return view
     }()
 
-    @objc func handleAlarmButtonClicked(_ sender: SDKImageButton) {
+    @objc func handleAlarmButtonClicked(_ sender: SDKCustomButton) {
         self.calendarItem?.stopAlarmButtonClicked()
 //        self.calendarItem?.stopAlarmButtonClicked()
     }
 
-    lazy var alarmIcon: SDKImageButton = {
+    lazy var alarmIcon: SDKCustomButton = {
         
-        let view = SDKImageButton(systemImageName: "bell",
+        let view = SDKCustomButton(systemImageName: "bell",
                                   target: self,
                                   action: #selector(handleAlarmButtonClicked(_:)),
                                   toolTip: "Alarm Enabled")
-        
+        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
 //        let pulseAnimation = CABasicAnimation(keyPath: "opacity")
 //        pulseAnimation.duration = 0.4
 //        pulseAnimation.fromValue = 0.5

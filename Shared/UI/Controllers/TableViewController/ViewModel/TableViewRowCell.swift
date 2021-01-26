@@ -7,10 +7,3 @@
 
 import Foundation
 
-protocol TableViewRowCell {
-    associatedtype DataType
-    
-    static var cellHeight: CGFloat { get }
- 
-    func configureCell(withData data: DataType, indexPath: IndexPath, isSelected: Bool)
-}

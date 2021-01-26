@@ -10,7 +10,7 @@ import UIKit
 
 class CalendarListCell : UITableViewCell, TableViewRowCell {
     
-    typealias DataType = Calendar
+    typealias ContentType = Calendar
     
     private var calendar: Calendar?
 
@@ -103,7 +103,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
     }
     #endif
     
-    func configureCell(withData calendar: Calendar, indexPath: IndexPath, isSelected: Bool) {
+    func viewWillAppear(withData calendar: Calendar, indexPath: IndexPath) {
         self.calendar = calendar
         self.setCheckBoxTitle(calendar.title)
         self.checkBox.setOn(calendar.isSubscribed, animated:false)
@@ -122,7 +122,7 @@ class CalendarListCell : UITableViewCell, TableViewRowCell {
         }
     }
     
-    static var cellHeight: CGFloat {
+    static var viewHeight: CGFloat {
         #if targetEnvironment(macCatalyst)
         return 28
         #else

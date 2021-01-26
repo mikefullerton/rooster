@@ -7,6 +7,3 @@
 
 import Foundation
 
-protocol TableViewAdornmentView {
-    func setContents(_ contents: TableViewSectionAdornmentProtocol)
-}

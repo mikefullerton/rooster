@@ -31,8 +31,12 @@ struct SoundPickerTableViewSection : TableViewSectionProtocol {
     
     let folder: SoundFolder
     
+    let layout: TableViewSectionLayout = TableViewSectionLayout.zero
+    let header: TableViewSectionAdornmentProtocol?
+    
     init(with folder: SoundFolder) {
         self.folder = folder
+        self.header = TableViewSectionAdornment(withTitle: folder.folderURL.soundName)
     }
     
     var rows: [TableViewRowProtocol] {
@@ -43,14 +47,6 @@ struct SoundPickerTableViewSection : TableViewSectionProtocol {
         }
     }
     
-    var header: TableViewSectionAdornmentProtocol? {
-        return TableViewSectionAdornment(withTitle: self.folder.folderURL.soundName,
-                                         height: 30)
-            
-            
-//            withView: SectionHeaderView(with: self.folder.folderURL.soundName, disclosed: self.folder.disclosed),
-//                                         height: 30)
-    }
     
 }
 

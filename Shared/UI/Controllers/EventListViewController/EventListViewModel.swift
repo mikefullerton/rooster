@@ -25,18 +25,34 @@ struct EventListViewModel : TableViewModelProtocol {
             return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
         }
         
-        var sections: [TableViewSectionProtocol] = []
-        for item in sortedList {
+        let section = CalendarItemsSection(withCalendarItems: sortedList)
+        
+        self.sections = [ section ]
+    }
+}
+
+struct CalendarItemsSection : TableViewSectionProtocol {
+    var rows: [TableViewRowProtocol]
+    
+    var layout = TableViewSectionLayout(rowSpacing: 2, insets: SDKEdgeInsets.zero)
+
+//    var header: TableViewSectionAdornmentProtocol? = TableViewSectionAdornment(withViewClass: CountdownHeaderView.self)
+    
+    init(withCalendarItems calendarItems: [CalendarItem]) {
+       
+        var rows: [TableViewRowProtocol] = []
+        for item in calendarItems {
             if let event = item as? Event {
-                let section = TableViewSection<Event, EventListTableViewCell>(withRowData: [event])
-                sections.append(section)
+                rows.append(TableViewRow<Event, EventListTableViewCell>(withData: event))
             }
             
             if let reminder = item as? Reminder {
-                let section = TableViewSection<Reminder, ReminderTableViewCell>(withRowData: [reminder])
-                sections.append(section)
+                rows.append(TableViewRow<Reminder, ReminderTableViewCell>(withData: reminder))
             }
         }
-        self.sections = sections
+        self.rows = rows
+        
+        
     }
+    
 }

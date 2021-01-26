@@ -14,7 +14,7 @@ import UIKit
 
 class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
     
-    typealias DataType = URL
+    typealias ContentType = URL
     
     private var url: URL?
     private var soundIndex: SoundPreference.SoundIndex = .sound1
@@ -28,8 +28,8 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
         self.addTitleView()
     }
     
-    func configureCell(withData data: URL, indexPath: IndexPath, isSelected: Bool) {
-        self.url = data
+    func viewWillAppear(withContent content: URL) {
+        self.url = content
         self.playButton.url = url
         self.playButton.isEnabled = true
         
@@ -44,7 +44,7 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
         self.playButton.url = nil
     }
 
-    static var cellHeight: CGFloat {
+    static var preferredHeight: CGFloat {
         return 32.0
     }
     

@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class FancyButton : SDKButton {
+class FancyButton : SDKCustomButton {
     
     private var index: Int = 0
     
@@ -20,9 +20,9 @@ class FancyButton : SDKButton {
         self.contentViews = []
         super.init(frame: frame)
         self.alignment = .left
-        self.isBordered = false
-        self.setButtonType(.momentaryPushIn)
-        self.imagePosition = .imageLeading
+//        self.isBordered = false
+//        self.setButtonType(.momentaryPushIn)
+//        self.imagePosition = .imageLeading
     }
     
     required init?(coder: NSCoder) {
@@ -100,7 +100,7 @@ class FancyButton : SDKButton {
         }
     
         let outSize = CGSize(width: maxSize.height * maxAspectRatio,
-                             height: maxSize.height)
+                             height: maxSize.height + 10)
         
         return outSize
     }

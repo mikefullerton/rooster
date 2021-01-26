@@ -8,9 +8,9 @@
 import Foundation
 
 protocol TableViewRowCell {
-    associatedtype DataType
+    associatedtype ContentType
     
-    static var cellHeight: CGFloat { get }
+    static var viewHeight: CGFloat { get }
  
-    func configureCell(withData data: DataType, indexPath: IndexPath, isSelected: Bool)
+    func viewWillAppear(withData data: ContentType)
 }

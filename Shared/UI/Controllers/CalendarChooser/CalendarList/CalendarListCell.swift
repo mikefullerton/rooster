@@ -14,7 +14,7 @@ import UIKit
 
 class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
     
-    typealias DataType = Calendar
+    typealias ContentType = Calendar
     
     private var calendar: Calendar?
 
@@ -66,7 +66,7 @@ class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
         self.calendar = nil
     }
     
-    func configureCell(withData calendar: Calendar, indexPath: IndexPath, isSelected: Bool) {
+    func viewWillAppear(withContent calendar: Calendar) {
         self.calendar = calendar
         self.checkBox.title = calendar.title
         self.checkBox.intValue = calendar.isSubscribed ? 1 : 0
@@ -85,7 +85,7 @@ class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
         }
     }
     
-    static var cellHeight: CGFloat {
+    static var preferredHeight: CGFloat {
         return 28
     }
 }

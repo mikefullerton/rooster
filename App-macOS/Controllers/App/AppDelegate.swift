@@ -119,7 +119,7 @@ class AppDelegate: NSObject,
     }
     
     func firstLaunchWindowControllerShowSettings(_ firstLaunchWindowController: FirstLaunchWindowController) {
-        PreferencesWindow().showWindow(self)
+        PreferencesWindow.show()
     }
     
     func firstLaunchWindowControllerShowCalendars(_ firstLaunchWindowController: FirstLaunchWindowController) {

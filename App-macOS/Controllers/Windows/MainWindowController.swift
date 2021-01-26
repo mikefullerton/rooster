@@ -21,7 +21,7 @@ class MainWindowController: WindowController, MainWindowViewControllerDelegate {
     }
     
     @IBAction @objc func showSettings(_ sender: Any) {
-        PreferencesWindow().showWindow(self)
+        PreferencesWindow.show()
     }
     
     func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {

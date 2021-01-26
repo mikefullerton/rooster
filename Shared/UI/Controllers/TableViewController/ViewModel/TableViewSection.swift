@@ -7,6 +7,13 @@
 
 import Foundation
 
+struct TableViewSectionLayout {
+    let rowSpacing: CGFloat
+    let insets: SDKEdgeInsets
+    
+    static let zero = TableViewSectionLayout(rowSpacing: 0, insets: SDKEdgeInsets.zero)
+}
+
 protocol TableViewSectionProtocol {
    
     var rows: [TableViewRowProtocol] { get }
@@ -16,6 +23,8 @@ protocol TableViewSectionProtocol {
     var footer: TableViewSectionAdornmentProtocol? { get }
     
     var height: CGFloat { get }
+ 
+    var layout: TableViewSectionLayout { get }
 }
 
 extension TableViewSectionProtocol {
@@ -45,36 +54,43 @@ extension TableViewSectionProtocol {
         var height: CGFloat = 0
         
         if let header = self.header {
-            height += header.height
+            height += header.preferredHeight
         }
         
         if let footer = self.footer {
-            height += footer.height
+            height += footer.preferredHeight
         }
         
         for row in self.rows {
             height += row.height
         }
         
+        height += self.layout.rowSpacing * CGFloat(self.rowCount)
+        
         return height
     }
     
+    var layout: TableViewSectionLayout {
+        return TableViewSectionLayout.zero
+    }
 }
 
-struct TableViewSection<DataType, ViewType> : TableViewSectionProtocol
+struct TableViewSection<ContentType, ViewType> : TableViewSectionProtocol
             where ViewType: SDKCollectionViewItem, ViewType: TableViewRowCell {
     
     let rows: [TableViewRowProtocol]
-    
     let header: TableViewSectionAdornmentProtocol?
-    
     let footer: TableViewSectionAdornmentProtocol?
+    let layout: TableViewSectionLayout
     
-    init(withRowData rows:[DataType],
+    init(withRowData rows:[ContentType],
+         layout: TableViewSectionLayout = TableViewSectionLayout.zero,
          header: TableViewSectionAdornmentProtocol? = nil,
          footer: TableViewSectionAdornmentProtocol? = nil) {
         
-        self.rows = rows.map { TableViewRow<DataType, ViewType>(withData: $0) }
+        self.layout = layout
+        
+        self.rows = rows.map { TableViewRow<ContentType, ViewType>(withData: $0) }
         self.header = header
         self.footer = footer
     }

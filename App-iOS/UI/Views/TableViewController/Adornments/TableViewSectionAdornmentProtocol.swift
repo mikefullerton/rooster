@@ -11,7 +11,7 @@ import UIKit
 protocol TableViewSectionAdornmentProtocol {
     var view: UIView? { get }
     
-    var height: CGFloat { get }
+    var preferredHeight: CGFloat { get }
     
     var title: String? { get }
 }

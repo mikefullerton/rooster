@@ -16,24 +16,24 @@ protocol TableViewRowProtocol  {
 
     var cellClass: UITableViewCell.Type { get }
 
-    func willDisplay(cell: UITableViewCell, atIndexPath indexPath: IndexPath, isSelected: Bool)
+    func willDisplay(cell: UITableViewCell, atIndexPath indexPath: IndexPath)
 }
 
-struct TableViewRow<DataType, ViewType> : TableViewRowProtocol
+struct TableViewRow<ContentType, ViewType> : TableViewRowProtocol
             where ViewType: UITableViewCell, ViewType: TableViewRowCell {
     
-    let data: DataType
+    let data: ContentType
     
-    init(withData data: DataType) {
+    init(withData data: ContentType) {
         self.data = data
     }
     
-    func willDisplay(cell: UITableViewCell, atIndexPath indexPath: IndexPath, isSelected: Bool) {
+    func willDisplay(cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         
         if let typedCell = cell as? ViewType,
-           let data = self.data as? ViewType.DataType {
+           let data = self.data as? ViewType.ContentType {
             
-            typedCell.configureCell(withData: data, indexPath: indexPath, isSelected: isSelected)
+            typedCell.viewWillAppear(withData: data, indexPath: indexPath, isSelected: isSelected)
         }
     }
 
@@ -47,7 +47,7 @@ struct TableViewRow<DataType, ViewType> : TableViewRowProtocol
 
     var height: CGFloat {
         if let rowCell = self.cellClass as? ViewType.Type {
-            return rowCell.cellHeight
+            return rowCell.viewHeight
         }
         
         return 24

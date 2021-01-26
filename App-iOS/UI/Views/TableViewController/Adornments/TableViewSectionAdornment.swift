@@ -10,14 +10,14 @@ import UIKit
 
 struct TableViewSectionAdornment: TableViewSectionAdornmentProtocol {
     let view: UIView?
-    let height: CGFloat
+    let preferredHeight: CGFloat
     let title: String?
     
     init(withView view: UIView,
          height: CGFloat) {
         
         self.view = view
-        self.height = height
+        self.preferredHeight = height
         self.title = nil
     }
 
@@ -25,13 +25,13 @@ struct TableViewSectionAdornment: TableViewSectionAdornmentProtocol {
          height: CGFloat) {
         
         self.view = nil
-        self.height = height
+        self.preferredHeight = height
         self.title = title
     }
     
     init(withHeight height: CGFloat) {
         self.view = UIView(frame: CGRect(x:0, y:0, width:0, height:height))
-        self.height = height
+        self.preferredHeight = height
         self.title = nil
     }
 }

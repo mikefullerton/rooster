@@ -84,7 +84,7 @@ class TimeRemainingViewController : SDKViewController, DataModelAware {
     
     override func viewWillDisappear() {
         super.viewWillDisappear()
-        self.countdownTextField.stopTimer()
+        self.countdownTextField.stopCountdown()
         self.reloader = nil
     }
     

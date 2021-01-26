@@ -76,10 +76,6 @@ class VerticalButtonListViewController : TableViewController<VerticalButtonBarVi
         }
     }
     
-    public func collectionView(_ collectionView: SDKCollectionView, shouldSelectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
-        return indexPaths
-    }
-    
     override func viewWillAppear() {
         super.viewWillAppear()
         

@@ -16,7 +16,7 @@ protocol TableViewSectionProtocol {
     
     var footer: TableViewSectionAdornmentProtocol? { get }
     
-    var height: CGFloat { get }
+    var preferredHeight: CGFloat { get }
 }
 
 extension TableViewSectionProtocol {
@@ -41,16 +41,16 @@ extension TableViewSectionProtocol {
         return nil
     }
     
-    var height: CGFloat {
+    var preferredHeight: CGFloat {
         
         var height: CGFloat = 0
         
         if let header = self.header {
-            height += header.height
+            height += header.preferredHeight
         }
         
         if let footer = self.footer {
-            height += footer.height
+            height += footer.preferredHeight
         }
         
         for row in self.rows {
@@ -62,7 +62,7 @@ extension TableViewSectionProtocol {
     
 }
 
-struct TableViewSection<DataType, ViewType> : TableViewSectionProtocol
+struct TableViewSection<ContentType, ViewType> : TableViewSectionProtocol
             where ViewType: UITableViewCell, ViewType: TableViewRowCell {
     
     let rows: [TableViewRowProtocol]
@@ -71,11 +71,11 @@ struct TableViewSection<DataType, ViewType> : TableViewSectionProtocol
     
     let footer: TableViewSectionAdornmentProtocol?
     
-    init(withRowData rows:[DataType],
+    init(withRowData rows:[ContentType],
          header: TableViewSectionAdornmentProtocol? = nil,
          footer: TableViewSectionAdornmentProtocol? = nil) {
         
-        self.rows = rows.map { TableViewRow<DataType, ViewType>(withData: $0) }
+        self.rows = rows.map { TableViewRow<ContentType, ViewType>(withData: $0) }
         self.header = header
         self.footer = footer
     }

@@ -13,18 +13,13 @@ import UIKit
 #endif
 
 class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
-    typealias DataType = Event
+    typealias ContentType = Event
     
     private var event: Event? {
         return self.calendarItem as? Event
     }
- 
-    static var cellHeight: CGFloat {
-        return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20
+
+    func viewWillAppear(withContent content: Event) {
+        self.updateCell(withCalendarItem: content)
     }
-    
-    func configureCell(withData event: Event, indexPath: IndexPath, isSelected: Bool) {
-        self.updateCell(withCalendarItem: event)
-    }
-    
 }

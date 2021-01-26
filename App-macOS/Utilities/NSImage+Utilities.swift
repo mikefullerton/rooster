@@ -24,3 +24,17 @@ extension NSImage {
         return image
     }
 }
+
+//private func systemImage(named systemImageName: String, tint: SDKColor?) -> SDKImage? {
+//    if let image = SDKImage(systemSymbolName: systemImageName, accessibilityDescription: self.toolTip),
+//       let symbol = image.withSymbolConfiguration(SDKImage.SymbolConfiguration(pointSize: 18, weight: .medium)) {
+//    
+//        if tint != nil {
+//            return symbol.tint(color: tint!)
+//        }
+//        
+//        return symbol
+//    }
+//    
+//    return nil
+//}

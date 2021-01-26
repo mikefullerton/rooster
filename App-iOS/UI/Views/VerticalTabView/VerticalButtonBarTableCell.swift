@@ -10,14 +10,14 @@ import UIKit
 
 class VerticalButtonListTableCell : UITableViewCell, TableViewRowCell {
     
-    typealias DataType = VerticalTabItem
+    typealias ContentType = VerticalTabItem
     
-    static var cellHeight: CGFloat {
+    static var viewHeight: CGFloat {
         return 40.0
     }
  
-    func configureCell(withData data: DataType, indexPath: IndexPath, isSelected: Bool) {
-        self.textLabel?.text = data.title
+    func viewWillAppear(withContent content: VerticalTabItem) {
+        self.textLabel?.text = content.title
     }
 
 }

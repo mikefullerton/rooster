@@ -26,6 +26,7 @@ class MenuBarController: NSObject, Loggable {
         static let none             = Option(rawValue: 1 << 0)
         static let icon             = Option(rawValue: 1 << 1)
         static let countDown        = Option(rawValue: 1 << 2)
+        static let popoverView      = Option(rawValue: 1 << 3)
     }
     
     public weak var delegate: MenuBarControllerDelegate?
@@ -37,11 +38,12 @@ class MenuBarController: NSObject, Loggable {
     
     var showingRedRooster = false
     
-    var displayOptions: Option = [.icon, .countDown] {
+    var displayOptions: Option = [.icon, .countDown, .popoverView] {
         didSet {
             self.updateMenuBarItemsVisibility()
         }
     }
+    
     deinit {
         self.stopFlashingTimer()
         self.countDownTimer.stop()
@@ -140,18 +142,22 @@ class MenuBarController: NSObject, Loggable {
         if let delegate = self.delegate {
             delegate.menuBarControllerButtonWasClicked(self)
         }
+        
+        if self.isPopoverHidden == false {
+            self.isPopoverHidden = true
+        } else if self.displayOptions.contains(.popoverView) {
+            self.isPopoverHidden = false
+        }
     }
     
-    lazy var popoverViewController : NSViewController = {
-        return MenuBarPopoverViewController()
-    }()
-    
-
     lazy var popover : NSPopover = {
+        
+        let controller = MainWindowViewController()
+        
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 400, height: 400)
         popover.behavior = .transient
-        popover.contentViewController = self.popoverViewController
+        popover.contentViewController = controller
+        popover.contentSize = controller.preferredContentSize
         return popover
     }()
     

@@ -10,12 +10,12 @@ import UIKit
 
 class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
     
-    typealias DataType = URL
+    typealias ContentType = URL
     
     private var url: URL?
     private var soundIndex: SoundPreference.SoundIndex = .sound1
     
-    func configureCell(withData data: URL, indexPath: IndexPath, isSelected: Bool) {
+    func viewWillAppear(withData data: URL, indexPath: IndexPath) {
         self.url = data
         self.playButton.url = url
         self.playButton.isEnabled = true
@@ -31,7 +31,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
         self.playButton.url = nil
     }
     
-    static var cellHeight: CGFloat {
+    static var viewHeight: CGFloat {
         return 32.0
     }
     

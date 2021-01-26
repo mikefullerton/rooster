@@ -18,10 +18,12 @@ class VerticalColorBar : SDKView {
 
     let insets: SDKEdgeInsets
     let barWidth: CGFloat
+    let roundedCorners: Bool
 
     override init(frame: CGRect) {
         self.insets = VerticalColorBar.defaultInsets
         self.barWidth = VerticalColorBar.defaultWidth
+        self.roundedCorners = true
         
         super.init(frame: frame)
         
@@ -30,10 +32,12 @@ class VerticalColorBar : SDKView {
     }
     
     init(insets: SDKEdgeInsets,
-         barWidth: CGFloat) {
+         barWidth: CGFloat,
+         roundedCorners: Bool) {
 
-        self.insets = VerticalColorBar.defaultInsets
-        self.barWidth = VerticalColorBar.defaultWidth
+        self.insets = insets
+        self.barWidth = barWidth
+        self.roundedCorners = roundedCorners
         
         super.init(frame: CGRect.zero)
 
@@ -51,7 +55,10 @@ class VerticalColorBar : SDKView {
     
     lazy var colorBarView: SDKView = {
         let view = SDKView()
-        view.sdkLayer.cornerRadius = self.barWidth / 2.0
+        
+        if self.roundedCorners {
+            view.sdkLayer.cornerRadius = self.barWidth / 2.0
+        }
         
         return view
     } ()

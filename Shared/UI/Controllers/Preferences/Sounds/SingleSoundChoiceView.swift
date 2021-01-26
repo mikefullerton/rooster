@@ -13,7 +13,7 @@ import UIKit
 #endif
 
 protocol SingleSoundChoiceViewDelegate : AnyObject {
-    func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: SDKButton)
+    func soundChoiceViewChooserEditSoundsButtonPressed(_ view: SingleSoundChoiceView)
 }
 
 class SingleSoundChoiceView : SDKView {
@@ -59,11 +59,22 @@ class SingleSoundChoiceView : SDKView {
     }
     
     private func setEnabledStates() {
-        self.playButton.isEnabled = true
         self.soundPickerButton.isEnabled = true
     }
     
     @objc private func checkboxChanged(_ sender: SDKSwitch) {
+        
+        if sender.isOn {
+            let sound = self.sound
+            
+            if sound.url == nil {
+                if let delegate = self.delegate {
+                    delegate.soundChoiceViewChooserEditSoundsButtonPressed(self)
+                }
+                return
+            }
+        }
+        
         var sound = self.sound
         sound.enabled = sender.isOn
         self.sound = sound
@@ -78,7 +89,7 @@ class SingleSoundChoiceView : SDKView {
     
     @objc private func editSound(_ sender: SDKButton) {
         if let delegate = self.delegate {
-            delegate.soundChoiceViewChooser(self, buttonPressed: sender)
+            delegate.soundChoiceViewChooserEditSoundsButtonPressed(self)
         }
     }
 
@@ -91,10 +102,10 @@ class SingleSoundChoiceView : SDKView {
     
     private lazy var playButton = PlaySoundButton()
 
-    private lazy var soundPickerButton: SDKImageButton = {
+    private lazy var soundPickerButton: SDKCustomButton = {
         
         
-        let button = SDKImageButton(systemImageName: "square.and.pencil",
+        let button = SDKCustomButton(systemImageName: "square.and.pencil",
                                     target: self,
                                     action: #selector(editSound(_:)),
                                     toolTip: "Choose Sound")
@@ -102,9 +113,9 @@ class SingleSoundChoiceView : SDKView {
         return button
     }()
 
-    private lazy var shuffleButton: SDKImageButton = {
+    private lazy var shuffleButton: SDKCustomButton = {
 
-        let button = SDKImageButton(systemImageName: "shuffle",
+        let button = SDKCustomButton(systemImageName: "shuffle",
                                     target: self,
                                     action: #selector(shuffleSounds(_:)),
                                     toolTip: "Randomize which sound is played")

@@ -25,7 +25,7 @@ class MainWindowViewController : SDKViewController, DataModelAware {
     
     private var reloader: DataModelReloader? = nil
   
-    let minimumContentSize = CGSize(width: 600, height: TimeRemainingViewController.preferredHeight)
+    let minimumContentSize = CGSize(width: 400, height: TimeRemainingViewController.preferredHeight)
     
     private var currentView: SDKView?
     
@@ -78,7 +78,7 @@ class MainWindowViewController : SDKViewController, DataModelAware {
 
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
-                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40),
+                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
                 view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20),
                 view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
             ])
@@ -101,17 +101,29 @@ class MainWindowViewController : SDKViewController, DataModelAware {
 
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                view.widthAnchor.constraint(equalToConstant: self.minimumContentSize.width),
                 view.topAnchor.constraint(equalTo: self.view.topAnchor),
                 view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             ])
+            
+            view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
             
             self.currentView = view
         }
     }
 
+    private func adjustViews() {
+        if AppDelegate.instance.dataModelController.dataModel.allItems.count > 0 {
+            self.addEventListView()
+            self.adjustWindowSize()
+        } else {
+            self.addNoMoreMeetingsView()
+        }
+    }
+    
     override func viewWillAppear() {
         super.viewWillAppear()
+        self.adjustViews()
         self.adjustWindowSize()
     }
     
@@ -125,7 +137,7 @@ class MainWindowViewController : SDKViewController, DataModelAware {
                 size.height = self.eventListViewController.calculatedContentSize.height
             }
 
-            self.preferredContentSize = self.adjustedSize(size)
+            self.preferredContentSize = size
         }
     }
     
@@ -141,19 +153,18 @@ class MainWindowViewController : SDKViewController, DataModelAware {
         set(size) {
             print("Adjusting window size to: \(size)")
 
-            super.preferredContentSize = size
+            self.view.invalidateIntrinsicContentSize()
+            
+            let adjustedSize = self.adjustedSize(size)
+            
+            super.preferredContentSize = adjustedSize
             if let delegate = self.delegate {
-                delegate.mainWindowViewController(self, preferredContentSizeDidChange: size)
+                delegate.mainWindowViewController(self, preferredContentSizeDidChange: adjustedSize)
             }
         }
     }
 
     func dataModelDidReload(_ dataModel: DataModel) {
-        if AppDelegate.instance.dataModelController.dataModel.allItems.count > 0 {
-            self.addEventListView()
-            self.adjustWindowSize()
-        } else {
-            self.addNoMoreMeetingsView()
-        }
+        self.adjustViews()
     }
 }

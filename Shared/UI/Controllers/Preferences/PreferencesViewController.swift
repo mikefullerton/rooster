@@ -69,8 +69,7 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
     }
     
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex,
-                              fromView: SDKView) {
+                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex) {
         
         SoundPickerViewController(withSoundPreferenceIndex: soundIndex).presentInModalWindow(fromWindow: self.view.window)
     }

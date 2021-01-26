@@ -13,19 +13,18 @@ import UIKit
 #endif
 
 class VerticalButtonListTableCell : SDKCollectionViewItem, TableViewRowCell {
-    
-    typealias DataType = VerticalTabItem
+    typealias ContentType = VerticalTabItem
     
     let insets = SDKEdgeInsets.twenty
     let spacing: CGFloat = 20
     
-    static var cellHeight: CGFloat {
+    static var preferredHeight: CGFloat {
         return 46.0
     }
  
-    func configureCell(withData data: DataType, indexPath: IndexPath, isSelected: Bool) {
-        self.label.stringValue = data.title
-        self.iconView.image = data.icon
+    func viewWillAppear(withContent content: ContentType) {
+        self.label.stringValue = content.title
+        self.iconView.image = content.icon
     }
 
     override func loadView() {

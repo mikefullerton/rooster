@@ -62,7 +62,7 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
               let header = viewModel.header(forSection:section) else {
             return 0
         }
-        return header.height
+        return header.preferredHeight
     }
 
     
@@ -71,7 +71,7 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
               let footer = viewModel.footer(forSection:section) else {
             return 0
         }
-        return footer.height
+        return footer.preferredHeight
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

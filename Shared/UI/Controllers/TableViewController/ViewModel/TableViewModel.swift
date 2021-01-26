@@ -70,13 +70,13 @@ extension TableViewModelProtocol {
     }
 }
 
-struct TableViewModel<DataType, ViewType> : TableViewModelProtocol
+struct TableViewModel<ContentType, ViewType> : TableViewModelProtocol
             where ViewType: SDKCollectionViewItem, ViewType: TableViewRowCell {
     
     let sections: [TableViewSectionProtocol]
 
-    init(withData data: [DataType]) {
-        let section = TableViewSection<DataType, ViewType>(withRowData: data)
+    init(withData data: [ContentType]) {
+        let section = TableViewSection<ContentType, ViewType>(withRowData: data)
         self.sections = [ section ]
     }
 }

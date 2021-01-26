@@ -16,13 +16,19 @@ class CountdownTextField : SDKTextField {
     
     private var fireDate: Date?
     var outOfRangeString: String = ""
-    var prefixString: String = ""
+    var prefixString: String = "" {
+        didSet {
+            self.updateCountDown()
+        }
+    }
     var showSecondsWithMinutes: Bool = false
 
     private var completion: (() -> Date?)?
     
-    private weak var timer: Timer?
+    private let timer = SimpleTimer(withName: "CountdownTextField")
 
+    var outputFormatter: ((_ prefix: String, _ countdownString: String) -> String)?
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         self.configure()
@@ -51,33 +57,34 @@ class CountdownTextField : SDKTextField {
         self.stopTimer()
 
         if self.fireDate != nil {
-            let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
-                self.timerDidFire()
+            self.timer.start(withDate: fireDate!) { [weak self] timer in
+                self?.timerDidFire()
             }
-            self.timer = timer
+            
             self.updateCountDown()
         } else {
-            self.stop()
+            self.stopCountdown()
         }
     }
     
-    func stopTimer() {
-        if self.timer != nil {
-            self.timer?.invalidate()
-            self.timer = nil
-        }
-        
+    private func stopTimer() {
+        self.timer.stop()
         self.completion = nil
     }
     
-    private func stop() {
+    func stopCountdown() {
+        self.stopTimer()
+        self.stringValue = ""
+    }
+    
+    func countDownFinished() {
         self.stopTimer()
         self.stringValue = self.outOfRangeString
         
         if let completion = self.completion {
             self.completion = nil
             
-            if let nextDate = self.completion!() {
+            if  let nextDate = completion() {
                 self.startTimer(fireDate: nextDate, completion: completion)
             }
         }
@@ -85,17 +92,22 @@ class CountdownTextField : SDKTextField {
     
     private func updateCountDown() {
        guard let fireDate = self.fireDate else {
-            self.stop()
+            self.stopCountdown()
             return
         }
         
         let countDown = CountDown(withFireDate: fireDate,
                                   formatter: LongCountDownStringFormatter(),
                                   showSecondsWithMinutes: self.showSecondsWithMinutes)
+        
         if countDown.intervalUntilFire > 0 {
-            self.stringValue = self.prefixString + countDown.displayString
+            if let outputFormatter = self.outputFormatter {
+                self.stringValue = outputFormatter(self.prefixString, countDown.displayString)
+            } else {
+                self.stringValue = self.prefixString + countDown.displayString
+            }
         } else {
-            self.stop()
+            self.countDownFinished()
         }
     }
 

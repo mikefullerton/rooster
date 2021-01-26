@@ -9,15 +9,15 @@ import Foundation
 import UIKit
 
 class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
-    typealias DataType = Event
+    typealias ContentType = Event
     
     private var event: Event? = nil
  
-    static var cellHeight: CGFloat {
+    static var viewHeight: CGFloat {
         return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20
     }
     
-    func configureCell(withData event: Event, indexPath: IndexPath, isSelected: Bool) {
+    func viewWillAppear(withData event: Event, indexPath: IndexPath) {
         self.setEvent(event)
         self.updateCalendarBar(withCalendar: event.calendar)
         self.setNeedsLayout()

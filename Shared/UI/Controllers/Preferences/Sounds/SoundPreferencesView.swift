@@ -15,12 +15,10 @@ import UIKit
 
 protocol SoundPreferencesViewDelegate : AnyObject {
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex,
-                              fromView: NSView)
+                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex)
 }
 
 class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
-    
     weak var delegate: SoundPreferencesViewDelegate?
 
     init(frame: CGRect) {
@@ -87,11 +85,10 @@ class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
 
     lazy var startDelayView = StartDelayView()
 
-    func soundChoiceViewChooser(_ view: SingleSoundChoiceView, buttonPressed button: SDKButton) {
+    func soundChoiceViewChooserEditSoundsButtonPressed(_ view: SingleSoundChoiceView) {
         if let delegate = self.delegate {
             delegate.soundPreferencesView(self,
-                                          presentSoundPickerForSoundIndex: view.index,
-                                          fromView: button)
+                                          presentSoundPickerForSoundIndex: view.index)
         }
     }
 }

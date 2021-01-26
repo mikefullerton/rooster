@@ -10,15 +10,15 @@ import UIKit
 
 class ReminderTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     
-    typealias DataType = Reminder
+    typealias ContentType = Reminder
     
     private var reminder: Reminder? = nil
         
-    static var cellHeight: CGFloat {
+    static var viewHeight: CGFloat {
         return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20
     }
     
-    func configureCell(withData reminder: Reminder, indexPath: IndexPath, isSelected: Bool) {
+    func viewWillAppear(withData reminder: Reminder, indexPath: IndexPath) {
         self.setReminder(reminder)
         self.updateCalendarBar(withCalendar: reminder.calendar)
         self.setNeedsLayout()

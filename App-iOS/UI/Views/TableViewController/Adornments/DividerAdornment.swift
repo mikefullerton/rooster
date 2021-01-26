@@ -10,10 +10,10 @@ import UIKit
 
 struct DividerAdornment :  TableViewSectionAdornmentProtocol {
     
-    let height: CGFloat
+    let preferredHeight: CGFloat
     
     init(withHeight height: CGFloat) {
-        self.height = height
+        self.preferredHeight = height
     }
     
     var title: String? {

@@ -7,50 +7,57 @@
 
 import Foundation
 
+protocol TableViewRowCell {
+    associatedtype ContentType
+    
+    static var preferredHeight: CGFloat { get }
+ 
+    func viewWillAppear(withContent content: ContentType)
+}
+
 protocol TableViewRowProtocol  {
     var cellReuseIdentifer: String { get }
 
     var height: CGFloat { get }
 
-    var cellClass: SDKCollectionViewItem.Type { get }
+    var viewClass: SDKCollectionViewItem.Type { get }
 
-    func willDisplay(cell: SDKCollectionViewItem, atIndexPath indexPath: IndexPath, isSelected: Bool)
+    func willDisplayView(_ view: SDKCollectionViewItem)
 }
 
-struct TableViewRow<DataType, ViewType> : TableViewRowProtocol
+struct TableViewRow<ContentType, ViewType> : TableViewRowProtocol
             where ViewType: SDKCollectionViewItem, ViewType: TableViewRowCell {
     
-    let data: DataType
+    let data: ContentType
     
-    init(withData data: DataType) {
+    init(withData data: ContentType) {
         self.data = data
     }
     
-    func willDisplay(cell: SDKCollectionViewItem, atIndexPath indexPath: IndexPath, isSelected: Bool) {
+    func willDisplayView(_ view: SDKCollectionViewItem) {
         
-        if let typedCell = cell as? ViewType,
-           let data = self.data as? ViewType.DataType {
+        if let typedCell = view as? ViewType,
+           let content = self.data as? ViewType.ContentType {
             
-            typedCell.configureCell(withData: data, indexPath: indexPath, isSelected: isSelected)
+            typedCell.viewWillAppear(withContent: content)
         }
     }
 
-    var cellClass: SDKCollectionViewItem.Type {
+    var viewClass: SDKCollectionViewItem.Type {
         return ViewType.self
     }
 
     var cellReuseIdentifer: String {
-        return "\(type(of: self)).\(self.cellClass)"
+        return "\(type(of: self)).\(self.viewClass)"
     }
 
     var height: CGFloat {
-        if let rowCell = self.cellClass as? ViewType.Type {
-            return rowCell.cellHeight
+        if let rowCell = self.viewClass as? ViewType.Type {
+            return rowCell.preferredHeight
         }
         
         return 24
     }
-
 }
 
 
