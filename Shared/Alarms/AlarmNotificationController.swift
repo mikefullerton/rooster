@@ -55,6 +55,16 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
             if self.notifications.count == 0 {
                 self.logger.log("Notifying that all alarms have stopped")
                 NotificationCenter.default.post(name: AlarmNotificationController.AlarmsDidStopEvent, object: self)
+                
+                #if targetEnvironment(macCatalyst)
+                AppDelegate.instance.appKitPlugin.utilities.stopBouncingAppIcon()
+                #endif
+
+                #if os(macOS)
+                AppDelegate.instance.systemUtilities.stopBouncingAppIcon()
+                #endif
+
+                AppDelegate.instance.userNotificationController.cancelAllNotifications()
             }
         }
     }
@@ -79,16 +89,6 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
                 item.bringLocationAppsToFront()
             }
         }
-
-        AppDelegate.instance.userNotificationController.cancelAllNotifications()
-        
-        #if targetEnvironment(macCatalyst)
-        AppDelegate.instance.appKitPlugin.utilities.stopBouncingAppIcon()
-        #endif
-        
-        #if os(macOS)
-        AppDelegate.instance.systemUtilities.stopBouncingAppIcon()
-        #endif
         
         AppDelegate.instance.dataModelController.stopAllAlarms()
         

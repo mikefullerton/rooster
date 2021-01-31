@@ -37,17 +37,17 @@ class TimeRemainingViewController : SDKViewController, DataModelAware {
         ])
     }
     
-    lazy var countdownTextField: CountdownTextField = {
-        let view = CountdownTextField()
+    lazy var countdownTextField: CountDownTextField = {
+        let view = CountDownTextField()
         view.prefixString = "Your next alarm will fire in "
-        view.showSecondsWithMinutes = true
+        view.showSecondsWithMinutes = 2.0 
         view.outOfRangeString = "No more meetings today! 🎉"
         view.font = SDKFont.systemFont(ofSize: SDKFont.systemFontSize)
         
         return view
     }()
     
-    func addCountdownTextField() {
+    func addCountDownTextField() {
         
         let view = self.countdownTextField
         
@@ -65,14 +65,14 @@ class TimeRemainingViewController : SDKViewController, DataModelAware {
     
     override func loadView() {
         self.view = BlurView()
-        self.addCountdownTextField()
+        self.addCountDownTextField()
         self.addDividerView()
     }
 
     func startTimer() {
-        self.countdownTextField.startTimer(fireDate: AppDelegate.instance.dataModelController.dataModel.nextAlarmDate) { () -> Date? in
-            return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
-        }
+//        self.countdownTextField.startTimer(fireDate: AppDelegate.instance.dataModelController.dataModel.nextAlarmDate) { () -> Date? in
+//            return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
+//        }
     }
 
     override func viewWillAppear() {
@@ -84,7 +84,7 @@ class TimeRemainingViewController : SDKViewController, DataModelAware {
     
     override func viewWillDisappear() {
         super.viewWillDisappear()
-        self.countdownTextField.stopCountdown()
+        self.countdownTextField.stopCountDown()
         self.reloader = nil
     }
     

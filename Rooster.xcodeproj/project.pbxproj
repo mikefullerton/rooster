@@ -101,8 +101,6 @@
 		B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */; };
 		B25F6B1E25BCC9600067C096 /* TableViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */; };
 		B25F6B4225BD091E0067C096 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4025BD09180067C096 /* MenuBarController.swift */; };
-		B25F6B4325BD091E0067C096 /* MenuBarPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4125BD09180067C096 /* MenuBarPopoverViewController.swift */; };
-		B25F6B4425BD091E0067C096 /* MenuBarController+ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B3F25BD09180067C096 /* MenuBarController+ContentView.swift */; };
 		B25F6B4C25BDE9990067C096 /* NSImage+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */; };
 		B25F6B7B25BDEE240067C096 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250E25B640BE0052758C /* TopBottomBarVerticalLayout.swift */; };
 		B25F6B7C25BDEE240067C096 /* HorizontalViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250B25B640BE0052758C /* HorizontalViewLayout.swift */; };
@@ -336,6 +334,9 @@
 		B2E78A1A259562A000DF0ACF /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A18259562A000DF0ACF /* URL+Utilities.swift */; };
 		B2E78A1D2595656500DF0ACF /* DataModel+NextAlarmDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */; };
 		B2E78A1E2595656500DF0ACF /* DataModel+NextAlarmDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */; };
+		B2EB25AC25C7256C00906E41 /* PrimaryMenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */; };
+		B2EB25EA25C72BD800906E41 /* StopAlarmMenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */; };
+		B2EB25EC25C72C3100906E41 /* MenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */; };
 		B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */; };
 		B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */; };
 		B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51225632AE8000BC78E /* Date+Utilities.swift */; };
@@ -548,9 +549,7 @@
 		B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAdornmentView.swift; sourceTree = "<group>"; };
-		B25F6B3F25BD09180067C096 /* MenuBarController+ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuBarController+ContentView.swift"; sourceTree = "<group>"; };
 		B25F6B4025BD09180067C096 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
-		B25F6B4125BD09180067C096 /* MenuBarPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverViewController.swift; sourceTree = "<group>"; };
 		B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Utilities.swift"; sourceTree = "<group>"; };
 		B25F6B8C25BDF04E0067C096 /* MacThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacThemes.swift; sourceTree = "<group>"; };
 		B25F6B9325BDF05B0067C096 /* iOSThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSThemes.swift; sourceTree = "<group>"; };
@@ -734,6 +733,9 @@
 		B2E78A18259562A000DF0ACF /* URL+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataModel+NextAlarmDate.swift"; sourceTree = "<group>"; };
 		B2E78A202596489300DF0ACF /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryMenuBarItem.swift; sourceTree = "<group>"; };
+		B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopAlarmMenuBarButton.swift; sourceTree = "<group>"; };
+		B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItem.swift; sourceTree = "<group>"; };
 		B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSceneDelegate.swift; sourceTree = "<group>"; };
 		B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSceneDelegate.swift; sourceTree = "<group>"; };
 		B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewRow.swift; sourceTree = "<group>"; };
@@ -1009,8 +1011,9 @@
 			isa = PBXGroup;
 			children = (
 				B25F6B4025BD09180067C096 /* MenuBarController.swift */,
-				B25F6B3F25BD09180067C096 /* MenuBarController+ContentView.swift */,
-				B25F6B4125BD09180067C096 /* MenuBarPopoverViewController.swift */,
+				B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */,
+				B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */,
+				B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */,
 			);
 			path = MenuBar;
 			sourceTree = "<group>";
@@ -2076,6 +2079,7 @@
 				B274EFD125BA229500F9D473 /* SingleSoundChoiceView.swift in Sources */,
 				B2E2251D25B640BE0052758C /* HorizontallyOpposedLayout.swift in Sources */,
 				B2E224D925B61E610052758C /* LoadingWindowController.swift in Sources */,
+				B2EB25AC25C7256C00906E41 /* PrimaryMenuBarItem.swift in Sources */,
 				B274EFA825BA188D00F9D473 /* GroupBoxView.swift in Sources */,
 				B2FAD92A25B6022300598B9E /* Calendar+EKCalender.swift in Sources */,
 				B2E224C725B61B420052758C /* SoundPreferences+DictionaryCodable.swift in Sources */,
@@ -2145,7 +2149,6 @@
 				B2E224F925B635E20052758C /* Theme.swift in Sources */,
 				B25F6AF725BB673A0067C096 /* NSViewController+WindowController.swift in Sources */,
 				B294937325B5F71500FCCF9E /* Sound+DisplayName.swift in Sources */,
-				B25F6B4425BD091E0067C096 /* MenuBarController+ContentView.swift in Sources */,
 				B2FAD93425B6022300598B9E /* Reminder+EKReminder.swift in Sources */,
 				B25F6B8F25BDF04E0067C096 /* MacThemes.swift in Sources */,
 				B2CEF19025B8B0A500CA01E2 /* ContentAwareView.swift in Sources */,
@@ -2157,8 +2160,10 @@
 				B2CEF18C25B8B09C00CA01E2 /* SpacerView.swift in Sources */,
 				B294935125B5F6E400FCCF9E /* Reloader.swift in Sources */,
 				B26F6B5E25B7C47400EA2057 /* EventListTableViewCell.swift in Sources */,
+				B2EB25EC25C72C3100906E41 /* MenuBarItem.swift in Sources */,
 				B274EFB125BA191700F9D473 /* SliderView.swift in Sources */,
 				B2FAD92E25B6022300598B9E /* EKDataModel.swift in Sources */,
+				B2EB25EA25C72BD800906E41 /* StopAlarmMenuBarButton.swift in Sources */,
 				B274EF8D25BA0F6800F9D473 /* BlurView.swift in Sources */,
 				B225CDA325C073E800F3BA15 /* SDKAlert.swift in Sources */,
 				B274EF8425BA0CFC00F9D473 /* TopBar.swift in Sources */,
@@ -2214,7 +2219,6 @@
 				B29493A025B5F7F500FCCF9E /* DemoAlarmNotification.swift in Sources */,
 				B2FAD93F25B6022B00598B9E /* Event+DictionaryCodable.swift in Sources */,
 				B294936625B5F6F100FCCF9E /* AlarmSound.swift in Sources */,
-				B25F6B4325BD091E0067C096 /* MenuBarPopoverViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

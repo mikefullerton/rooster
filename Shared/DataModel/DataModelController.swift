@@ -368,7 +368,7 @@ class DataModelController : EKControllerDelegate, Loggable {
             self.logger.log("scheduling next alarm update for: \(nextAlarmTime.shortDateAndTimeString)")
             self.nextAlarmTimer.start(withDate: nextAlarmTime) { [weak self] (timer) in
                 self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval), scheduled for: \(nextAlarmTime.shortDateAndTimeString)")
-                self?.dataModelWasReloaded()
+                self?.reloadData()
             }
         }
     }

@@ -12,7 +12,8 @@ import Cocoa
 import UIKit
 #endif
 
-class CountdownHeaderView : BlurView, TableViewAdornmentView, DataModelAware {
+class CountDownHeaderView : BlurView, TableViewAdornmentView, DataModelAware, CountDownTextFieldDelegate {
+    
     private var reloader: DataModelReloader? = nil
     
     override init(frame: CGRect) {
@@ -29,8 +30,8 @@ class CountdownHeaderView : BlurView, TableViewAdornmentView, DataModelAware {
         return 40
     }
     
-    lazy var titleView: CountdownTextField = {
-        let titleView = CountdownTextField()
+    lazy var titleView: CountDownTextField = {
+        let titleView = CountDownTextField()
         titleView.isEditable = false
         titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.alignment = .center
@@ -38,7 +39,7 @@ class CountdownHeaderView : BlurView, TableViewAdornmentView, DataModelAware {
         titleView.drawsBackground = false
         titleView.isBordered = false
         titleView.prefixString = "Your next alarm will fire in "
-        titleView.showSecondsWithMinutes = true
+        titleView.showSecondsWithMinutes = 2.0
         
         return titleView
     }()
@@ -62,9 +63,11 @@ class CountdownHeaderView : BlurView, TableViewAdornmentView, DataModelAware {
     }
     
     func startTimer() {
-        self.titleView.startTimer(fireDate: AppDelegate.instance.dataModelController.dataModel.nextAlarmDate) { () -> Date? in
-            return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
-        }
+        self.titleView.startCountDown()
+    }
+    
+    func countDownTextFieldNextFireDate(_ countDownTextField: CountDownTextField) -> Date? {
+        return AppDelegate.instance.dataModelController.dataModel.nextAlarmDate
     }
     
     func dataModelDidReload(_ dataModel: DataModel) {
@@ -74,7 +77,7 @@ class CountdownHeaderView : BlurView, TableViewAdornmentView, DataModelAware {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.titleView.stopCountdown()
+        self.titleView.stopCountDown()
         self.reloader = nil
     }
     

@@ -36,7 +36,7 @@ struct CalendarItemsSection : TableViewSectionProtocol {
     
     var layout = TableViewSectionLayout(rowSpacing: 2, insets: SDKEdgeInsets.zero)
 
-//    var header: TableViewSectionAdornmentProtocol? = TableViewSectionAdornment(withViewClass: CountdownHeaderView.self)
+//    var header: TableViewSectionAdornmentProtocol? = TableViewSectionAdornment(withViewClass: CountDownHeaderView.self)
     
     init(withCalendarItems calendarItems: [CalendarItem]) {
        

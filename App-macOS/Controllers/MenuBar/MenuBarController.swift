@@ -8,232 +8,78 @@
 import Foundation
 import AppKit
 
-protocol MenuBarControllerDelegate : AnyObject {
-
-    func menuBarControllerButtonWasClicked(_ controller: MenuBarController)
-    
-    func menuBarControllerAreAlarmsFiring(_ controller: MenuBarController) -> Bool
-    
-    func menuBarControllerNextFireDate(_ controller: MenuBarController) -> Date?
-
-}
-
-class MenuBarController: NSObject, Loggable {
+ 
+class MenuBarController: Loggable,
+                        AppControllerAware,
+                        PrimaryMenuBarItemDelegate,
+                        StopAlarmMenuBarButtonDelegate,
+                        DataModelAware {
         
-    struct Option: OptionSet {
+    struct Options: OptionSet {
         let rawValue: Int
         
-        static let none             = Option(rawValue: 1 << 0)
-        static let icon             = Option(rawValue: 1 << 1)
-        static let countDown        = Option(rawValue: 1 << 2)
-        static let popoverView      = Option(rawValue: 1 << 3)
+        static let none             = Options(rawValue: 1 << 0)
+        static let icon             = Options(rawValue: 1 << 1)
+        static let countDown        = Options(rawValue: 1 << 2)
+        static let popoverView      = Options(rawValue: 1 << 3)
+        
+        init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+    }
+    private var reloader: DataModelReloader? = nil
+    
+    lazy var primaryMenuItem = PrimaryMenuBarItem(withDelegate: self)
+    lazy var stopAlarmItem = StopAlarmMenuBarButton(withDelegate: self)
+    
+    init() {
+        self.reloader = DataModelReloader(for: self)
     }
     
-    public weak var delegate: MenuBarControllerDelegate?
-    
-    private var statusBarItem: NSStatusItem? = nil
-    private let countDownTimer = SimpleTimer(withName: "MenuBarCountDownTimer")
-    
-    private weak var timer: Timer?
-    
-    var showingRedRooster = false
-    
-    var displayOptions: Option = [.icon, .countDown, .popoverView] {
+    var displayOptions: Options = [.icon, .countDown, .popoverView] {
         didSet {
             self.updateMenuBarItemsVisibility()
         }
     }
     
-    deinit {
-        self.stopFlashingTimer()
-        self.countDownTimer.stop()
+    func stopAlarmMenuBarButtonButtonWasClicked(_ item: StopAlarmMenuBarButton) {
+        NSApp.activate(ignoringOtherApps: true)
+        self.alarmNotificationController.handleUserClickedStopAll()
     }
     
-    var redRoosterImage : NSImage? {
-        if let image = Bundle(for: type(of: self)).image(forResource: NSImage.Name("RedRoosterIcon")) {
-            
-            return image
-        }
-        
-        return nil
-    }
-    
-    var defaultRoosterImage: NSImage? {
-        if let image = self.redRoosterImage {
-            image.isTemplate = true
-            return image.tint(color: NSColor.white)
-        }
-            
-        return nil
-    }
-    
-    func setStatusBarIconImage(_ inImage: NSImage?) {
-        if let image = inImage,
-           let statusBarItem = self.statusBarItem,
-           let button = statusBarItem.button {
-           
-            image.size = CGSize(width: 26, height: 26)
-            button.image = image
-        }
-    }
-    
-    func showIconInMenuBar() {
-        
-        if self.displayOptions.contains(.icon) && self.statusBarItem == nil {
-            let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
-            
-            if let button = statusBarItem.button,
-               let image = self.defaultRoosterImage {
-                
-                image.size = CGSize(width: 26, height: 26)
-                button.image = image
-                button.action = #selector(buttonClicked(_:))
-                button.target = self
-                button.imagePosition = .imageLeading
-            }
-            
-            if self.displayOptions.contains(.icon) {
-                self.updateCountdown()
-            }
-            
-            self.statusBarItem = statusBarItem
-        }
-        
-    }
-    
-    func hideIconInMenuBar() {
-        if let statusBarItem = self.statusBarItem {
-            NSStatusBar.system.removeStatusItem(statusBarItem)
-            self.statusBarItem = nil
-        }
-    }
-    
-    func updateCountdown() {
-        
-        if let delegate = self.delegate {
-        
-            if let statusBarItem = self.statusBarItem,
-               let button = statusBarItem.button {
-            
-                var title: String = ""
-                
-                if let nextFireDate = delegate.menuBarControllerNextFireDate(self) {
-                    let countDown = CountDown(withFireDate: nextFireDate,
-                                              formatter: LongCountDownStringFormatter(),
-                                              showSecondsWithMinutes: false)
-
-                    title = countDown.displayString
-                }
-                
-                button.title = title
-            }
-
-            self.countDownTimer.logTimerEvents = false
-            self.countDownTimer.start(withInterval: 1.0, fireCount: 1) { [weak self] timer in
-                if let strongSelf = self {
-                    strongSelf.updateCountdown()
-                }
-            }
-        }
-    }
-
-    @objc func buttonClicked(_ sender: AnyObject?) {
+    func primaryMenuBarItemButtonWasClicked(_ item: PrimaryMenuBarItem) {
         self.logger.log("MenuBar button was clicked")
-//        if let delegate = self.delegate {
-//            delegate.menuBarControllerButtonWasClicked(self)
-//        }
         
-        if self.isPopoverHidden == false {
-            self.isPopoverHidden = true
+        if self.primaryMenuItem.isPopoverVisible {
+            self.primaryMenuItem.isPopoverVisible = false
         } else if self.displayOptions.contains(.popoverView) {
-            self.isPopoverHidden = false
+            self.primaryMenuItem.isPopoverVisible = true
         }
-    }
-    
-    lazy var popover : NSPopover = {
-        
-        let controller = MainWindowViewController()
-        
-        let popover = NSPopover()
-        popover.behavior = .transient
-        popover.contentViewController = controller
-        popover.contentSize = controller.preferredContentSize
-        return popover
-    }()
-    
-    var isPopoverHidden: Bool {
-        get {
-            return !self.popover.isShown
-        }
-        set(hidden) {
-            if let button = self.statusBarItem?.button {
-                if hidden && self.popover.isShown {
-                    self.popover.performClose(self)
-                } else if !hidden && !self.popover.isShown {
-                    self.popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
-                }
-            }
-
-        }
-    }
-    
-    func toggleImages() {
-        self.showingRedRooster = !self.showingRedRooster
-        if self.showingRedRooster {
-            self.setStatusBarIconImage(self.redRoosterImage)
-        } else {
-            self.setStatusBarIconImage(self.defaultRoosterImage)
-        }
-    }
-    
-    var isAlarmFiring: Bool {
-        if let delegate = self.delegate {
-            return delegate.menuBarControllerAreAlarmsFiring(self)
-        }
-        
-        return false
-    }
-    
-    func alarmStateDidChange() {
-        if self.isAlarmFiring {
-            self.showingRedRooster = true
-            self.setStatusBarIconImage(self.redRoosterImage)
-            self.startFlashingTimer()
-        } else {
-            self.showingRedRooster = false
-            self.setStatusBarIconImage(self.defaultRoosterImage)
-            self.stopFlashingTimer()
-        }
-    }
-    
-    func startFlashingTimer() {
-        self.stopFlashingTimer()
-        let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
-            if self.isAlarmFiring {
-                self.toggleImages()
-            } else {
-                self.stopFlashingTimer()
-            }
-        }
-        self.timer = timer
-    }
-    
-    func stopFlashingTimer() {
-        if self.timer != nil {
-            self.timer?.invalidate()
-            self.timer = nil
-        }
-    }
-    
-    func showNowFiringItem(_ item: Any) {
-        self.isPopoverHidden = false
-    }
-    
-    func hideNowFiringItem(_ item: Any) {
-        self.isPopoverHidden = true
     }
     
     func updateMenuBarItemsVisibility() {
-        
+        if self.displayOptions.contains(.icon) {
+            self.primaryMenuItem.isVisible = true
+            self.stopAlarmItem.isVisible = false;
+        } else {
+            self.primaryMenuItem.isVisible = false
+            self.stopAlarmItem.isVisible = false;
+        }
+    }
+    
+    func showInMenuBar() {
+        self.updateMenuBarItemsVisibility()
+    }
+   
+    
+    func dataModelDidReload(_ dataModel: DataModel) {
+        if self.displayOptions.contains(.icon) {
+            self.primaryMenuItem.startCountdown()
+            
+            self.stopAlarmItem.isVisible = self.alarmNotificationController.alarmsAreFiring
+            
+        } else {
+            self.primaryMenuItem.stopCountdown()
+        }
     }
 }

@@ -13,8 +13,7 @@ class AppDelegate: NSObject,
                    AppControllerAware,
                    Loggable,
                    NSWindowDelegate,
-                   FirstLaunchWindowControllerDelegate,
-                   MenuBarControllerDelegate {
+                   FirstLaunchWindowControllerDelegate {
 
     private let sparkleController = SparkleController()
     
@@ -162,8 +161,7 @@ class AppDelegate: NSObject,
         
         self.logger.log("Application authenticate EventKit access")
 
-        self.menuBarController.delegate = self
-        self.menuBarController.showIconInMenuBar()
+        self.menuBarController.showInMenuBar()
         
 //        self.sparkleController.delegate = self
         self.sparkleController.configure(withAppBundle: Bundle.init(for: type(of:self)))
@@ -178,19 +176,5 @@ class AppDelegate: NSObject,
             self.showFirstRunWindow()
         }
     }
-    
-    func menuBarControllerButtonWasClicked(_ controller: MenuBarController) {
-        NSApp.activate(ignoringOtherApps: true)
-        self.alarmNotificationController.handleUserClickedStopAll()
-    }
-    
-    func menuBarControllerAreAlarmsFiring(_ controller: MenuBarController) -> Bool {
-        return self.alarmNotificationController.alarmsAreFiring
-    }
-    
-    func menuBarControllerNextFireDate(_ controller: MenuBarController) -> Date? {
-        return self.dataModelController.dataModel.nextAlarmDate
-    }
-
 }
 

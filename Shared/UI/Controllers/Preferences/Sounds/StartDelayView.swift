@@ -23,7 +23,7 @@ class StartDelayView : PreferenceSlider {
         
         self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
         
-        self.label.stringValue = "PLAY_COUNT".localized
+        self.label.stringValue = "PLAY_DELAY".localized
         
         self.setViews(minValueView: self.label,
                       maxValueView: self.button,

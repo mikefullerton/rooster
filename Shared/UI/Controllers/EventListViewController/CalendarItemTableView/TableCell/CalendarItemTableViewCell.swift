@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarItemTableViewCell : SDKCollectionViewItem {
+class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDelegate {
     
     let contentInsets = SDKEdgeInsets(top: 14, left: 10, bottom: 14, right: 10)
     
@@ -63,8 +63,8 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
     }
     
     override func prepareForReuse() {
-        self.startCountDownLabel.stopCountdown()
-        self.endCountDownLabel.stopCountdown()
+        self.startCountDownLabel.stopCountDown()
+        self.endCountDownLabel.stopCountDown()
         self.calendarItem = nil
         self.iconBar.prepareForReuse()
         self.timePassingView.stopTimer()
@@ -141,30 +141,42 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
         self.dividerView = dividerView
     }
     
-    lazy var startCountDownLabel: CountdownTextField = {
-        let label = CountdownTextField()
+    lazy var startCountDownLabel: CountDownTextField = {
+        let label = CountDownTextField()
+        label.countDownDelegate = self
         label.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         label.alignment = .right
         label.textColor = Theme(for: self.view).secondaryLabelColor
         label.outputFormatter = { prefix, countdown in
-            return " (starts in \(countdown))"
+            return " (Starts in \(countdown))"
         }
 
         return label
     }()
     
-    lazy var endCountDownLabel: CountdownTextField = {
-        let label = CountdownTextField()
+    lazy var endCountDownLabel: CountDownTextField = {
+        let label = CountDownTextField()
+        label.countDownDelegate = self
         label.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         label.alignment = .right
         label.textColor = Theme(for: self.view).secondaryLabelColor
         label.outputFormatter = { prefix, countdown in
-            return " (ends in \(countdown))"
+            return " (Ends in \(countdown))"
         }
         
         return label
     }()
     
+    func countDownTextFieldNextFireDate(_ countDownTextField: CountDownTextField) -> Date? {
+        if countDownTextField === self.startCountDownLabel {
+            return self.calendarItem?.alarm.startDate
+        } else if countDownTextField === self.endCountDownLabel,
+                  countDownTextField.isHidden == false {
+            return self.calendarItem?.alarm.endDate
+        }
+        
+        return nil
+    }
     
     func addStartCountDownLabel() {
         let view = self.startCountDownLabel
@@ -203,14 +215,12 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
         return label
     }
     
-    lazy var countdownLabel: CountdownTextField = {
-        let label = CountdownTextField()
+    lazy var countdownLabel: CountDownTextField = {
+        let label = CountDownTextField()
         label.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         label.alignment = .right
         label.textColor = Theme(for: self.view).secondaryLabelColor
-
         return label
-        
     }()
 
     lazy var startTimeLabel: SDKTextField = {
@@ -314,8 +324,8 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
         
         self.startTimeLabel.stringValue = calendarItem.alarm.startDate.shortTimeString
         self.endTimeLabel.stringValue = calendarItem.alarm.endDate.shortTimeString
-        self.startCountDownLabel.stopCountdown()
-        self.endCountDownLabel.stopCountdown()
+        self.startCountDownLabel.stopCountDown()
+        self.endCountDownLabel.stopCountDown()
 
         
         
@@ -326,12 +336,14 @@ class CalendarItemTableViewCell : SDKCollectionViewItem {
             self.timePassingView.set(startDate: calendarItem.alarm.startDate,
                                      endDate: calendarItem.alarm.endDate)
             
-            self.endCountDownLabel.startTimer(fireDate: calendarItem.alarm.endDate)
+            self.startCountDownLabel.stopCountDown()
+            self.endCountDownLabel.startCountDown()
         } else {
             self.startCountDownLabel.isHidden = false
             self.endCountDownLabel.isHidden = true
 
-            self.startCountDownLabel.startTimer(fireDate: calendarItem.alarm.startDate)
+            self.endCountDownLabel.stopCountDown()
+            self.startCountDownLabel.startCountDown()
         }
         
 //        self.timeLabel.stringValue = calendarItem.timeLabelDisplayString

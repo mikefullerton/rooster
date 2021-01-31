@@ -1,5 +1,5 @@
 //
-//  CountdownTextField.swift
+//  CountDownTextField.swift
 //  Rooster-macOS
 //
 //  Created by Mike Fullerton on 1/20/21.
@@ -12,20 +12,31 @@ import Cocoa
 import UIKit
 #endif
 
-class CountdownTextField : SDKTextField {
+protocol CountDownTextFieldDelegate : AnyObject {
+    func countDownTextFieldNextFireDate(_ countDownTextField: CountDownTextField) -> Date?
+}
+
+class CountDownTextField : SDKTextField, CountDownDelegate {
     
-    private var fireDate: Date?
+    static let showSecondsDefault = 2.0
+    
+    lazy var countDown = CountDown(withDelegate: self)
+
     var outOfRangeString: String = ""
+    
+    weak var countDownDelegate: CountDownTextFieldDelegate?
+    
     var prefixString: String = "" {
         didSet {
-            self.updateCountDown()
+            self.countDown.update()
         }
     }
-    var showSecondsWithMinutes: Bool = false
 
-    private var completion: (() -> Date?)?
-    
-    private let timer = SimpleTimer(withName: "CountdownTextField")
+    var showSecondsWithMinutes: TimeInterval = CountDownTextField.showSecondsDefault {
+        didSet {
+            self.countDown.update()
+        }
+    }
 
     var outputFormatter: ((_ prefix: String, _ countdownString: String) -> String)?
     
@@ -48,78 +59,57 @@ class CountdownTextField : SDKTextField {
         self.drawsBackground = false
         self.isEditable = false
     }
-    
-    func startTimer(fireDate: Date?,
-                    completion: (() -> Date? )? = nil) {
-        
-        self.completion = completion
-        self.fireDate = fireDate
-        self.stopTimer()
 
-        if self.fireDate != nil {
-            self.timer.start(withDate: fireDate!) { [weak self] timer in
-                self?.timerDidFire()
-            }
-            
-            self.updateCountDown()
-        } else {
-            self.stopCountdown()
-        }
+    func startCountDown() {
+        self.countDown.start()
     }
-    
-    private func stopTimer() {
-        self.timer.stop()
-        self.completion = nil
-    }
-    
-    func stopCountdown() {
-        self.stopTimer()
+
+    func stopCountDown() {
+        self.countDown.stop()
         self.stringValue = ""
     }
     
-    func countDownFinished() {
-        self.stopTimer()
+    private func countDownFinished() {
         self.stringValue = self.outOfRangeString
-        
-        if let completion = self.completion {
-            self.completion = nil
-            
-            if  let nextDate = completion() {
-                self.startTimer(fireDate: nextDate, completion: completion)
-            }
+        self.countDown.start()
+    }
+   
+    func countdown(_ countDown: CountDown, didUpdate displayString: String) {
+        if let outputFormatter = self.outputFormatter {
+            self.stringValue = outputFormatter(self.prefixString, displayString)
+        } else {
+            self.stringValue = self.prefixString + displayString
         }
     }
     
-    private func updateCountDown() {
-       guard let fireDate = self.fireDate else {
-            self.stopCountdown()
-            return
+    func countdownFireDate(_ countDown: CountDown) -> Date? {
+        
+        // stop if we're hidden
+        if self.isHidden {
+            self.stopCountDown()
+            return nil
         }
         
-        let countDown = CountDown(withFireDate: fireDate,
-                                  formatter: LongCountDownStringFormatter(),
-                                  showSecondsWithMinutes: self.showSecondsWithMinutes)
-        
-        if countDown.intervalUntilFire > 0 {
-            if let outputFormatter = self.outputFormatter {
-                self.stringValue = outputFormatter(self.prefixString, countDown.displayString)
-            } else {
-                self.stringValue = self.prefixString + countDown.displayString
-            }
-        } else {
-            self.countDownFinished()
+        if let delegate = self.countDownDelegate {
+            return delegate.countDownTextFieldNextFireDate(self)
         }
+        return nil
     }
 
-    private func timerDidFire() {
-        self.updateCountDown()
+    func countdownDisplayFormatter(_ countDown: CountDown) -> CountDownStringFormatter {
+        return LongCountDownStringFormatter(showSecondsWithMinutes: self.showSecondsWithMinutes)
+    }
+    
+    func countdown(_ countDown: CountDown, didFinish displayString: String) {
+        self.countDownFinished()
     }
     
     override func viewWillMove(toWindow window: NSWindow?) {
         super.viewWillMove(toWindow: window)
 
         if window == nil {
-            self.stopTimer()
+            self.stopCountDown()
         }
     }
+
 }

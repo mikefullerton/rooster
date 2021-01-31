@@ -90,7 +90,7 @@ extension NSImage {
             }
             
             if self.displayOptions.contains(.icon) {
-                self.updateCountdown()
+                self.updateCountDown()
             }
             
             self.statusBarItem = statusBarItem
@@ -105,7 +105,7 @@ extension NSImage {
         }
     }
     
-    func updateCountdown() {
+    func updateCountDown() {
         
         if let delegate = self.delegate {
         
@@ -128,7 +128,7 @@ extension NSImage {
             self.countDownTimer.logTimerEvents = false
             self.countDownTimer.start(withInterval: 1.0, fireCount: 1) { [weak self] timer in
                 if let strongSelf = self {
-                    strongSelf.updateCountdown()
+                    strongSelf.updateCountDown()
                 }
             }
         }

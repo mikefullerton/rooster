@@ -6,7 +6,6 @@
 //
 
 import XCTest
-@testable import Rooster_macOS
 
 class Rooster_macOSTests: XCTestCase {
 
