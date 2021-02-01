@@ -8,13 +8,19 @@
 import Foundation
 import Cocoa
 
-class SDKCustomButton: ContentAwareView, TrackingButtonDelegate {
+class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate {
     
     private(set) var imageView: NSImageView?
     private(set) var textField: NSTextField?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.wantsLayer = true
+        self.sdkLayer.delegate = self
+        self.canDrawSubviewsIntoLayer = true
+        self.layerContentsRedrawPolicy = .onSetNeedsDisplay
+        self.layerContentsPlacement = .center
         self.addButton()
     }
     
@@ -23,8 +29,6 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate {
                             toolTip: String?) {
 
         self.init(frame: CGRect.zero)
-        
-        self.wantsLayer = true
         
         self.target = target
         self.action = action
@@ -98,7 +102,15 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func display(_ layer: CALayer) {
+        let frame = layer.frame
+        layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        layer.frame = frame
+    }
+    
     private func setContraints(forView view: NSView, forAlignment alignment: NSTextAlignment) {
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.deactivate(view.constraints)
         
@@ -147,19 +159,13 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate {
     }
     
     func addImageView() {
-        
         if self.imageView != nil {
             return
         }
         
         let view = NSImageView()
-        
         self.addSubview(view)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
         self.imageView = view
-    
         self.needsUpdateConstraints = true
     }
     
@@ -194,15 +200,11 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate {
     }()
     
     func addButton() {
-        
         let view = self.button
-        
         self.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             view.topAnchor.constraint(equalTo: self.topAnchor),

@@ -326,8 +326,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         self.endTimeLabel.stringValue = calendarItem.alarm.endDate.shortTimeString
         self.startCountDownLabel.stopCountDown()
         self.endCountDownLabel.stopCountDown()
-
-        
         
         if calendarItem.alarm.isHappeningNow {
             self.startCountDownLabel.isHidden = true

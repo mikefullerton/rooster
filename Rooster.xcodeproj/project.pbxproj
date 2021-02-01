@@ -10,7 +10,6 @@
 		0793792A6943FB457096419C /* Pods_Rooster_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D2CF827B67482EE3A9520C /* Pods_Rooster_macOS.framework */; };
 		B200CF5B25B4C4450066B882 /* FirstRunViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B200CF5A25B4C4450066B882 /* FirstRunViewController.xib */; };
 		B200CF6725B4F6F60066B882 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B200CF6625B4F6F60066B882 /* WebKit.framework */; };
-		B200CF6A25B4FA210066B882 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
 		B2020A9E2577D88600F478CC /* Reloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020A9D2577D88600F478CC /* Reloader.swift */; };
 		B2020AD72577DAC600F478CC /* CalendarItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AD62577DAC600F478CC /* CalendarItemTableViewController.swift */; };
 		B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */; };
@@ -46,7 +45,6 @@
 		B22EEAB825A62BEA00D2D19D /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22EEAB725A62BEA00D2D19D /* LoadingView.swift */; };
 		B22EEAC025A63B2F00D2D19D /* ContentAwareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22EEABF25A63B2F00D2D19D /* ContentAwareView.swift */; };
 		B233C45425A0FA13005A7FB3 /* TableViewRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C45325A0FA13005A7FB3 /* TableViewRowCell.swift */; };
-		B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
 		B233C54825A282A5005A7FB3 /* Sound+DisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */; };
 		B233C55925A3961F005A7FB3 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55825A3961F005A7FB3 /* SliderView.swift */; };
 		B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */; };
@@ -195,7 +193,6 @@
 		B29492F225B5F4D100FCCF9E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B29492F025B5F4D100FCCF9E /* MainMenu.xib */; };
 		B29492FE25B5F4D100FCCF9E /* Rooster_macOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29492FD25B5F4D100FCCF9E /* Rooster_macOSTests.swift */; };
 		B294930925B5F4D100FCCF9E /* Rooster_macOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B294930825B5F4D100FCCF9E /* Rooster_macOSUITests.swift */; };
-		B294931E25B5F5C700FCCF9E /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B233C54325A24ACD005A7FB3 /* dsa_pub.pem */; };
 		B294932425B5F5D400FCCF9E /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = B298C44825AB8C430085BBA0 /* Sounds */; };
 		B294932525B5F5D400FCCF9E /* About in Resources */ = {isa = PBXBuildFile; fileRef = B20C4D5325B3A052000A3981 /* About */; };
 		B294933625B5F62F00FCCF9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
@@ -337,6 +334,7 @@
 		B2EB25AC25C7256C00906E41 /* PrimaryMenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */; };
 		B2EB25EA25C72BD800906E41 /* StopAlarmMenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */; };
 		B2EB25EC25C72C3100906E41 /* MenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */; };
+		B2EB268525C86B4A00906E41 /* NSImage+Tinting.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EB268425C86B4A00906E41 /* NSImage+Tinting.m */; };
 		B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */; };
 		B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */; };
 		B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B51225632AE8000BC78E /* Date+Utilities.swift */; };
@@ -509,8 +507,6 @@
 		B233C45325A0FA13005A7FB3 /* TableViewRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewRowCell.swift; sourceTree = "<group>"; };
 		B233C4B225A224AC005A7FB3 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		B233C4B325A224F8005A7FB3 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		B233C52625A22FA7005A7FB3 /* IncrementVersion.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = IncrementVersion.sh; path = "Other Files/IncrementVersion.sh"; sourceTree = SOURCE_ROOT; };
-		B233C54325A24ACD005A7FB3 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = text; name = dsa_pub.pem; path = "Other Files/dsa_pub.pem"; sourceTree = SOURCE_ROOT; };
 		B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sound+DisplayName.swift"; sourceTree = "<group>"; };
 		B233C55825A3961F005A7FB3 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Sizes.swift"; sourceTree = "<group>"; };
@@ -605,10 +601,6 @@
 		B274EFC425BA1D0400F9D473 /* VerticalButtonListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalButtonListViewController.swift; sourceTree = "<group>"; };
 		B280E473259130AB00707E22 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.Internal.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		B286612B258E700E00D3A538 /* SparkleController_v1.x.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleController_v1.x.swift; sourceTree = "<group>"; };
-		B28661D1258E8B9E00D3A538 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../Other Files/Info.plist"; sourceTree = "<group>"; };
-		B28661D2258E8B9E00D3A538 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		B28661D3258E8B9F00D3A538 /* Rooster-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Rooster-Bridging-Header.h"; path = "../Other Files/Rooster-Bridging-Header.h"; sourceTree = "<group>"; };
-		B28661D4258E8B9F00D3A538 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Rooster.entitlements; path = "../Other Files/Rooster.entitlements"; sourceTree = "<group>"; };
 		B28661DF258E902F00D3A538 /* AppKitPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitPlugin.h; sourceTree = "<group>"; };
 		B28661E0258E902F00D3A538 /* AppKitPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppKitPlugin.m; sourceTree = "<group>"; };
 		B28661E6258E921D00D3A538 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -736,6 +728,15 @@
 		B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryMenuBarItem.swift; sourceTree = "<group>"; };
 		B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopAlarmMenuBarButton.swift; sourceTree = "<group>"; };
 		B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItem.swift; sourceTree = "<group>"; };
+		B2EB268325C86B4A00906E41 /* NSImage+Tinting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSImage+Tinting.h"; sourceTree = "<group>"; };
+		B2EB268425C86B4A00906E41 /* NSImage+Tinting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSImage+Tinting.m"; sourceTree = "<group>"; };
+		B2EB268725C86C7300906E41 /* Rooster-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rooster-Bridging-Header.h"; sourceTree = "<group>"; };
+		B2EB268825C86C7300906E41 /* Rooster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster.entitlements; sourceTree = "<group>"; };
+		B2EB268925C86C7300906E41 /* Rooster_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster_macOS.entitlements; sourceTree = "<group>"; };
+		B2EB268A25C86C7300906E41 /* IncrementVersion.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = IncrementVersion.sh; sourceTree = "<group>"; };
+		B2EB268B25C86C7300906E41 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
+		B2EB268C25C86C7300906E41 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		B2EB268D25C86C7300906E41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSceneDelegate.swift; sourceTree = "<group>"; };
 		B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSceneDelegate.swift; sourceTree = "<group>"; };
 		B2F6B50E2562F2CE000BC78E /* ContentViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewRow.swift; sourceTree = "<group>"; };
@@ -751,8 +752,6 @@
 		B2F818002576ACB700B28119 /* TimeRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController.swift; sourceTree = "<group>"; };
 		B2F818062576C05C00B28119 /* TimeRemainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingView.swift; sourceTree = "<group>"; };
 		B2F818282576FB1100B28119 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
-		B2FAD89725B5FCF900598B9E /* Rooster_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Rooster_macOS.entitlements; path = "Other Files/Rooster_macOS.entitlements"; sourceTree = SOURCE_ROOT; };
-		B2FAD89825B5FCF900598B9E /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Info-macOS.plist"; path = "Other Files/Info-macOS.plist"; sourceTree = SOURCE_ROOT; };
 		B2FAD8E325B601DB00598B9E /* Alarm+SavedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alarm+SavedState.swift"; sourceTree = "<group>"; };
 		B2FAD8E425B601DB00598B9E /* CalendarlItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarlItem.swift; sourceTree = "<group>"; };
 		B2FAD8E525B601DB00598B9E /* Calendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
@@ -1288,21 +1287,6 @@
 			path = Source;
 			sourceTree = "<group>";
 		};
-		B286627E258EC5E300D3A538 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				B2FAD89825B5FCF900598B9E /* Info-macOS.plist */,
-				B2FAD89725B5FCF900598B9E /* Rooster_macOS.entitlements */,
-				B233C54325A24ACD005A7FB3 /* dsa_pub.pem */,
-				B28661D1258E8B9E00D3A538 /* Info.plist */,
-				B28661D2258E8B9E00D3A538 /* Podfile */,
-				B28661D3258E8B9F00D3A538 /* Rooster-Bridging-Header.h */,
-				B28661D4258E8B9F00D3A538 /* Rooster.entitlements */,
-				B233C52625A22FA7005A7FB3 /* IncrementVersion.sh */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		B28662A9258F9AFD00D3A538 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,6 +1438,8 @@
 				B25F6AED25BB60740067C096 /* WindowController.xib */,
 				B25F6AF625BB673A0067C096 /* NSViewController+WindowController.swift */,
 				B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */,
+				B2EB268325C86B4A00906E41 /* NSImage+Tinting.h */,
+				B2EB268425C86B4A00906E41 /* NSImage+Tinting.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1485,6 +1471,7 @@
 			children = (
 				B286626C258EC2F600D3A538 /* Shared */,
 				B2FAD8C525B5FF3F00598B9E /* App-macOS */,
+				B2EB268625C86C7300906E41 /* Other Files */,
 				B2E1511F255EED2B002672EC /* App-iOS */,
 				B296556E257C3698008D1858 /* Abandoned */,
 				B233C52325A22F12005A7FB3 /* Config Files */,
@@ -1504,7 +1491,6 @@
 				B255348F25B2191700E17EEF /* UI */,
 				B286627D258EC5B700D3A538 /* Source */,
 				B236FCE4255F1C9D00A2E58D /* Resources */,
-				B286627E258EC5E300D3A538 /* Supporting Files */,
 			);
 			path = "App-iOS";
 			sourceTree = "<group>";
@@ -1589,6 +1575,20 @@
 				B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */,
 			);
 			path = Adornments;
+			sourceTree = "<group>";
+		};
+		B2EB268625C86C7300906E41 /* Other Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2EB268725C86C7300906E41 /* Rooster-Bridging-Header.h */,
+				B2EB268825C86C7300906E41 /* Rooster.entitlements */,
+				B2EB268925C86C7300906E41 /* Rooster_macOS.entitlements */,
+				B2EB268A25C86C7300906E41 /* IncrementVersion.sh */,
+				B2EB268B25C86C7300906E41 /* Info-macOS.plist */,
+				B2EB268C25C86C7300906E41 /* dsa_pub.pem */,
+				B2EB268D25C86C7300906E41 /* Info.plist */,
+			);
+			path = "Other Files";
 			sourceTree = "<group>";
 		};
 		B2F6B48625618787000BC78E /* EventListViewController */ = {
@@ -1881,7 +1881,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B28661F4258E962500D3A538 /* Images.xcassets in Resources */,
-				B200CF6A25B4FA210066B882 /* dsa_pub.pem in Resources */,
 				B21DA15F259A69E7002A56C8 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1890,7 +1889,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B294931E25B5F5C700FCCF9E /* dsa_pub.pem in Resources */,
 				B25F6AEF25BB60740067C096 /* WindowController.xib in Resources */,
 				B2E224DF25B624CD0052758C /* FirstLaunchWindowController.xib in Resources */,
 				B225CDA725C0763A00F3BA15 /* MainWindowController.xib in Resources */,
@@ -1927,7 +1925,6 @@
 				B20C4D5425B3A052000A3981 /* About in Resources */,
 				B298C44925AB8C430085BBA0 /* Sounds in Resources */,
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
-				B233C54425A24ACD005A7FB3 /* dsa_pub.pem in Resources */,
 				B2E15137255EED2B002672EC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2206,6 +2203,7 @@
 				B274EFF125BA279B00F9D473 /* SoundPickerTableViewController.swift in Sources */,
 				B24ED39A25BF684200F0B809 /* SDKCustomButton.swift in Sources */,
 				B2E224CD25B61B420052758C /* Preferences+DictionaryCodable.swift in Sources */,
+				B2EB268525C86B4A00906E41 /* NSImage+Tinting.m in Sources */,
 				B274F00525BA2DCE00F9D473 /* CalendarToolbarView.swift in Sources */,
 				B2FAD92825B6022300598B9E /* EKCalendar+UniqueID.swift in Sources */,
 				B24C5F5525BE156500F51FE7 /* CalendarItemIconBar.swift in Sources */,

@@ -18,6 +18,7 @@ class CalendarItemIconBar : SimpleStackView {
     let spacing = SDKOffset(horizontal: 10, vertical: 0)
     
     private var calendarItem: CalendarItem? = nil
+    private lazy var alarmAnimation = SwayAnimation(withView: self.alarmIcon)
     
     init() {
         super.init(frame: CGRect.zero,
@@ -137,6 +138,12 @@ class CalendarItemIconBar : SimpleStackView {
 //        views.append(self.calendarIcon)
         
         self.stopButton.isEnabled = calendarItem.alarm.isFiring
+        
+        if self.stopButton.isEnabled {
+            self.alarmAnimation.startAnimating()
+        } else {
+            self.alarmAnimation.stopAnimating()
+        }
         
         self.setContainedViews(views)
     }

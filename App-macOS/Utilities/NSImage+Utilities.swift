@@ -67,26 +67,25 @@ func DrawImageInNSGraphicsContext(_ size: CGSize, _ drawFunc: ()->()) -> NSImage
 
     
 extension NSImage {
-    func tint(color: NSColor) -> NSImage {
-//
-//        let color2 = NSColor.systemRed
-//
-//
-//        let image = self.copy() as! NSImage
-//        image.isTemplate = true
-//
-//        image.lockFocus()
-//
-//        color2.set()
-//
-//        let imageRect = NSRect(origin: NSZeroPoint, size: image.size)
-//        imageRect.fill(using: .sourceIn)
-//        image.unlockFocus()
 
-//        DrawImageInCGContext(self.size) { context in
-//            <#code#>
-//        }
+    // this does not work for SF Symbols
+    func tint(color: NSColor) -> NSImage {
+        let image = self.copy() as! NSImage
+        image.isTemplate = true
+
+        image.lockFocus()
+
+        color.set()
+
+        let imageRect = NSRect(origin: NSZeroPoint, size: image.size)
+        imageRect.fill(using: .sourceIn)
+        image.unlockFocus()
         
+        return image
+    }
+    
+    // trying to work around not being able to tint SF Symbols
+    func experimental_tint(color: NSColor) -> NSImage {
         let imageRect = NSRect(origin: NSZeroPoint, size: self.size)
         
         return DrawImageInNSGraphicsContext(self.size) {
@@ -159,3 +158,4 @@ extension NSImage {
 //    
 //    return nil
 //}
+

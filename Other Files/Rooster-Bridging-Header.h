@@ -4,3 +4,4 @@
 
 //#import "RoosterAppKitPlugin.h"
 
+#import "NSImage+Tinting.h"

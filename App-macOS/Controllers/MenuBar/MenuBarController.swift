@@ -70,8 +70,7 @@ class MenuBarController: Loggable,
     func showInMenuBar() {
         self.updateMenuBarItemsVisibility()
     }
-   
-    
+
     func dataModelDidReload(_ dataModel: DataModel) {
         if self.displayOptions.contains(.icon) {
             self.primaryMenuItem.startCountdown()
