@@ -82,7 +82,11 @@ class TimePassingView: SDKView {
     
     private func startTimer() {
         self.needsLayout = true
-        self.timer.start(withInterval: 60.0,
+        
+        let date = Date().addingTimeInterval(60).dateWithoutSeconds
+        
+        self.timer.start(withDate: date,
+                         interval: 60,
                          fireCount: SimpleTimer.RepeatEndlessly) { [weak self] SimpleTimer in
             self?.needsLayout = true
         }

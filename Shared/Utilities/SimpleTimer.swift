@@ -92,7 +92,7 @@ class SimpleTimer : CustomStringConvertible, CustomDebugStringConvertible, Logga
         let willFireAgain = self.willFireAgain
         
         if self.logTimerEvents {
-            self.logger.log("timer fired: \(self.description), will fire again: \(willFireAgain)")
+            self.logger.log("timer fired at: \(Date().shortDateAndLongTimeString), \(self.description), will fire again: \(willFireAgain)")
         }
 
         if !willFireAgain{
