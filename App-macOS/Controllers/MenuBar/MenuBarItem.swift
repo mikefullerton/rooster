@@ -82,7 +82,7 @@ class MenuBarItem: Loggable, DataModelAware, AppControllerAware {
             button.image = self.buttonImage
             button.action = #selector(buttonClicked(_:))
             button.target = self
-            button.imagePosition = .imageLeading
+            button.imagePosition = .imageTrailing
         }
         
         return statusBarItem
