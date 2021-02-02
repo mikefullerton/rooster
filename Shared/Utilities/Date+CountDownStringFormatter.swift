@@ -140,6 +140,7 @@ protocol CountDownDelegate: AnyObject {
     func countdown(_ countDown: CountDown, didFinish displayString: String)
     func countdownDisplayFormatter(_ countDown: CountDown) -> CountDownStringFormatter
     func countdownFireDate(_ countDown: CountDown) -> Date? // returning nil stops countdown
+    func countdown(_ countDown: CountDown, willStart: Bool)
 }
 
 class CountDown: Loggable {
@@ -148,7 +149,27 @@ class CountDown: Loggable {
     
     private let timer = SimpleTimer(withName: "CountDown")
     
-    private(set) var isCountingDown: Bool = false
+    private var isCounting: Bool = false
+    
+    private(set) var isCountingDown: Bool {
+        get {
+            return self.isCounting;
+        }
+        
+        set(counting) {
+            if counting != self.isCounting {
+                self.isCounting = counting
+                
+                if !self.isCounting {
+                    if let delegate = self.delegate {
+                        delegate.countdown(self, didFinish: "")
+                    }
+                    self.timer.stop()
+                }
+
+            }
+        }
+    }
     
     init() {
     }
@@ -157,75 +178,67 @@ class CountDown: Loggable {
         self.delegate = delegate
     }
     
-    var displayString: String {
+    var fireDate: Date {
         if let delegate = self.delegate,
-           let intervalUntilFire = self.intervalUntilFire(delegate.countdownFireDate(self)) {
-            let formatter = delegate.countdownDisplayFormatter(self)
-            return formatter.displayString(withIntervalUntilFire: intervalUntilFire)
+           let fireDate = delegate.countdownFireDate(self) {
+            return fireDate
         }
         
-        return ""
+        return Date()
     }
     
-    var intervalUntilFire: TimeInterval? {
+    private var displayFormatter:CountDownStringFormatter {
         if let delegate = self.delegate {
-            return self.intervalUntilFire(delegate.countdownFireDate(self))
+            return delegate.countdownDisplayFormatter(self)
         }
-        
-        return 0
+
+        return ShortCountDownStringFormatter(showSecondsWithMinutes: 2)
     }
     
-    private func intervalUntilFire(_ fireDate: Date?) -> TimeInterval? {
-        guard fireDate != nil else {
-            return nil
-        }
-        
-        let fireTime = fireDate!.timeIntervalSinceReferenceDate
+    var displayString: String {
+        return self.displayFormatter.displayString(withIntervalUntilFire: self.intervalUntilFire)
+    }
+    
+    var intervalUntilFire: TimeInterval {
+        self.intervalUntilFireDate(self.fireDate)
+    }
+    
+    private func intervalUntilFireDate(_ fireDate: Date) -> TimeInterval {
+        let fireTime = fireDate.timeIntervalSinceReferenceDate
         let nowInterval = Date().timeIntervalSinceReferenceDate
         return fireTime - nowInterval
     }
     
     func update() {
         self.timer.stop()
-        if self.isCountingDown,
-           let delegate = self.delegate {
+        if let delegate = self.delegate {
             
-            if let fireDate = delegate.countdownFireDate(self),
-               fireDate.isAfterDate(Date()),
-               let interval = self.intervalUntilFire(fireDate) {
+            let interval = self.intervalUntilFire
+            if interval > 0 {
                 
-                let formatter = delegate.countdownDisplayFormatter(self)
-
-                let displayString = formatter.displayString(withIntervalUntilFire: interval)
-                
-                if self.hasFinished {
-                    self.isCountingDown = false
-                    delegate.countdown(self, didFinish: displayString)
-                
-                } else {
-                    delegate.countdown(self, didUpdate: displayString)
-
-                    if self.isCountingDown {
-                        let timerInterval = self.calculateNextTimerFireInterval(intervalUntilFireDate: interval,
-                                                                                formatter: formatter)
-
-                        self.timer.start(withInterval: timerInterval) { [weak self] timer in
-                            self?.update()
-                        }
-
-                    } else {
-                        self.isCountingDown = false
-                    }
+                if !self.isCountingDown {
+                    delegate.countdown(self, willStart: true)
                 }
+                
+                self.isCountingDown = true
+                delegate.countdown(self, didUpdate: self.displayFormatter.displayString(withIntervalUntilFire: interval))
 
+                // this will be either 1 minute or 1 second
+                let timerInterval = self.calculateNextTimerFireInterval(intervalUntilFireDate: interval)
+                self.timer.start(withInterval: timerInterval) { [weak self] timer in
+                    self?.update()
+                }
             } else {
                 self.isCountingDown = false
             }
+        } else {
+            self.isCountingDown = false
         }
     }
     
-    private func calculateNextTimerFireInterval(intervalUntilFireDate: TimeInterval,
-                                                formatter: CountDownStringFormatter) -> TimeInterval {
+    private func calculateNextTimerFireInterval(intervalUntilFireDate: TimeInterval) -> TimeInterval {
+        
+        let formatter = self.displayFormatter
         
         if formatter.showSecondsWithMinutes >= 0 {
             let startOfFastCoundown = intervalUntilFireDate - (formatter.showSecondsWithMinutes * 60)
@@ -241,22 +254,17 @@ class CountDown: Loggable {
     }
     
     func start() {
-        self.isCountingDown = true
+        
         self.update()
+        
+        if !self.isCountingDown,
+           let delegate = self.delegate {
+            delegate.countdown(self, willStart: false)
+        }
     }
     
     func stop() {
         self.isCountingDown = false
-        self.timer.stop()
-    }
-    
-    var hasFinished: Bool {
-        if let delegate = self.delegate,
-           let fireDate = delegate.countdownFireDate(self) {
-           return fireDate.isEqualToOrBeforeDate(Date())
-        }
-        
-        return true
     }
     
 }

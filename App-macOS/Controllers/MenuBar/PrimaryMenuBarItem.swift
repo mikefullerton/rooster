@@ -75,6 +75,10 @@ class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate  {
         self.buttonTitle = displayString
     }
    
+    func countdown(_ countDown: CountDown, willStart: Bool) {
+        self.buttonTitle = ""
+    }
+    
     @objc override func buttonClicked(_ sender: AnyObject?) {
         self.logger.log("MenuBar button was clicked")
         self.isPopoverVisible = !self.isPopoverVisible

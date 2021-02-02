@@ -74,6 +74,12 @@ class CountDownTextField : SDKTextField, CountDownDelegate {
         self.countDown.start()
     }
    
+    func countdown(_ countDown: CountDown, willStart: Bool) {
+        if !willStart {
+            self.stringValue = self.outOfRangeString
+        }
+    }
+    
     func countdown(_ countDown: CountDown, didUpdate displayString: String) {
         if let outputFormatter = self.outputFormatter {
             self.stringValue = outputFormatter(self.prefixString, displayString)
