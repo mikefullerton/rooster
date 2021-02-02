@@ -26,7 +26,7 @@ struct LightTheme : ThemeProtocol {
     
     var preferencesViewColor: SDKColor { SDKColor.systemGray }
     
-    var preferencesContentViewColor: SDKColor { SDKColor.systemGray }
+    var preferencesContentViewColor: SDKColor { SDKColor.white }
     
     var timeRemainingBackgroundColor: SDKColor { SDKColor.gray }
     
@@ -47,11 +47,11 @@ struct DarkTheme : ThemeProtocol {
     
     var groupBackgroundColor: SDKColor { SDKColor.windowBackgroundColor }
     
-    var borderColor: SDKColor { SDKColor.separatorColor }
+    var borderColor: SDKColor { SDKColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0) }
     
     var preferencesViewColor: SDKColor { SDKColor.systemGray }
     
-    var preferencesContentViewColor: SDKColor { SDKColor.systemGray }
+    var preferencesContentViewColor: SDKColor { SDKColor.clear }
     
     var timeRemainingBackgroundColor: SDKColor { SDKColor.gray }
     

@@ -15,7 +15,7 @@ import UIKit
 class SliderView : SDKView {
     
     private(set) var insets = SDKEdgeInsets.zero
-    let spacing: CGFloat = 4
+    let spacing: CGFloat = 8
     let minSliderWidth: CGFloat = 100.0
     
     private var target: Any?
@@ -42,12 +42,12 @@ class SliderView : SDKView {
         set(value) { self.slider.doubleValue = value }
     }
     
-    @objc private func setMinValue(_ sender: SDKButton) {
+    @objc public func setMinValue(_ sender: Any) {
         self.value = self.minimumValue
         self.slider.sendAction(self.slider.action, to: self.slider.target)
     }
 
-    @objc private func setMaxValue(_ sender: SDKButton) {
+    @objc public func setMaxValue(_ sender: Any) {
         self.value = self.maximumValue
         self.slider.sendAction(self.slider.action, to: self.slider.target)
     }

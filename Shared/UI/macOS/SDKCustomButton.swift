@@ -22,6 +22,12 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         self.layerContentsRedrawPolicy = .onSetNeedsDisplay
         self.layerContentsPlacement = .center
         self.addButton()
+
+        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
+
+        self.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        self.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
     public convenience init(target: AnyObject?,
@@ -33,13 +39,6 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         self.target = target
         self.action = action
         self.toolTip = toolTip
-        
-        self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        self.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        
-        self.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        self.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-
     }
    
     public convenience init(title: String,
@@ -108,36 +107,32 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         layer.frame = frame
     }
     
-    private func setContraints(forView view: NSView, forAlignment alignment: NSTextAlignment) {
+    func setContraints(forView view: NSView, forAlignment alignment: NSTextAlignment) {
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.deactivate(view.constraints)
         
-        NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height),
-            view.widthAnchor.constraint(equalToConstant: view.intrinsicContentSize.width)
-        ])
-
+        var constraints: [NSLayoutConstraint] = []
         
         switch(alignment) {
         case .left:
-            NSLayoutConstraint.activate([
+            constraints = [
                 view.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 view.leadingAnchor.constraint(equalTo: self.leadingAnchor)
-            ])
+            ]
 
         case .right:
-            NSLayoutConstraint.activate([
+            constraints = [
                 view.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 view.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-            ])
+            ]
 
         case .center:
-            NSLayoutConstraint.activate([
+            constraints = [
                 view.centerXAnchor.constraint(equalTo: self.centerXAnchor),
                 view.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            ])
+            ]
         case .justified:
             break
         case .natural:
@@ -146,21 +141,41 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
             break
         }
         
-        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        constraints.forEach { $0.priority = .required }
         
-        view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        NSLayoutConstraint.activate(constraints)
+        
+//        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+//        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//
+//        view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+//        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
-    private func setConstraints() {
+    func setSizeContraints(forImageView view: NSImageView) {
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height),
+            view.widthAnchor.constraint(equalToConstant: view.intrinsicContentSize.width)
+        ])
+    }
+    
+    func setSizeConstraints(forTextField view: NSTextField) {
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height),
+            view.widthAnchor.constraint(equalToConstant: view.intrinsicContentSize.width)
+        ])
+    }
+    
+    func setConstraints() {
         
         if let view = self.imageView {
             self.setContraints(forView: view, forAlignment: self.alignment)
+            self.setSizeContraints(forImageView: view)
         }
         
         if let view = self.textField {
             self.setContraints(forView: view, forAlignment: self.alignment)
+            self.setSizeConstraints(forTextField: view)
         }
     }
     
@@ -170,7 +185,7 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         }
         
         let view = NSImageView()
-        self.addSubview(view)
+        self.addSubview(view, positioned: .below, relativeTo: self.button)
         self.imageView = view
         self.needsUpdateConstraints = true
     }
@@ -185,12 +200,12 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         view.isSelectable = false
         view.alignment = .center
         view.backgroundColor = SDKColor.clear
-        view.textColor = Theme(for: self).secondaryLabelColor
+        view.textColor = Theme(for: self).labelColor
         view.isBordered = false
         view.drawsBackground = false
         view.isEditable = false
-        self.addSubview(view)
-        
+        self.addSubview(view, positioned: .below, relativeTo: self.button)
+
         view.translatesAutoresizingMaskIntoConstraints = false
         
         self.needsUpdateConstraints = true
@@ -356,8 +371,29 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
     
     var alignment: NSTextAlignment = .center {
         didSet {
+            
+            switch(self.alignment) {
+            case .left:
+            self.imageView?.imageAlignment = .alignLeft
+            
+            case .right:
+            self.imageView?.imageAlignment = .alignRight
+            
+            case .center:
+            self.imageView?.imageAlignment = .alignCenter
+            
+            case .justified:
+                break
+                
+            case .natural:
+                break
+            
+                
+            @unknown default:
+                self.imageView?.imageAlignment = .alignCenter
+            }
+            
             self.textField?.alignment = self.alignment
-            self.imageView?.alignment = self.alignment
             self.setConstraints()
         }
     }

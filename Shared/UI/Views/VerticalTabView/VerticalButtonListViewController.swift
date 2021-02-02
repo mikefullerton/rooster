@@ -61,10 +61,6 @@ class VerticalButtonListViewController : TableViewController<VerticalButtonBarVi
         self.collectionView.isSelectable = true
         self.collectionView.allowsEmptySelection = false
         
-        self.collectionView.wantsLayer = true
-        self.collectionView.layer?.borderWidth = 1.0
-        self.collectionView.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
-        self.collectionView.layer?.cornerRadius = 6.0
     }
 
     override func collectionView(_ collectionView: SDKCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {

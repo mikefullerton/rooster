@@ -18,7 +18,7 @@ class SoundVolumeView : PreferenceSlider {
         
         super.init()
     
-        self.label.stringValue = "VOLUME".localized
+        self.label.title = "VOLUME".localized
         
         self.minimumValue = 0
         self.maximumValue = 1.0
@@ -50,6 +50,9 @@ class SoundVolumeView : PreferenceSlider {
             self.imageView(withName: "speaker.wave.2"),
             self.imageView(withName: "speaker.wave.3")
         ]
+        imageButton.target = self
+        imageButton.action = #selector(setMaxValue(_:))
+
         return imageButton
     } ()
 
@@ -67,13 +70,13 @@ class SoundVolumeView : PreferenceSlider {
     private func updateVolumeSliderImage() {
         let soundPrefs = AppDelegate.instance.preferencesController.soundPreferences
 
-        if soundPrefs.volume == 0 {
+        if soundPrefs.volume <= 0.02 {
             self.button.contentViewIndex = 0
-        } else if soundPrefs.volume < 0.33 {
+        } else if soundPrefs.volume < 0.20 {
             self.button.contentViewIndex = 1
-        } else if soundPrefs.volume < 0.66 {
+        } else if soundPrefs.volume < 0.50 {
             self.button.contentViewIndex = 2
-        } else if soundPrefs.volume < 1.0 {
+        } else if soundPrefs.volume < 0.95 {
             self.button.contentViewIndex = 3
         } else {
             self.button.contentViewIndex = 4

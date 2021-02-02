@@ -17,6 +17,7 @@ class SDKSwitch : NSButton {
 
         self.setButtonType(.switch)
         
+        self.contentTintColor = Theme(for: self).labelColor
     }
     
     required init?(coder: NSCoder) {

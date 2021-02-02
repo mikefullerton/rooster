@@ -38,16 +38,17 @@ class PreferenceSlider : SliderView {
         
     }
     
-    lazy var label : SDKTextField = {
-        let label = SDKTextField()
-        label.isEditable = false
-        label.alignment = .right
-        label.drawsBackground = false
-        label.isBordered = false
-        label.textColor = Theme(for: self).secondaryLabelColor
-        
-        return label
+    lazy var label : SDKCustomButton = {
+        let button = SDKCustomButton(title: "",
+                                    target: self,
+                                    action: #selector(setMinValue(_:)),
+                                    toolTip: "")
+        button.alignment = .right
+        button.contentTintColor = Theme(for: self).labelColor
+        button.isEnabled = true
+        return button
     }()
+    
     
     
 }

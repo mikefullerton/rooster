@@ -49,7 +49,7 @@ class VerticalButtonListTableCell : SDKCollectionViewItem, TableViewRowCell {
         label.alignment = .right
         label.drawsBackground = false
         label.isBordered = false
-        label.textColor = Theme(for: self.view).secondaryLabelColor
+        label.textColor = Theme(for: self.view).labelColor
         
         return label
     }()

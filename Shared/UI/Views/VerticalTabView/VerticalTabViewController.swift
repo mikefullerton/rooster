@@ -13,24 +13,28 @@ import UIKit
 #endif
 
 struct VerticalTabItem {
+    let identifier: String
     let title: String
     let icon: SDKImage?
     let view: SDKView
     let viewController: SDKViewController?
     
-    init(title: String,
+    init(identifier: String,
+         title: String,
          icon: SDKImage?,
          view: SDKView) {
-        
+        self.identifier = identifier
         self.title = title
         self.icon = icon
         self.view = view
         self.viewController = nil
     }
 
-    init(title: String,
+    init(identifier: String,
+         title: String,
          icon: SDKImage?,
          viewController: SDKViewController) {
+        self.identifier = identifier
         self.title = title
         self.icon = icon
         self.viewController = viewController
@@ -38,8 +42,14 @@ struct VerticalTabItem {
     }
 }
 
+protocol VerticalTabViewControllerDelegate : AnyObject {
+    func verticalTabViewController(_ verticalTabViewController: VerticalTabViewController, didChangeTab tab: VerticalTabItem)
+}
+
 class VerticalTabViewController : SDKViewController, VerticalButtonListViewControllerDelegate {
     let items: [VerticalTabItem]
+    
+    weak var delegate: VerticalTabViewControllerDelegate?
     
     lazy var verticalButtonBarController = VerticalButtonListViewController(with: self.items)
     private var contentView: SDKView?
@@ -78,7 +88,7 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
     lazy var contentContainerView : SDKView = {
         let view = SDKView()
         view.wantsLayer = true
-        view.layer?.backgroundColor = SDKColor.clear.cgColor // Theme(for: view).preferencesContentViewColor.cgColor
+        view.layer?.backgroundColor = Theme(for: view).preferencesContentViewColor.cgColor
         view.layer?.borderWidth = 1.0
         view.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
         view.layer?.cornerRadius = 6.0
@@ -88,6 +98,7 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
     func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController,
                                          didChooseItem item: VerticalTabItem) {
         self.setContentView(item.view)
+        self.delegate?.verticalTabViewController(self, didChangeTab: item)
     }
 
     private func addChildViewControllers() {
@@ -98,25 +109,47 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
         }
     }
     
+    lazy var buttonListContainerView: NSView = {
+       let view = NSView()
+        view.wantsLayer = true
+        view.layer?.borderWidth = 1.0
+        view.layer?.borderColor = Theme(for: self.view).borderColor.cgColor
+        view.layer?.cornerRadius = 6.0
+        view.layer?.masksToBounds = true
+        
+        return view
+    }()
+    
     private func addButtonList() {
+        
+        let container = self.buttonListContainerView
+        self.view.addSubview(container)
+        container.translatesAutoresizingMaskIntoConstraints = false
+       
+        NSLayoutConstraint.activate([
+            container.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.buttonBarInsets.left),
+            container.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.buttonBarInsets.top),
+            container.widthAnchor.constraint(equalToConstant:self.buttonListWidth + self.buttonBarInsets.right),
+            container.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -self.buttonBarInsets.bottom)
+        ])
+
         let controller = self.verticalButtonBarController
         
         self.addChild(controller)
         
-        self.view.addSubview(controller.view)
+        container.addSubview(controller.view)
         
         controller.view.translatesAutoresizingMaskIntoConstraints = false
        
         NSLayoutConstraint.activate([
-            controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.buttonBarInsets.left),
-            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.buttonBarInsets.top),
-            controller.view.widthAnchor.constraint(equalToConstant:self.buttonListWidth + self.buttonBarInsets.right),
-            
-            controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -self.buttonBarInsets.bottom)
+            controller.view.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            controller.view.topAnchor.constraint(equalTo: container.topAnchor),
+            controller.view.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: container.bottomAnchor)
         ])
         
-        controller.view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
-        controller.view.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+        container.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+        container.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
     }
 
     private func addContentContainerView() {
@@ -133,11 +166,6 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
             view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.buttonBarInsets.top),
             view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -self.buttonBarInsets.bottom)
         ])
-
-
-
-//        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-//        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
     
     func setContentView(_ view: SDKView) {
@@ -157,10 +185,6 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
             view.leadingAnchor.constraint(equalTo: self.contentContainerView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.contentContainerView.trailingAnchor),
         ])
-       
-//        view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-//        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-
         self.contentView = view
     }
 }

@@ -24,8 +24,8 @@ class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
         self.view = SDKView()
     }
     
-    private lazy var checkBox: SDKButton = {
-        let view = SDKButton(checkboxWithTitle: "", target: self, action: #selector(checkBoxChecked(_:)))
+    private lazy var checkBox: SDKSwitch = {
+        let view = SDKSwitch(checkboxWithTitle: "", target: self, action: #selector(checkBoxChecked(_:)))
         self.view.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false

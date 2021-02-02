@@ -47,6 +47,7 @@ class CalendarToolbarView : TopBar {
         view.selectedSegment = 0
         view.target = self
         view.action = #selector(segmentedControllerDidChange(_:))
+        view.segmentDistribution = .fillEqually
         return view
     }()
 

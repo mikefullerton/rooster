@@ -23,10 +23,10 @@ class StartDelayView : PreferenceSlider {
         
         self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.soundPreferences.startDelay))
         
-        self.label.stringValue = "PLAY_DELAY".localized
+        self.label.title = "PLAY_DELAY".localized
         
         self.setViews(minValueView: self.label,
-                      maxValueView: self.button,
+                      maxValueView: self.rhsButton,
                       insets: SDKEdgeInsets.ten,
                       minValueViewFixedWidth: self.fixedWidth,
                       maxValueViewFixedWidth: self.fixedWidth)
@@ -43,7 +43,8 @@ class StartDelayView : PreferenceSlider {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var button: FancyButton = {
+    
+    lazy var rhsButton: FancyButton = {
         let button = FancyButton()
         button.alignment = .left
         button.contentViews = [
@@ -60,6 +61,9 @@ class StartDelayView : PreferenceSlider {
             self.label(withTitle: "10 seconds"),
         ]
         
+        button.target = self
+        button.action = #selector(setMaxValue(_:))
+        
         return button
     } ()
     
@@ -68,7 +72,7 @@ class StartDelayView : PreferenceSlider {
         let label = SDKTextField()
         label.isEditable = false
         label.stringValue = title
-        label.textColor = Theme(for: self).secondaryLabelColor
+        label.textColor = Theme(for: self).labelColor
         label.drawsBackground = false
         label.isBordered = false
         return label
@@ -78,10 +82,10 @@ class StartDelayView : PreferenceSlider {
         let startDelay = AppDelegate.instance.preferencesController.soundPreferences.startDelay
         
         var index = startDelay
-        if index >= button.contentViewCount {
-            index = button.contentViewCount
+        if index >= self.rhsButton.contentViewCount {
+            index = self.rhsButton.contentViewCount
         }
-        self.button.contentViewIndex = index
+        self.rhsButton.contentViewIndex = index
             
         print("start delay: \(startDelay), index: \(index)")
     }

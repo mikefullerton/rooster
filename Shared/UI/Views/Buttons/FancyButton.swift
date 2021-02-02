@@ -20,9 +20,6 @@ class FancyButton : SDKCustomButton {
         self.contentViews = []
         super.init(frame: frame)
         self.alignment = .left
-//        self.isBordered = false
-//        self.setButtonType(.momentaryPushIn)
-//        self.imagePosition = .imageLeading
     }
     
     required init?(coder: NSCoder) {
@@ -32,7 +29,7 @@ class FancyButton : SDKCustomButton {
     var contentViews: [SDKView] {
         didSet {
             self.contentViewIndex = 0
-            self.invalidateIntrinsicContentSize()
+            self.setConstraints()
         }
     }
     
@@ -57,6 +54,21 @@ class FancyButton : SDKCustomButton {
         return self.contentViews.count
     }
     
+    override func setSizeContraints(forImageView view: NSImageView) {
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: self.intrinsicContentSize.height),
+            view.widthAnchor.constraint(equalToConstant: self.intrinsicContentSize.width)
+        ])
+    }
+    
+    override func setSizeConstraints(forTextField view: NSTextField) {
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height),
+            view.widthAnchor.constraint(equalToConstant: self.intrinsicContentSize.width)
+        ])
+    }
+    
+    
     private func setContentView(withView view: SDKView) {
         
         if let imageView = view as? SDKImageView {
@@ -75,7 +87,6 @@ class FancyButton : SDKCustomButton {
             self.alignment = label.alignment
         }
         
-        self.invalidateIntrinsicContentSize()
     }
     
     override var intrinsicContentSize: CGSize {
@@ -111,7 +122,7 @@ class FancyButton : SDKCustomButton {
         let label = SDKTextField()
         label.isEditable = false
         label.stringValue = title
-        label.textColor = Theme(for: self).secondaryLabelColor
+        label.textColor = Theme(for: self).labelColor
         label.drawsBackground = false
         label.isBordered = false
 

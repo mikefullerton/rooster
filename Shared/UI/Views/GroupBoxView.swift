@@ -94,7 +94,7 @@ class GroupBoxView : SDKView {
     lazy private var titleView: SDKTextField = {
         let titleView = NSTextField()
         titleView.isEditable = false
-        titleView.textColor = Theme(for: self).secondaryLabelColor
+        titleView.textColor = Theme(for: self).labelColor
         titleView.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         titleView.alignment = .right
         titleView.translatesAutoresizingMaskIntoConstraints = false

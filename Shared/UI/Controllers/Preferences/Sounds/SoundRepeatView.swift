@@ -21,7 +21,7 @@ class SoundRepeatView : PreferenceSlider {
         self.maximumValue = Double(button.contentViews.count)
         self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.soundPreferences.playCount))
         
-        self.label.stringValue = "PLAY_COUNT".localized
+        self.label.title = "PLAY_COUNT".localized
         
         self.setViews(minValueView: self.label,
                       maxValueView: self.button,
@@ -52,7 +52,8 @@ class SoundRepeatView : PreferenceSlider {
             button.defaultLabel(withTitle: "Five Times"),
             button.defaultLabel(withTitle: "Infinite"),
         ]
-        
+        button.target = self
+        button.action = #selector(setMaxValue(_:))
         return button
     } ()
     

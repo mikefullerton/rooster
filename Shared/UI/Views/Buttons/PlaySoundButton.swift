@@ -56,8 +56,8 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         self.target = self
         self.action = #selector(playSound(_:))
         
-        self.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
-        self.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+//        self.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+//        self.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
         
         self.toolTip = "Play Sound"
     }
@@ -77,24 +77,6 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     private var maxIndex: Int {
         return self.contentViews.count - 1
     }
-    
-//    override var isEnabled: Bool {
-//        get { return super.isEnabled }
-//        set(isEnabled) {
-//
-//            if self.url == nil {
-//                super.isEnabled = false
-//            } else {
-//                super.isEnabled = isEnabled
-//            }
-//
-//            if super.isEnabled {
-//                self.contentTintColor = Theme(for: self).secondaryLabelColor
-//            } else {
-//                self.contentTintColor = Theme(for: self).disabledControlColor
-//            }
-//        }
-//    }
     
     private func refresh() {
         

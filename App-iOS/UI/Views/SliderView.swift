@@ -135,6 +135,15 @@ class SliderView : UIView {
         slider.contentVerticalAlignment = .center
         return slider
     }()
+    
+    
+    @objc func sliderToMax(_ sender: AnyObject) {
+        
+    }
+    
+    @objc func sliderToMin(_ sender: AnyObject) {
+        
+    }
 
     private let weirdVerticalCenteringFudge: CGFloat = 2.0
     

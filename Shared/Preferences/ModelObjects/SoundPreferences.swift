@@ -203,6 +203,7 @@ extension SoundPreferences {
         case sounds = "sounds"
         case playCount = "playCount"
         case startDelay = "startDelay"
+        case volume = "volume"
     }
     
     init(withDictionary dictionary: [AnyHashable : Any]) {
@@ -226,6 +227,11 @@ extension SoundPreferences {
         if let startDelay = dictionary[CodingKeys.startDelay.rawValue] as? Int {
             self.startDelay = startDelay
         }
+
+        if let volume = dictionary[CodingKeys.volume.rawValue] as? Float {
+            self.volume = volume
+        }
+
     }
 
     var asDictionary: [AnyHashable : Any] {
@@ -233,6 +239,7 @@ extension SoundPreferences {
         dictionary[CodingKeys.sounds.rawValue] = self.sounds.map { $0.asDictionary }
         dictionary[CodingKeys.playCount.rawValue] = self.playCount
         dictionary[CodingKeys.startDelay.rawValue] = self.startDelay
+        dictionary[CodingKeys.volume.rawValue] = self.volume
         return dictionary
     }
 

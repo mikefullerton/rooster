@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegate {
+class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegate, VerticalTabViewControllerDelegate {
 
     private let tabViewController: VerticalTabViewController
     private lazy var bottomBar = BottomBar(frame: CGRect.zero)
@@ -21,19 +21,23 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
         let soundPreferencesView = SoundPreferencesView(frame: CGRect.zero)
         
         let items = [
-            VerticalTabItem(title: "CALENDARS".localized,
+            VerticalTabItem(identifier: "calendars",
+                            title: "CALENDARS".localized,
                             icon: SDKImage(systemSymbolName: "calendar", accessibilityDescription: "calendar"),
                             viewController: CalendarChooserViewController()),
             
-            VerticalTabItem(title: "SOUNDS".localized,
+            VerticalTabItem(identifier: "sounds",
+                            title: "SOUNDS".localized,
                             icon: SDKImage(systemSymbolName: "speaker.wave.3", accessibilityDescription: "sounds"),
                             view: soundPreferencesView),
             
-            VerticalTabItem(title: "NOTIFICATIONS".localized,
+            VerticalTabItem(identifier: "notifications",
+                            title: "NOTIFICATIONS".localized,
                             icon: SDKImage(systemSymbolName: "bell", accessibilityDescription: "sounds"),
                             view: NotificationChoicesView(frame: CGRect.zero)),
 
-            VerticalTabItem(title: "Menu Bar".localized,
+            VerticalTabItem(identifier: "menubar",
+                            title: "Menu Bar".localized,
                             icon: SDKImage(systemSymbolName: "menubar.rectangle", accessibilityDescription: "sounds"),
                             view: MenuBarChoicesView(frame: CGRect.zero))
 
@@ -45,7 +49,7 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
         super.init(nibName: nil, bundle: nil)
         
         soundPreferencesView.delegate = self
-        
+        self.tabViewController.delegate = self
         self.preferredContentSize = CGSize(width: 800, height: 600)
         self.title = "Preferences"
     }
@@ -72,6 +76,11 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
     @objc func resetButtonPressed(_ sender: SDKButton) {
         AppDelegate.instance.preferencesController.preferences = Preferences()
     }
+    
+    func verticalTabViewController(_ verticalTabViewController: VerticalTabViewController, didChangeTab tab: VerticalTabItem) {
+        self.bottomBar.leftButton.isEnabled = tab.identifier != "calendars"
+    }
+
     
     func soundPreferencesView(_ view: SoundPreferencesView,
                               presentSoundPickerForSoundIndex soundIndex: SoundPreferences.SoundIndex) {
