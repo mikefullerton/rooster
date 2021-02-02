@@ -83,6 +83,9 @@
 		B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */; };
 		B256BC16258028BD00FA67DC /* PersonalCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC15258028BD00FA67DC /* PersonalCalendarListViewController.swift */; };
 		B256BC1C25802A0000FA67DC /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */; };
+		B259A33A25C8D68800CF4C95 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B2EB268C25C86C7300906E41 /* dsa_pub.pem */; };
+		B259A33E25C8D68900CF4C95 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B2EB268C25C86C7300906E41 /* dsa_pub.pem */; };
+		B259A34225C8D68900CF4C95 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B2EB268C25C86C7300906E41 /* dsa_pub.pem */; };
 		B25B65DB258CF7AF0006B771 /* MenuBarPopoverProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */; };
 		B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */; };
 		B25B65EB258CFDB20006B771 /* AppKitPluginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65E3258CFA6C0006B771 /* AppKitPluginController.swift */; };
@@ -1881,6 +1884,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B28661F4258E962500D3A538 /* Images.xcassets in Resources */,
+				B259A33E25C8D68900CF4C95 /* dsa_pub.pem in Resources */,
 				B21DA15F259A69E7002A56C8 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1890,6 +1894,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B25F6AEF25BB60740067C096 /* WindowController.xib in Resources */,
+				B259A33A25C8D68800CF4C95 /* dsa_pub.pem in Resources */,
 				B2E224DF25B624CD0052758C /* FirstLaunchWindowController.xib in Resources */,
 				B225CDA725C0763A00F3BA15 /* MainWindowController.xib in Resources */,
 				B25F6B0E25BC9AE50067C096 /* PreferencesWindow.xib in Resources */,
@@ -1922,6 +1927,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B200CF5B25B4C4450066B882 /* FirstRunViewController.xib in Resources */,
+				B259A34225C8D68900CF4C95 /* dsa_pub.pem in Resources */,
 				B20C4D5425B3A052000A3981 /* About in Resources */,
 				B298C44925AB8C430085BBA0 /* Sounds in Resources */,
 				B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */,
