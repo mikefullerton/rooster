@@ -17,9 +17,9 @@ class SoundPickerViewController : UIViewController {
     
     weak var delegate: SoundChooserViewControllerDelegate?
     
-    let soundPreferenceIndex: SoundPreference.SoundIndex
+    let soundPreferenceIndex: SoundPreferences.SoundIndex
     
-    init(withSoundPreferenceIndex index: SoundPreference.SoundIndex) {
+    init(withSoundPreferenceIndex index: SoundPreferences.SoundIndex) {
         self.soundPreferenceIndex = index
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,7 +50,7 @@ class SoundPickerViewController : UIViewController {
     
     @objc func doneButtonClicked(_ sender: UIButton) {
         if let newSound = self.soundPicker.chosenSound {
-            AppDelegate.instance.preferencesController.preferences.sounds[self.soundPreferenceIndex] = newSound
+            AppDelegate.instance.preferencesController.soundPreferences[self.soundPreferenceIndex] = newSound
         }
         self.dismiss(animated: true, completion: nil)
     }

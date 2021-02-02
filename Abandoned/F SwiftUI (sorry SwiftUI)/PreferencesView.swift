@@ -43,9 +43,9 @@ struct PreferencesView: View, Loggable {
 
 struct SoundPrefs: View {
     
-    @State var soundPreference1: String = AppDelegate.instance.preferencesController.preferences.sounds.sound(withIndex: 0)
-    @State var soundPreference2: String = AppDelegate.instance.preferencesController.preferences.sounds.sound(withIndex: 1)
-    @State var soundPreference3: String = AppDelegate.instance.preferencesController.preferences.sounds.sound(withIndex: 2)
+    @State var soundPreference1: String = AppDelegate.instance.preferencesController.soundPreferences.sound(withIndex: 0)
+    @State var soundPreference2: String = AppDelegate.instance.preferencesController.soundPreferences.sound(withIndex: 1)
+    @State var soundPreference3: String = AppDelegate.instance.preferencesController.soundPreferences.sound(withIndex: 2)
 
     init() {
         

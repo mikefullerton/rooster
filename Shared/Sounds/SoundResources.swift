@@ -102,7 +102,7 @@ extension URL {
     }
 }
 
-extension SoundPreference {
+extension SoundPreferences {
     
     var soundURLs: [URL] {
         

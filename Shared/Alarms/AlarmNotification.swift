@@ -52,16 +52,16 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
 
         if let item = self.item {
             self.logger.log("performing start actions for \(self.description)")
-            let prefs = AppDelegate.instance.preferencesController.preferences
+            let prefs = AppDelegate.instance.preferencesController.notificationPreferences
             
-            if prefs.autoOpenLocations {
+            if prefs.options.contains(.autoOpenLocations) {
                 self.logger.log("auto opening location URL (if available) for \(self.description)")
                 
                 item.openLocationURL()
                 item.bringLocationAppsToFront()
             }
             
-            if prefs.useSystemNotifications {
+            if prefs.options.contains(.useSystemNotifications) {
                 self.logger.log("posting system notifications for \(self.description)")
 
                 AppDelegate.instance.userNotificationController.scheduleNotification(forItem: item)
@@ -69,7 +69,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
             
             #if os(macOS)
             
-            if prefs.bounceIconInDock {
+            if prefs.options.contains(.bounceAppIcon) {
                 self.logger.log("bouncing app in dock for \(self.description)")
 
                 AppDelegate.instance.systemUtilities.startBouncingAppIcon()

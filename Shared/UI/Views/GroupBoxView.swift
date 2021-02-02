@@ -77,6 +77,7 @@ class GroupBoxView : SDKView {
         view.layer?.cornerRadius = 0
         view.layer?.borderWidth = 1.0
         view.layer?.borderColor = Theme(for: self).borderColor.cgColor
+        view.layer?.cornerRadius = 6.0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer?.backgroundColor = SDKColor.clear.cgColor
 

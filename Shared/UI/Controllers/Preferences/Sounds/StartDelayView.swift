@@ -21,7 +21,7 @@ class StartDelayView : PreferenceSlider {
         self.minimumValue = 0 // 1 play count
         self.maximumValue = 10
         
-        self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
+        self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.soundPreferences.startDelay))
         
         self.label.stringValue = "PLAY_DELAY".localized
         
@@ -32,6 +32,11 @@ class StartDelayView : PreferenceSlider {
                       maxValueViewFixedWidth: self.fixedWidth)
 
         self.updateVolumeSliderImage()
+        
+        self.tickMarkCount = 11
+        self.tickMarkPosition = .trailing
+        self.allowsTickMarkValuesOnly = true
+       
     }
     
     required init?(coder: NSCoder) {
@@ -70,7 +75,7 @@ class StartDelayView : PreferenceSlider {
     }
 
     private func updateVolumeSliderImage() {
-        let startDelay = AppDelegate.instance.preferencesController.preferences.sounds.startDelay
+        let startDelay = AppDelegate.instance.preferencesController.soundPreferences.startDelay
         
         var index = startDelay
         if index >= button.contentViewCount {
@@ -82,19 +87,17 @@ class StartDelayView : PreferenceSlider {
     }
     
     @objc override func sliderDidChange(_ sender: SDKSlider) {
-        var prefs = AppDelegate.instance.preferencesController.preferences
-        var soundPrefs = prefs.sounds
+        var soundPrefs = AppDelegate.instance.preferencesController.soundPreferences
         
         let value = sender.doubleValue
         soundPrefs.startDelay = Int(value)
         
-        prefs.sounds = soundPrefs
-        AppDelegate.instance.preferencesController.preferences = prefs
+        AppDelegate.instance.preferencesController.soundPreferences = soundPrefs
         self.updateVolumeSliderImage()
     }
     
     @objc override func preferencesDidChange(_ sender: Notification) {
-        self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
+        self.value = min(self.maximumValue, Double(AppDelegate.instance.preferencesController.soundPreferences.startDelay))
         self.updateVolumeSliderImage()
     }
 

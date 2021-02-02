@@ -22,7 +22,7 @@ class SoundVolumeView : PreferenceSlider {
         
         self.minimumValue = 0
         self.maximumValue = 1.0
-        self.value = Double(AppDelegate.instance.preferencesController.preferences.sounds.volume)
+        self.value = Double(AppDelegate.instance.preferencesController.soundPreferences.volume)
         
         self.setViews(minValueView: self.label,
                       maxValueView: self.button,
@@ -65,7 +65,7 @@ class SoundVolumeView : PreferenceSlider {
     }
 
     private func updateVolumeSliderImage() {
-        let soundPrefs = AppDelegate.instance.preferencesController.preferences.sounds
+        let soundPrefs = AppDelegate.instance.preferencesController.soundPreferences
 
         if soundPrefs.volume == 0 {
             self.button.contentViewIndex = 0
@@ -81,16 +81,14 @@ class SoundVolumeView : PreferenceSlider {
     }
     
     @objc override func sliderDidChange(_ sender: SDKSlider) {
-        var prefs = AppDelegate.instance.preferencesController.preferences
-        var soundPrefs = prefs.sounds
+        var soundPrefs = AppDelegate.instance.preferencesController.soundPreferences
         soundPrefs.volume = sender.floatValue
-        prefs.sounds = soundPrefs
-        AppDelegate.instance.preferencesController.preferences = prefs
+        AppDelegate.instance.preferencesController.soundPreferences = soundPrefs
         self.updateVolumeSliderImage()
     }
     
     @objc override func preferencesDidChange(_ sender: Notification) {
-        self.value = Double(AppDelegate.instance.preferencesController.preferences.sounds.volume)
+        self.value = Double(AppDelegate.instance.preferencesController.soundPreferences.volume)
         self.updateVolumeSliderImage()
     }
 

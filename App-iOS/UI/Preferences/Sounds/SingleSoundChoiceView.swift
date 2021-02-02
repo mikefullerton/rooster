@@ -16,10 +16,10 @@ class SingleSoundChoiceView : UIView {
     
     weak var delegate: SoundChoiceViewDelegate?
 
-    let index: SoundPreference.SoundIndex
+    let index: SoundPreferences.SoundIndex
     
     init(frame: CGRect,
-         soundPreferenceIndex index: SoundPreference.SoundIndex,
+         soundPreferenceIndex index: SoundPreferences.SoundIndex,
          delegate: SoundChoiceViewDelegate) {
         self.delegate = delegate
         self.index = index
@@ -45,12 +45,12 @@ class SingleSoundChoiceView : UIView {
         self.refresh()
     }
 
-    private var sound: SoundPreference.Sound {
+    private var sound: SoundPreferences.Sound {
         get {
-            return AppDelegate.instance.preferencesController.preferences.sounds[self.index]
+            return AppDelegate.instance.preferencesController.soundPreferences[self.index]
         }
         set(newSound) {
-            AppDelegate.instance.preferencesController.preferences.sounds[self.index] = newSound
+            AppDelegate.instance.preferencesController.soundPreferences[self.index] = newSound
         }
     }
     

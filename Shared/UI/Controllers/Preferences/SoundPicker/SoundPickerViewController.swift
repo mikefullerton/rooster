@@ -21,9 +21,9 @@ class SoundPickerViewController : SDKViewController {
     
     weak var delegate: SoundPickerViewControllerDelegate?
     
-    let soundPreferenceIndex: SoundPreference.SoundIndex
+    let soundPreferenceIndex: SoundPreferences.SoundIndex
     
-    init(withSoundPreferenceIndex index: SoundPreference.SoundIndex) {
+    init(withSoundPreferenceIndex index: SoundPreferences.SoundIndex) {
         self.soundPreferenceIndex = index
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,7 +74,7 @@ class SoundPickerViewController : SDKViewController {
     
     @objc func doneButtonClicked(_ sender: SDKButton) {
         if let newSound = self.soundPicker.chosenSound {
-            AppDelegate.instance.preferencesController.preferences.sounds[self.soundPreferenceIndex] = newSound
+            AppDelegate.instance.preferencesController.soundPreferences[self.soundPreferenceIndex] = newSound
         }
         
         self.dismissWindow()
@@ -101,7 +101,7 @@ class SoundPickerViewController : SDKViewController {
 }
 
 extension ModalWindowController {
-    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreference.SoundIndex) {
+    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreferences.SoundIndex) {
         SoundPickerViewController(withSoundPreferenceIndex: soundPreference).presentInModalWindow()
     }
 }

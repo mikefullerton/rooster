@@ -75,7 +75,7 @@ class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     
     private func updateVolume() {
         if let sound = self.sound {
-            sound.volume = AppDelegate.instance.preferencesController.preferences.sounds.volume
+            sound.volume = AppDelegate.instance.preferencesController.soundPreferences.volume
         }
     }
     

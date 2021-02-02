@@ -74,6 +74,8 @@ class FancyButton : SDKCustomButton {
             self.font = label.font
             self.alignment = label.alignment
         }
+        
+        self.invalidateIntrinsicContentSize()
     }
     
     override var intrinsicContentSize: CGSize {

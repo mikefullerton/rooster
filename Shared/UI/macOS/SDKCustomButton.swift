@@ -114,6 +114,12 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         
         NSLayoutConstraint.deactivate(view.constraints)
         
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height),
+            view.widthAnchor.constraint(equalToConstant: view.intrinsicContentSize.width)
+        ])
+
+        
         switch(alignment) {
         case .left:
             NSLayoutConstraint.activate([
@@ -130,7 +136,7 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         case .center:
             NSLayoutConstraint.activate([
                 view.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                view.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                view.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             ])
         case .justified:
             break
@@ -326,6 +332,7 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
             }
             
             self.textField?.stringValue = title
+            self.setConstraints()
         }
     }
 
@@ -336,6 +343,7 @@ class SDKCustomButton: ContentAwareView, TrackingButtonDelegate, CALayerDelegate
         set(font) {
             self.addTextField()
             self.textField?.font = font
+            self.textField?.invalidateIntrinsicContentSize()
         }
     }
     

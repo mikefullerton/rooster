@@ -82,7 +82,7 @@ class UserNotificationCenterController : NSObject, UNUserNotificationCenterDeleg
                 if error != nil {
                     self.logger.error("Error scheduling notification: \(error?.localizedDescription ?? "")")
                 } else {
-                    let delay = self.preferencesController.preferences.systemNotificationDelay
+                    let delay = self.preferencesController.notificationPreferences.systemNotificationDelay
                     
                     self.logger.log("Scheduled notification ok, will fire again in \(delay) seconds")
                     

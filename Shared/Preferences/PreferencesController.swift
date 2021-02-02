@@ -12,25 +12,8 @@ class PreferencesController: ObservableObject, Loggable {
     
     private var storage: UserDefaults.IdentifierDictionary
 
-    @Published var preferences: Preferences {
-        didSet {
-            self.write()
-        }
-    }
-    
     init() {
-        let storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "preferences")
-        
-        var prefs: Preferences? = nil
-        
-        if let existingPrefences = storage.dictionary {
-            prefs = Preferences(withDictionary: existingPrefences)
-        } else {
-            prefs = Preferences()
-        }
-        
-        self.storage = storage
-        self.preferences = prefs!
+        self.storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "preferences")
     }
     
     func notify() {
@@ -39,29 +22,60 @@ class PreferencesController: ObservableObject, Loggable {
                                         userInfo: nil)
     }
     
-    func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
-        return ItemPreference(soundPreference: self.preferences.sounds)
-    }
-    
-    private func write() {
-        self.storage.dictionary = self.preferences.dictionaryRepresentation
-        
-        NotificationCenter.default.post(name: PreferencesController.DidChangeEvent, object: self)
-
-        self.logger.log("Wrote preferences: \(self.preferences.description)")
-    }
-    
-    func read() {
-        var prefs: Preferences? = nil
-        
-        if let existingPrefences = self.storage.dictionary {
-            prefs = Preferences(withDictionary: existingPrefences)
-        } else {
-            prefs = Preferences()
+    var soundPreferences: SoundPreferences {
+        get {
+            self.preferences.soundPreferences
         }
         
-        self.preferences = prefs!
-        
-        self.logger.log("Read preferences: \(self.preferences.description)")
+        set(newPrefs) {
+            var prefs = self.preferences
+            prefs.soundPreferences = newPrefs
+            self.preferences = prefs
+        }
     }
+    
+    var menuBarPreferences: MenuBarPreferences {
+        get {
+            self.preferences.menuBarPreferences
+        }
+        
+        set(newPrefs) {
+            var prefs = self.preferences
+            prefs.menuBarPreferences = newPrefs
+            self.preferences = prefs
+        }
+    }
+    
+    var notificationPreferences: NotificationPreferences {
+        get {
+            self.preferences.notificationPreferences
+        }
+        
+        set(newPrefs) {
+            var prefs = self.preferences
+            prefs.notificationPreferences = newPrefs
+            self.preferences = prefs
+        }
+    }
+
+    var preferences: Preferences {
+        get {
+            if let prefsDictionary = self.storage.dictionary {
+                return Preferences(withDictionary: prefsDictionary)
+            }
+            
+            return Preferences()
+        }
+        set(newPrefs) {
+            self.storage.dictionary = newPrefs.dictionaryRepresentation
+            self.notify()
+            self.logger.log("Wrote preferences: \(self.preferences.description)")
+        }
+    }
+
+    // TODO: support individual settings
+    func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
+        return ItemPreference(with: self.preferences.soundPreferences)
+    }
+    
 }

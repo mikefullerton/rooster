@@ -15,10 +15,10 @@ import UIKit
 
 class SoundPickerTableViewController : TableViewController<SoundPickerTableViewModel> {
     
-    let soundIndex: SoundPreference.SoundIndex
+    let soundIndex: SoundPreferences.SoundIndex
     let soundFolder: SoundFolder
     
-    init(withSoundIndex soundIndex: SoundPreference.SoundIndex) {
+    init(withSoundIndex soundIndex: SoundPreferences.SoundIndex) {
         self.soundIndex = soundIndex
         self.soundFolder = SoundFolder.loadFromBundle()
         
@@ -42,7 +42,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     }
     
     func setSelectedRow() {
-        let sound = AppDelegate.instance.preferencesController.preferences.sounds[self.soundIndex]
+        let sound = AppDelegate.instance.preferencesController.soundPreferences[self.soundIndex]
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
             for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
@@ -81,13 +81,13 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         return nil
     }
     
-    var chosenSound : SoundPreference.Sound? {
+    var chosenSound : SoundPreferences.Sound? {
         if let selectedIndexPath = self.selectedIndexPath {
             for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
                 for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
                     if folderIndex == selectedIndexPath.section &&
                         soundIndex == selectedIndexPath.item {
-                        return SoundPreference.Sound(url: soundURL, enabled: true, random: false)
+                        return SoundPreferences.Sound(url: soundURL, enabled: true, random: false)
                     }
                 }
             }

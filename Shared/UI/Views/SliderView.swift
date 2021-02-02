@@ -52,6 +52,31 @@ class SliderView : SDKView {
         self.slider.sendAction(self.slider.action, to: self.slider.target)
     }
     
+    var tickMarkCount: Int {
+        get { return self.slider.numberOfTickMarks }
+        set(count) {
+            self.slider.numberOfTickMarks = count
+        }
+    }
+    
+    var tickMarkPosition: NSSlider.TickMarkPosition {
+        get { return self.slider.tickMarkPosition }
+        set(position) {
+            self.slider.tickMarkPosition = position
+        }
+    }
+    
+    func tickMarkValue(at index: Int) -> Double {
+        return self.slider.tickMarkValue(at: index)
+    }
+    
+    var allowsTickMarkValuesOnly: Bool {
+        get { return self.slider.allowsTickMarkValuesOnly }
+        set(value) {
+            self.slider.allowsTickMarkValuesOnly = value
+        }
+    }
+    
     func setViews(minValueView: SDKView?,
                   maxValueView: SDKView?,
                   insets: SDKEdgeInsets = SDKEdgeInsets.zero,

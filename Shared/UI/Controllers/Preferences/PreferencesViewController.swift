@@ -31,7 +31,12 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
             
             VerticalTabItem(title: "NOTIFICATIONS".localized,
                             icon: SDKImage(systemSymbolName: "bell", accessibilityDescription: "sounds"),
-                            view: NotificationChoicesView(frame: CGRect.zero))
+                            view: NotificationChoicesView(frame: CGRect.zero)),
+
+            VerticalTabItem(title: "Menu Bar".localized,
+                            icon: SDKImage(systemSymbolName: "menubar.rectangle", accessibilityDescription: "sounds"),
+                            view: MenuBarChoicesView(frame: CGRect.zero))
+
         ]
         
         self.tabViewController = VerticalTabViewController(with: items,
@@ -69,7 +74,7 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
     }
     
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex) {
+                              presentSoundPickerForSoundIndex soundIndex: SoundPreferences.SoundIndex) {
         
         SoundPickerViewController(withSoundPreferenceIndex: soundIndex).presentInModalWindow(fromWindow: self.view.window)
     }

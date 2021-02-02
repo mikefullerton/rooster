@@ -31,7 +31,7 @@ class SoundRepeatView : LabeledSliderView {
         self.slider.maximumValue = Float(button.contentViews.count - 1)
         self.slider.maximumValueView = button
         self.slider.addTarget(self, action: #selector(repeatCountDidChange(_:)), for: .valueChanged)
-        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.playCount))
+        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.soundPreferences.playCount))
         
         self.updateVolumeSliderImage(withSliderView: self.slider)
         
@@ -51,7 +51,7 @@ class SoundRepeatView : LabeledSliderView {
 
     private func updateVolumeSliderImage(withSliderView sliderView: SliderView) {
         if let button = sliderView.maximumValueView as? FancyButton {
-            let playCount = AppDelegate.instance.preferencesController.preferences.sounds.playCount
+            let playCount = AppDelegate.instance.preferencesController.soundPreferences.playCount
             
             var index = playCount
             if index >= button.contentViewCount {
@@ -67,7 +67,7 @@ class SoundRepeatView : LabeledSliderView {
         
         let value = sender.value
         if value == sender.maximumValue {
-            soundPrefs.playCount = SoundPreference.RepeatEndlessly
+            soundPrefs.playCount = SoundPreferences.RepeatEndlessly
         } else {
             soundPrefs.playCount = Int(value.rounded())
         }
@@ -78,7 +78,7 @@ class SoundRepeatView : LabeledSliderView {
     }
     
     @objc func preferencesDidChange(_ sender: Notification) {
-        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.playCount))
+        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.soundPreferences.playCount))
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
 

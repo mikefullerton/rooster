@@ -11,56 +11,40 @@ import AppKit
  
 class MenuBarController: Loggable,
                         AppControllerAware,
-                        PrimaryMenuBarItemDelegate,
-                        StopAlarmMenuBarButtonDelegate,
                         DataModelAware {
         
-    struct Options: OptionSet {
-        let rawValue: Int
-        
-        static let none             = Options(rawValue: 1 << 0)
-        static let icon             = Options(rawValue: 1 << 1)
-        static let countDown        = Options(rawValue: 1 << 2)
-        static let popoverView      = Options(rawValue: 1 << 3)
-        
-        init(rawValue: Int) {
-            self.rawValue = rawValue
-        }
-    }
+    
     private var reloader: DataModelReloader? = nil
     
-    lazy var primaryMenuItem = PrimaryMenuBarItem(withDelegate: self)
-    lazy var stopAlarmItem = StopAlarmMenuBarButton(withDelegate: self)
+    lazy var primaryMenuItem = PrimaryMenuBarItem()
+    lazy var stopAlarmItem = StopAlarmMenuBarButton()
     
     init() {
         self.reloader = DataModelReloader(for: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
     }
     
-    var displayOptions: Options = [.icon, .countDown, .popoverView] {
-        didSet {
-            self.updateMenuBarItemsVisibility()
-        }
-    }
-    
-    func stopAlarmMenuBarButtonButtonWasClicked(_ item: StopAlarmMenuBarButton) {
-        NSApp.activate(ignoringOtherApps: true)
-        self.alarmNotificationController.handleUserClickedStopAll()
-    }
-    
-    func primaryMenuBarItemButtonWasClicked(_ item: PrimaryMenuBarItem) {
-        self.logger.log("MenuBar button was clicked")
-        
-        if self.primaryMenuItem.isPopoverVisible {
-            self.primaryMenuItem.isPopoverVisible = false
-        } else if self.displayOptions.contains(.popoverView) {
-            self.primaryMenuItem.isPopoverVisible = true
-        }
+    var prefs: MenuBarPreferences {
+        return self.preferencesController.menuBarPreferences
     }
     
     func updateMenuBarItemsVisibility() {
-        if self.displayOptions.contains(.icon) {
+        
+        let prefs = self.prefs
+        
+        if prefs.options.contains(.showIcon) {
             self.primaryMenuItem.isVisible = true
-            self.stopAlarmItem.isVisible = false;
+            
+            if !prefs.options.contains(.showStopAlarmIcon) {
+                self.stopAlarmItem.isVisible = false;
+            } else if self.alarmNotificationController.alarmsAreFiring {
+                self.stopAlarmItem.isVisible = true;
+            }
+            
+            if !prefs.options.contains(.countDown) {
+                self.primaryMenuItem.stopCountdown()
+            }
+            
         } else {
             self.primaryMenuItem.isVisible = false
             self.stopAlarmItem.isVisible = false;
@@ -72,13 +56,24 @@ class MenuBarController: Loggable,
     }
 
     func dataModelDidReload(_ dataModel: DataModel) {
-        if self.displayOptions.contains(.icon) {
-            self.primaryMenuItem.startCountdown()
+        
+        let prefs = self.prefs
+        
+        if prefs.options.contains(.showIcon) {
+            self.primaryMenuItem.alarmStateDidChange()
             
-            self.stopAlarmItem.isVisible = self.alarmNotificationController.alarmsAreFiring
-            
+            if self.alarmNotificationController.alarmsAreFiring && prefs.options.contains(.showStopAlarmIcon) {
+                self.stopAlarmItem.isVisible = true
+            } else {
+                self.stopAlarmItem.isVisible = false
+            }
         } else {
             self.primaryMenuItem.stopCountdown()
         }
     }
+    
+    @objc func preferencesDidChange(_ sender: Notification) {
+        self.updateMenuBarItemsVisibility()
+    }
+
 }

@@ -15,7 +15,7 @@ import UIKit
 
 protocol SoundPreferencesViewDelegate : AnyObject {
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundIndex: SoundPreference.SoundIndex)
+                              presentSoundPickerForSoundIndex soundIndex: SoundPreferences.SoundIndex)
 }
 
 class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {

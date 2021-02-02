@@ -37,7 +37,7 @@ class StartDelayView : LabeledSliderView {
         self.slider.maximumValue = 10
         self.slider.maximumValueView = button
         self.slider.addTarget(self, action: #selector(repeatCountDidChange(_:)), for: .valueChanged)
-        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
+        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.soundPreferences.startDelay))
         
         self.updateVolumeSliderImage(withSliderView: self.slider)
         
@@ -57,7 +57,7 @@ class StartDelayView : LabeledSliderView {
 
     private func updateVolumeSliderImage(withSliderView sliderView: SliderView) {
         if let button = sliderView.maximumValueView as? FancyButton {
-            let startDelay = AppDelegate.instance.preferencesController.preferences.sounds.startDelay
+            let startDelay = AppDelegate.instance.preferencesController.soundPreferences.startDelay
             
             var index = startDelay
             if index >= button.contentViewCount {
@@ -82,7 +82,7 @@ class StartDelayView : LabeledSliderView {
     }
     
     @objc func preferencesDidChange(_ sender: Notification) {
-        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.preferences.sounds.startDelay))
+        self.slider.value = min(self.slider.maximumValue, Float(AppDelegate.instance.preferencesController.soundPreferences.startDelay))
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
 

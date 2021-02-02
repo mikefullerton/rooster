@@ -8,9 +8,15 @@
 import Foundation
 import AppKit
 
-class MenuBarItem: Loggable  {
+class MenuBarItem: Loggable, DataModelAware, AppControllerAware {
     
     static let defaultImageSize = CGSize(width: 26, height: 26)
+    private var reloader: DataModelReloader? = nil
+    
+    init() {
+        self.reloader = DataModelReloader(for: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
+    }
     
     var buttonImage: NSImage? {
         didSet {
@@ -22,6 +28,10 @@ class MenuBarItem: Loggable  {
                 }
             }
         }
+    }
+    
+    var prefs: MenuBarPreferences {
+        return self.preferencesController.menuBarPreferences
     }
     
     var contentTintColor: NSColor? {
@@ -92,5 +102,9 @@ class MenuBarItem: Loggable  {
     @objc func buttonClicked(_ sender: AnyObject?) {
     }
     
-  
+    func dataModelDidReload(_ dataModel: DataModel) {
+    }
+    
+    @objc func preferencesDidChange(_ sender: Notification) {
+    }
 }

@@ -8,24 +8,16 @@
 import Foundation
 import AppKit
 
-protocol PrimaryMenuBarItemDelegate: AnyObject {
-    func primaryMenuBarItemButtonWasClicked(_ item: PrimaryMenuBarItem)
-}
+class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate  {
 
-class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate, AppControllerAware  {
-
-    weak var delegate: PrimaryMenuBarItemDelegate?
-    
     private lazy var countDown = CountDown(withDelegate: self)
     
     private weak var timer: Timer?
     
     private var showingRedRooster = false
     
-    init(withDelegate delegate: PrimaryMenuBarItemDelegate?) {
-        
+    override init() {
         super.init()
-        self.delegate = delegate
         self.buttonImage = self.defaultRoosterImage
     }
     
@@ -53,18 +45,16 @@ class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate, AppControllerAware  {
     }
     
     func startCountdown() {
-        self.countDown.start()
+        if self.prefs.options.contains(.countDown) {
+            self.countDown.start()
+        } else {
+            self.stopCountdown()
+        }
     }
     
     func stopCountdown() {
         self.countDown.stop()
         self.buttonTitle = ""
-    }
-    
-    override func visibilityDidChange(toVisible visible: Bool) {
-        if !visible {
-            self.stopCountdown()
-        }
     }
     
     func countdown(_ countDown: CountDown, didUpdate displayString: String) {
@@ -76,7 +66,9 @@ class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate, AppControllerAware  {
     }
 
     func countdownDisplayFormatter(_ countDown: CountDown) -> CountDownStringFormatter {
-        return LongCountDownStringFormatter(showSecondsWithMinutes: 2.0)
+        return self.prefs.options.contains(.shortCountdownFormat) ?
+            ShortCountDownStringFormatter(showSecondsWithMinutes: 2.0):
+            LongCountDownStringFormatter(showSecondsWithMinutes: 2.0)
     }
     
     func countdown(_ countDown: CountDown, didFinish displayString: String) {
@@ -84,9 +76,8 @@ class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate, AppControllerAware  {
     }
    
     @objc override func buttonClicked(_ sender: AnyObject?) {
-        if let delegate = self.delegate {
-            delegate.primaryMenuBarItemButtonWasClicked(self)
-        }
+        self.logger.log("MenuBar button was clicked")
+        self.isPopoverVisible = !self.isPopoverVisible
     }
     
     private lazy var popover : NSPopover = {
@@ -130,27 +121,42 @@ class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate, AppControllerAware  {
     }
     
     func alarmStateDidChange() {
-        if self.isAlarmFiring {
-            self.showingRedRooster = true
-            self.buttonImage = self.redRoosterImage
-            self.startFlashingTimer()
+        if self.prefs.options.contains(.showIcon) {
+            if self.isAlarmFiring {
+                self.showingRedRooster = true
+                self.buttonImage = self.redRoosterImage
+                self.startFlashingTimer()
+                self.stopCountdown()
+                self.showFinishedMessage()
+            } else {
+                self.showingRedRooster = false
+                self.buttonImage = self.defaultRoosterImage
+                self.stopFlashingTimer()
+                self.startCountdown()
+            }
         } else {
-            self.showingRedRooster = false
-            self.buttonImage = self.defaultRoosterImage
+            self.stopCountdown()
             self.stopFlashingTimer()
+            self.isPopoverVisible = false
         }
     }
     
     func startFlashingTimer() {
-        self.stopFlashingTimer()
-        let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
-            if self.isAlarmFiring {
-                self.toggleImages()
-            } else {
-                self.stopFlashingTimer()
+        if self.preferencesController.menuBarPreferences.options.contains(.blink) {
+            if self.timer == nil {
+                let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
+                    if self.isAlarmFiring {
+                        self.toggleImages()
+                    } else {
+                        self.stopFlashingTimer()
+                    }
+                }
+                self.timer = timer
             }
+        } else {
+            self.stopFlashingTimer()
+            self.buttonImage = self.defaultRoosterImage
         }
-        self.timer = timer
     }
     
     func stopFlashingTimer() {
@@ -159,4 +165,26 @@ class PrimaryMenuBarItem: MenuBarItem, CountDownDelegate, AppControllerAware  {
             self.timer = nil
         }
     }
+    
+    func showFinishedMessage() {
+        if self.prefs.options.contains(.countDown) {
+            self.buttonTitle = "Your meeting has started!"
+        } else {
+            self.buttonTitle = ""
+        }
+    }
+    
+    override func visibilityDidChange(toVisible visible: Bool) {
+        self.alarmStateDidChange()
+    }
+    
+    override func dataModelDidReload(_ dataModel: DataModel) {
+        self.alarmStateDidChange()
+    }
+    
+    @objc override func preferencesDidChange(_ sender: Notification) {
+        self.isVisible = prefs.options.contains(.showIcon)
+    }
+
+    
 }

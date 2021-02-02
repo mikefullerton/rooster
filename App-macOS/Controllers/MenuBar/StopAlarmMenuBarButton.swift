@@ -8,20 +8,14 @@
 import Foundation
 import AppKit
 
-protocol StopAlarmMenuBarButtonDelegate: AnyObject {
-    func stopAlarmMenuBarButtonButtonWasClicked(_ item: StopAlarmMenuBarButton)
-}
-
-class StopAlarmMenuBarButton: MenuBarItem, AppControllerAware  {
+class StopAlarmMenuBarButton: MenuBarItem  {
     
-    weak var delegate: StopAlarmMenuBarButtonDelegate?
     private var animation: SwayAnimation?
 
-    init(withDelegate delegate: StopAlarmMenuBarButtonDelegate?) {
+    override init() {
         super.init()
-        self.delegate = delegate
         self.buttonImage = self.alarmImage
-        
+
         if  let button = self.button {
             
             button.wantsLayer = true
@@ -47,9 +41,8 @@ class StopAlarmMenuBarButton: MenuBarItem, AppControllerAware  {
     }
 
     @objc override func buttonClicked(_ sender: AnyObject?) {
-        if let delegate = self.delegate {
-            delegate.stopAlarmMenuBarButtonButtonWasClicked(self)
-        }
+        NSApp.activate(ignoringOtherApps: true)
+        self.alarmNotificationController.handleUserClickedStopAll()
     }
 
     func startAnimating() {
@@ -67,5 +60,16 @@ class StopAlarmMenuBarButton: MenuBarItem, AppControllerAware  {
             self.stopAnimating()
         }
     }
-
+    
+    func updateVisibility() {
+        self.isVisible = self.prefs.options.contains(.showStopAlarmIcon) && self.alarmNotificationController.alarmsAreFiring
+    }
+    
+    override func dataModelDidReload(_ dataModel: DataModel) {
+        self.updateVisibility()
+    }
+    
+    @objc override func preferencesDidChange(_ sender: Notification) {
+        self.updateVisibility()
+    }
 }

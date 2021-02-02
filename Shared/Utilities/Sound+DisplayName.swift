@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension SoundPreference.Sound {
+extension SoundPreferences.Sound {
     var displayName: String {
         if self.random {
             return "RANDOM".localized

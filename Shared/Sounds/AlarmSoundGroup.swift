@@ -17,7 +17,7 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     
     var identifier: String
     
-    init(withPreference preference: SoundPreference) {
+    init(withPreference preference: SoundPreferences) {
         self.sounds = URLAlarmSound.alarmSounds(withURLs: preference.soundURLs)
     
         self.name = preference.sounds.map { $0.soundName }.joined(separator: ":")

@@ -17,7 +17,7 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
     typealias ContentType = URL
     
     private var url: URL?
-    private var soundIndex: SoundPreference.SoundIndex = .sound1
+    private var soundIndex: SoundPreferences.SoundIndex = .sound1
     
     override func loadView() {
         self.view = SDKView()
