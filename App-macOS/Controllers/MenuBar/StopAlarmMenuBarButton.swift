@@ -21,6 +21,20 @@ class StopAlarmMenuBarButton: MenuBarItem, AppControllerAware  {
         super.init()
         self.delegate = delegate
         self.buttonImage = self.alarmImage
+        
+        if  let button = self.button {
+            
+            button.wantsLayer = true
+            button.layerContentsRedrawPolicy = .onSetNeedsDisplay
+            button.canDrawSubviewsIntoLayer = true
+            
+            if let layer = button.layer {
+                layer.contentsGravity = .center
+                layer.contents = self.alarmImage
+                    
+                self.animation = SwayAnimation(withView: button)
+            }
+        }
     }
 
     var alarmImage : NSImage? {
@@ -39,28 +53,11 @@ class StopAlarmMenuBarButton: MenuBarItem, AppControllerAware  {
     }
 
     func startAnimating() {
-        
-        if  let button = self.button,
-            let layer = button.layer {
-            
-            button.wantsLayer = true
-                
-            layer.contentsGravity = .center
-            layer.contents = self.alarmImage
-            layer.contentsCenter = CGRect(x: 0.5, y: 0.5, width: 0.5, height: 0.5)
-        }
-        
-        if self.animation == nil {
-            self.animation = SwayAnimation(withView: self.button!)
-        }
-        
         self.animation?.startAnimating()
     }
 
     func stopAnimating() {
-        if let animation = self.animation {
-            animation.stopAnimating()
-        }
+        self.animation?.stopAnimating()
     }
     
     override  func visibilityDidChange(toVisible visible: Bool) {
