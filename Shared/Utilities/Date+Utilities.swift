@@ -38,6 +38,10 @@ extension Date {
         return DateFormatter.localizedString(from: self, dateStyle: .short, timeStyle: .short)
     }
     
+    var shortDateAndLongTimeString: String {
+        return DateFormatter.localizedString(from: self, dateStyle: .short, timeStyle: .long)
+    }
+
     var tomorrow: Date? {
         let currentCalendar = NSCalendar.current
         
@@ -50,6 +54,15 @@ extension Date {
         }
         
         return nil
+    }
+    
+    var dateWithoutSeconds: Date {
+        let calendar = NSCalendar.current
+        let dateComponents = calendar.dateComponents([.era , .year , .month , .day , .hour , .minute], from: self)
+        if let date = calendar.date(from: dateComponents) {
+            return date
+        }
+        return self
     }
 }
 

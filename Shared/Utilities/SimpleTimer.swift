@@ -177,14 +177,14 @@ class SimpleTimer : CustomStringConvertible, CustomDebugStringConvertible, Logga
     var debugDescription: String {
         let isValid = self.timer != nil ? "\(self.timer!.isValid)" : "nil"
         let interval = self.timer != nil ? "\(self.timer!.timeInterval)" : "nil"
-        let fireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndTimeString)" : "nil"
+        let fireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndLongTimeString)" : "nil"
 
         return "Timer: \(self.name):\(self.id), timer fire date: \(fireDate), interval:\(self.interval), fireCount: \(self.fireCount), requestFireCount: \(self.requestedFireCount), timer: \(String(describing: self.timer )), timer is valid: \(isValid), timer interval: \(interval)"
     }
     
     var description: String {
-        let timerFireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndTimeString)" : "nil"
-        let fireDate = self.fireDate != nil ? "\(self.fireDate!.shortDateAndTimeString)" : "nil"
-        return "Timer: \(self.name):\(self.id), started: \(self.startDate?.shortDateAndTimeString ?? "nil"), fire date: \(fireDate), timer fire date: \(timerFireDate)"
+        let timerFireDate = self.timer != nil ? "\(self.timer!.fireDate.shortDateAndLongTimeString)" : "nil"
+        let fireDate = self.fireDate != nil ? "\(self.fireDate!.shortDateAndLongTimeString)" : "nil"
+        return "Timer: \(self.name):\(self.id), started: \(self.startDate?.shortDateAndLongTimeString ?? "nil"), fire date: \(fireDate), timer fire date: \(timerFireDate)"
     }
 }

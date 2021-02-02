@@ -224,8 +224,8 @@ class CountDown: Loggable {
                 delegate.countdown(self, didUpdate: self.displayFormatter.displayString(withIntervalUntilFire: interval))
 
                 // this will be either 1 minute or 1 second
-                let timerInterval = self.calculateNextTimerFireInterval(intervalUntilFireDate: interval)
-                self.timer.start(withInterval: timerInterval) { [weak self] timer in
+                let date = self.calculateNextTimerFireDate()
+                self.timer.start(withDate: date) { [weak self] timer in
                     self?.update()
                 }
             } else {
@@ -236,25 +236,24 @@ class CountDown: Loggable {
         }
     }
     
-    private func calculateNextTimerFireInterval(intervalUntilFireDate: TimeInterval) -> TimeInterval {
+    private func calculateNextTimerFireDate() -> Date {
         
-        let formatter = self.displayFormatter
+        let fastInterval = self.displayFormatter.showSecondsWithMinutes * 60
         
-        if formatter.showSecondsWithMinutes >= 0 {
-            let startOfFastCoundown = intervalUntilFireDate - (formatter.showSecondsWithMinutes * 60)
+        let fireDate = self.fireDate
+        let fastFireTime = fireDate.addingTimeInterval( -fastInterval )
+        let now = Date()
         
-            if startOfFastCoundown <= 6 {
-                return 1.0
-            }
-            
-            return min(60.0, intervalUntilFireDate)
+        if fastFireTime.isEqualToOrBeforeDate(now) {
+            return now.addingTimeInterval(1.0)
         }
         
-        return min(60.0, intervalUntilFireDate)
+        let futureDate = now.addingTimeInterval(60.0)
+        return futureDate.dateWithoutSeconds
     }
     
     func start() {
-        
+        self.logger.log("Starting countdown until: \(self.fireDate.shortDateAndLongTimeString)")
         self.update()
         
         if !self.isCountingDown,
