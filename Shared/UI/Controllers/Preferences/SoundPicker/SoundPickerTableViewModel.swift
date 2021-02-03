@@ -36,12 +36,12 @@ struct SoundPickerTableViewSection : TableViewSectionProtocol {
     
     init(with folder: SoundFolder) {
         self.folder = folder
-        self.header = TableViewSectionAdornment(withTitle: folder.folderURL.soundName)
+        self.header = TableViewSectionAdornment(withTitle: folder.name)
     }
     
     var rows: [TableViewRowProtocol] {
         if self.folder.disclosed {
-            return self.folder.soundURLs.map { return TableViewRow<URL, SoundPickerTableViewCell>(withData: $0) }
+            return self.folder.sounds.map { return TableViewRow<SoundFile, SoundPickerTableViewCell>(withData: $0) }
         } else {
             return []
         }

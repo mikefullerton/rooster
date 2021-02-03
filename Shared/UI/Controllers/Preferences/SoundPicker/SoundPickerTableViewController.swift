@@ -16,11 +16,11 @@ import UIKit
 class SoundPickerTableViewController : TableViewController<SoundPickerTableViewModel> {
     
     let soundIndex: SoundPreferences.SoundIndex
-    let soundFolder: SoundFolder
+    private(set) var soundFolder: SoundFolder
     
     init(withSoundIndex soundIndex: SoundPreferences.SoundIndex) {
         self.soundIndex = soundIndex
-        self.soundFolder = SoundFolder.loadFromBundle()
+        self.soundFolder = SoundFolder.instance
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,12 +41,17 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         self.collectionView.isSelectable = true
     }
     
+    func updateSoundFolder(_ soundFolder: SoundFolder) {
+        self.soundFolder = soundFolder
+        self.reloadData()
+    }
+    
     func setSelectedRow() {
-        let sound = AppDelegate.instance.preferencesController.soundPreferences[self.soundIndex]
+        let soundPref = AppDelegate.instance.preferencesController.soundPreferences[self.soundIndex]
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
-            for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
-                if soundURL == sound.url {
+            for(soundIndex, soundFile) in subfolder.sounds.enumerated() {
+                if soundFile.identifier == soundPref.soundIdentifier {
                     
                     self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundIndex, section: folderIndex) ]),
                                                     scrollPosition: .centeredVertically)
@@ -81,13 +86,13 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         return nil
     }
     
-    var chosenSound : SoundPreferences.Sound? {
+    var chosenSound : SingleSoundPreference? {
         if let selectedIndexPath = self.selectedIndexPath {
             for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
-                for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
+                for(soundIndex, soundFile) in subfolder.sounds.enumerated() {
                     if folderIndex == selectedIndexPath.section &&
                         soundIndex == selectedIndexPath.item {
-                        return SoundPreferences.Sound(url: soundURL, enabled: true, random: false)
+                        return SingleSoundPreference(soundIdentifier: soundFile.identifier, enabled: true)
                     }
                 }
             }

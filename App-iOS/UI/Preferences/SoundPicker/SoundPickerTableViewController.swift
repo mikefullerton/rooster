@@ -69,13 +69,13 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         return nil
     }
     
-    var chosenSound : SoundPreferences.Sound? {
+    var chosenSound : SingleSoundPreference? {
         if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
             for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
                 for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {
                     if folderIndex == selectedIndexPath.section &&
                         soundIndex == selectedIndexPath.item {
-                        return SoundPreferences.Sound(url: soundURL, enabled: true, random: false)
+                        return SingleSoundPreference(url: soundURL, enabled: true, random: false)
                     }
                 }
             }

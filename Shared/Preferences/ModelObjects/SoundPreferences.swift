@@ -9,8 +9,8 @@ import Foundation
 
 struct SoundPreferences: Sequence, CustomStringConvertible {
     
-    typealias Element = Sound
-    typealias Iterator = Array<Sound>.Iterator
+    typealias Element = SingleSoundPreference
+    typealias Iterator = Array<SingleSoundPreference>.Iterator
     
     static let RepeatEndlessly = AlarmSoundBehavior.RepeatEndlessly
 
@@ -20,15 +20,15 @@ struct SoundPreferences: Sequence, CustomStringConvertible {
         case sound3
     }
 
-    private(set) var sounds: [Sound]
+    private(set) var sounds: [SingleSoundPreference]
     
     var playCount: Int
     var startDelay: Int
     var volume:Float
     
-    init(sound1: Sound,
-         sound2: Sound,
-         sound3: Sound,
+    init(sound1: SingleSoundPreference,
+         sound2: SingleSoundPreference,
+         sound3: SingleSoundPreference,
          playCount: Int,
          startDelay: Int,
          volume: Float) {
@@ -45,25 +45,15 @@ struct SoundPreferences: Sequence, CustomStringConvertible {
     }
     
     init() {
-        if let defaultURL = SoundPreferences.urlForName("Rooster Crowing") {
-            self.init(sound1: Sound(url: defaultURL, enabled: true, random: false),
-                      sound2: Sound.zero,
-                      sound3: Sound.zero,
-                      playCount: SoundPreferences.RepeatEndlessly,
-                      startDelay: 3,
-                      volume: 1.0)
-            return
-        }
-        
-        self.init(sound1: Sound.zero,
-                  sound2: Sound.zero,
-                  sound3: Sound.zero,
+        self.init(sound1: SingleSoundPreference.default1,
+                  sound2: SingleSoundPreference.default2,
+                  sound3: SingleSoundPreference.default3,
                   playCount: SoundPreferences.RepeatEndlessly,
                   startDelay: 3,
                   volume: 1.0)
     }
 
-    subscript(index: SoundIndex) -> Sound {
+    subscript(index: SoundIndex) -> SingleSoundPreference {
         get {
             return self.sounds[ index.rawValue ]
         }
@@ -90,7 +80,7 @@ struct SoundPreferences: Sequence, CustomStringConvertible {
     
     var isEnabled: Bool {
         for sound in self.sounds {
-            if sound.enabled {
+            if sound.isEnabled {
                 return true
             }
         }
@@ -99,103 +89,7 @@ struct SoundPreferences: Sequence, CustomStringConvertible {
     }
 }
 
-extension SoundPreferences {
-    struct Sound : CustomStringConvertible {
-        
-        private var _url: URL?
-        var enabled: Bool
-        var random: Bool
-        
-        init(url: URL?,
-             enabled: Bool,
-             random: Bool) {
-            
-            self._url = url
-            self.random = random
-            self.enabled = enabled && url != nil
-        }
-        
-        var soundName: String {
-            if self.random {
-                return "Randomized"
-            }
-            return self.url?.soundName ?? ""
-        }
-        
-        var url: URL? {
-            get {
-                if self.random {
-                    return URL.randomizedSound
-                }
-                
-                return self._url
-            }
-            set(url) {
-                self._url = url
-            }
-        }
-        
-        static var zero: Sound {
-            return Sound(url:nil, enabled: false, random: false)
-        }
-        
-        var description: String {
-            return "Sound: \(self.url?.description ?? "nil" ), enabled: \(self.enabled), random: \(self.random)"
-        }
-    }
-    
-    
-}
 
-extension URL {
-    
-    static var randomizedSound: URL {
-        return URL(string: "rooster://randomized")!
-    }
-    
-    var isRandomizedSound: Bool {
-        return self == URL.randomizedSound
-    }
-}
-
-extension SoundPreferences.Sound {
-    enum CodingKeys: String, CodingKey {
-        case url = "name"
-        case enabled = "enabled"
-        case random = "random"
-    }
-    
-    init?(withDictionary dictionary: [AnyHashable : Any]) {
-    
-        self.enabled = false
-        self.random = false
-        self.url = URL(string:"")
-        
-        if let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool {
-            self.enabled = enabled
-        }
-        
-        if let random = dictionary[CodingKeys.random.rawValue] as? Bool {
-            self.random = random
-        }
-
-        if let urlString = dictionary[CodingKeys.url.rawValue] as? String,
-           urlString.count > 0 {
-            self.url = URL(string: urlString)
-        } else {
-            self.enabled = false
-        }
-        
-    }
-
-    var asDictionary: [AnyHashable : Any] {
-        var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.url.rawValue] = self.url?.absoluteString ?? ""
-        dictionary[CodingKeys.enabled.rawValue] = self.enabled
-        dictionary[CodingKeys.random.rawValue] = self.random
-        return dictionary
-    }
-}
 
 extension SoundPreferences {
     
@@ -213,7 +107,7 @@ extension SoundPreferences {
         if let sounds = dictionary[CodingKeys.sounds.rawValue] as? [[AnyHashable: Any]] {
             for (index, soundDictionary) in sounds.enumerated() {
                 
-                if let sound = Sound(withDictionary: soundDictionary),
+                if let sound = SingleSoundPreference(withDictionary: soundDictionary),
                    let soundIndex = SoundIndex(rawValue: index) {
                     self[soundIndex] = sound
                 }

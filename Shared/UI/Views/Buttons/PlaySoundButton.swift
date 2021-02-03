@@ -15,16 +15,18 @@ import UIKit
 class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     
     private(set) var alarmSound: AlarmSound? = nil
-    private var _url: URL? = nil
+    private var _soundFile: SoundFile? = nil
     private let timer = SimpleTimer(withName: "PlayButtonAnimationTimer")
     
-    var url: URL? {
+    var alarmBehavior = AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0)
+   
+    var soundFile: SoundFile? {
         get {
-            return self._url
+            return self._soundFile
         }
-        set(url) {
-            if url != self._url {
-                self._url = url
+        set(soundFile) {
+            if soundFile?.identifier != self._soundFile?.identifier {
+                self._soundFile = soundFile
                 
                 if let alarmSound = self.alarmSound {
                     alarmSound.stop()
@@ -80,7 +82,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     
     private func refresh() {
         
-        guard self.url != nil else {
+        guard self.soundFile != nil else {
             self.contentViewIndex = 0
             self.isEnabled = false
             return
@@ -96,21 +98,41 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         return self.alarmSound?.isPlaying ?? false
     }
     
-    func togglePlayingState() {
-        if let alarmSound = self.alarmSound {
-            if alarmSound.isPlaying {
-                alarmSound.stop()
-            } else {
-                alarmSound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
-            }
-        } else if let url = self.url {
-            let alarmSound = URLAlarmSound(withURL: url)
+    func startPlaying() {
+        if self.isPlaying {
+            return
+        }
+        
+        if self.alarmSound == nil,
+           let soundFile = self.soundFile {
+           
+            let alarmSound = SoundFileAlarmSound(withSoundFile: soundFile)
             alarmSound.delegate = self
             self.alarmSound = alarmSound
-            
-            alarmSound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
+        }
+   
+        if let alarmSound = self.alarmSound {
+            alarmSound.play(withBehavior: self.alarmBehavior)
+        }
+    }
+    
+    func stopPlaying() {
+        
+        if !self.isPlaying {
+            return
         }
 
+        if let alarmSound = self.alarmSound {
+            alarmSound.stop()
+        }
+    }
+    
+    func togglePlayingState() {
+        if self.isPlaying {
+            self.stopPlaying()
+        } else {
+            self.startPlaying()
+        }
         self.refresh()
     }
     

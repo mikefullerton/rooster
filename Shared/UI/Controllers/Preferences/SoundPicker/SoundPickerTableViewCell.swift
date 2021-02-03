@@ -14,9 +14,9 @@ import UIKit
 
 class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
     
-    typealias ContentType = URL
+    typealias ContentType = SoundFile
     
-    private var url: URL?
+    private var soundFile: SoundFile?
     private var soundIndex: SoundPreferences.SoundIndex = .sound1
     
     override func loadView() {
@@ -28,20 +28,20 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
         self.addTitleView()
     }
     
-    func viewWillAppear(withContent content: URL) {
-        self.url = content
-        self.playButton.url = url
+    func viewWillAppear(withContent content: SoundFile) {
+        self.soundFile = content
+        self.playButton.soundFile = content
         self.playButton.isEnabled = true
         
-        if let fileName = self.url?.soundName {
+        if let fileName = self.soundFile?.name {
             self.titleView.stringValue = fileName
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.url = nil
-        self.playButton.url = nil
+        self.soundFile = nil
+        self.playButton.soundFile = nil
     }
 
     static var preferredHeight: CGFloat {

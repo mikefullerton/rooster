@@ -17,11 +17,12 @@ protocol SoundPickerViewControllerDelegate : AnyObject {
     func soundPickerViewControllerWasDismissed(_ controller: SoundPickerViewController)
 }
 
-class SoundPickerViewController : SDKViewController {
+class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Loggable {
     
     weak var delegate: SoundPickerViewControllerDelegate?
     
     let soundPreferenceIndex: SoundPreferences.SoundIndex
+    
     
     init(withSoundPreferenceIndex index: SoundPreferences.SoundIndex) {
         self.soundPreferenceIndex = index
@@ -36,6 +37,7 @@ class SoundPickerViewController : SDKViewController {
         self.view = SDKView()
         
         self.addSoundPicker()
+        self.addSearchView()
         self.addBottomBar()
 
         self.title = "Sound Picker"
@@ -49,7 +51,7 @@ class SoundPickerViewController : SDKViewController {
         
         let soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
         
-        soundPicker.scrollView.contentInsets = SDKEdgeInsets(top: 0,
+        soundPicker.scrollView.contentInsets = SDKEdgeInsets(top: self.searchField.preferredHeight,
                                                             left: 0,
                                                             bottom: self.bottomBar.preferredHeight,
                                                             right: 0)
@@ -70,6 +72,8 @@ class SoundPickerViewController : SDKViewController {
             soundPicker.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             soundPicker.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ])
+        
+        
     }
     
     @objc func doneButtonClicked(_ sender: SDKButton) {
@@ -94,9 +98,46 @@ class SoundPickerViewController : SDKViewController {
         cancelButton.action = #selector(cancelButtonClicked(_:))
         bottomBar.addToView(self.view)
     }
- 
-    override func viewDidLayout() {
-        super.viewDidLayout()
+    
+    lazy var searchField: QuickSearchView = {
+        let view = QuickSearchView()
+        view.delegate = self
+        return view
+    }()
+
+    func addSearchView() {
+        let view = self.searchField
+        view.addToView(self.view)
+    }
+    
+    func quickSearchViewDidEndSearching(_ quickSearchView: QuickSearchView, content: String) {
+        self.logger.log("Search ended with: \(content)")
+
+        self.soundPicker.updateSoundFolder(SoundFolder.instance)
+    }
+    
+    func quickSearchViewDidBeginSearching(_ quickSearchView: QuickSearchView, content: String) {
+        
+        self.logger.log("Got search string: \(content)")
+        
+        if content.count > 0 {
+            if let soundFolder = SoundFolder.instance.findFolder(containing: content) {
+                self.soundPicker.updateSoundFolder(soundFolder)
+            } else {
+                self.soundPicker.updateSoundFolder(SoundFolder.empty)
+            }
+            
+            
+            
+        } else {
+            self.soundPicker.updateSoundFolder(SoundFolder.instance)
+        }
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        self.searchField.becomeFirstResponder()
     }
 }
 

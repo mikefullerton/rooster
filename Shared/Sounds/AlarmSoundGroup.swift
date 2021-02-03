@@ -17,12 +17,15 @@ class AlarmSoundGroup : AlarmSound, AlarmSoundDelegate {
     
     var identifier: String
     
-    init(withPreference preference: SoundPreferences) {
-        self.sounds = URLAlarmSound.alarmSounds(withURLs: preference.soundURLs)
+    init(withPreference preferences: SoundPreferences) {
+
+        let soundFiles = SoundFolder.instance.findSounds(forIdentifiers: preferences.map { return $0.soundIdentifier })
+            
+        self.sounds = SoundFileAlarmSound.alarmSounds(withSoundFiles: soundFiles)
     
-        self.name = preference.sounds.map { $0.soundName }.joined(separator: ":")
+        self.name = soundFiles.map { $0.name }.joined(separator: ":")
         self.behavior = AlarmSoundBehavior()
-        self.identifier = ""
+        self.identifier = soundFiles.map { $0.identifier }.joined(separator: ":")
     }
     
     var currentSound: AlarmSound? {

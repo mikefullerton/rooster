@@ -45,7 +45,7 @@ class SingleSoundChoiceView : UIView {
         self.refresh()
     }
 
-    private var sound: SoundPreferences.Sound {
+    private var sound: SingleSoundPreference {
         get {
             return AppDelegate.instance.preferencesController.soundPreferences[self.index]
         }

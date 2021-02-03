@@ -1,5 +1,5 @@
 //
-//  URLAlarmSound.swift
+//  SoundFileAlarmSound.swift
 //  Rooster-macOS
 //
 //  Created by Mike Fullerton on 1/21/21.
@@ -8,21 +8,21 @@
 import Foundation
 import Cocoa
 
-class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
+class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     weak var delegate: AlarmSoundDelegate?
     
     var identifier: String
     
     private(set) var behavior: AlarmSoundBehavior
-    let url: URL
+    let soundFile: SoundFile
     
     private var sound: NSSound?
     private let stopTimer: SimpleTimer
     
     private(set) var isPlaying: Bool
     
-    init(withURL url: URL) {
-        self.url = url
+    init(withSoundFile soundFile: SoundFile) {
+        self.soundFile = soundFile
         self.behavior = AlarmSoundBehavior()
         self.stopTimer = SimpleTimer(withName: "AVAlarmSoundStopTimer")
         self.identifier = ""
@@ -39,15 +39,7 @@ class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     }
     
     var name: String {
-        if self.url.isRandomizedSound {
-            if let sound = self.sound {
-                return "randomized: \(sound.name ?? "nil")"
-            } else {
-                return "randomized: (not loadeded)"
-            }
-        }
-        
-        return self.url.soundName
+        return self.soundFile.name
     }
     
     private func createPlayerIfNeeded() {
@@ -55,18 +47,14 @@ class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
             return
         }
         
-        var url = self.url
-        if url.isRandomizedSound {
-            url = Bundle.availableSoundResources.randomElement()!
-        }
-
-        if let sound = NSSound(contentsOf: url, byReference: true){
-            sound.setName(url.soundName)
+        let soundFile = self.soundFile
+        if let sound = NSSound(contentsOf: soundFile.url, byReference: true){
+            sound.setName(soundFile.name)
             sound.delegate = self
             self.sound = sound
             
         } else {
-            self.logger.error("Failed to create sound for url: \(url)")
+            self.logger.error("Failed to create sound for soundFile: \(soundFile)")
             return
         }
         
@@ -112,7 +100,7 @@ class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
         return 0
     }
         
-    static func == (lhs: URLAlarmSound, rhs: URLAlarmSound) -> Bool {
+    static func == (lhs: SoundFileAlarmSound, rhs: SoundFileAlarmSound) -> Bool {
         return lhs.identifier == rhs.identifier
     }
     
@@ -150,15 +138,7 @@ class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     private func didStop() {
         self.logger.log("Sound stopped: \(self.name)")
         self.isPlaying = false
-        if let sound = self.sound {
-            
-            self.fadeOutAndStop()
-            
-            if self.url.isRandomizedSound {
-                sound.delegate = nil
-                self.sound = nil
-            }
-        }
+        self.fadeOutAndStop()
         self.stopTimer.stop()
         
         if let delegate = self.delegate {
@@ -184,13 +164,13 @@ class URLAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     }
 }
 
-extension URLAlarmSound {
-    static func alarmSounds(withURLs urls:[URL]) -> [AlarmSound] {
+extension SoundFileAlarmSound {
+    static func alarmSounds(withSoundFiles soundFiles:[SoundFile]) -> [AlarmSound] {
         var sounds:[AlarmSound] = []
-        for url in urls {
-            let alarm = URLAlarmSound(withURL: url)
+        for soundFile in soundFiles {
+            let alarm = SoundFileAlarmSound(withSoundFile: soundFile)
             sounds.append(alarm)
-            self.logger.error("Loaded sound for URL: \(url)")
+            self.logger.error("Loaded sound for SoundFile: \(soundFile)")
         }
         return sounds
     }

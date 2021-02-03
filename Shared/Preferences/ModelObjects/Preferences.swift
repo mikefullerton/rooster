@@ -35,7 +35,6 @@ struct Preferences : CustomStringConvertible, Loggable {
     }
 }
 
-
 extension Preferences : DictionaryCodable {
  
     enum CodingKeys: String, CodingKey {
