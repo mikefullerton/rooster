@@ -28,8 +28,9 @@ class AppDelegate: NSObject,
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         self.showLoadingWindow()
-        NSApp.activate(ignoringOtherApps: true)
 
+        self.showDeveloperMenuIfNeeded()
+        
         self.userNotificationController.requestAccess()
         
         self.dataModelController.authenticate { (success) in

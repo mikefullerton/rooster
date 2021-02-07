@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SoundFolder: CustomStringConvertible, Identifiable {
+class SoundFolder: CustomStringConvertible, Identifiable, Loggable {
     typealias ID = String
     
     static let instance = SoundFolder.loadFromBundle()
@@ -29,75 +29,54 @@ class SoundFolder: CustomStringConvertible, Identifiable {
         return self.url?.fileName ?? ""
     }
     
-    var disclosed: Bool = true
+    static let empty = SoundFolder()
     
-    static let empty = SoundFolder(with: nil, parent: nil)
-    
-    private init(with url: URL?, parent: SoundFolder?) {
+    private init(withURL url: URL?, parent: SoundFolder?) {
         self.parent = parent
         self.url = url
         self.sounds = []
         self.subFolders = []
     }
     
-    private static func loadFromBundle() -> SoundFolder {
+    init() {
+        self.parent = nil
+        self.url = nil
+        self.sounds = []
+        self.subFolders = []
+    }
+    
+    static func loadFromBundle() -> SoundFolder {
         if  let resourcePath = Bundle.main.resourceURL {
             let soundPath = resourcePath.appendingPathComponent("Sounds")
             
-            if let folder = self.loadFolderForPath(soundPath, parent: nil) {
-                return folder
+            do {
+                let directory = try Directory(withID:soundPath.absoluteString, url: soundPath)
+                return SoundFolder(withDirectory: directory, parent: nil)
+            } catch {
+                self.logger.error("Creating SoundFolder failed with error: \(error.localizedDescription)")
             }
         }
         
-        return SoundFolder(with: URL(fileURLWithPath: ""), parent: nil)
+        return SoundFolder.empty
+    }
+
+    convenience init(withDirectory directory: Directory) {
+        self.init(withDirectory: directory, parent: nil)
     }
     
-    private static func loadFolderForPath(_ url: URL, parent: SoundFolder?) -> SoundFolder? {
+    private init(withDirectory directory: Directory, parent: SoundFolder?) {
+        self.parent = parent
+        self.url = directory.url
+        self.sounds = []
+        self.subFolders = []
         
-        do {
-            let contents = try FileManager.default.contentsOfDirectory(atPath: url.path)
-            
-            let folder = SoundFolder(with: url, parent: parent)
-            
-            var urls:[URL] = []
-            var subfolders:[SoundFolder] = []
-            
-            for file in contents {
-                if file.hasPrefix(".") {
-                    continue
-                }
-                
-                let filePath = url.appendingPathComponent(file)
-                
-                var isDir : ObjCBool = false
-                if FileManager.default.fileExists(atPath: filePath.path, isDirectory: &isDir) {
-                    if isDir.boolValue {
-                        
-                        if let newFolder = self.loadFolderForPath(filePath, parent: folder) {
-                            subfolders.append(newFolder)
-                        }
-                    } else {
-                        urls.append(filePath)
-                    }
-                }
-            }
-            
-            let sortedSounds = urls.sorted { lhs, rhs in
-                lhs.fileName.localizedCaseInsensitiveCompare(rhs.fileName) == ComparisonResult.orderedAscending
-            }
-
-            let sortedFolders = subfolders.sorted { lhs, rhs in
-                lhs.name.localizedCaseInsensitiveCompare(rhs.name) == ComparisonResult.orderedAscending
-            }
-
-            folder.sounds = sortedSounds.map { SoundFile(with: $0, folder: folder, isRandom: false) }
-            folder.subFolders = sortedFolders
-            return folder
-            
-        } catch {
+        for file in directory.files {
+            self.sounds.append(SoundFile(withURL: file.url, parent: self))
         }
         
-        return nil
+        for directory in directory.directories {
+            self.subFolders.append(SoundFolder(withDirectory: directory, parent: self))
+        }
     }
     
     lazy var allSounds: [SoundFile] = {
@@ -155,7 +134,7 @@ class SoundFolder: CustomStringConvertible, Identifiable {
     
     func findFolder(containing name: String, parent: SoundFolder?) -> SoundFolder? {
     
-        let outFolder = SoundFolder(with: self.url, parent: parent)
+        let outFolder = SoundFolder(withURL: self.url, parent: parent)
         
         if parent != nil && outFolder.name.localizedCaseInsensitiveContains(name) {
             outFolder.sounds = self.sounds
@@ -221,11 +200,6 @@ class SoundFolder: CustomStringConvertible, Identifiable {
             }
         }
         return sounds.count > 0 ? sounds: nil
-    }
-    
-    var randomSoundFile: SoundFile {
-        let soundFile = self.allSounds.randomElement()!
-        return SoundFile(with: soundFile.url, folder: soundFile.folder!, isRandom: true)
     }
     
     var description: String {

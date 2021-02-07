@@ -250,6 +250,12 @@
 		B29D0576259260130027C152 /* SimpleTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0574259260130027C152 /* SimpleTimer.swift */; };
 		B29F4AC625CF55C00078F8B5 /* MultipleSoundSetIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AC525CF55C00078F8B5 /* MultipleSoundSetIterator.swift */; };
 		B29F4AC825CF56370078F8B5 /* SoundSetPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AC725CF56370078F8B5 /* SoundSetPlayer.swift */; };
+		B29F4ACF25D045F10078F8B5 /* AppDelegate+Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4ACE25D045F10078F8B5 /* AppDelegate+Controller.swift */; };
+		B29F4AD525D0506D0078F8B5 /* SoundMetaDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD425D0506D0078F8B5 /* SoundMetaDataUpdater.swift */; };
+		B29F4AD725D050A60078F8B5 /* DeveloperAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */; };
+		B29F4AD925D052700078F8B5 /* FileManager+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD825D052700078F8B5 /* FileManager+Utilities.swift */; };
+		B29F4ADD25D06F6A0078F8B5 /* SoundFolderDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4ADC25D06F6A0078F8B5 /* SoundFolderDescriptor.swift */; };
+		B29F4AE625D089110078F8B5 /* DirectoryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AE525D089110078F8B5 /* DirectoryTemplate.swift */; };
 		B2A181932597C4A300C1E7F0 /* DemoAlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */; };
 		B2A181AC2597FC9600C1E7F0 /* AlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACD42594F41E00F9B50C /* AlarmNotification.swift */; };
 		B2A181B025980F8700C1E7F0 /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */; };
@@ -656,6 +662,14 @@
 		B29D0574259260130027C152 /* SimpleTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTimer.swift; sourceTree = "<group>"; };
 		B29F4AC525CF55C00078F8B5 /* MultipleSoundSetIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSoundSetIterator.swift; sourceTree = "<group>"; };
 		B29F4AC725CF56370078F8B5 /* SoundSetPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetPlayer.swift; sourceTree = "<group>"; };
+		B29F4ACE25D045F10078F8B5 /* AppDelegate+Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Controller.swift"; sourceTree = "<group>"; };
+		B29F4AD425D0506D0078F8B5 /* SoundMetaDataUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundMetaDataUpdater.swift; sourceTree = "<group>"; };
+		B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperAction.swift; sourceTree = "<group>"; };
+		B29F4AD825D052700078F8B5 /* FileManager+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Utilities.swift"; sourceTree = "<group>"; };
+		B29F4ADC25D06F6A0078F8B5 /* SoundFolderDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFolderDescriptor.swift; sourceTree = "<group>"; };
+		B29F4ADF25D084120078F8B5 /* DirectoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryItem.swift; sourceTree = "<group>"; };
+		B29F4AE125D084300078F8B5 /* Directory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
+		B29F4AE525D089110078F8B5 /* DirectoryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryTemplate.swift; sourceTree = "<group>"; };
 		B2A181102597B18600C1E7F0 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAlarmNotification.swift; sourceTree = "<group>"; };
 		B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxView.swift; sourceTree = "<group>"; };
@@ -894,6 +908,7 @@
 				B29F4ACC25CF5BAB0078F8B5 /* AlarmSounds */,
 				B298C44C25AB8CB90085BBA0 /* SoundFolder.swift */,
 				B259A3F825CB165A00CF4C95 /* SoundFile.swift */,
+				B29F4ADC25D06F6A0078F8B5 /* SoundFolderDescriptor.swift */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -1301,6 +1316,8 @@
 				B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */,
 				B21DA1A3259BB722002A56C8 /* String+Localized.swift */,
 				B24C5F6725BE37BE00F51FE7 /* SystemUtilities.swift */,
+				B29F4AD825D052700078F8B5 /* FileManager+Utilities.swift */,
+				B29F4ADE25D084000078F8B5 /* Directory */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1318,7 +1335,6 @@
 			isa = PBXGroup;
 			children = (
 				B25F6BEF25BDFB240067C096 /* UI */,
-				B29493C225B5F8C100FCCF9E /* Resources */,
 				B20AACEE259513C800F9B50C /* Alarms */,
 				B2866263258EC1C500D3A538 /* Utilities */,
 				B20AACF7259530B400F9B50C /* Preferences */,
@@ -1424,6 +1440,26 @@
 				B274EF9C25BA12A700F9D473 /* SoundFileAlarmSound.swift */,
 			);
 			path = AlarmSounds;
+			sourceTree = "<group>";
+		};
+		B29F4ACD25D045DA0078F8B5 /* Developer */ = {
+			isa = PBXGroup;
+			children = (
+				B29F4ACE25D045F10078F8B5 /* AppDelegate+Controller.swift */,
+				B29F4AD425D0506D0078F8B5 /* SoundMetaDataUpdater.swift */,
+				B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */,
+			);
+			path = Developer;
+			sourceTree = "<group>";
+		};
+		B29F4ADE25D084000078F8B5 /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				B29F4ADF25D084120078F8B5 /* DirectoryItem.swift */,
+				B29F4AE125D084300078F8B5 /* Directory.swift */,
+				B29F4AE525D089110078F8B5 /* DirectoryTemplate.swift */,
+			);
+			path = Directory;
 			sourceTree = "<group>";
 		};
 		B2AFE66F2569DFD6006B3C58 /* F SwiftUI (sorry SwiftUI) */ = {
@@ -1544,6 +1580,7 @@
 			children = (
 				B286626C258EC2F600D3A538 /* Shared */,
 				B2FAD8C525B5FF3F00598B9E /* App-macOS */,
+				B29493C225B5F8C100FCCF9E /* Resources */,
 				B2EB268625C86C7300906E41 /* Other Files */,
 				B2E1511F255EED2B002672EC /* App-iOS */,
 				B296556E257C3698008D1858 /* Abandoned */,
@@ -1752,6 +1789,7 @@
 		B2FAD8C525B5FF3F00598B9E /* App-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				B29F4ACD25D045DA0078F8B5 /* Developer */,
 				B274F02C25BA3CD200F9D473 /* Controllers */,
 				B2CEF16B25B8A73600CA01E2 /* Utilities */,
 			);
@@ -2134,6 +2172,7 @@
 				B274EF8825BA0D0000F9D473 /* BottomBar.swift in Sources */,
 				B2FAD94525B6022B00598B9E /* DataModelFactory.swift in Sources */,
 				B294935725B5F6E400FCCF9E /* SimpleTimer.swift in Sources */,
+				B29F4ACF25D045F10078F8B5 /* AppDelegate+Controller.swift in Sources */,
 				B29492ED25B5F4D000FCCF9E /* AppDelegate.swift in Sources */,
 				B2FAD8F725B601DB00598B9E /* DataModelController.swift in Sources */,
 				B2FAD94725B6022B00598B9E /* DataModelFactory+IntermediateDataModel.swift in Sources */,
@@ -2144,6 +2183,7 @@
 				B274EFF925BA2C1D00F9D473 /* CalendarListViewModel.swift in Sources */,
 				B294934D25B5F6E400FCCF9E /* String+Utilities.swift in Sources */,
 				B274EFDD25BA250600F9D473 /* SoundVolumeView.swift in Sources */,
+				B29F4AD925D052700078F8B5 /* FileManager+Utilities.swift in Sources */,
 				B2FAD94325B6022B00598B9E /* CalendarItem+FindURL.swift in Sources */,
 				B25F6B4C25BDE9990067C096 /* NSImage+Utilities.swift in Sources */,
 				B2CEF18B25B8B09C00CA01E2 /* DividerView.swift in Sources */,
@@ -2204,6 +2244,7 @@
 				B26F6B5825B7C47400EA2057 /* CalendarItemTableViewController.swift in Sources */,
 				B274EFBD25BA1CE000F9D473 /* PreferencesViewController.swift in Sources */,
 				B2FAD90925B601DB00598B9E /* Reminder.swift in Sources */,
+				B29F4ADD25D06F6A0078F8B5 /* SoundFolderDescriptor.swift in Sources */,
 				B2FAD92425B6022300598B9E /* EKReminder+UniqueID.swift in Sources */,
 				B2FAD92025B6022300598B9E /* EKController.swift in Sources */,
 				B2E2252725B640BE0052758C /* DividerAdornment.swift in Sources */,
@@ -2258,6 +2299,7 @@
 				B2E2252225B640BE0052758C /* TableViewSection.swift in Sources */,
 				B274EFF525BA27B000F9D473 /* SoundPickerTableViewModel.swift in Sources */,
 				B2CEF18425B8ADAD00CA01E2 /* Geometry.swift in Sources */,
+				B29F4AD725D050A60078F8B5 /* DeveloperAction.swift in Sources */,
 				B26F6B5D25B7C47400EA2057 /* EventListViewModel.swift in Sources */,
 				B294936825B5F6F100FCCF9E /* SoundFolder.swift in Sources */,
 				B2E2251E25B640BE0052758C /* ViewLayout.swift in Sources */,
@@ -2274,6 +2316,7 @@
 				B294934E25B5F6E400FCCF9E /* StringFormatter.swift in Sources */,
 				B25F6B1E25BCC9600067C096 /* TableViewAdornmentView.swift in Sources */,
 				B24C5F6825BE37E100F51FE7 /* SystemUtilities.swift in Sources */,
+				B29F4AD525D0506D0078F8B5 /* SoundMetaDataUpdater.swift in Sources */,
 				B274EFE125BA25AA00F9D473 /* NotificationChoicesView.swift in Sources */,
 				B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */,
 				B204B3A325CDA3B400795BC6 /* SoundFileDescriptor.swift in Sources */,
@@ -2285,6 +2328,7 @@
 				B2E224F325B635600052758C /* TimeRemainingViewController.swift in Sources */,
 				B274EFF125BA279B00F9D473 /* SoundPickerTableViewController.swift in Sources */,
 				B24ED39A25BF684200F0B809 /* SDKCustomButton.swift in Sources */,
+				B29F4AE625D089110078F8B5 /* DirectoryTemplate.swift in Sources */,
 				B204B3A125CD9CC900795BC6 /* SoundSet.swift in Sources */,
 				B2EB268525C86B4A00906E41 /* NSImage+Tinting.m in Sources */,
 				B274F00525BA2DCE00F9D473 /* CalendarToolbarView.swift in Sources */,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18099.1" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18121" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18099.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18121"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -371,8 +371,27 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Developer" tag="999" hidden="YES" id="Oaw-7K-FGj">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Developer" id="eSV-3s-HPC">
+                        <items>
+                            <menuItem title="Update Sounds MetaData" id="Hip-A2-8yC">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="updateSoundMetaData:" target="Voe-Tx-rLC" id="P1E-8W-Poc"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Item" id="sV1-5i-84i">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
             </items>
             <point key="canvasLocation" x="-180" y="121"/>
         </menu>
+        <menuItem title="Item" id="A42-th-hZC">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
 </document>

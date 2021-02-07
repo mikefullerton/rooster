@@ -11,17 +11,15 @@ class SoundFile: CustomStringConvertible, Identifiable {
     
     typealias ID = String
     
-    weak var folder: SoundFolder?
+    weak var parent: SoundFolder?
     
     let id: String
     let url: URL
-    let isRandom: Bool
 
-    init(with url: URL, folder: SoundFolder?, isRandom random: Bool) {
-        self.folder = folder
+    init(withURL url: URL, parent: SoundFolder?) {
+        self.parent = parent
         self.url = url
-        self.id = "\(folder?.id ?? "")/\(self.url.fileName)"
-        self.isRandom = random
+        self.id = "\(parent?.id ?? "")/\(self.url.fileName)"
     }
     
     var name: String {
@@ -29,7 +27,7 @@ class SoundFile: CustomStringConvertible, Identifiable {
     }
     
     var description: String {
-        return "\(type(of:self)): \(self.id), name: \(self.name), url: \(self.url), isRandom:\(self.isRandom), parent: \(self.folder?.description ?? "nil")"
+        return "\(type(of:self)): \(self.id), name: \(self.name), url: \(self.url), parent: \(self.parent?.description ?? "nil")"
     }
     
     var displayName: String {

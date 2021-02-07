@@ -40,13 +40,7 @@ struct SoundPickerTableViewSection : TableViewSectionProtocol {
     }
     
     var rows: [TableViewRowProtocol] {
-        if self.folder.disclosed {
-            return self.folder.sounds.map { return TableViewRow<SoundFile, SoundPickerTableViewCell>(withData: $0) }
-        } else {
-            return []
-        }
+        return self.folder.sounds.map { return TableViewRow<SoundFile, SoundPickerTableViewCell>(withData: $0) }
     }
-    
-    
 }
 
