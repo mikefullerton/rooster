@@ -7,7 +7,8 @@
 
 import Foundation
 
-class SoundFolder: CustomStringConvertible {
+class SoundFolder: CustomStringConvertible, Identifiable {
+    typealias ID = String
     
     static let instance = SoundFolder.loadFromBundle()
     
@@ -16,9 +17,9 @@ class SoundFolder: CustomStringConvertible {
     private(set) var subFolders: [SoundFolder]
     weak private(set) var parent: SoundFolder?
     
-    var identifier: String {
+    var id: String {
         if let parent = self.parent {
-            return "\(parent.identifier)/\(self.url?.lastPathComponent ?? "")"
+            return "\(parent.id)/\(self.url?.lastPathComponent ?? "")"
         }
         
         return self.url?.lastPathComponent ?? ""
@@ -108,7 +109,7 @@ class SoundFolder: CustomStringConvertible {
         self.subFolders.forEach() { sounds.append(contentsOf: $0.allSounds) }
 
         let sortedSounds = sounds.sorted { lhs, rhs in
-            lhs.identifier.localizedCaseInsensitiveCompare(rhs.identifier) == ComparisonResult.orderedAscending
+            lhs.id.localizedCaseInsensitiveCompare(rhs.id) == ComparisonResult.orderedAscending
         }
 
         return sortedSounds
@@ -126,9 +127,9 @@ class SoundFolder: CustomStringConvertible {
         return sounds
     }
     
-    func findSound(forIdentifier identifier: String) -> SoundFile? {
+    func findSound(forIdentifier id: String) -> SoundFile? {
         for sound in self.allSounds {
-            if sound.identifier == identifier {
+            if sound.id == id {
                 return sound
             }
         }
@@ -188,13 +189,47 @@ class SoundFolder: CustomStringConvertible {
         return nil
     }
     
-    var randomSound: SoundFile {
+    var randomSoundIdentifer: String {
+        if let soundFile = self.allSounds.randomElement() {
+            return soundFile.id
+        }
+        
+        return self.allSounds[0].id
+    }
+    
+    private func isExcluded(_ searchString: String, exactExclusions: [String]) -> Bool {
+        if exactExclusions.count == 0 {
+            return false
+        }
+        
+        if let _ = exactExclusions.firstIndex(where: { $0.caseInsensitiveCompare(searchString) == .orderedSame }) {
+            return true
+        }
+        
+        return false
+        
+    }
+    
+    func findSoundIdentifers(containingNames containing: [String], excluding exactExclusions: [String] = []) -> [String]? {
+        var sounds:[String] = []
+        for sound in self.allSounds {
+            containing.forEach {
+                if sound.name.localizedCaseInsensitiveContains($0) &&
+                    !self.isExcluded(sound.name, exactExclusions: exactExclusions){
+                    sounds.append(sound.id)
+                }
+            }
+        }
+        return sounds.count > 0 ? sounds: nil
+    }
+    
+    var randomSoundFile: SoundFile {
         let soundFile = self.allSounds.randomElement()!
         return SoundFile(with: soundFile.url, folder: soundFile.folder!, isRandom: true)
     }
     
     var description: String {
-        return "SoundFolder: \(self.identifier), name: \(self.name), url: \(String(describing:self.url)), parent: \(self.parent?.description ?? "nil"), soundCount: \(self.sounds.map { $0.identifier }), subFolders:\(self.subFolders.map { $0.identifier })"
+        return "\(type(of:self)): \(self.id), name: \(self.name), url: \(String(describing:self.url)), parent: \(self.parent?.description ?? "nil"), soundCount: \(self.sounds.map { $0.id }), subFolders:\(self.subFolders.map { $0.id })"
     }
 }
 

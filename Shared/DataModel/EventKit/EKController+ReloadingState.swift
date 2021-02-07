@@ -47,7 +47,7 @@ extension EKController {
         }
         
         var description: String {
-            return "ReloadingState: ID: \(self.requestID), requestedCount: \(self.requestedCount), reloading: \(self.reloading)"
+            return "\(type(of:self)): ID: \(self.requestID), requestedCount: \(self.requestedCount), reloading: \(self.reloading)"
         }
 
     }

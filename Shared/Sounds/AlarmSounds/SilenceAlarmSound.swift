@@ -7,13 +7,15 @@
 
 import Foundation
 
-class SilenceAlarmSound : AlarmSound {
+class SilenceAlarmSound : AlarmSound, Identifiable {
     struct FakeSound {
         var isPlaying: Bool
         var duration: TimeInterval
         var volume: Float
         var startTime: TimeInterval
     }
+    
+    typealias ID = String
     
     weak var delegate: AlarmSoundDelegate?
 
@@ -23,7 +25,7 @@ class SilenceAlarmSound : AlarmSound {
     private(set) var behavior: AlarmSoundBehavior
     private var playCount:Int
     private(set) var duration: TimeInterval
-    var identifier: String
+    var id: String
     
     init(withDuration duration: TimeInterval = 0) {
         self.duration = duration
@@ -32,7 +34,7 @@ class SilenceAlarmSound : AlarmSound {
         self.timer = SimpleTimer(withName: "SilenceSoundTimer")
         self.behavior = AlarmSoundBehavior()
         self.playCount = 0
-        self.identifier = ""
+        self.id = ""
     }
 
     var isPlaying: Bool {
@@ -41,6 +43,10 @@ class SilenceAlarmSound : AlarmSound {
     
     var volume: Float {
         return self.sound.volume
+    }
+    
+    var displayName: String {
+        return "Silence"
     }
     
     func set(volume: Float, fadeDuration: TimeInterval) {
@@ -86,7 +92,7 @@ class SilenceAlarmSound : AlarmSound {
             delegate.soundWillStartPlaying(self)
         }
 
-        self.logger.log("playing sound: \(self.name): for: \(self.identifier)")
+        self.logger.log("playing sound: \(self.name): for: \(self.id)")
 
         self.startTimer(withDuration: self.duration + self.behavior.timeBetweenPlays)
     }
@@ -98,7 +104,7 @@ class SilenceAlarmSound : AlarmSound {
                 delegate.soundDidStopPlaying(self)
             }
 
-            self.logger.log("stopped sound: \(self.name): for: \(self.identifier)")
+            self.logger.log("stopped sound: \(self.name): for: \(self.id)")
 
             self.sound.startTime = 0
             self.sound.isPlaying = false

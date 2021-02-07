@@ -37,7 +37,7 @@ struct Calendar: Identifiable, CustomStringConvertible, Equatable, Hashable  {
     }
     
     var description: String {
-        return "Calendar: \(self.sourceTitle): \(self.title), isSubscribed: \(self.isSubscribed)"
+        return "\(type(of:self)): \(self.sourceTitle): \(self.title), isSubscribed: \(self.isSubscribed)"
     }
     
     static func == (lhs: Calendar, rhs: Calendar) -> Bool {

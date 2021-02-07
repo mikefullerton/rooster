@@ -95,23 +95,24 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
             return
         }
         
-        let sound = AlarmSoundGroup(withPreference: soundPrefs)
-        sound.delegate = self
-        self.sound = sound
-        
-        let soundBehavior = AlarmSoundBehavior(playCount: soundPrefs.playCount,
-                                               timeBetweenPlays: 0.1,
-                                               fadeInTime: 0)
-        
-        let interval = TimeInterval(soundPrefs.startDelay)
-        
-        self.logger.log("starting alarm sound for \(self.description), with interval: \(interval)")
-
-        self.timer.start(withInterval:interval) { (timer) in
+        if let sound = soundPrefs.alarmSound {
+            sound.delegate = self
+            self.sound = sound
             
-            self.logger.log("playing alarm sound: \(sound.name) for \(self.description)")
+            let soundBehavior = AlarmSoundBehavior(playCount: soundPrefs.playCount,
+                                                   timeBetweenPlays: 0.1,
+                                                   fadeInTime: 0)
+            
+            let interval = TimeInterval(soundPrefs.startDelay)
+            
+            self.logger.log("starting alarm sound for \(self.description), with interval: \(interval)")
 
-            sound.play(withBehavior: soundBehavior)
+            self.timer.start(withInterval:interval) { (timer) in
+                
+                self.logger.log("playing alarm sound: \(sound.name) for \(self.description)")
+
+                sound.play(withBehavior: soundBehavior)
+            }
         }
     }
 
@@ -158,7 +159,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     }
 
     var description: String {
-        return "AlarmNotification: \(self.id), itemID: \(self.itemID), state: \(self.state.rawValue)"
+        return "\(type(of:self)): \(self.id), itemID: \(self.itemID), state: \(self.state.rawValue)"
     }
     
     func soundWillStartPlaying(_ sound: AlarmSound) {

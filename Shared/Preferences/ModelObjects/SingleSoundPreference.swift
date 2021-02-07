@@ -7,90 +7,99 @@
 
 import Foundation
 
-struct SingleSoundPreference : CustomStringConvertible {
+struct SingleSoundPreference : CustomStringConvertible, Equatable, Identifiable {
     
-    let soundIdentifier: String
-    let isRandom: Bool
+    typealias ID = String
+    
+    let id: ID
+    var soundSet: SoundSet
     var isEnabled: Bool
     
-    private init(soundIdentifier: String,
-         enabled: Bool,
-         random: Bool) {
+    static let AnySoundIdentifier = "*"
+    
+    init(withIdentifier id: String,
+         soundSet: SoundSet,
+         enabled: Bool) {
         
-        self.soundIdentifier = soundIdentifier
-        self.isRandom = random
+        self.id = id
+        self.soundSet = soundSet
         self.isEnabled = enabled
     }
-
-    init(soundIdentifier identifier: String,
-         enabled: Bool) {
-
-        self.init(soundIdentifier: identifier, enabled: enabled, random: false)
-    }
-        
+  
     var description: String {
-        return "Sound: \(self.soundIdentifier), enabled: \(self.isEnabled), random: \(self.isRandom)"
+        return "\(type(of:self)): id: \(self.id), SoundSet: \(self.soundSet.description), enabled: \(self.isEnabled)"
     }
 
-    static func random() -> SingleSoundPreference {
-        return SingleSoundPreference(soundIdentifier: "",
-                                     enabled: true,
-                                     random: true)
+    static func anyRandomSound(withID id: String, name: String) -> SingleSoundPreference {
+        
+        let soundIdentifier = SoundFileDescriptor(with: SoundFileDescriptor.AnySoundIdentifier,
+                                              randomizerPriority: .normal)
+        
+        let soundSet = SoundSet(withIdentifier: id,
+                                name: name,
+                                soundIdentifiers: [ soundIdentifier ])
+        
+        return SingleSoundPreference(withIdentifier: id,
+                                     soundSet: soundSet,
+                                     enabled: true)
     }
     
-    var isEmpty: Bool {
-        return self.soundIdentifier == "" && self.isRandom == false
+    var isSoundSetEmpty: Bool {
+        return self.soundSet.isEmpty
     }
     
-    static let zero = SingleSoundPreference(soundIdentifier: "", enabled: false)
-    static let default1 = SingleSoundPreference(soundIdentifier: "Sounds/Animals/Rooster Crowing", enabled: true)
+    static func == (lhs: SingleSoundPreference, rhs: SingleSoundPreference) -> Bool {
+        return  lhs.soundSet == rhs.soundSet &&
+                lhs.isEnabled == rhs.isEnabled
+    }
+    
+    static let zero = SingleSoundPreference(withIdentifier: "zero", soundSet: SoundSet.empty, enabled: false)
+    
+    static let default1 = SingleSoundPreference(withIdentifier: "default", soundSet: SoundSet.default, enabled: true)
     static let default2 = SingleSoundPreference.zero
     static let default3 = SingleSoundPreference.zero
+    
+    var isRandom: Bool {
+        get {
+            return self.soundSet.isRandom
+        }
+        set(isRandom) {
+            self.soundSet = SoundSet.random
+        }
+    }
+    
+    static var random: SingleSoundPreference {
+        return SingleSoundPreference(withIdentifier: "Random", soundSet: SoundSet.random, enabled: true)
+    }
+    
 }
 
 extension SingleSoundPreference {
     enum CodingKeys: String, CodingKey {
-        case identifier = "identifier"
+        case id = "id"
         case enabled = "enabled"
-        case random = "random"
+        case soundSet = "random"
     }
     
     init?(withDictionary dictionary: [AnyHashable : Any]) {
         
-        var enabled:Bool? = nil
-        var random:Bool? = false
-        var soundIdentifier:String? = nil
         
-        if let randomValue = dictionary[CodingKeys.random.rawValue] as? Bool {
-            random = randomValue
-        }
-
-        if let soundIdentifierValue = dictionary[CodingKeys.identifier.rawValue] as? String {
-            soundIdentifier = soundIdentifierValue
+        if let id = dictionary[CodingKeys.id.rawValue] as? String,
+            let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool,
+            let soundSetDictionary = dictionary[CodingKeys.soundSet.rawValue] as? [AnyHashable: Any],
+            let soundSet = SoundSet(withDictionary: soundSetDictionary) {
+            
+            self.init(withIdentifier: id, soundSet: soundSet, enabled: enabled)
         }
         
-        if let enabledValue = dictionary[CodingKeys.enabled.rawValue] as? Bool {
-            enabled = enabledValue
-        }
-        
-        guard enabled != nil,
-              random != nil,
-              soundIdentifier != nil else {
-            return nil
-        }
-        
-        if random! == true {
-            soundIdentifier = SoundFolder.instance.randomSound.identifier
-        }
-        
-        self.init(soundIdentifier: soundIdentifier!, enabled: enabled!, random:random!)
+        return nil
     }
 
     var asDictionary: [AnyHashable : Any] {
         var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.identifier.rawValue] = self.soundIdentifier
+        dictionary[CodingKeys.id.rawValue] = self.id
         dictionary[CodingKeys.enabled.rawValue] = self.isEnabled
-        dictionary[CodingKeys.random.rawValue] = self.isRandom
+        dictionary[CodingKeys.soundSet.rawValue] = self.soundSet.asDictionary
         return dictionary
     }
 }

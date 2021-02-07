@@ -56,7 +56,7 @@ struct Event: Identifiable, Hashable, CalendarItem {
     }
     
     var description: String {
-        return ("Event: title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), alarm: \(self.alarm)")
+        return ("\(type(of:self)): title: \(self.title), startTime: \(self.startDate), endTime: \(self.endDate), alarm: \(self.alarm)")
     }
     
     static func == (lhs: Event, rhs: Event) -> Bool {

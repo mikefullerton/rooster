@@ -12,27 +12,37 @@ import Cocoa
 import UIKit
 #endif
 
-class PlaySoundButton : FancyButton, AlarmSoundDelegate {
+protocol PlaySoundButtonDelegate : AnyObject {
+    func playButtonSoundWillStart(_ playSoundButton: PlaySoundButton)
+    func playButtonSoundDidStart(_ playSoundButton: PlaySoundButton)
+    func playButtonSoundDidStop(_ playSoundButton: PlaySoundButton)
+    func playButton(_ playSoundButton: PlaySoundButton, alarmSoundDidChange alarmSound: AlarmSound?)
+}
+
+class PlaySoundButton : FancyButton, SoundSetAlarmSoundDelegate {
     
-    private(set) var alarmSound: AlarmSound? = nil
-    private var _soundFile: SoundFile? = nil
+    weak var delegate: PlaySoundButtonDelegate?
+    
+    private var _alarmSound: AlarmSound? = nil
     private let timer = SimpleTimer(withName: "PlayButtonAnimationTimer")
     
     var alarmBehavior = AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0)
    
-    var soundFile: SoundFile? {
+    var alarmSound: AlarmSound? {
         get {
-            return self._soundFile
+            return self._alarmSound
         }
-        set(soundFile) {
-            if soundFile?.identifier != self._soundFile?.identifier {
-                self._soundFile = soundFile
+        set(alarmSound) {
+            if alarmSound?.id != self._alarmSound?.id {
+                self._alarmSound?.delegate = nil
+                
+                self._alarmSound = alarmSound
                 
                 if let alarmSound = self.alarmSound {
                     alarmSound.stop()
                 }
                 
-                self.alarmSound = nil
+                self.delegate?.playButton(self, alarmSoundDidChange: self._alarmSound)
             }
             
             self.refresh()
@@ -51,16 +61,9 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         ]
   
         self.alignment = .left
-//        self.contentHorizontalAlignment = .leading
-        
         self.contentViewIndex = 0
-        
         self.target = self
         self.action = #selector(playSound(_:))
-        
-//        self.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
-//        self.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
-        
         self.toolTip = "Play Sound"
     }
     
@@ -82,13 +85,13 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     
     private func refresh() {
         
-        guard self.soundFile != nil else {
+        guard self.alarmSound != nil else {
             self.contentViewIndex = 0
             self.isEnabled = false
             return
         }
         
-        self.isEnabled = true
+        self.isEnabled = self.alarmSound != nil
         if self.alarmSound == nil || !self.alarmSound!.isPlaying {
             self.contentViewIndex = 0
         }
@@ -102,29 +105,38 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         if self.isPlaying {
             return
         }
-        
-        if self.alarmSound == nil,
-           let soundFile = self.soundFile {
-           
-            let alarmSound = SoundFileAlarmSound(withSoundFile: soundFile)
-            alarmSound.delegate = self
-            self.alarmSound = alarmSound
-        }
    
+        self.delegate?.playButtonSoundWillStart(self)
+        
         if let alarmSound = self.alarmSound {
+            self.delegate?.playButtonSoundDidStart(self)
+            
+            alarmSound.delegate = self
             alarmSound.play(withBehavior: self.alarmBehavior)
+
+            self.refresh()
+            
+        } else {
+            self.didStop()
         }
     }
     
+    private func didStop() {
+        if let alarmSound = self.alarmSound {
+            alarmSound.stop()
+            alarmSound.delegate = nil
+        }
+        self.timer.stop()
+        self.delegate?.playButtonSoundDidStop(self)
+        self.refresh()
+    }
+    
     func stopPlaying() {
-        
         if !self.isPlaying {
             return
         }
 
-        if let alarmSound = self.alarmSound {
-            alarmSound.stop()
-        }
+        self.didStop()
     }
     
     func togglePlayingState() {
@@ -133,7 +145,6 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         } else {
             self.startPlaying()
         }
-        self.refresh()
     }
     
     @objc func playSound(_ sender: SDKButton) {
@@ -151,6 +162,14 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         return imageView
     }
     
+    func alarmSound(_ soundSetAlarmSound: SoundSetAlarmSound, willStartPlayingAlarmSound alarmSound:AlarmSound ) {
+        self.delegate?.playButton(self, alarmSoundDidChange: self._alarmSound)
+    }
+    
+    func alarmSound(_ soundSetAlarmSound: SoundSetAlarmSound, didStopPlayingAlarmSound alarmSound:AlarmSound ) {
+        self.delegate?.playButton(self, alarmSoundDidChange: self._alarmSound)
+    }
+
     func soundWillStartPlaying(_ alarmSound: AlarmSound) {
         self.refresh()
 
@@ -168,8 +187,14 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
     }
     
     func soundDidStopPlaying(_ alarmSound: AlarmSound) {
-        self.timer.stop()
-        self.alarmSound = nil
-        self.refresh()
+        self.didStop()
+    }
+    
+    var soundDisplayName: String? {
+        if let alarmSound = self.alarmSound {
+            return alarmSound.displayName
+        }
+        
+        return nil
     }
 }

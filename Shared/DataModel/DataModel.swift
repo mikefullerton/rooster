@@ -57,7 +57,7 @@ struct DataModel : CustomStringConvertible {
     }
 
     var description: String {
-        return "calenders: \(self.calendars)\ndelegate calendars: \(self.delegateCalendars)\nevents: \(self.events)\nreminders: \(self.reminders)"
+        return "\(type(of:self)): \(self.calendars)\ndelegate calendars: \(self.delegateCalendars)\nevents: \(self.events)\nreminders: \(self.reminders)"
     }
     
     func calendar(forIdentifier id: String) -> Calendar? {

@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct SoundPreferences: Sequence, CustomStringConvertible {
+struct SoundPreferences: Sequence, CustomStringConvertible, Equatable {
+    
     
     typealias Element = SingleSoundPreference
     typealias Iterator = Array<SingleSoundPreference>.Iterator
@@ -75,7 +76,7 @@ struct SoundPreferences: Sequence, CustomStringConvertible {
     }
 
     var description: String {
-        return "Sound preference: Play Count: \(self.playCount), startDelay: \(self.startDelay), volume: \(self.volume), Sound1: \(self[SoundIndex.sound1]), Sound2: \(self[SoundIndex.sound2]), Sound3: \(self[SoundIndex.sound3])"
+        return "\(type(of:self)): Play Count: \(self.playCount), startDelay: \(self.startDelay), volume: \(self.volume), Sound1: \(self[SoundIndex.sound1]), Sound2: \(self[SoundIndex.sound2]), Sound3: \(self[SoundIndex.sound3])"
     }
     
     var isEnabled: Bool {
@@ -87,9 +88,30 @@ struct SoundPreferences: Sequence, CustomStringConvertible {
         
         return false
     }
+    
+    static func == (lhs: SoundPreferences, rhs: SoundPreferences) -> Bool {
+        return  lhs.sounds == rhs.sounds &&
+                lhs.playCount == rhs.playCount &&
+                lhs.startDelay == rhs.startDelay &&
+                lhs.volume == rhs.volume
+    }
+    
+    var soundSets: [SoundSet] {
+        return self.sounds.map { $0.soundSet }
+    }
+    
+    var alarmSound: AlarmSound? {
+        
+        let iterator = MultipleSoundSetIterator(withSoundSet: self.soundSets)
+        
+        if iterator.isEmpty {
+            return nil
+        }
+
+        return SoundSetAlarmSound(withSoundSetIterator: iterator)
+    }
+    
 }
-
-
 
 extension SoundPreferences {
     
@@ -138,3 +160,4 @@ extension SoundPreferences {
     }
 
 }
+

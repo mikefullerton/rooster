@@ -30,7 +30,7 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
     
     func viewWillAppear(withContent content: SoundFile) {
         self.soundFile = content
-        self.playButton.soundFile = content
+        self.playButton.alarmSound = SoundFileAlarmSound(withSoundFile: content)
         self.playButton.isEnabled = true
         
         if let fileName = self.soundFile?.name {
@@ -41,7 +41,7 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.soundFile = nil
-        self.playButton.soundFile = nil
+        self.playButton.alarmSound = nil
     }
 
     static var preferredHeight: CGFloat {

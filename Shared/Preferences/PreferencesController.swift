@@ -9,17 +9,15 @@ import Foundation
 
 class PreferencesController: ObservableObject, Loggable {
     static let DidChangeEvent = Notification.Name(rawValue: "PreferencesDidChangeEvent")
+   
+    // in the user info in event notification
+    static let NewPreferencesKey = "NewPreferencesKey"
+    static let OldPreferencesKey = "OldPreferencesKey"
     
     private var storage: UserDefaults.IdentifierDictionary
 
     init() {
         self.storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "preferences")
-    }
-    
-    func notify() {
-        NotificationCenter.default.post(name: PreferencesController.DidChangeEvent,
-                                        object: self,
-                                        userInfo: nil)
     }
     
     var soundPreferences: SoundPreferences {
@@ -57,7 +55,7 @@ class PreferencesController: ObservableObject, Loggable {
             self.preferences = prefs
         }
     }
-
+    
     var preferences: Preferences {
         get {
             if let prefsDictionary = self.storage.dictionary {
@@ -67,8 +65,17 @@ class PreferencesController: ObservableObject, Loggable {
             return Preferences()
         }
         set(newPrefs) {
+            let previousPrefs = self.preferences
+            
             self.storage.dictionary = newPrefs.dictionaryRepresentation
-            self.notify()
+
+            NotificationCenter.default.post(name: PreferencesController.DidChangeEvent,
+                                            object: self,
+                                            userInfo: [
+                                                Self.OldPreferencesKey: previousPrefs,
+                                                Self.NewPreferencesKey: newPrefs
+                                            ])
+
             self.logger.log("Wrote preferences: \(self.preferences.description)")
         }
     }
@@ -78,4 +85,14 @@ class PreferencesController: ObservableObject, Loggable {
         return ItemPreference(with: self.preferences.soundPreferences)
     }
     
+}
+
+extension Notification {
+    var oldPreferences : Preferences? {
+        return self.userInfo?[PreferencesController.OldPreferencesKey] as? Preferences
+    }
+    var newPreferences : Preferences? {
+        return self.userInfo?[PreferencesController.NewPreferencesKey] as? Preferences
+    }
+
 }

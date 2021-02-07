@@ -55,7 +55,7 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
     }
 
     var description: String {
-        return "Reminder: \(self.title), Calendar: \(self.calendar)"
+        return "\(type(of:self)): \(self.title), Calendar: \(self.calendar)"
     }
     
     static func == (lhs: Reminder, rhs: Reminder) -> Bool {

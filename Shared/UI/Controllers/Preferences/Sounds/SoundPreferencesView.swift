@@ -88,7 +88,7 @@ class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
     func soundChoiceViewChooserEditSoundsButtonPressed(_ view: SingleSoundChoiceView) {
         if let delegate = self.delegate {
             delegate.soundPreferencesView(self,
-                                          presentSoundPickerForSoundIndex: view.index)
+                                          presentSoundPickerForSoundIndex: view.soundPrefIndex)
         }
     }
 }

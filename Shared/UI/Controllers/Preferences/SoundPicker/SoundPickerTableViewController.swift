@@ -37,7 +37,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         super.viewDidLoad()
         
         self.collectionView.allowsEmptySelection = false
-        self.collectionView.allowsMultipleSelection = false
+        self.collectionView.allowsMultipleSelection = true
         self.collectionView.isSelectable = true
     }
     
@@ -47,12 +47,11 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     }
     
     func setSelectedRow() {
-        let soundPref = AppDelegate.instance.preferencesController.soundPreferences[self.soundIndex]
+        let soundSet = AppDelegate.instance.preferencesController.soundPreferences[self.soundIndex].soundSet
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
             for(soundIndex, soundFile) in subfolder.sounds.enumerated() {
-                if soundFile.identifier == soundPref.soundIdentifier {
-                    
+                if soundSet.contains(soundFile.id) {
                     self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundIndex, section: folderIndex) ]),
                                                     scrollPosition: .centeredVertically)
                     break
@@ -87,18 +86,32 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     }
     
     var chosenSound : SingleSoundPreference? {
+        
+        var chosenSoundIdentifers:[String] = []
+        
         if let selectedIndexPath = self.selectedIndexPath {
             for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
                 for(soundIndex, soundFile) in subfolder.sounds.enumerated() {
                     if folderIndex == selectedIndexPath.section &&
                         soundIndex == selectedIndexPath.item {
-                        return SingleSoundPreference(soundIdentifier: soundFile.identifier, enabled: true)
+                        
+                        chosenSoundIdentifers.append(soundFile.id)
                     }
                 }
             }
         }
+
+        if chosenSoundIdentifers.count == 0 {
+            return nil
+        }
         
-        return nil
+        let id = "\(self.soundIndex)"
+        
+        let soundIdentifiers = chosenSoundIdentifers.map { SoundFileDescriptor(with: $0, randomizerPriority: .normal) }
+        
+        let soundSet = SoundSet(withIdentifier: id, name: "user-soundset-\(id)", soundIdentifiers: soundIdentifiers)
+        
+        return SingleSoundPreference(withIdentifier: id, soundSet: soundSet, enabled: true)
     }
 
     func togglePlayingOnCurrentCell() {

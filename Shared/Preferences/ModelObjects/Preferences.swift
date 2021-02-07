@@ -31,7 +31,7 @@ struct Preferences : CustomStringConvertible, Loggable {
     }
 
     var description: String {
-        return "Prefs: notification: \(self.notificationPreferences.description), sounds: \(self.soundPreferences.description), menuBar: \(self.menuBarPreferences.description)"
+        return "\(type(of:self)): notification: \(self.notificationPreferences.description), sounds: \(self.soundPreferences.description), menuBar: \(self.menuBarPreferences.description)"
     }
 }
 

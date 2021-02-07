@@ -7,18 +7,20 @@
 
 import Foundation
 
-class SoundFile: CustomStringConvertible {
+class SoundFile: CustomStringConvertible, Identifiable {
+    
+    typealias ID = String
     
     weak var folder: SoundFolder?
     
-    let identifier: String
+    let id: String
     let url: URL
     let isRandom: Bool
 
     init(with url: URL, folder: SoundFolder?, isRandom random: Bool) {
         self.folder = folder
         self.url = url
-        self.identifier = "\(folder?.identifier ?? "")/\(self.url.fileName)"
+        self.id = "\(folder?.id ?? "")/\(self.url.fileName)"
         self.isRandom = random
     }
     
@@ -27,7 +29,7 @@ class SoundFile: CustomStringConvertible {
     }
     
     var description: String {
-        return "Sound: \(self.identifier), name: \(self.name), url: \(self.url), isRandom:\(self.isRandom), parent: \(self.folder?.description ?? "nil")"
+        return "\(type(of:self)): \(self.id), name: \(self.name), url: \(self.url), isRandom:\(self.isRandom), parent: \(self.folder?.description ?? "nil")"
     }
     
     var displayName: String {

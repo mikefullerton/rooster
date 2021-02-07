@@ -16,17 +16,17 @@ protocol SingleSoundChoiceViewDelegate : AnyObject {
     func soundChoiceViewChooserEditSoundsButtonPressed(_ view: SingleSoundChoiceView)
 }
 
-class SingleSoundChoiceView : SDKView {
+class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
     
     weak var delegate: SingleSoundChoiceViewDelegate?
 
-    let index: SoundPreferences.SoundIndex
+    let soundPrefIndex: SoundPreferences.SoundIndex
     
     init(frame: CGRect,
          soundPreferenceIndex index: SoundPreferences.SoundIndex,
          delegate: SingleSoundChoiceViewDelegate) {
         self.delegate = delegate
-        self.index = index
+        self.soundPrefIndex = index
         super.init(frame: frame)
 
         self.addSubview(self.checkbox)
@@ -38,6 +38,7 @@ class SingleSoundChoiceView : SDKView {
 
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
 
+        self.updatePlayButton()
         self.refresh()
     }
 
@@ -45,29 +46,32 @@ class SingleSoundChoiceView : SDKView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func preferencesDidChange(_ sender: Notification) {
+    @objc func preferencesDidChange(_ notification: Notification) {
+        self.updatePlayButton()
         self.refresh()
     }
 
     private var soundPreference: SingleSoundPreference {
         get {
-            return AppDelegate.instance.preferencesController.soundPreferences[self.index]
+            return AppDelegate.instance.preferencesController.soundPreferences[self.soundPrefIndex]
         }
         set(newSound) {
-            AppDelegate.instance.preferencesController.soundPreferences[self.index] = newSound
+            AppDelegate.instance.preferencesController.soundPreferences[self.soundPrefIndex] = newSound
         }
     }
     
     private func setEnabledStates() {
         self.soundPickerButton.isEnabled = true
+        self.checkbox.isEnabled = true
     }
     
     @objc private func checkboxChanged(_ sender: SDKSwitch) {
         
+        var soundPref = self.soundPreference
+        
         if sender.isOn {
-            let sound = self.soundPreference
             
-            if sound.isEmpty {
+            if soundPref.isSoundSetEmpty {
                 if let delegate = self.delegate {
                     delegate.soundChoiceViewChooserEditSoundsButtonPressed(self)
                 }
@@ -75,9 +79,8 @@ class SingleSoundChoiceView : SDKView {
             }
         }
         
-        var sound = self.soundPreference
-        sound.isEnabled = sender.isOn
-        self.soundPreference = sound
+        soundPref.isEnabled = sender.isOn
+        self.soundPreference = soundPref
         
         self.setEnabledStates()
     }
@@ -93,39 +96,59 @@ class SingleSoundChoiceView : SDKView {
         }
     }
 
-    private var dontShuffleNextSound = false
-    
     @objc private func shuffleSounds(_ sender: SDKButton) {
         
-        let soundPref = self.soundPreference
-        if soundPref.isRandom {
-            self.soundPreference = SingleSoundPreference(soundIdentifier: self.playButton.soundFile?.identifier ?? "", enabled: true)
-            dontShuffleNextSound = false
-        } else {
-            self.soundPreference = SingleSoundPreference.random()
-            dontShuffleNextSound = true
-        }
-        
+//        let soundPref = self.soundPreference
+//        if soundPref.isRandom {
+//
+//            let soundIdentifier = SoundFileDescriptor(with: self.playButton.soundFile?.id ?? "",
+//                                                  randomizerPriority: .never)
+//
+//            let soundSet = SoundSet(withIdentifier: "\(self.soundPrefIndex)",
+//                                    name: "\(self.soundPrefIndex)",
+//                                    soundIdentifiers: [ soundIdentifier ])
+//
+//            self.soundPreference = SingleSoundPreference(withIdentifier: "\(self.soundPrefIndex)",
+//                                                         soundSet: soundSet,
+//                                                         enabled: true)
+//
+//        } else {
+//            self.soundPreference = SingleSoundPreference.random
+//        }
+//
+//        self.refresh()
+    }
+    
+    func makeSurePlayButtonHasSound() {
+//        if self.playButton.
+    }
+    
+    func playButtonSoundWillStart(_ playSoundButton: PlaySoundButton) {
+        self.updatePlayButton()
         self.refresh()
     }
     
-    @objc func playSound(_ sender: SDKButton) {
-        if !self.playButton.isPlaying {
-            if dontShuffleNextSound {
-                dontShuffleNextSound = false
-            } else {
-                self.refresh()
-            }
-            self.playButton.startPlaying()
-        } else {
-            self.playButton.stopPlaying()
-        }
+    func playButtonSoundDidStart(_ playSoundButton: PlaySoundButton) {
+        self.refresh()
     }
     
+    func playButtonSoundDidStop(_ playSoundButton: PlaySoundButton) {
+        self.refresh()
+    }
+
+    func playButton(_ playSoundButton: PlaySoundButton, alarmSoundDidChange alarmSound: AlarmSound?) {
+        self.refresh()
+    }
+    
+    private func updatePlayButton() {
+        let soundPref = self.soundPreference
+        let soundSet = soundPref.soundSet
+        self.playButton.alarmSound = soundSet.alarmSound;
+    }
+
     private lazy var playButton: PlaySoundButton = {
         let button = PlaySoundButton()
-        button.target = self
-        button.action = #selector(playSound(_:))
+        button.delegate = self
         return button
     }()
 
@@ -138,8 +161,6 @@ class SingleSoundChoiceView : SDKView {
         return button
     }()
 
-    
-    
     private lazy var shuffleButton: SDKCustomButton = {
         
         let button = SDKCustomButton(systemImageName: "shuffle.circle",
@@ -157,12 +178,6 @@ class SingleSoundChoiceView : SDKView {
         outSize.height += 10
         return outSize
     }
-
-    private func setNone() {
-        self.checkbox.title = "NONE".localized
-        self.checkbox.intValue = 0
-        self.playButton.soundFile = nil
-    }
     
     func setShuffleButtonImage() {
         
@@ -171,11 +186,9 @@ class SingleSoundChoiceView : SDKView {
         let soundPref = self.soundPreference
         if soundPref.isRandom {
             let image = NSImage(systemSymbolName: "shuffle.circle.fill", accessibilityDescription: "play")
-        
             self.shuffleButton.image = image
-            
             self.shuffleButton.toolTip = "Stop Shuffling Sounds"
-        } else if soundPref.isEmpty || !soundPref.isRandom {
+        } else if soundPref.isSoundSetEmpty || !soundPref.isRandom {
             let image = NSImage(systemSymbolName: "shuffle.circle", accessibilityDescription: "play")
             
             self.shuffleButton.image = image
@@ -186,28 +199,23 @@ class SingleSoundChoiceView : SDKView {
         
     }
     
-    func refresh() {
+    private func refresh() {
         let soundPref = self.soundPreference
-        if soundPref.isEmpty {
-            self.setNone()
-        } else if soundPref.isRandom {
-            let soundFile = SoundFolder.instance.randomSound
-            self.checkbox.title = "\(soundFile.displayName) (Randomly Chosen)"
-            self.checkbox.intValue = soundPref.isEnabled ? 1 : 0
-            self.playButton.soundFile = soundFile
+        self.checkbox.intValue = soundPref.isEnabled ? 1 : 0
+        
+        if let soundDisplayName = self.playButton.soundDisplayName {
+            self.checkbox.title = soundDisplayName
         } else {
-            if let soundFile = SoundFolder.instance.findSound(forIdentifier: soundPref.soundIdentifier) {
-                self.checkbox.title = soundFile.displayName
-                self.checkbox.intValue = soundPref.isEnabled ? 1 : 0
-                self.playButton.soundFile = soundFile
+
+            if soundPref.isRandom {
+                self.checkbox.title = "Random sound will be chosen when played".localized
             } else {
-                self.setNone()
+                self.checkbox.title = "NONE".localized
             }
         }
 
         self.setShuffleButtonImage()
         self.setEnabledStates()
-    
     }
     
     override func updateConstraints() {

@@ -8,10 +8,13 @@
 import Foundation
 import Cocoa
 
-class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
+class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Identifiable {
+    
+    typealias ID = String
+    
     weak var delegate: AlarmSoundDelegate?
     
-    var identifier: String
+    var id: String
     
     private(set) var behavior: AlarmSoundBehavior
     let soundFile: SoundFile
@@ -25,7 +28,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
         self.soundFile = soundFile
         self.behavior = AlarmSoundBehavior()
         self.stopTimer = SimpleTimer(withName: "AVAlarmSoundStopTimer")
-        self.identifier = ""
+        self.id = soundFile.id
         self.isPlaying = false
         self.sound = nil
         super.init()
@@ -40,6 +43,10 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     
     var name: String {
         return self.soundFile.name
+    }
+    
+    var displayName: String {
+        return self.soundFile.displayName
     }
     
     private func createPlayerIfNeeded() {
@@ -101,7 +108,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable {
     }
         
     static func == (lhs: SoundFileAlarmSound, rhs: SoundFileAlarmSound) -> Bool {
-        return lhs.identifier == rhs.identifier
+        return lhs.id == rhs.id
     }
     
     func play(withBehavior behavior: AlarmSoundBehavior) {
