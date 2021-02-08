@@ -7,12 +7,18 @@
 
 import Foundation
 
-class SoundFolderDescriptor {
+class SoundFolderDescriptor : TypedDirectory<DirectoryItem, SoundFileDescriptor, SoundFolderDescriptor> {
     
     
-    init() {
+//    override init() {
+//        
+//    }
+//    
+//    
+
+    class SoundFileDescriptor : DirectoryItem {
         
     }
-    
-    
 }
+
+

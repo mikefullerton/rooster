@@ -68,6 +68,8 @@ class DirectoryTemplate<DIR_ITEM, FILE_ITEM> : DirectoryItem {
     private(set) var files: [File]
     private(set) var contents: [DirectoryItem]
     
+    private var data: Any? = nil
+    
     convenience init(withURL url: URL,
                      parent: Directory? = nil) throws {
      

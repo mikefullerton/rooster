@@ -71,7 +71,9 @@ class SoundFolder: CustomStringConvertible, Identifiable, Loggable {
         self.subFolders = []
         
         for file in directory.files {
-            self.sounds.append(SoundFile(withURL: file.url, parent: self))
+            if let url = file.url {
+                self.sounds.append(SoundFile(withURL: url, parent: self))
+            }
         }
         
         for directory in directory.directories {

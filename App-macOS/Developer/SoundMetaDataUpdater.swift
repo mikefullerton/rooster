@@ -21,6 +21,7 @@ class SoundMetaDataUpdater: DeveloperAction {
             }
             
             do {
+                    
                 let dir = try Directory(withID: soundsURL.absoluteString, url: soundsURL)
                 
                 print("\(dir.description)")

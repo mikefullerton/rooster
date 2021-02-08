@@ -255,7 +255,9 @@
 		B29F4AD725D050A60078F8B5 /* DeveloperAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */; };
 		B29F4AD925D052700078F8B5 /* FileManager+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD825D052700078F8B5 /* FileManager+Utilities.swift */; };
 		B29F4ADD25D06F6A0078F8B5 /* SoundFolderDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4ADC25D06F6A0078F8B5 /* SoundFolderDescriptor.swift */; };
-		B29F4AE625D089110078F8B5 /* DirectoryTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AE525D089110078F8B5 /* DirectoryTemplate.swift */; };
+		B29F4AE725D0A0E70078F8B5 /* DirectoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4ADF25D084120078F8B5 /* DirectoryItem.swift */; };
+		B29F4AE825D0A0EC0078F8B5 /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AE125D084300078F8B5 /* Directory.swift */; };
+		B29F4AEA25D0B8140078F8B5 /* DirectoryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AE925D0B8140078F8B5 /* DirectoryReader.swift */; };
 		B2A181932597C4A300C1E7F0 /* DemoAlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */; };
 		B2A181AC2597FC9600C1E7F0 /* AlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACD42594F41E00F9B50C /* AlarmNotification.swift */; };
 		B2A181B025980F8700C1E7F0 /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */; };
@@ -670,6 +672,7 @@
 		B29F4ADF25D084120078F8B5 /* DirectoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryItem.swift; sourceTree = "<group>"; };
 		B29F4AE125D084300078F8B5 /* Directory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
 		B29F4AE525D089110078F8B5 /* DirectoryTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryTemplate.swift; sourceTree = "<group>"; };
+		B29F4AE925D0B8140078F8B5 /* DirectoryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryReader.swift; sourceTree = "<group>"; };
 		B2A181102597B18600C1E7F0 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAlarmNotification.swift; sourceTree = "<group>"; };
 		B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxView.swift; sourceTree = "<group>"; };
@@ -1458,6 +1461,7 @@
 				B29F4ADF25D084120078F8B5 /* DirectoryItem.swift */,
 				B29F4AE125D084300078F8B5 /* Directory.swift */,
 				B29F4AE525D089110078F8B5 /* DirectoryTemplate.swift */,
+				B29F4AE925D0B8140078F8B5 /* DirectoryReader.swift */,
 			);
 			path = Directory;
 			sourceTree = "<group>";
@@ -2191,6 +2195,7 @@
 				B274EFD125BA229500F9D473 /* SingleSoundChoiceView.swift in Sources */,
 				B259A3F425CB0AC400CF4C95 /* URL+Randomized.swift in Sources */,
 				B2E2251D25B640BE0052758C /* HorizontallyOpposedLayout.swift in Sources */,
+				B29F4AEA25D0B8140078F8B5 /* DirectoryReader.swift in Sources */,
 				B2E224D925B61E610052758C /* LoadingWindowController.swift in Sources */,
 				B2EB25AC25C7256C00906E41 /* PrimaryMenuBarItem.swift in Sources */,
 				B274EFA825BA188D00F9D473 /* GroupBoxView.swift in Sources */,
@@ -2225,6 +2230,7 @@
 				B2E2251C25B640BE0052758C /* HorizontalViewLayout.swift in Sources */,
 				B2FAD89225B5FB6F00598B9E /* AppControllers.swift in Sources */,
 				B25F6B4225BD091E0067C096 /* MenuBarController.swift in Sources */,
+				B29F4AE825D0A0EC0078F8B5 /* Directory.swift in Sources */,
 				B26F6B5A25B7C47400EA2057 /* ContentStackView.swift in Sources */,
 				B259A3EF25CB095400CF4C95 /* SingleSoundPreference.swift in Sources */,
 				B274EFCD25BA21CC00F9D473 /* SoundRepeatView.swift in Sources */,
@@ -2251,6 +2257,7 @@
 				B2FAD8FD25B601DB00598B9E /* Event.swift in Sources */,
 				B274EFD525BA244800F9D473 /* SoundPreferencesView.swift in Sources */,
 				B29493A125B5F7F500FCCF9E /* AlarmNotification.swift in Sources */,
+				B29F4AE725D0A0E70078F8B5 /* DirectoryItem.swift in Sources */,
 				B2E2252925B640BE0052758C /* TableViewController.swift in Sources */,
 				B294937925B5F71F00FCCF9E /* String+Localized.swift in Sources */,
 				B25F6C0325BDFEB10067C096 /* NSView+CrossPlatform.swift in Sources */,
@@ -2328,7 +2335,6 @@
 				B2E224F325B635600052758C /* TimeRemainingViewController.swift in Sources */,
 				B274EFF125BA279B00F9D473 /* SoundPickerTableViewController.swift in Sources */,
 				B24ED39A25BF684200F0B809 /* SDKCustomButton.swift in Sources */,
-				B29F4AE625D089110078F8B5 /* DirectoryTemplate.swift in Sources */,
 				B204B3A125CD9CC900795BC6 /* SoundSet.swift in Sources */,
 				B2EB268525C86B4A00906E41 /* NSImage+Tinting.m in Sources */,
 				B274F00525BA2DCE00F9D473 /* CalendarToolbarView.swift in Sources */,
