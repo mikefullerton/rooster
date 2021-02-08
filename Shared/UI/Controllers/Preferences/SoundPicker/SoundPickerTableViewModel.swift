@@ -36,7 +36,7 @@ struct SoundPickerTableViewSection : TableViewSectionProtocol {
     
     init(with folder: SoundFolder) {
         self.folder = folder
-        self.header = TableViewSectionAdornment(withTitle: folder.name)
+        self.header = TableViewSectionAdornment(withTitle: folder.displayName)
     }
     
     var rows: [TableViewRowProtocol] {

@@ -32,7 +32,7 @@ class SoundSetAlarmSound : AlarmSound, AlarmSoundDelegate, Identifiable {
         self.sounds = soundSetIterator.sounds.map { return SoundFileAlarmSound(withSoundFile: $0) }
         self.soundSetIterator = soundSetIterator
         
-        self.name = self.soundSetIterator.sounds.map { $0.name }.joined(separator: ":")
+        self.name = self.soundSetIterator.sounds.map { $0.displayName }.joined(separator: ":")
         self.behavior = AlarmSoundBehavior()
         self.id = self.soundSetIterator.sounds.map { $0.id }.joined(separator: ":")
     }
@@ -95,7 +95,7 @@ class SoundSetAlarmSound : AlarmSound, AlarmSoundDelegate, Identifiable {
                 delegate.alarmSound(self, willStartPlayingAlarmSound:currentSound)
             }
 
-            self.logger.log("Playing next sound: \(currentSound.name)")
+            self.logger.log("Playing next sound: \(currentSound.displayName)")
             
             let behavior = AlarmSoundBehavior(playCount: 1,
                                               timeBetweenPlays: self.behavior.timeBetweenPlays,
@@ -118,7 +118,7 @@ class SoundSetAlarmSound : AlarmSound, AlarmSoundDelegate, Identifiable {
     }
     
     func soundDidStopPlaying(_ sound: AlarmSound) {
-        self.logger.log("Sound did stop: \(sound.name)")
+        self.logger.log("Sound did stop: \(sound.displayName)")
         self.didStopCurrentSound()
 
         if self.soundSetIterator.hasFinished {

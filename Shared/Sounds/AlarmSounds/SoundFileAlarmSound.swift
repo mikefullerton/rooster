@@ -41,10 +41,6 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
         self.fadeOutAndStop()
     }
     
-    var name: String {
-        return self.soundFile.name
-    }
-    
     var displayName: String {
         return self.soundFile.displayName
     }
@@ -55,8 +51,9 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
         }
         
         let soundFile = self.soundFile
-        if let sound = NSSound(contentsOf: soundFile.url, byReference: true){
-            sound.setName(soundFile.name)
+        if let url = soundFile.url,
+           let sound = NSSound(contentsOf: url, byReference: true){
+            sound.setName(soundFile.displayName)
             sound.delegate = self
             self.sound = sound
             
@@ -114,7 +111,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
     func play(withBehavior behavior: AlarmSoundBehavior) {
         self.createPlayerIfNeeded()
         self.isPlaying = true
-        self.logger.log("Sound will start playing: \(self.name)")
+        self.logger.log("Sound will start playing: \(self.displayName)")
         if let delegate = self.delegate {
             delegate.soundWillStartPlaying(self)
         }
@@ -131,7 +128,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
     }
     
     func stop() {
-        self.logger.log("Sound will be aborted: \(self.name)")
+        self.logger.log("Sound will be aborted: \(self.displayName)")
         self.didStop()
     }
     
@@ -143,7 +140,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
     }
     
     private func didStop() {
-        self.logger.log("Sound stopped: \(self.name)")
+        self.logger.log("Sound stopped: \(self.displayName)")
         self.isPlaying = false
         self.fadeOutAndStop()
         self.stopTimer.stop()
@@ -165,7 +162,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
     
     func sound(_ sound: NSSound, didFinishPlaying finished: Bool) {
         if finished {
-            self.logger.log("Sound did stop playing: \(self.name)")
+            self.logger.log("Sound did stop playing: \(self.displayName)")
             self.notifyStopped()
         }
     }

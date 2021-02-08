@@ -109,7 +109,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
 
             self.timer.start(withInterval:interval) { (timer) in
                 
-                self.logger.log("playing alarm sound: \(sound.name) for \(self.description)")
+                self.logger.log("playing alarm sound: \(sound.displayName) for \(self.description)")
 
                 sound.play(withBehavior: soundBehavior)
             }

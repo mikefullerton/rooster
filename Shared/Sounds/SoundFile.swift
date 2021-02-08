@@ -7,30 +7,66 @@
 
 import Foundation
 
-class SoundFile: CustomStringConvertible, Identifiable {
-    
+class SoundFile: CustomStringConvertible, Identifiable, Equatable {
     typealias ID = String
     
-    weak var parent: SoundFolder?
-    
     let id: String
-    let url: URL
+    let url: URL?
+    let displayName: String
+    weak private(set) var parent: SoundFolder?
+    
+    init() {
+        self.parent = nil
+        self.url = nil
+        self.id = ""
+        self.displayName = ""
+    }
 
-    init(withURL url: URL, parent: SoundFolder?) {
+    init(withID id: String,
+         url: URL,
+         displayName: String,
+         parent: SoundFolder?) {
         self.parent = parent
         self.url = url
-        self.id = "\(parent?.id ?? "")/\(self.url.fileName)"
+        self.id = id
+        self.displayName = displayName
     }
-    
-    var name: String {
-        return self.url.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "-", with: " ").replacingOccurrences(of: "_", with: " ")
-    }
-    
+
     var description: String {
-        return "\(type(of:self)): \(self.id), name: \(self.name), url: \(self.url), parent: \(self.parent?.description ?? "nil")"
+        return "\(type(of:self)): \(self.id), displayName: \(self.displayName), url: \(self.url?.path ?? "nil"), parent: \(self.parent?.id ?? "nil")"
+    }
+
+    static func == (lhs: SoundFile, rhs: SoundFile) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.displayName == rhs.displayName &&
+            lhs.url == rhs.url &&
+            lhs.displayName == rhs.displayName
+    }
+}
+
+extension SoundFile {
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case url = "url"
+        case displayName = "displayName"
     }
     
-    var displayName: String {
-        return self.url.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "-", with: " ").replacingOccurrences(of: "_", with: " ")
+    convenience init?(withDictionary dictionary: [AnyHashable : Any], parent: SoundFolder) {
+        if let id = dictionary[CodingKeys.id.rawValue] as? String,
+           let url = dictionary[CodingKeys.url.rawValue] as? String,
+           let displayName = dictionary[CodingKeys.displayName.rawValue] as? String {
+            
+            self.init(withID: id, url: URL(fileURLWithPath: url), displayName: displayName, parent: parent)
+        }
+        
+        return nil
+    }
+
+    var asDictionary: [AnyHashable : Any] {
+        var dictionary: [AnyHashable : Any] = [:]
+        dictionary[CodingKeys.id.rawValue] = self.id
+        dictionary[CodingKeys.url.rawValue] = self.url?.path ?? ""
+        dictionary[CodingKeys.displayName.rawValue] = self.displayName
+        return dictionary
     }
 }

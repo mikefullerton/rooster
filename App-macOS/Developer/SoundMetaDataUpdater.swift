@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SoundMetaDataUpdater: DeveloperAction {
+class SoundMetaDataUpdater: DeveloperAction, Loggable {
     
     let soundsPath = "Resources/Sounds"
     
@@ -21,9 +21,17 @@ class SoundMetaDataUpdater: DeveloperAction {
             }
             
             do {
-                let dir = try Directory(withID: soundsURL.absoluteString, url: soundsURL)
+                let dir = try DirectoryIterator(withURL: soundsURL)
                 
-                print("\(dir.description)")
+                let soundFolder = SoundFolder(withDirectory: dir)
+                
+                let soundFolderDictionary = soundFolder.asDictionary
+                
+                let soundFolderURL = soundsURL.deletingLastPathComponent().appendingPathComponent("Sounds.json")
+                
+                try soundFolderDictionary.write(toJsonFileURL: soundFolderURL)
+                
+//                print("\(soundFolder.lengthyDescription)")
                 
             } catch {
                 self.showErrorAlert(withMessage: "\(error)", info: "")

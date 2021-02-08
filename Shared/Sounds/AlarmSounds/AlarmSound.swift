@@ -16,7 +16,7 @@ protocol AlarmSound : AnyObject, Loggable {
     var delegate: AlarmSoundDelegate? { get set }
     
     var id: String { get }
-    var name: String { get }
+    var displayName: String { get }
     var duration: TimeInterval { get }
     var behavior: AlarmSoundBehavior { get }
     var isPlaying: Bool { get }
@@ -25,6 +25,4 @@ protocol AlarmSound : AnyObject, Loggable {
     func set(volume: Float, fadeDuration: TimeInterval)
     func play(withBehavior behavior: AlarmSoundBehavior)
     func stop()
-    
-    var displayName: String { get }
 }

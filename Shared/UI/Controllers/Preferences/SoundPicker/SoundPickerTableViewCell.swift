@@ -33,7 +33,7 @@ class SoundPickerTableViewCell : SDKCollectionViewItem, TableViewRowCell {
         self.playButton.alarmSound = SoundFileAlarmSound(withSoundFile: content)
         self.playButton.isEnabled = true
         
-        if let fileName = self.soundFile?.name {
+        if let fileName = self.soundFile?.displayName {
             self.titleView.stringValue = fileName
         }
     }
