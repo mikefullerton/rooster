@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SoundFolder: CustomStringConvertible, Identifiable, Loggable {
+class SoundFolder: CustomStringConvertible, Identifiable, Loggable, Equatable {
     typealias ID = String
     
     static let instance = SoundFolder.loadFromBundle()
@@ -15,51 +15,45 @@ class SoundFolder: CustomStringConvertible, Identifiable, Loggable {
     let id: String
     let url: URL?
     let displayName: String
+    
     fileprivate(set) var sounds: [SoundFile]
+    
     fileprivate(set) var subFolders: [SoundFolder]
     
-    weak private(set) var parent: SoundFolder?
-    
     static let empty = SoundFolder()
-    
-    init(withID id: String,
-         url: URL?,
-         displayName: String,
-         parent: SoundFolder?) {
-        
-        self.id = id
-        self.parent = parent
-        self.url = url
-        self.displayName = displayName
-        self.sounds = []
-        self.subFolders = []
-    }
 
     init(withID id: String,
          url: URL?,
          displayName: String,
-         parent: SoundFolder?,
          sounds: [SoundFile],
          subFolders: [SoundFolder]) {
         
         self.id = id
-        self.parent = parent
         self.url = url
         self.displayName = displayName
         self.sounds = sounds
         self.subFolders = subFolders
     }
-
     
-    init() {
-        self.id = ""
-        self.parent = nil
-        self.url = nil
-        self.displayName = ""
-        self.sounds = []
-        self.subFolders = []
+    convenience init() {
+        self.init(withID: "", url: nil, displayName: "", sounds: [], subFolders: [])
+    }
+
+    convenience init(withID id: String,
+         url: URL?,
+         displayName: String) {
+    
+        self.init(withID: id, url: url, displayName: displayName, sounds: [], subFolders: [])
+    }
+
+    var soundCount: Int {
+        return self.sounds.count
     }
     
+    var isEmpty: Bool {
+        return self.soundCount == 0
+    }
+
     lazy var allSounds: [SoundFile] = {
         
         var sounds: [SoundFile] = []
@@ -75,26 +69,41 @@ class SoundFolder: CustomStringConvertible, Identifiable, Loggable {
         return sortedSounds
     }()
 
-    typealias Visitor = (_ soundFolder: SoundFolder, _ soundFile: SoundFile?, _ depth: Int) -> Void
-    
-    private func visitEach(depth: Int,
-                           visitor: Visitor) {
-        
-        self.sounds.forEach {
-            visitor(self, $0, depth)
+    func index(forSoundFileID id: String) -> Int? {
+        if let index = self.sounds.firstIndex(where: { $0.id == id }) {
+            return index
         }
         
-        self.subFolders.forEach {
-            visitor($0, nil, depth)
-            $0.visitEach(depth: depth + 1, visitor:visitor)
+        return nil
+    }
+    
+    func addSound(_ soundFile: SoundFile) {
+        self.sounds.append(soundFile)
+    }
+
+    func addSoundFolder(_ soundFolder: SoundFolder) {
+        self.subFolders.append(soundFolder)
+    }
+
+    
+    func addSounds(_ sounds: [SoundFile]) {
+        sounds.forEach { self.addSound($0) }
+    }
+    
+    func removeSound(_ soundFile: SoundFile) {
+        if let index = index(forSoundFileID: soundFile.id) {
+            self.sounds.remove(at: index)
         }
     }
     
-    func visitEach(_ visitor: Visitor) {
-        visitor(self, nil, 0)
-        self.visitEach(depth: 1, visitor: visitor)
+    static func == (lhs: SoundFolder, rhs: SoundFolder) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.url == rhs.url &&
+            lhs.displayName == rhs.displayName &&
+            lhs.sounds == rhs.sounds &&
+            lhs.subFolders == rhs.subFolders
     }
-    
+
     var lengthyDescription: String {
         
         var allItems: [String] = []
@@ -114,9 +123,32 @@ class SoundFolder: CustomStringConvertible, Identifiable, Loggable {
     }
     
     var description: String {
-        return "\(type(of:self)): id: \(self.id), displayName: \(self.displayName), url: \(String(describing:self.url)), parent: \(self.parent?.id ?? "nil"), soundCount: \(self.sounds.count), subFolders:\(self.subFolders.count)"
+        return "\(type(of:self)): id: \(self.id), displayName: \(self.displayName), url: \(String(describing:self.url)), soundCount: \(self.sounds.count), subFolders:\(self.subFolders.count)"
     }
 }
+
+extension SoundFolder {
+    typealias Visitor = (_ soundFolder: SoundFolder, _ soundFile: SoundFile?, _ depth: Int) -> Void
+    
+    private func visitEach(depth: Int,
+                           visitor: Visitor) {
+        
+        self.sounds.forEach {
+            visitor(self, $0, depth)
+        }
+        
+        self.subFolders.forEach {
+            visitor($0, nil, depth)
+            $0.visitEach(depth: depth + 1, visitor:visitor)
+        }
+    }
+    
+    func visitEach(_ visitor: Visitor) {
+        visitor(self, nil, 0)
+        self.visitEach(depth: 1, visitor: visitor)
+    }
+}
+
 
 // searching
 extension SoundFolder {
@@ -133,13 +165,15 @@ extension SoundFolder {
         
     }
     
-    func findSoundIdentifers(containingNames containing: [String], excluding exactExclusions: [String] = []) -> [String]? {
-        var sounds:[String] = []
+    func findSounds(containingNames containing: [String],
+                    excluding exactExclusions: [String] = []) -> [SoundFile]? {
+        
+        var sounds:[SoundFile] = []
         for sound in self.allSounds {
             containing.forEach {
                 if sound.displayName.localizedCaseInsensitiveContains($0) &&
                     !self.isExcluded(sound.displayName, exactExclusions: exactExclusions){
-                    sounds.append(sound.id)
+                    sounds.append(sound)
                 }
             }
         }
@@ -174,7 +208,7 @@ extension SoundFolder {
     
     func findFolder(containing name: String, parent: SoundFolder?) -> SoundFolder? {
     
-        let outFolder = SoundFolder(withID: UUID().uuidString, url: nil, displayName: "Search", parent: parent)
+        let outFolder = SoundFolder(withID: UUID().uuidString, url: nil, displayName: "Search")
         
         if parent != nil && outFolder.displayName.localizedCaseInsensitiveContains(name) {
             outFolder.sounds = self.sounds
@@ -220,6 +254,10 @@ extension SoundFolder {
         return sounds
     }
     
+    func contains(soundID id: String) -> Bool {
+        return self.findSound(forIdentifier: id) != nil
+    }
+    
 }
 
 // loading
@@ -231,7 +269,7 @@ extension SoundFolder {
             
             do {
                 let directory = try DirectoryIterator(withURL: soundPath)
-                return SoundFolder(withDirectory: directory, parent: nil)
+                return SoundFolder(withDirectory: directory)
             } catch {
                 self.logger.error("Creating SoundFolder failed with error: \(error.localizedDescription)")
             }
@@ -240,10 +278,6 @@ extension SoundFolder {
         return SoundFolder.empty
     }
 
-    convenience init(withDirectory directory: DirectoryIterator) {
-        self.init(withDirectory: directory, parent: nil)
-    }
-    
     private static func cleanupName(_ url: URL?) -> String {
         if let theURL = url {
             return theURL.deletingPathExtension().path.replacingOccurrences(of: "-", with: " ").replacingOccurrences(of: "_", with: " ")
@@ -252,24 +286,23 @@ extension SoundFolder {
         return ""
     }
     
-    convenience private init(withDirectory directory: DirectoryIterator, parent: SoundFolder?) {
+    convenience init(withDirectory directory: DirectoryIterator) {
         
         self.init(withID: UUID().uuidString,
                   url: directory.url,
-                  displayName: Self.cleanupName(directory.url),
-                  parent: parent)
+                  displayName: Self.cleanupName(directory.url))
         
         for file in directory.files {
             if let url = file.url {
-                self.sounds.append(SoundFile(withID:UUID().uuidString,
-                                             url: url,
-                                             displayName: Self.cleanupName(url),
-                                             parent: self))
+                self.addSound(SoundFile(withID:UUID().uuidString,
+                                        url: url,
+                                        displayName: Self.cleanupName(url),
+                                        randomizer: SoundSetRandomizer.none))
             }
         }
 
         for directory in directory.directories {
-            self.subFolders.append(SoundFolder(withDirectory: directory, parent: self))
+            self.addSoundFolder(SoundFolder(withDirectory: directory))
         }
     }
     
@@ -284,8 +317,10 @@ extension SoundFolder {
         case folders = "subFolders"
     }
     
-    convenience init?(withDictionary dictionary: [AnyHashable : Any], parent: SoundFolder) {
-        if let id = dictionary[CodingKeys.id.rawValue] as? String,
+    convenience init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
+
+        if let dictionary = dictionaryOrNil,
+           let id = dictionary[CodingKeys.id.rawValue] as? String,
            let url = dictionary[CodingKeys.url.rawValue] as? String,
            let displayName = dictionary[CodingKeys.displayName.rawValue] as? String,
            let sounds = dictionary[CodingKeys.displayName.rawValue] as? [[AnyHashable: Any]],
@@ -293,24 +328,23 @@ extension SoundFolder {
             
             self.init(withID: id,
                       url: URL(fileURLWithPath: url),
-                      displayName: displayName,
-                      parent: parent)
+                      displayName: displayName)
             
             
             sounds.forEach {
-                if let soundFile = SoundFile(withDictionary: $0, parent: self) {
-                    self.sounds.append(soundFile)
+                if let soundFile = SoundFile(withDictionary: $0) {
+                    self.addSound(soundFile)
                 }
             }
             
             subFolders.forEach {
-                if let folder = SoundFolder(withDictionary: $0, parent: self) {
-                    self.subFolders.append(folder)
+                if let folder = SoundFolder(withDictionary: $0) {
+                    self.addSoundFolder(folder)
                 }
             }
+        } else {
+            return nil
         }
-        
-        return nil
     }
 
     var asDictionary: [AnyHashable : Any] {

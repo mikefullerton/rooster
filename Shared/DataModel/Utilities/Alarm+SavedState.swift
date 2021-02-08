@@ -21,20 +21,26 @@ extension Alarm {
         let isEnabled: Bool
         let snoozeInterval: TimeInterval
         
-        init?(withDictionary dictionary: [AnyHashable : Any]) {
-            guard let stateString = dictionary[CodingKeys.state.rawValue] as? String else {
-                return nil
-            }
-            guard let enabledBool = dictionary[CodingKeys.enabled.rawValue] as? Bool  else {
-                return nil
-            }
-            guard let snoozeInterval = dictionary[CodingKeys.snoozeInterval.rawValue] as? TimeInterval  else {
-                return nil
-            }
+        init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
+            
+            if let dictionary = dictionaryOrNil {
+            
+                guard let stateString = dictionary[CodingKeys.state.rawValue] as? String else {
+                    return nil
+                }
+                guard let enabledBool = dictionary[CodingKeys.enabled.rawValue] as? Bool  else {
+                    return nil
+                }
+                guard let snoozeInterval = dictionary[CodingKeys.snoozeInterval.rawValue] as? TimeInterval  else {
+                    return nil
+                }
 
-            self.state = Alarm.State(rawValue:stateString) ?? .neverFired
-            self.isEnabled = enabledBool
-            self.snoozeInterval = snoozeInterval
+                self.state = Alarm.State(rawValue:stateString) ?? .neverFired
+                self.isEnabled = enabledBool
+                self.snoozeInterval = snoozeInterval
+            } else {
+                return nil
+            }
         }
         
         init(withAlarm alarm: Alarm) {

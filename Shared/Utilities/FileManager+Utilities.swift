@@ -18,5 +18,10 @@ extension FileManager {
         return self.directoryExists(atPath: url.path)
     }
     
-
+    func createFolderIfNeeded(atURL url: URL) throws {
+        if !FileManager.default.directoryExists(atURL: url) {
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        }
+    }
+    
 }

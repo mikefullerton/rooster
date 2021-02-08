@@ -31,21 +31,26 @@ extension Event {
             self.alarmState = Alarm.SavedState(withAlarm: event.alarm)
         }
         
-        init?(withDictionary dictionary: [AnyHashable : Any]) {
-            guard let subscribedBool = dictionary[CodingKeys.subscribed.rawValue] as? Bool  else {
-                return nil
-            }
+        init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
             
-            guard let alarmStateDictionary = dictionary[CodingKeys.alarm.rawValue] as? [AnyHashable: Any]  else {
-                return nil
-            }
-            
-            guard let alarmState = Alarm.SavedState(withDictionary: alarmStateDictionary) else {
-                return nil
-            }
+            if let dictionary = dictionaryOrNil {
+                guard let subscribedBool = dictionary[CodingKeys.subscribed.rawValue] as? Bool  else {
+                    return nil
+                }
+                
+                guard let alarmStateDictionary = dictionary[CodingKeys.alarm.rawValue] as? [AnyHashable: Any]  else {
+                    return nil
+                }
+                
+                guard let alarmState = Alarm.SavedState(withDictionary: alarmStateDictionary) else {
+                    return nil
+                }
 
-            self.alarmState = alarmState
-            self.isSubscribed = subscribedBool
+                self.alarmState = alarmState
+                self.isSubscribed = subscribedBool
+            } else {
+                return nil
+            }
         }
 
         var dictionaryRepresentation: [AnyHashable : Any] {

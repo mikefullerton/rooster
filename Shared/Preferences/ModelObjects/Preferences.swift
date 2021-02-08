@@ -44,28 +44,34 @@ extension Preferences : DictionaryCodable {
         case menuBar = "menuBar"
     }
     
-    init(withDictionary dictionary: [AnyHashable : Any]) {
+    init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
         
         self.init()
         
-        guard let version = dictionary[CodingKeys.version.rawValue] as? Int,
-              version == Self.version else {
+        if let dictionary = dictionaryOrNil {
+        
+            guard let version = dictionary[CodingKeys.version.rawValue] as? Int,
+                  version == Self.version else {
+                
+                self.logger.log("Unexpected or invalid prefereces version, expecting: \(Self.version). Reset to defaults.")
+                
+                return
+            }
             
-            self.logger.log("Unexpected or invalid prefereces version, expecting: \(Self.version). Reset to defaults.")
+            if let dictionary = dictionary[CodingKeys.sounds.rawValue] as? [AnyHashable: Any] {
+                self.soundPreferences = SoundPreferences(withDictionary: dictionary)
+            }
             
-            return
-        }
-        
-        if let dictionary = dictionary[CodingKeys.sounds.rawValue] as? [AnyHashable: Any] {
-            self.soundPreferences = SoundPreferences(withDictionary: dictionary)
-        }
-        
-        if let dictionary = dictionary[CodingKeys.notifications.rawValue] as? [AnyHashable: Any] {
-            self.notificationPreferences = NotificationPreferences(withDictionary: dictionary)
-        }
-        
-        if let dictionary = dictionary[CodingKeys.menuBar.rawValue] as? [AnyHashable: Any] {
-            self.menuBarPreferences = MenuBarPreferences(withDictionary: dictionary)
+            if let dictionary = dictionary[CodingKeys.notifications.rawValue] as? [AnyHashable: Any] {
+                self.notificationPreferences = NotificationPreferences(withDictionary: dictionary)
+            }
+            
+            if let dictionary = dictionary[CodingKeys.menuBar.rawValue] as? [AnyHashable: Any] {
+                self.menuBarPreferences = MenuBarPreferences(withDictionary: dictionary)
+            }
+            
+        } else {
+            return nil
         }
     }
 

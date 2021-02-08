@@ -41,33 +41,37 @@ class SingleSoundSetIterator : SoundSetIterator {
     }
     
     private func constructPlaylist() {
-        var random:[SoundFileDescriptor] = []
-    
-        let descriptors = self.soundSet.soundFileDescriptors
-        
-        descriptors.forEach { (soundIdentifier) in
-            if soundIdentifier.randomizerPriority == .normal {
-                random.append(soundIdentifier)
-            }
 
-            if soundIdentifier.randomizerPriority == .high {
-                random.append(soundIdentifier)
-                random.append(soundIdentifier)
-            }
+        // TODO construct playlist!
+        
+        if self.soundSet.soundFolder.soundCount > 0 {
+            self.playList.append(self.soundSet.soundFolder.allSounds[0])
         }
         
-        descriptors.forEach { (soundIdentifier) in
-            var newSoundIdentifier = soundIdentifier
-            
-            if soundIdentifier.randomizerPriority != .never,
-               let random = random.randomElement() {
-                newSoundIdentifier = random
-            }
-            
-            if let soundFile = SoundFolder.instance.findSound(forIdentifier: newSoundIdentifier.id) {
-                self.playList.append(soundFile)
-            }
-        }
+//        var random:[SoundFile] = []
+//        descriptors.forEach { (soundIdentifier) in
+//            if soundIdentifier.randomizerPriority == .normal {
+//                random.append(soundIdentifier)
+//            }
+//
+//            if soundIdentifier.randomizerPriority == .high {
+//                random.append(soundIdentifier)
+//                random.append(soundIdentifier)
+//            }
+//        }
+//
+//        descriptors.forEach { (soundIdentifier) in
+//            var newSoundIdentifier = soundIdentifier
+//
+//            if soundIdentifier.randomizerPriority != .never,
+//               let random = random.randomElement() {
+//                newSoundIdentifier = random
+//            }
+//
+//            if let soundFile = SoundFolder.instance.findSound(forIdentifier: newSoundIdentifier.id) {
+//                self.playList.append(soundFile)
+//            }
+//        }
     }
     
     var hasFinished: Bool {
@@ -112,7 +116,7 @@ class SingleSoundSetIterator : SoundSetIterator {
     }
     
     var sounds: [SoundFile] {
-        return self.soundSet.sounds
+        return self.soundSet.soundFolder.sounds
     }
     
     var currentOrFirstSound: SoundFile? {
@@ -129,7 +133,7 @@ class SingleSoundSetIterator : SoundSetIterator {
     
     var displayName: String {
         if let currentOrFirstSound = self.currentOrFirstSound {
-            return "\(currentOrFirstSound.displayName) (\(self.soundSet.name))"
+            return "\(currentOrFirstSound.displayName) (\(self.soundSet.displayName))"
         }
         
         return "NONE".localized

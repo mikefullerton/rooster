@@ -51,7 +51,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
             for(soundIndex, soundFile) in subfolder.sounds.enumerated() {
-                if soundSet.contains(soundFile.id) {
+                if soundSet.soundFolder.contains(soundID: soundFile.id) {
                     self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundIndex, section: folderIndex) ]),
                                                     scrollPosition: .centeredVertically)
                     break
@@ -87,7 +87,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     
     var chosenSound : SingleSoundPreference? {
         
-        var chosenSoundIdentifers:[String] = []
+        var chosenSounds:[SoundFile] = []
         
         if let selectedIndexPath = self.selectedIndexPath {
             for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
@@ -95,21 +95,24 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
                     if folderIndex == selectedIndexPath.section &&
                         soundIndex == selectedIndexPath.item {
                         
-                        chosenSoundIdentifers.append(soundFile.id)
+                        chosenSounds.append(soundFile)
                     }
                 }
             }
         }
 
-        if chosenSoundIdentifers.count == 0 {
+        if chosenSounds.count == 0 {
             return nil
         }
+       
+        let id = "user-sound-set-\(self.soundIndex)"
         
-        let id = "\(self.soundIndex)"
+        let soundSet = SoundSet(withID: id,
+                                url: nil,
+                                displayName: id,
+                                randomizer: SoundSetRandomizer.none)
         
-        let soundIdentifiers = chosenSoundIdentifers.map { SoundFileDescriptor(with: $0, randomizerPriority: .normal) }
-        
-        let soundSet = SoundSet(withIdentifier: id, name: "user-soundset-\(id)", soundIdentifiers: soundIdentifiers)
+        soundSet.soundFolder.addSounds(chosenSounds)
         
         return SingleSoundPreference(withIdentifier: id, soundSet: soundSet, enabled: true)
     }

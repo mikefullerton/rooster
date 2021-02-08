@@ -31,21 +31,13 @@ struct SingleSoundPreference : CustomStringConvertible, Equatable, Identifiable 
     }
 
     static func anyRandomSound(withID id: String, name: String) -> SingleSoundPreference {
-        
-        let soundIdentifier = SoundFileDescriptor(with: SoundFileDescriptor.AnySoundIdentifier,
-                                              randomizerPriority: .normal)
-        
-        let soundSet = SoundSet(withIdentifier: id,
-                                name: name,
-                                soundIdentifiers: [ soundIdentifier ])
-        
         return SingleSoundPreference(withIdentifier: id,
-                                     soundSet: soundSet,
+                                     soundSet: SoundSet.random,
                                      enabled: true)
     }
     
     var isSoundSetEmpty: Bool {
-        return self.soundSet.isEmpty
+        return self.soundSet.soundFolder.soundCount == 0
     }
     
     static func == (lhs: SingleSoundPreference, rhs: SingleSoundPreference) -> Bool {
@@ -81,18 +73,17 @@ extension SingleSoundPreference {
         case soundSet = "random"
     }
     
-    init?(withDictionary dictionary: [AnyHashable : Any]) {
-        
-        
-        if let id = dictionary[CodingKeys.id.rawValue] as? String,
-            let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool,
-            let soundSetDictionary = dictionary[CodingKeys.soundSet.rawValue] as? [AnyHashable: Any],
-            let soundSet = SoundSet(withDictionary: soundSetDictionary) {
+    init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
+        if let dictionary = dictionaryOrNil,
+           let id = dictionary[CodingKeys.id.rawValue] as? String,
+           let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool,
+           let soundSetDictionary = dictionary[CodingKeys.soundSet.rawValue] as? [AnyHashable: Any],
+           let soundSet = SoundSet(withDictionary: soundSetDictionary) {
             
             self.init(withIdentifier: id, soundSet: soundSet, enabled: enabled)
+        } else {
+            return nil
         }
-        
-        return nil
     }
 
     var asDictionary: [AnyHashable : Any] {

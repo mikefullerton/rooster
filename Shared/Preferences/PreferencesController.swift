@@ -14,10 +14,10 @@ class PreferencesController: ObservableObject, Loggable {
     static let NewPreferencesKey = "NewPreferencesKey"
     static let OldPreferencesKey = "OldPreferencesKey"
     
-    private var storage: UserDefaults.IdentifierDictionary
+    private var storage: ApplicationSupportPreferencesFolder
 
     init() {
-        self.storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "preferences")
+        self.storage = ApplicationSupportPreferencesFolder()
     }
     
     var soundPreferences: SoundPreferences {
@@ -58,16 +58,24 @@ class PreferencesController: ObservableObject, Loggable {
     
     var preferences: Preferences {
         get {
-            if let prefsDictionary = self.storage.dictionary {
-                return Preferences(withDictionary: prefsDictionary)
+            do {
+                if let prefsDictionary = try self.storage.read(),
+                   let prefs = Preferences(withDictionary: prefsDictionary) {
+                    return prefs
+                }
+            } catch {
+                self.logger.error("Reading preferences failed with error: \(error.localizedDescription)")
             }
-            
+                
             return Preferences()
         }
         set(newPrefs) {
             let previousPrefs = self.preferences
-            
-            self.storage.dictionary = newPrefs.dictionaryRepresentation
+            do {
+                try self.storage.write(newPrefs.dictionaryRepresentation)
+            } catch {
+                self.logger.error("Writing preferences failed with error: \(error.localizedDescription)")
+            }
 
             NotificationCenter.default.post(name: PreferencesController.DidChangeEvent,
                                             object: self,

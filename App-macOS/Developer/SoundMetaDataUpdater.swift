@@ -29,7 +29,7 @@ class SoundMetaDataUpdater: DeveloperAction, Loggable {
                 
                 let soundFolderURL = soundsURL.deletingLastPathComponent().appendingPathComponent("Sounds.json")
                 
-                try soundFolderDictionary.write(toJsonFileURL: soundFolderURL)
+                try soundFolderDictionary.writeJSON(toURL: soundFolderURL)
                 
 //                print("\(soundFolder.lengthyDescription)")
                 
