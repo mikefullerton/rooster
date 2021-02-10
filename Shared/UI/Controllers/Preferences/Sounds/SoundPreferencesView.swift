@@ -15,7 +15,7 @@ import UIKit
 
 protocol SoundPreferencesViewDelegate : AnyObject {
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundIndex: SoundPreferences.SoundIndex)
+                              presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey)
 }
 
 class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
@@ -68,15 +68,15 @@ class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
     }
     
     lazy var firstSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
-                                                      soundPreferenceIndex: .sound1,
+                                                      soundPreferenceKey: .sound1,
                                                       delegate: self)
     
     lazy var secondSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
-                                                       soundPreferenceIndex: .sound2,
+                                                       soundPreferenceKey: .sound2,
                                                        delegate: self)
     
     lazy var thirdSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
-                                                      soundPreferenceIndex: .sound3,
+                                                      soundPreferenceKey: .sound3,
                                                       delegate: self)
     
     lazy var soundVolumeView = SoundVolumeView()
@@ -88,7 +88,7 @@ class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
     func soundChoiceViewChooserEditSoundsButtonPressed(_ view: SingleSoundChoiceView) {
         if let delegate = self.delegate {
             delegate.soundPreferencesView(self,
-                                          presentSoundPickerForSoundIndex: view.soundPrefIndex)
+                                          presentSoundPickerForSoundIndex: view.soundPreferenceKey)
         }
     }
 }

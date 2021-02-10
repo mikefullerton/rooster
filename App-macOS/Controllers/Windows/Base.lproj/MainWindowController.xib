@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18099.1" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19052" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18099.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19052"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,15 +25,15 @@
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="HUv-62-BK3"/>
                     <toolbarItem implicitItemIdentifier="7CD86BFD-42A0-404B-A368-228A4447BB64" label="Settings" paletteLabel="Settings" toolTip="Change Rooster's settings to work for you!" tag="-1" id="9D9-Lw-HmW">
-                        <imageReference key="image" image="gearshape" catalog="system" symbolScale="small"/>
+                        <imageReference key="image" image="gearshape" catalog="system" symbolScale="medium"/>
                         <size key="minSize" width="26" height="26"/>
                         <size key="maxSize" width="26" height="26"/>
                         <connections>
                             <action selector="showSettings:" target="-2" id="wtj-Hi-Crx"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="C1FF7732-3789-424E-99FB-E59DA0CE5ADB" label="Radar" paletteLabel="Radar" toolTip="File a Radar or suggestion!" tag="-1" bordered="YES" id="4mA-kh-tNz">
-                        <imageReference key="image" image="ladybug" catalog="system" symbolScale="large"/>
+                    <toolbarItem implicitItemIdentifier="C1FF7732-3789-424E-99FB-E59DA0CE5ADB" label="Radar" paletteLabel="Radar" toolTip="File a Radar or suggestion!" tag="-1" id="4mA-kh-tNz">
+                        <imageReference key="image" image="ladybug" catalog="system" symbolScale="medium"/>
                         <size key="minSize" width="20" height="20"/>
                         <size key="maxSize" width="20" height="20"/>
                         <connections>
@@ -46,8 +46,8 @@
                         <size key="minSize" width="5" height="25"/>
                         <size key="maxSize" width="5" height="25"/>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="50A2472C-BAF1-4698-9CD5-60C67E5B7C77" label="code" paletteLabel="code" toolTip="Get involved in Rooster's development!" tag="-1" bordered="YES" id="Bp6-p8-UoB">
-                        <imageReference key="image" image="curlybraces" catalog="system" symbolScale="large"/>
+                    <toolbarItem implicitItemIdentifier="50A2472C-BAF1-4698-9CD5-60C67E5B7C77" label="code" paletteLabel="code" toolTip="Get involved in Rooster's development!" tag="-1" id="Bp6-p8-UoB">
+                        <imageReference key="image" image="curlybraces" catalog="system" symbolScale="medium"/>
                         <size key="minSize" width="27" height="27"/>
                         <size key="maxSize" width="27" height="27"/>
                         <connections>
@@ -77,10 +77,10 @@
         </window>
     </objects>
     <resources>
-        <image name="curlybraces" catalog="system" width="18" height="19"/>
-        <image name="gearshape" catalog="system" width="13" height="13"/>
+        <image name="curlybraces" catalog="system" width="15" height="16"/>
+        <image name="gearshape" catalog="system" width="16" height="16"/>
         <image name="info" catalog="system" width="9" height="12"/>
-        <image name="ladybug" catalog="system" width="22" height="22"/>
+        <image name="ladybug" catalog="system" width="18" height="18"/>
         <image name="square.and.arrow.up" catalog="system" width="15" height="17"/>
     </resources>
 </document>

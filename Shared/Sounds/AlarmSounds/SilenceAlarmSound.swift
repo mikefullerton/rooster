@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SilenceAlarmSound : AlarmSound, Identifiable {
+class SilenceAlarmSound : Sound, Identifiable {
     struct FakeSound {
         var isPlaying: Bool
         var duration: TimeInterval
@@ -17,12 +17,12 @@ class SilenceAlarmSound : AlarmSound, Identifiable {
     
     typealias ID = String
     
-    weak var delegate: AlarmSoundDelegate?
+    weak var delegate: SoundDelegate?
 
     private var sound: FakeSound
     let name: String
     private let timer: SimpleTimer
-    private(set) var behavior: AlarmSoundBehavior
+    private(set) var behavior: SoundBehavior
     private var playCount:Int
     private(set) var duration: TimeInterval
     var id: String
@@ -32,7 +32,7 @@ class SilenceAlarmSound : AlarmSound, Identifiable {
         self.sound = FakeSound(isPlaying: false, duration: duration, volume: 1.0, startTime: 0)
         self.name = "Silence"
         self.timer = SimpleTimer(withName: "SilenceSoundTimer")
-        self.behavior = AlarmSoundBehavior()
+        self.behavior = SoundBehavior()
         self.playCount = 0
         self.id = ""
     }
@@ -68,7 +68,7 @@ class SilenceAlarmSound : AlarmSound, Identifiable {
             if let strongSelf = self {
                 strongSelf.playCount += 1
                 
-                if  strongSelf.behavior.playCount == AlarmSoundBehavior.RepeatEndlessly ||
+                if  strongSelf.behavior.playCount == SoundBehavior.RepeatEndlessly ||
                     strongSelf.playCount < strongSelf.behavior.playCount {
                     
                     strongSelf.startTimer(withDuration: duration)
@@ -80,7 +80,7 @@ class SilenceAlarmSound : AlarmSound, Identifiable {
         }
     }
     
-    func play(withBehavior behavior: AlarmSoundBehavior) {
+    func play(withBehavior behavior: SoundBehavior) {
         
         self.behavior = behavior
         self.playCount = 0

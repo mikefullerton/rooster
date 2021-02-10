@@ -7,21 +7,20 @@
 
 import Foundation
 
-
-struct SoundSet: CustomStringConvertible, Identifiable, Loggable, Equatable {
+struct SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringConvertible {
     
     typealias ID = String
     
     let id: String
-    let url: URL?
+    let url: URL
     let displayName: String
+    let randomizer: RandomizationDescriptor
     let soundFolder: SoundFolder
-    let randomizer: SoundSetRandomizer
-
+    
     init(withID id: String,
-         url: URL?,
+         url: URL,
          displayName: String,
-         randomizer: SoundSetRandomizer,
+         randomizer: RandomizationDescriptor,
          soundFolder: SoundFolder) {
     
         self.randomizer = randomizer
@@ -31,134 +30,103 @@ struct SoundSet: CustomStringConvertible, Identifiable, Loggable, Equatable {
         self.soundFolder = soundFolder
     }
 
-    init(withID id: String,
-         url: URL?,
-         displayName: String,
-         randomizer: SoundSetRandomizer) {
-    
-        self.randomizer = randomizer
-        self.url = url
-        self.displayName = displayName
-        self.id = id
-        self.soundFolder = SoundFolder(withID: id, url: url, displayName: displayName)
-    }
-
-    static var `default`: SoundSet {
-        
-
-        var sounds: [SoundFile] = []
-        
-        if let roosterSounds = SoundFolder.instance.findSounds(containingNames: ["rooster crowing"]) {
-            sounds.append(contentsOf: roosterSounds)
-        }
-        
-        if let chickenSounds = SoundFolder.instance.findSounds(containingNames: [ "chicken", "rooster" ], excluding: ["rooster crowing"]) {
-            sounds.append(contentsOf: chickenSounds)
-        }
-
-        let randomizer = SoundSetRandomizer(withPriority: .normal)
-
-        let soundSet = SoundSet(withID: "Rooster_Default",
-                                url: nil,
-                                displayName: "Default Sound Set",
-                                randomizer: randomizer)
-
-        for (index, sound) in sounds.enumerated() {
-            let newSound = SoundFile(withID: "rooster-default-\(index)",
-                                     url: sound.url,
-                                     displayName: sound.displayName,
-                                     randomizer: randomizer)
-            
-            soundSet.soundFolder.addSound(newSound)
-        }
-        
-        return soundSet
-        
-    }
-    
     static var random: SoundSet {
-        let soundSet = SoundSet(withID: "Random",
-                                url: nil,
-                                displayName: "Random",
-                                randomizer: SoundSetRandomizer(withPriority: .normal),
-                                soundFolder: SoundFolder.instance)
-        return soundSet
+        return SoundSet(withID: "All Sounds",
+                        url: URL.roosterURL("All Sounds Sound Set"),
+                        displayName: "All Sounds",
+                        randomizer: RandomizationDescriptor(withBehavior: .always,
+                                                       minSounds: 1,
+                                                       maxSounds: 1),
+                        soundFolder: SoundFolder.instance)
+
     }
     
     static var empty: SoundSet {
         return SoundSet(withID: "Empty",
-                        url: nil,
+                        url: URL.roosterURL("Empty Sound Set"),
                         displayName: "Empty",
-                        randomizer: SoundSetRandomizer.none)
+                        randomizer: RandomizationDescriptor.none,
+                        soundFolder: SoundFolder.empty)
     }
     
-    var soundSetIterator: SoundSetIterator {
-        return SingleSoundSetIterator(withSoundSet: self)
+    var soundSetIterator: PlayListIteratorProtocol {
+        return PlayListIterator(withSounds: self.soundFolder.allSounds, randomizer: self.randomizer)
     }
     
-    var alarmSound: AlarmSound {
-        return SoundSetAlarmSound(withSoundSetIterator: self.soundSetIterator)
+    var playList: SoundPlayList {
+        return SoundPlayList(withPlayListIterator: self.soundSetIterator, displayName: self.displayName)
     }
     
     var isRandom: Bool {
-        return self.randomizer.priority != .none && self.randomizer.priority != .never
+        return self.randomizer.behavior != .never
+    }
+    
+    var isEmpty: Bool {
+        return self.soundFolder.isEmpty
     }
     
     var description: String {
         return "\(type(of:self)): id: \(self.id), displayName: \(self.displayName), randomizer: \(self.randomizer), soundFolder: \(self.soundFolder.description)"
     }
-    
+
     static func == (lhs: SoundSet, rhs: SoundSet) -> Bool {
         return lhs.id == rhs.id &&
-            lhs.url == rhs.url &&
-            lhs.displayName == rhs.displayName &&
-            lhs.soundFolder == rhs.soundFolder
+        lhs.url == rhs.url &&
+        lhs.displayName == rhs.displayName &&
+        lhs.soundFolder == rhs.soundFolder
         
     }
-
-
 }
 
 extension SoundSet {
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case displayName = "displayName"
-        case randomizer = "randomizer"
-        case soundFolder = "soundFolder"
-        case url = "url"
-    }
-    
-    init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
-    
-        if let dictionary = dictionaryOrNil,
-           let displayName = dictionary[CodingKeys.displayName.rawValue] as? String,
-           let id = dictionary[CodingKeys.id.rawValue] as? String,
-           let url = dictionary[CodingKeys.url.rawValue] as? String,
-           let soundFolder = SoundFolder(withDictionary: dictionary[CodingKeys.soundFolder.rawValue] as? [AnyHashable: Any]),
-           let randomizer = SoundSetRandomizer(withDictionary: dictionary[CodingKeys.randomizer.rawValue] as? [AnyHashable: Any]) {
-            
-            self.init(withID: id,
-                      url:URL(fileURLWithPath: url),
-                      displayName:displayName,
-                      randomizer:randomizer,
-                      soundFolder: soundFolder);
-            
-        } else {
-            return nil
-        }
-    }
-
-    var asDictionary: [AnyHashable : Any] {
-        var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.id.rawValue] = self.id
-        dictionary[CodingKeys.displayName.rawValue] = self.displayName
-        dictionary[CodingKeys.soundFolder.rawValue] = self.soundFolder.asDictionary
-        dictionary[CodingKeys.randomizer.rawValue] = self.randomizer.asDictionary
-        if let url = self.url {
-            dictionary[CodingKeys.url.rawValue] = url.path
-        }
-        return dictionary
+    static var `default`: SoundSet {
+        let folder = SoundFolder.defaultSoundSetFolder
+        
+        let soundSet = SoundSet(withID: "Rooster_Default",
+                                url: folder.url,
+                                displayName: "Default Sound Set",
+                                randomizer: RandomizationDescriptor.always,
+                                soundFolder: SoundFolder.defaultSoundSetFolder)
+        return soundSet
+        
     }
 }
 
+extension SoundFolder {
+    static var defaultSoundSetFolder: SoundFolder {
+        
+        var sounds: [SoundFile] = []
+        
+        if let roosterSounds = SoundFolder.instance.findSounds(containing: ["rooster crowing"]) {
+            let sound = roosterSounds[0]
+            sound.randomizer = RandomizationDescriptor(withBehavior: .always, frequency: .normal, alwaysFirst: true)
+            sounds.append(contentsOf: [sound])
+        }
+
+        if let rudeSounds = SoundFolder.instance.findSounds(containing: ["excuse me"]) {
+            let sound = rudeSounds[0]
+            sound.randomizer = RandomizationDescriptor(withBehavior: .always, frequency: .almostNever, alwaysFirst: false)
+            sounds.append(contentsOf: [sound])
+        }
+
+        if let chickenSounds = SoundFolder.instance.findSounds(containing: [ "chicken", "rooster" ], excluding: ["rooster crowing"]) {
+            sounds.append(contentsOf: chickenSounds)
+        }
+
+        var newSounds:[SoundFile] = []
+        for (index, sound) in sounds.enumerated() {
+            let newSound = SoundFile(withID: "rooster-default-\(index)",
+                                     url: sound.url,
+                                     displayName: sound.displayName,
+                                     randomizer: sound.randomizer)
+            
+            newSounds.append(newSound)
+        }
+        
+        return SoundFolder(withID: "rooster_default_sound_set",
+                           url: URL.roosterURL("default-sound-set"),
+                           displayName: "rooster_default_sound_set",
+                           sounds: newSounds,
+                           subFolders: [])
+    }
+}

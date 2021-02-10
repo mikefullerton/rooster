@@ -14,7 +14,7 @@ protocol VerticalButtonListViewControllerDelegate : AnyObject {
 
 typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonListTableCell>
 
-class VerticalButtonListViewController : TableViewController<VerticalButtonBarViewModel> {
+class VerticalButtonListViewController : ListViewController<VerticalButtonBarViewModel> {
 
     weak var delegate : VerticalButtonListViewControllerDelegate?
     

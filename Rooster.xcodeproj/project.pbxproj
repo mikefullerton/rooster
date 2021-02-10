@@ -14,24 +14,23 @@
 		B2020AD72577DAC600F478CC /* CalendarItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020AD62577DAC600F478CC /* CalendarItemTableViewController.swift */; };
 		B2020ADF2577DF8A00F478CC /* DataModelReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */; };
 		B204B3A125CD9CC900795BC6 /* SoundSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204B3A025CD9CC900795BC6 /* SoundSet.swift */; };
-		B204B3A525CDA5B900795BC6 /* SoundSetIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204B3A425CDA5B900795BC6 /* SoundSetIterator.swift */; };
+		B204B3A525CDA5B900795BC6 /* PlayListIteratorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B204B3A425CDA5B900795BC6 /* PlayListIteratorProtocol.swift */; };
 		B20AACD22594F3E900F9B50C /* AlarmNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACD12594F3E900F9B50C /* AlarmNotificationController.swift */; };
 		B20AACDD2594FDE800F9B50C /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACDC2594FDE800F9B50C /* Loggable.swift */; };
 		B20AACDE2594FDE800F9B50C /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACDC2594FDE800F9B50C /* Loggable.swift */; };
 		B20AACE525950E8D00F9B50C /* Bundle+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */; };
-		B20AACE825950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */; };
-		B20AACE925950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */; };
+		B20AACE825950EE300F9B50C /* SoundBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACE725950EE300F9B50C /* SoundBehavior.swift */; };
+		B20AACE925950EE300F9B50C /* SoundBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACE725950EE300F9B50C /* SoundBehavior.swift */; };
 		B20AAD0625954B2C00F9B50C /* AudioSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AAD0525954B2C00F9B50C /* AudioSessionController.swift */; };
 		B20C4D5425B3A052000A3981 /* About in Resources */ = {isa = PBXBuildFile; fileRef = B20C4D5325B3A052000A3981 /* About */; };
-		B2118DE025D313A7002AE939 /* MenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DDE25D313A7002AE939 /* MenuItemView.swift */; };
-		B2118DE225D3142E002AE939 /* MenuBarEventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DDC25D31312002AE939 /* MenuBarEventListViewModel.swift */; };
-		B2118DE325D3142E002AE939 /* MenuBarEventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DDB25D31312002AE939 /* MenuBarEventListViewController.swift */; };
-		B2118DE525D31464002AE939 /* MenuBarEventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE425D31464002AE939 /* MenuBarEventListTableViewCell.swift */; };
-		B2118DE625D31464002AE939 /* MenuBarEventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE425D31464002AE939 /* MenuBarEventListTableViewCell.swift */; };
-		B2118DE825D31475002AE939 /* MenuBarReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE725D31475002AE939 /* MenuBarReminderTableViewCell.swift */; };
-		B2118DE925D31475002AE939 /* MenuBarReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE725D31475002AE939 /* MenuBarReminderTableViewCell.swift */; };
-		B2118DEB25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DEA25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift */; };
-		B2118DEC25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DEA25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift */; };
+		B2118DE225D3142E002AE939 /* MenuBarItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DDC25D31312002AE939 /* MenuBarItemViewModel.swift */; };
+		B2118DE325D3142E002AE939 /* MenuBarItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DDB25D31312002AE939 /* MenuBarItemViewController.swift */; };
+		B2118DE525D31464002AE939 /* MenuBarEventListListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE425D31464002AE939 /* MenuBarEventListListViewCell.swift */; };
+		B2118DE625D31464002AE939 /* MenuBarEventListListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE425D31464002AE939 /* MenuBarEventListListViewCell.swift */; };
+		B2118DE825D31475002AE939 /* MenuBarReminderListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE725D31475002AE939 /* MenuBarReminderListViewCell.swift */; };
+		B2118DE925D31475002AE939 /* MenuBarReminderListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DE725D31475002AE939 /* MenuBarReminderListViewCell.swift */; };
+		B2118DEB25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DEA25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift */; };
+		B2118DEC25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2118DEA25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift */; };
 		B21DA15F259A69E7002A56C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B21DA161259A69E7002A56C8 /* Localizable.strings */; };
 		B21DA183259BA68B002A56C8 /* HorizontalViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA182259BA68B002A56C8 /* HorizontalViewLayout.swift */; };
 		B21DA187259BA697002A56C8 /* VerticalViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA186259BA697002A56C8 /* VerticalViewLayout.swift */; };
@@ -45,8 +44,11 @@
 		B21DA21B259D0375002A56C8 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */; };
 		B21DA22B259D398A002A56C8 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22A259D398A002A56C8 /* BottomBar.swift */; };
 		B21DA22F259D3B3A002A56C8 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA22E259D3B3A002A56C8 /* TopBar.swift */; };
-		B223655225D376F800AC00DA /* MouseTrackingCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B223655125D376F800AC00DA /* MouseTrackingCollectionViewController.swift */; };
-		B223655C25D3808C00AC00DA /* NoMeetingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B223655B25D3808C00AC00DA /* NoMeetingsTableViewCell.swift */; };
+		B223655225D376F800AC00DA /* MouseTrackingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B223655125D376F800AC00DA /* MouseTrackingCollectionView.swift */; };
+		B223655C25D3808C00AC00DA /* NoMeetingsListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B223655B25D3808C00AC00DA /* NoMeetingsListViewCell.swift */; };
+		B22365B725D41F4500AC00DA /* MenuBarScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22365B625D41F4500AC00DA /* MenuBarScrollView.swift */; };
+		B22365B825D41F4500AC00DA /* MenuBarScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22365B625D41F4500AC00DA /* MenuBarScrollView.swift */; };
+		B22365D525D426F800AC00DA /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22365D425D426F800AC00DA /* EventHandler.swift */; };
 		B225CDA225C073E800F3BA15 /* SDKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225CDA125C073E800F3BA15 /* SDKAlert.swift */; };
 		B225CDA325C073E800F3BA15 /* SDKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B225CDA125C073E800F3BA15 /* SDKAlert.swift */; };
 		B225CDA725C0763A00F3BA15 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B225CDA925C0763A00F3BA15 /* MainWindowController.xib */; };
@@ -62,9 +64,9 @@
 		B233C55925A3961F005A7FB3 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55825A3961F005A7FB3 /* SliderView.swift */; };
 		B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */; };
 		B233C56325A3AAA2005A7FB3 /* LabeledSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */; };
-		B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
+		B236FCDB255F196E00A2E58D /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* Sound.swift */; };
 		B24C5F1725BE007100F51FE7 /* Geometry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24C5F0F25BDFF7F00F51FE7 /* Geometry+Extensions.swift */; };
-		B24C5F2125BE022900F51FE7 /* CalendarItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3825B7C47400EA2057 /* CalendarItemTableViewCell.swift */; };
+		B24C5F2125BE022900F51FE7 /* CalendarItemListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3825B7C47400EA2057 /* CalendarItemListViewCell.swift */; };
 		B24C5F2525BE043200F51FE7 /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5725B7C47400EA2057 /* DelegateCalendarListViewController.swift */; };
 		B24C5F2625BE043200F51FE7 /* CalendarChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5625B7C47400EA2057 /* CalendarChooserViewController.swift */; };
 		B24C5F2725BE043200F51FE7 /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */; };
@@ -105,7 +107,6 @@
 		B259A35F25C9B91900CF4C95 /* MenuBarPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B259A35E25C9B91900CF4C95 /* MenuBarPreferences.swift */; };
 		B259A3E725CAF6E400CF4C95 /* QuickSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B259A3E625CAF6E400CF4C95 /* QuickSearchView.swift */; };
 		B259A3EF25CB095400CF4C95 /* SingleSoundPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B259A3EE25CB095400CF4C95 /* SingleSoundPreference.swift */; };
-		B259A3F425CB0AC400CF4C95 /* URL+Randomized.swift in Sources */ = {isa = PBXBuildFile; fileRef = B259A3F325CB0AC400CF4C95 /* URL+Randomized.swift */; };
 		B259A3F925CB165A00CF4C95 /* SoundFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B259A3F825CB165A00CF4C95 /* SoundFile.swift */; };
 		B25B65DB258CF7AF0006B771 /* MenuBarPopoverProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DA258CF7AF0006B771 /* MenuBarPopoverProcotol.swift */; };
 		B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25B65DE258CF96B0006B771 /* AppKitPluginProtocol.swift */; };
@@ -121,7 +122,7 @@
 		B25F6B0D25BC9AE50067C096 /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B0B25BC9AE50067C096 /* PreferencesWindow.swift */; };
 		B25F6B0E25BC9AE50067C096 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */; };
 		B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */; };
-		B25F6B1E25BCC9600067C096 /* TableViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */; };
+		B25F6B1E25BCC9600067C096 /* ListViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */; };
 		B25F6B4225BD091E0067C096 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4025BD09180067C096 /* MenuBarController.swift */; };
 		B25F6B4C25BDE9990067C096 /* NSImage+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */; };
 		B25F6B7B25BDEE240067C096 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250E25B640BE0052758C /* TopBottomBarVerticalLayout.swift */; };
@@ -140,28 +141,46 @@
 		B25F6BBB25BDF35F0067C096 /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6BBA25BDF35F0067C096 /* iOS.swift */; };
 		B25F6BD825BDF9B40067C096 /* DividerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251925B640BE0052758C /* DividerAdornment.swift */; };
 		B25F6BD925BDF9B40067C096 /* SpacerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251A25B640BE0052758C /* SpacerAdornment.swift */; };
-		B25F6BDA25BDF9B40067C096 /* TableViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */; };
+		B25F6BDA25BDF9B40067C096 /* ListViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */; };
 		B25F6BDB25BDF9B40067C096 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */; };
-		B25F6BDC25BDF9B40067C096 /* TableViewSectionAdornmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251825B640BE0052758C /* TableViewSectionAdornmentProtocol.swift */; };
-		B25F6BDD25BDF9B40067C096 /* TableViewSectionAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251725B640BE0052758C /* TableViewSectionAdornment.swift */; };
-		B25F6BE125BDF9BB0067C096 /* TableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251325B640BE0052758C /* TableViewSection.swift */; };
-		B25F6BE225BDF9BB0067C096 /* TableViewRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251225B640BE0052758C /* TableViewRowCell.swift */; };
-		B25F6BE325BDF9BB0067C096 /* TableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251425B640BE0052758C /* TableViewModel.swift */; };
-		B25F6BE425BDF9BB0067C096 /* TableViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251525B640BE0052758C /* TableViewRow.swift */; };
+		B25F6BDC25BDF9B40067C096 /* ListViewSectionAdornmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251825B640BE0052758C /* ListViewSectionAdornmentProtocol.swift */; };
+		B25F6BDD25BDF9B40067C096 /* ListViewSectionAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251725B640BE0052758C /* ListViewSectionAdornment.swift */; };
+		B25F6BE125BDF9BB0067C096 /* ListViewSectionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251325B640BE0052758C /* ListViewSectionDescriptor.swift */; };
+		B25F6BE325BDF9BB0067C096 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251425B640BE0052758C /* ListViewModel.swift */; };
+		B25F6BE425BDF9BB0067C096 /* ListViewRowDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251525B640BE0052758C /* ListViewRowDescriptor.swift */; };
 		B25F6C0325BDFEB10067C096 /* NSView+CrossPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6BFE25BDFE910067C096 /* NSView+CrossPlatform.swift */; };
 		B260C82925A3B7C500C03B2E /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82825A3B7C500C03B2E /* FancyButton.swift */; };
 		B260C82F25A3CEED00C03B2E /* SoundVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */; };
 		B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B260C83425A3D76400C03B2E /* SoundRepeatView.swift */; };
-		B26F6B5825B7C47400EA2057 /* CalendarItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3725B7C47400EA2057 /* CalendarItemTableViewController.swift */; };
-		B26F6B5925B7C47400EA2057 /* CalendarItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3825B7C47400EA2057 /* CalendarItemTableViewCell.swift */; };
+		B26F6B5825B7C47400EA2057 /* CalendarItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3725B7C47400EA2057 /* CalendarItemListViewController.swift */; };
+		B26F6B5925B7C47400EA2057 /* CalendarItemListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3825B7C47400EA2057 /* CalendarItemListViewCell.swift */; };
 		B26F6B5A25B7C47400EA2057 /* ContentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3925B7C47400EA2057 /* ContentStackView.swift */; };
-		B26F6B5C25B7C47400EA2057 /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3B25B7C47400EA2057 /* ReminderTableViewCell.swift */; };
+		B26F6B5C25B7C47400EA2057 /* ReminderListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3B25B7C47400EA2057 /* ReminderListViewCell.swift */; };
 		B26F6B5D25B7C47400EA2057 /* EventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3C25B7C47400EA2057 /* EventListViewModel.swift */; };
-		B26F6B5E25B7C47400EA2057 /* EventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3D25B7C47400EA2057 /* EventListTableViewCell.swift */; };
+		B26F6B5E25B7C47400EA2057 /* EventListListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3D25B7C47400EA2057 /* EventListListViewCell.swift */; };
 		B26F6B5F25B7C47400EA2057 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B3E25B7C47400EA2057 /* EventListViewController.swift */; };
 		B26F6B7F25B7C67500EA2057 /* Calendar+NSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B7E25B7C67500EA2057 /* Calendar+NSColor.swift */; };
+		B270D47325D5E08A00195661 /* PlayListIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B270D47125D5E08A00195661 /* PlayListIterator.swift */; };
+		B270D47525D5E71600195661 /* SoundPlayListGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B270D47425D5E71600195661 /* SoundPlayListGenerator.swift */; };
+		B270D47625D5E71600195661 /* SoundPlayListGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B270D47425D5E71600195661 /* SoundPlayListGenerator.swift */; };
 		B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2742C6925604A9B0087E4B6 /* AppDelegate.swift */; };
 		B2742CA7256065310087E4B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2742CA9256065310087E4B6 /* LaunchScreen.storyboard */; };
+		B2747CF825D48F220071D5DF /* MenuBarMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747CF725D48F220071D5DF /* MenuBarMenuChoiceView.swift */; };
+		B2747CF925D48F220071D5DF /* MenuBarMenuChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747CF725D48F220071D5DF /* MenuBarMenuChoiceView.swift */; };
+		B2747CFB25D497D90071D5DF /* MenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747CFA25D497D90071D5DF /* MenuBarItem.swift */; };
+		B2747CFC25D497D90071D5DF /* MenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747CFA25D497D90071D5DF /* MenuBarItem.swift */; };
+		B2747CFF25D580010071D5DF /* SoundFolderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747CFE25D580010071D5DF /* SoundFolderItem.swift */; };
+		B2747D0025D580010071D5DF /* SoundFolderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747CFE25D580010071D5DF /* SoundFolderItem.swift */; };
+		B2747D0225D5807B0071D5DF /* SoundFolder+Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0125D5807B0071D5DF /* SoundFolder+Visitor.swift */; };
+		B2747D0325D5807B0071D5DF /* SoundFolder+Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0125D5807B0071D5DF /* SoundFolder+Visitor.swift */; };
+		B2747D0525D580900071D5DF /* SoundFolder+Searching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0425D580900071D5DF /* SoundFolder+Searching.swift */; };
+		B2747D0625D580900071D5DF /* SoundFolder+Searching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0425D580900071D5DF /* SoundFolder+Searching.swift */; };
+		B2747D0B25D581110071D5DF /* SoundFolder+DirectoryIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */; };
+		B2747D0C25D581110071D5DF /* SoundFolder+DirectoryIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */; };
+		B2747D0E25D5815D0071D5DF /* SoundFolder+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */; };
+		B2747D0F25D5815D0071D5DF /* SoundFolder+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */; };
+		B2747D1C25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */; };
+		B2747D1D25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */; };
 		B274EF8425BA0CFC00F9D473 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8A25B7C6EB00EA2057 /* TopBar.swift */; };
 		B274EF8825BA0D0000F9D473 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8825B7C6EB00EA2057 /* BottomBar.swift */; };
 		B274EF8D25BA0F6800F9D473 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B274EF8C25BA0F6800F9D473 /* BlurView.swift */; };
@@ -184,9 +203,9 @@
 		B274EFE125BA25AA00F9D473 /* NotificationChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4E25B7C47400EA2057 /* NotificationChoicesView.swift */; };
 		B274EFE525BA25B800F9D473 /* SingleNotificationChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4F25B7C47400EA2057 /* SingleNotificationChoiceView.swift */; };
 		B274EFE925BA26CC00F9D473 /* SoundPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4A25B7C47400EA2057 /* SoundPickerViewController.swift */; };
-		B274EFED25BA26DD00F9D473 /* SoundPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4B25B7C47400EA2057 /* SoundPickerTableViewCell.swift */; };
-		B274EFF125BA279B00F9D473 /* SoundPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4C25B7C47400EA2057 /* SoundPickerTableViewController.swift */; };
-		B274EFF525BA27B000F9D473 /* SoundPickerTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4D25B7C47400EA2057 /* SoundPickerTableViewModel.swift */; };
+		B274EFED25BA26DD00F9D473 /* SoundPickerListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4B25B7C47400EA2057 /* SoundPickerListViewCell.swift */; };
+		B274EFF125BA279B00F9D473 /* SoundPickerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4C25B7C47400EA2057 /* SoundPickerListViewController.swift */; };
+		B274EFF525BA27B000F9D473 /* SoundPickerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4D25B7C47400EA2057 /* SoundPickerListViewModel.swift */; };
 		B274EFF925BA2C1D00F9D473 /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */; };
 		B274EFFD25BA2C4200F9D473 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5325B7C47400EA2057 /* CalendarListCell.swift */; };
 		B274F00525BA2DCE00F9D473 /* CalendarToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5525B7C47400EA2057 /* CalendarToolbarView.swift */; };
@@ -208,7 +227,7 @@
 		B2866268258EC1F500D3A538 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B70986257FC5E900C48ED5 /* StringFormatter.swift */; };
 		B286626E258EC37100D3A538 /* EventNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6E0256B2571006B3C58 /* EventNotifier.swift */; };
 		B2866270258EC37A00D3A538 /* Reloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020A9D2577D88600F478CC /* Reloader.swift */; };
-		B2866278258EC50400D3A538 /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
+		B2866278258EC50400D3A538 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* Sound.swift */; };
 		B286627A258EC51C00D3A538 /* SilenceAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */; };
 		B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28662AD258F9C7C00D3A538 /* EventKitHelper.swift */; };
 		B288E91325A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B288E91225A7860C00601B1E /* Date+CountDownStringFormatter.swift */; };
@@ -233,13 +252,13 @@
 		B294935625B5F6E400FCCF9E /* DictionaryCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2965515257BD3EC008D1858 /* DictionaryCodable.swift */; };
 		B294935725B5F6E400FCCF9E /* SimpleTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0574259260130027C152 /* SimpleTimer.swift */; };
 		B294935D25B5F6F100FCCF9E /* SilenceAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */; };
-		B294936325B5F6F100FCCF9E /* AlarmSoundBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */; };
-		B294936625B5F6F100FCCF9E /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* AlarmSound.swift */; };
+		B294936325B5F6F100FCCF9E /* SoundBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACE725950EE300F9B50C /* SoundBehavior.swift */; };
+		B294936625B5F6F100FCCF9E /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B236FCDA255F196E00A2E58D /* Sound.swift */; };
 		B294936825B5F6F100FCCF9E /* SoundFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C44C25AB8CB90085BBA0 /* SoundFolder.swift */; };
 		B294937225B5F71500FCCF9E /* DataModelReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */; };
 		B294937325B5F71500FCCF9E /* Sound+DisplayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B233C54725A282A5005A7FB3 /* Sound+DisplayName.swift */; };
 		B294937925B5F71F00FCCF9E /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21DA1A3259BB722002A56C8 /* String+Localized.swift */; };
-		B294938125B5F75B00FCCF9E /* SoundSetAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* SoundSetAlarmSound.swift */; };
+		B294938125B5F75B00FCCF9E /* SoundPlayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* SoundPlayList.swift */; };
 		B294939F25B5F7F500FCCF9E /* DataModel+NextAlarmDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */; };
 		B29493A025B5F7F500FCCF9E /* DemoAlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */; };
 		B29493A125B5F7F500FCCF9E /* AlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACD42594F41E00F9B50C /* AlarmNotification.swift */; };
@@ -257,8 +276,7 @@
 		B298C47425ABEA1D0085BBA0 /* ContentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298C47325ABEA1D0085BBA0 /* ContentStackView.swift */; };
 		B29D0575259260130027C152 /* SimpleTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0574259260130027C152 /* SimpleTimer.swift */; };
 		B29D0576259260130027C152 /* SimpleTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D0574259260130027C152 /* SimpleTimer.swift */; };
-		B29F4AC625CF55C00078F8B5 /* MultipleSoundSetIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AC525CF55C00078F8B5 /* MultipleSoundSetIterator.swift */; };
-		B29F4AC825CF56370078F8B5 /* SoundSetPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AC725CF56370078F8B5 /* SoundSetPlayer.swift */; };
+		B29F4AC625CF55C00078F8B5 /* MultiPlayListIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AC525CF55C00078F8B5 /* MultiPlayListIterator.swift */; };
 		B29F4ACF25D045F10078F8B5 /* AppDelegate+Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4ACE25D045F10078F8B5 /* AppDelegate+Controller.swift */; };
 		B29F4AD525D0506D0078F8B5 /* SoundMetaDataUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD425D0506D0078F8B5 /* SoundMetaDataUpdater.swift */; };
 		B29F4AD725D050A60078F8B5 /* DeveloperAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */; };
@@ -268,9 +286,8 @@
 		B29F4AF825D0D67D0078F8B5 /* Dictionary+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AF725D0D67D0078F8B5 /* Dictionary+JSON.swift */; };
 		B29F4AFA25D18B620078F8B5 /* PreferencesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AF925D18B620078F8B5 /* PreferencesStorage.swift */; };
 		B29F4AFB25D18B6A0078F8B5 /* PreferencesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AF925D18B620078F8B5 /* PreferencesStorage.swift */; };
-		B29F4AFD25D18CCB0078F8B5 /* UserDefaultsPreferencesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AFC25D18CCB0078F8B5 /* UserDefaultsPreferencesStorage.swift */; };
 		B29F4AFF25D18D0B0078F8B5 /* ApplicationSupportPreferencesFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4AFE25D18D0B0078F8B5 /* ApplicationSupportPreferencesFolder.swift */; };
-		B29F4B0125D19F670078F8B5 /* SoundSetRandomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4B0025D19F670078F8B5 /* SoundSetRandomizer.swift */; };
+		B29F4B0125D19F670078F8B5 /* RandomizationDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29F4B0025D19F670078F8B5 /* RandomizationDescriptor.swift */; };
 		B2A181932597C4A300C1E7F0 /* DemoAlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */; };
 		B2A181AC2597FC9600C1E7F0 /* AlarmNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20AACD42594F41E00F9B50C /* AlarmNotification.swift */; };
 		B2A181B025980F8700C1E7F0 /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */; };
@@ -281,14 +298,16 @@
 		B2A181C8259813D200C1E7F0 /* ButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */; };
 		B2A181D0259907B700C1E7F0 /* TipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181CF259907B700C1E7F0 /* TipView.swift */; };
 		B2A181DA2599276400C1E7F0 /* SingleNotificationChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A181D92599276400C1E7F0 /* SingleNotificationChoiceView.swift */; };
+		B2A2D32225D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A2D32125D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift */; };
+		B2A2D32325D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A2D32125D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift */; };
 		B2A58B4525928F0C00188584 /* Bundle+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */; };
-		B2A58B48259290F700188584 /* SoundSetAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* SoundSetAlarmSound.swift */; };
+		B2A58B48259290F700188584 /* SoundPlayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* SoundPlayList.swift */; };
 		B2A58B4F2592A2E200188584 /* UserNotificationCenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4E2592A2E200188584 /* UserNotificationCenterController.swift */; };
 		B2A58B732593B99100188584 /* TimeRemainingViewController_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B722593B99100188584 /* TimeRemainingViewController_iOS.swift */; };
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
-		B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE690256ACC05006B3C58 /* TableViewController.swift */; };
+		B2AFE691256ACC05006B3C58 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE690256ACC05006B3C58 /* ListViewController.swift */; };
 		B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */; };
 		B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */; };
 		B2AFE6E1256B2571006B3C58 /* EventNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE6E0256B2571006B3C58 /* EventNotifier.swift */; };
@@ -348,22 +367,18 @@
 		B2E2251E25B640BE0052758C /* ViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250D25B640BE0052758C /* ViewLayout.swift */; };
 		B2E2251F25B640BE0052758C /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250E25B640BE0052758C /* TopBottomBarVerticalLayout.swift */; };
 		B2E2252025B640BE0052758C /* VerticalViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250F25B640BE0052758C /* VerticalViewLayout.swift */; };
-		B2E2252125B640BE0052758C /* TableViewRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251225B640BE0052758C /* TableViewRowCell.swift */; };
-		B2E2252225B640BE0052758C /* TableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251325B640BE0052758C /* TableViewSection.swift */; };
-		B2E2252325B640BE0052758C /* TableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251425B640BE0052758C /* TableViewModel.swift */; };
-		B2E2252425B640BE0052758C /* TableViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251525B640BE0052758C /* TableViewRow.swift */; };
-		B2E2252525B640BE0052758C /* TableViewSectionAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251725B640BE0052758C /* TableViewSectionAdornment.swift */; };
-		B2E2252625B640BE0052758C /* TableViewSectionAdornmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251825B640BE0052758C /* TableViewSectionAdornmentProtocol.swift */; };
+		B2E2252225B640BE0052758C /* ListViewSectionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251325B640BE0052758C /* ListViewSectionDescriptor.swift */; };
+		B2E2252325B640BE0052758C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251425B640BE0052758C /* ListViewModel.swift */; };
+		B2E2252425B640BE0052758C /* ListViewRowDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251525B640BE0052758C /* ListViewRowDescriptor.swift */; };
+		B2E2252525B640BE0052758C /* ListViewSectionAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251725B640BE0052758C /* ListViewSectionAdornment.swift */; };
+		B2E2252625B640BE0052758C /* ListViewSectionAdornmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251825B640BE0052758C /* ListViewSectionAdornmentProtocol.swift */; };
 		B2E2252725B640BE0052758C /* DividerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251925B640BE0052758C /* DividerAdornment.swift */; };
 		B2E2252825B640BE0052758C /* SpacerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251A25B640BE0052758C /* SpacerAdornment.swift */; };
-		B2E2252925B640BE0052758C /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251B25B640BE0052758C /* TableViewController.swift */; };
+		B2E2252925B640BE0052758C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251B25B640BE0052758C /* ListViewController.swift */; };
 		B2E78A19259562A000DF0ACF /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A18259562A000DF0ACF /* URL+Utilities.swift */; };
 		B2E78A1A259562A000DF0ACF /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A18259562A000DF0ACF /* URL+Utilities.swift */; };
 		B2E78A1D2595656500DF0ACF /* DataModel+NextAlarmDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */; };
 		B2E78A1E2595656500DF0ACF /* DataModel+NextAlarmDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */; };
-		B2EB25AC25C7256C00906E41 /* PrimaryMenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */; };
-		B2EB25EA25C72BD800906E41 /* StopAlarmMenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */; };
-		B2EB25EC25C72C3100906E41 /* MenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */; };
 		B2EB268525C86B4A00906E41 /* NSImage+Tinting.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EB268425C86B4A00906E41 /* NSImage+Tinting.m */; };
 		B2F6B4A42561B19D000BC78E /* MainSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4A32561B19D000BC78E /* MainSceneDelegate.swift */; };
 		B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F6B4FE2562DDC9000BC78E /* WindowSceneDelegate.swift */; };
@@ -504,21 +519,20 @@
 		B2020ADE2577DF8A00F478CC /* DataModelReloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelReloader.swift; sourceTree = "<group>"; };
 		B202CBB7257AC2B300D33D8F /* StackViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewCell.swift; sourceTree = "<group>"; };
 		B204B3A025CD9CC900795BC6 /* SoundSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSet.swift; sourceTree = "<group>"; };
-		B204B3A425CDA5B900795BC6 /* SoundSetIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetIterator.swift; sourceTree = "<group>"; };
+		B204B3A425CDA5B900795BC6 /* PlayListIteratorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListIteratorProtocol.swift; sourceTree = "<group>"; };
 		B20955E2258CF14F00753C7B /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		B20AACD12594F3E900F9B50C /* AlarmNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationController.swift; sourceTree = "<group>"; };
 		B20AACD42594F41E00F9B50C /* AlarmNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotification.swift; sourceTree = "<group>"; };
 		B20AACDC2594FDE800F9B50C /* Loggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
-		B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundBehavior.swift; sourceTree = "<group>"; };
+		B20AACE725950EE300F9B50C /* SoundBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundBehavior.swift; sourceTree = "<group>"; };
 		B20AAD0525954B2C00F9B50C /* AudioSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionController.swift; sourceTree = "<group>"; };
 		B20C4D4D25B39DD1000A3981 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		B20C4D5325B3A052000A3981 /* About */ = {isa = PBXFileReference; lastKnownFileType = folder; path = About; sourceTree = "<group>"; };
-		B2118DDB25D31312002AE939 /* MenuBarEventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarEventListViewController.swift; sourceTree = "<group>"; };
-		B2118DDC25D31312002AE939 /* MenuBarEventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarEventListViewModel.swift; sourceTree = "<group>"; };
-		B2118DDE25D313A7002AE939 /* MenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemView.swift; sourceTree = "<group>"; };
-		B2118DE425D31464002AE939 /* MenuBarEventListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarEventListTableViewCell.swift; sourceTree = "<group>"; };
-		B2118DE725D31475002AE939 /* MenuBarReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarReminderTableViewCell.swift; sourceTree = "<group>"; };
-		B2118DEA25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarItemTableViewCell+MenuBar.swift"; sourceTree = "<group>"; };
+		B2118DDB25D31312002AE939 /* MenuBarItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItemViewController.swift; sourceTree = "<group>"; };
+		B2118DDC25D31312002AE939 /* MenuBarItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItemViewModel.swift; sourceTree = "<group>"; };
+		B2118DE425D31464002AE939 /* MenuBarEventListListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarEventListListViewCell.swift; sourceTree = "<group>"; };
+		B2118DE725D31475002AE939 /* MenuBarReminderListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarReminderListViewCell.swift; sourceTree = "<group>"; };
+		B2118DEA25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarItemListViewCell+MenuBar.swift"; sourceTree = "<group>"; };
 		B21DA160259A69E7002A56C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B21DA182259BA68B002A56C8 /* HorizontalViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalViewLayout.swift; sourceTree = "<group>"; };
 		B21DA186259BA697002A56C8 /* VerticalViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalViewLayout.swift; sourceTree = "<group>"; };
@@ -532,8 +546,10 @@
 		B21DA21A259D0375002A56C8 /* TopBottomBarVerticalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBottomBarVerticalLayout.swift; sourceTree = "<group>"; };
 		B21DA22A259D398A002A56C8 /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		B21DA22E259D3B3A002A56C8 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
-		B223655125D376F800AC00DA /* MouseTrackingCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseTrackingCollectionViewController.swift; sourceTree = "<group>"; };
-		B223655B25D3808C00AC00DA /* NoMeetingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMeetingsTableViewCell.swift; sourceTree = "<group>"; };
+		B223655125D376F800AC00DA /* MouseTrackingCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseTrackingCollectionView.swift; sourceTree = "<group>"; };
+		B223655B25D3808C00AC00DA /* NoMeetingsListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMeetingsListViewCell.swift; sourceTree = "<group>"; };
+		B22365B625D41F4500AC00DA /* MenuBarScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarScrollView.swift; sourceTree = "<group>"; };
+		B22365D425D426F800AC00DA /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		B225CDA125C073E800F3BA15 /* SDKAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKAlert.swift; sourceTree = "<group>"; };
 		B225CDA825C0763A00F3BA15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindowController.xib; sourceTree = "<group>"; };
 		B225CDAE25C0763F00F3BA15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainWindowController.strings; sourceTree = "<group>"; };
@@ -551,7 +567,7 @@
 		B233C55825A3961F005A7FB3 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		B233C55C25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Sizes.swift"; sourceTree = "<group>"; };
 		B233C56225A3AAA2005A7FB3 /* LabeledSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSliderView.swift; sourceTree = "<group>"; };
-		B236FCDA255F196E00A2E58D /* AlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
+		B236FCDA255F196E00A2E58D /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		B24C5F0F25BDFF7F00F51FE7 /* Geometry+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Geometry+Extensions.swift"; sourceTree = "<group>"; };
 		B24C5F3F25BE06F400F51FE7 /* SDKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKButton.swift; sourceTree = "<group>"; };
 		B24C5F4525BE0F6100F51FE7 /* VerticalColorBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalColorBar.swift; sourceTree = "<group>"; };
@@ -574,7 +590,6 @@
 		B259A35E25C9B91900CF4C95 /* MenuBarPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPreferences.swift; sourceTree = "<group>"; };
 		B259A3E625CAF6E400CF4C95 /* QuickSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSearchView.swift; sourceTree = "<group>"; };
 		B259A3EE25CB095400CF4C95 /* SingleSoundPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSoundPreference.swift; sourceTree = "<group>"; };
-		B259A3F325CB0AC400CF4C95 /* URL+Randomized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Randomized.swift"; sourceTree = "<group>"; };
 		B259A3F825CB165A00CF4C95 /* SoundFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFile.swift; sourceTree = "<group>"; };
 		B25B65CD258CF2A60006B771 /* RoosterAppKitPlugin.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = RoosterAppKitPlugin.modulemap; sourceTree = "<group>"; };
 		B25B65D0258CF3760006B771 /* MenuBarController+ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenuBarController+ContentView.swift"; sourceTree = "<group>"; };
@@ -592,7 +607,7 @@
 		B25F6B0B25BC9AE50067C096 /* PreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindow.swift; sourceTree = "<group>"; };
 		B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
-		B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAdornmentView.swift; sourceTree = "<group>"; };
+		B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewAdornmentView.swift; sourceTree = "<group>"; };
 		B25F6B4025BD09180067C096 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Utilities.swift"; sourceTree = "<group>"; };
 		B25F6B8C25BDF04E0067C096 /* MacThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacThemes.swift; sourceTree = "<group>"; };
@@ -604,12 +619,12 @@
 		B260C82E25A3CEED00C03B2E /* SoundVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundVolumeView.swift; sourceTree = "<group>"; };
 		B260C83425A3D76400C03B2E /* SoundRepeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundRepeatView.swift; sourceTree = "<group>"; };
 		B26F6B2825B7BFA000EA2057 /* SpacerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacerView.swift; sourceTree = "<group>"; };
-		B26F6B3725B7C47400EA2057 /* CalendarItemTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarItemTableViewController.swift; sourceTree = "<group>"; };
-		B26F6B3825B7C47400EA2057 /* CalendarItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarItemTableViewCell.swift; sourceTree = "<group>"; };
+		B26F6B3725B7C47400EA2057 /* CalendarItemListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarItemListViewController.swift; sourceTree = "<group>"; };
+		B26F6B3825B7C47400EA2057 /* CalendarItemListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarItemListViewCell.swift; sourceTree = "<group>"; };
 		B26F6B3925B7C47400EA2057 /* ContentStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentStackView.swift; sourceTree = "<group>"; };
-		B26F6B3B25B7C47400EA2057 /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
+		B26F6B3B25B7C47400EA2057 /* ReminderListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderListViewCell.swift; sourceTree = "<group>"; };
 		B26F6B3C25B7C47400EA2057 /* EventListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListViewModel.swift; sourceTree = "<group>"; };
-		B26F6B3D25B7C47400EA2057 /* EventListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListTableViewCell.swift; sourceTree = "<group>"; };
+		B26F6B3D25B7C47400EA2057 /* EventListListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListListViewCell.swift; sourceTree = "<group>"; };
 		B26F6B3E25B7C47400EA2057 /* EventListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		B26F6B4225B7C47400EA2057 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		B26F6B4425B7C47400EA2057 /* SoundRepeatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundRepeatView.swift; sourceTree = "<group>"; };
@@ -618,9 +633,9 @@
 		B26F6B4725B7C47400EA2057 /* StartDelayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartDelayView.swift; sourceTree = "<group>"; };
 		B26F6B4825B7C47400EA2057 /* SoundVolumeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundVolumeView.swift; sourceTree = "<group>"; };
 		B26F6B4A25B7C47400EA2057 /* SoundPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerViewController.swift; sourceTree = "<group>"; };
-		B26F6B4B25B7C47400EA2057 /* SoundPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewCell.swift; sourceTree = "<group>"; };
-		B26F6B4C25B7C47400EA2057 /* SoundPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewController.swift; sourceTree = "<group>"; };
-		B26F6B4D25B7C47400EA2057 /* SoundPickerTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerTableViewModel.swift; sourceTree = "<group>"; };
+		B26F6B4B25B7C47400EA2057 /* SoundPickerListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerListViewCell.swift; sourceTree = "<group>"; };
+		B26F6B4C25B7C47400EA2057 /* SoundPickerListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerListViewController.swift; sourceTree = "<group>"; };
+		B26F6B4D25B7C47400EA2057 /* SoundPickerListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundPickerListViewModel.swift; sourceTree = "<group>"; };
 		B26F6B4E25B7C47400EA2057 /* NotificationChoicesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationChoicesView.swift; sourceTree = "<group>"; };
 		B26F6B4F25B7C47400EA2057 /* SingleNotificationChoiceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleNotificationChoiceView.swift; sourceTree = "<group>"; };
 		B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListViewModel.swift; sourceTree = "<group>"; };
@@ -638,9 +653,19 @@
 		B26F6B8C25B7C6EB00EA2057 /* PlaySoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundButton.swift; sourceTree = "<group>"; };
 		B26F6B8D25B7C6EC00EA2057 /* SimpleStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleStackView.swift; sourceTree = "<group>"; };
 		B26F6BAB25B7C78400EA2057 /* ContentAwareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentAwareView.swift; sourceTree = "<group>"; };
+		B270D47125D5E08A00195661 /* PlayListIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListIterator.swift; sourceTree = "<group>"; };
+		B270D47425D5E71600195661 /* SoundPlayListGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayListGenerator.swift; sourceTree = "<group>"; };
 		B2742C3D25603B0A0087E4B6 /* CalendarPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPreferencesView.swift; sourceTree = "<group>"; };
 		B2742C6925604A9B0087E4B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2742CA8256065310087E4B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B2747CF725D48F220071D5DF /* MenuBarMenuChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarMenuChoiceView.swift; sourceTree = "<group>"; };
+		B2747CFA25D497D90071D5DF /* MenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItem.swift; sourceTree = "<group>"; };
+		B2747CFE25D580010071D5DF /* SoundFolderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFolderItem.swift; sourceTree = "<group>"; };
+		B2747D0125D5807B0071D5DF /* SoundFolder+Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Visitor.swift"; sourceTree = "<group>"; };
+		B2747D0425D580900071D5DF /* SoundFolder+Searching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Searching.swift"; sourceTree = "<group>"; };
+		B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+DirectoryIterator.swift"; sourceTree = "<group>"; };
+		B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Bundle.swift"; sourceTree = "<group>"; };
+		B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Extensions.swift"; sourceTree = "<group>"; };
 		B274EF8C25BA0F6800F9D473 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B274EF9C25BA12A700F9D473 /* SoundFileAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFileAlarmSound.swift; sourceTree = "<group>"; };
 		B274EFB025BA191700F9D473 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
@@ -683,8 +708,7 @@
 		B298C46D25ABCB940085BBA0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		B298C47325ABEA1D0085BBA0 /* ContentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentStackView.swift; sourceTree = "<group>"; };
 		B29D0574259260130027C152 /* SimpleTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTimer.swift; sourceTree = "<group>"; };
-		B29F4AC525CF55C00078F8B5 /* MultipleSoundSetIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSoundSetIterator.swift; sourceTree = "<group>"; };
-		B29F4AC725CF56370078F8B5 /* SoundSetPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetPlayer.swift; sourceTree = "<group>"; };
+		B29F4AC525CF55C00078F8B5 /* MultiPlayListIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPlayListIterator.swift; sourceTree = "<group>"; };
 		B29F4ACE25D045F10078F8B5 /* AppDelegate+Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Controller.swift"; sourceTree = "<group>"; };
 		B29F4AD425D0506D0078F8B5 /* SoundMetaDataUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundMetaDataUpdater.swift; sourceTree = "<group>"; };
 		B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperAction.swift; sourceTree = "<group>"; };
@@ -694,7 +718,7 @@
 		B29F4AF925D18B620078F8B5 /* PreferencesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStorage.swift; sourceTree = "<group>"; };
 		B29F4AFC25D18CCB0078F8B5 /* UserDefaultsPreferencesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesStorage.swift; sourceTree = "<group>"; };
 		B29F4AFE25D18D0B0078F8B5 /* ApplicationSupportPreferencesFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSupportPreferencesFolder.swift; sourceTree = "<group>"; };
-		B29F4B0025D19F670078F8B5 /* SoundSetRandomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetRandomizer.swift; sourceTree = "<group>"; };
+		B29F4B0025D19F670078F8B5 /* RandomizationDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomizationDescriptor.swift; sourceTree = "<group>"; };
 		B2A181102597B18600C1E7F0 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		B2A181922597C4A300C1E7F0 /* DemoAlarmNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAlarmNotification.swift; sourceTree = "<group>"; };
 		B2A181AF25980F8700C1E7F0 /* GroupBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxView.swift; sourceTree = "<group>"; };
@@ -705,8 +729,9 @@
 		B2A181C7259813D200C1E7F0 /* ButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonContainerView.swift; sourceTree = "<group>"; };
 		B2A181CF259907B700C1E7F0 /* TipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipView.swift; sourceTree = "<group>"; };
 		B2A181D92599276400C1E7F0 /* SingleNotificationChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleNotificationChoiceView.swift; sourceTree = "<group>"; };
+		B2A2D32125D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarNoMeetingsListViewCell.swift; sourceTree = "<group>"; };
 		B2A58B4425928F0C00188584 /* Bundle+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Utilities.swift"; sourceTree = "<group>"; };
-		B2A58B47259290F700188584 /* SoundSetAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetAlarmSound.swift; sourceTree = "<group>"; };
+		B2A58B47259290F700188584 /* SoundPlayList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayList.swift; sourceTree = "<group>"; };
 		B2A58B4E2592A2E200188584 /* UserNotificationCenterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationCenterController.swift; sourceTree = "<group>"; };
 		B2A58B722593B99100188584 /* TimeRemainingViewController_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController_iOS.swift; sourceTree = "<group>"; };
 		B2AFE64E2569782D006B3C58 /* CalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
@@ -714,7 +739,7 @@
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
-		B2AFE690256ACC05006B3C58 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		B2AFE690256ACC05006B3C58 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		B2AFE6D8256B01D6006B3C58 /* EventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewModel.swift; sourceTree = "<group>"; };
 		B2AFE6DC256B028F006B3C58 /* EventListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListTableViewCell.swift; sourceTree = "<group>"; };
 		B2AFE6E0256B2571006B3C58 /* EventNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotifier.swift; sourceTree = "<group>"; };
@@ -770,21 +795,17 @@
 		B2E2250D25B640BE0052758C /* ViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewLayout.swift; sourceTree = "<group>"; };
 		B2E2250E25B640BE0052758C /* TopBottomBarVerticalLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBottomBarVerticalLayout.swift; sourceTree = "<group>"; };
 		B2E2250F25B640BE0052758C /* VerticalViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalViewLayout.swift; sourceTree = "<group>"; };
-		B2E2251225B640BE0052758C /* TableViewRowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewRowCell.swift; sourceTree = "<group>"; };
-		B2E2251325B640BE0052758C /* TableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSection.swift; sourceTree = "<group>"; };
-		B2E2251425B640BE0052758C /* TableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewModel.swift; sourceTree = "<group>"; };
-		B2E2251525B640BE0052758C /* TableViewRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewRow.swift; sourceTree = "<group>"; };
-		B2E2251725B640BE0052758C /* TableViewSectionAdornment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionAdornment.swift; sourceTree = "<group>"; };
-		B2E2251825B640BE0052758C /* TableViewSectionAdornmentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewSectionAdornmentProtocol.swift; sourceTree = "<group>"; };
+		B2E2251325B640BE0052758C /* ListViewSectionDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewSectionDescriptor.swift; sourceTree = "<group>"; };
+		B2E2251425B640BE0052758C /* ListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		B2E2251525B640BE0052758C /* ListViewRowDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewRowDescriptor.swift; sourceTree = "<group>"; };
+		B2E2251725B640BE0052758C /* ListViewSectionAdornment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewSectionAdornment.swift; sourceTree = "<group>"; };
+		B2E2251825B640BE0052758C /* ListViewSectionAdornmentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewSectionAdornmentProtocol.swift; sourceTree = "<group>"; };
 		B2E2251925B640BE0052758C /* DividerAdornment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerAdornment.swift; sourceTree = "<group>"; };
 		B2E2251A25B640BE0052758C /* SpacerAdornment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacerAdornment.swift; sourceTree = "<group>"; };
-		B2E2251B25B640BE0052758C /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		B2E2251B25B640BE0052758C /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		B2E78A18259562A000DF0ACF /* URL+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		B2E78A1C2595656500DF0ACF /* DataModel+NextAlarmDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataModel+NextAlarmDate.swift"; sourceTree = "<group>"; };
 		B2E78A202596489300DF0ACF /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
-		B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryMenuBarItem.swift; sourceTree = "<group>"; };
-		B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopAlarmMenuBarButton.swift; sourceTree = "<group>"; };
-		B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItem.swift; sourceTree = "<group>"; };
 		B2EB268325C86B4A00906E41 /* NSImage+Tinting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSImage+Tinting.h"; sourceTree = "<group>"; };
 		B2EB268425C86B4A00906E41 /* NSImage+Tinting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSImage+Tinting.m"; sourceTree = "<group>"; };
 		B2EB268725C86C7300906E41 /* Rooster-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rooster-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -932,8 +953,9 @@
 			children = (
 				B29F4ACB25CF5B8E0078F8B5 /* SoundSets */,
 				B29F4ACC25CF5BAB0078F8B5 /* AlarmSounds */,
-				B298C44C25AB8CB90085BBA0 /* SoundFolder.swift */,
-				B259A3F825CB165A00CF4C95 /* SoundFile.swift */,
+				B2747D1025D5816F0071D5DF /* SoundFolder */,
+				B2747CFD25D57FE80071D5DF /* SoundFolderItem */,
+				B2747D1425D582EF0071D5DF /* SoundFile */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -941,25 +963,14 @@
 		B2118DDD25D31323002AE939 /* MenuBarEventList */ = {
 			isa = PBXGroup;
 			children = (
-				B2118DDC25D31312002AE939 /* MenuBarEventListViewModel.swift */,
-				B2118DE425D31464002AE939 /* MenuBarEventListTableViewCell.swift */,
-				B2118DE725D31475002AE939 /* MenuBarReminderTableViewCell.swift */,
-				B2118DDB25D31312002AE939 /* MenuBarEventListViewController.swift */,
-				B2118DEA25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift */,
+				B2118DDC25D31312002AE939 /* MenuBarItemViewModel.swift */,
+				B2118DE425D31464002AE939 /* MenuBarEventListListViewCell.swift */,
+				B2118DE725D31475002AE939 /* MenuBarReminderListViewCell.swift */,
+				B2118DEA25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift */,
+				B2747CF725D48F220071D5DF /* MenuBarMenuChoiceView.swift */,
+				B2A2D32125D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift */,
 			);
 			path = MenuBarEventList;
-			sourceTree = "<group>";
-		};
-		B2118DE125D313E9002AE939 /* MenuBarItems */ = {
-			isa = PBXGroup;
-			children = (
-				B2EB25AB25C7256C00906E41 /* PrimaryMenuBarItem.swift */,
-				B2EB25E925C72BD800906E41 /* StopAlarmMenuBarButton.swift */,
-				B2EB25EB25C72C3100906E41 /* MenuBarItem.swift */,
-				B2B0F74E25D2DC6D00E8EFBD /* MenuBarMenuItem.swift */,
-				B2118DDE25D313A7002AE939 /* MenuItemView.swift */,
-			);
-			path = MenuBarItems;
 			sourceTree = "<group>";
 		};
 		B21DA17D259BA663002A56C8 /* ViewLayout */ = {
@@ -1026,19 +1037,19 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		B24ED36D25BF22C000F0B809 /* TableCell */ = {
+		B24ED36D25BF22C000F0B809 /* ListViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				B26F6B3825B7C47400EA2057 /* CalendarItemTableViewCell.swift */,
+				B26F6B3825B7C47400EA2057 /* CalendarItemListViewCell.swift */,
 				B24ED37925BF362100F0B809 /* CountdownHeaderView.swift */,
-				B26F6B3D25B7C47400EA2057 /* EventListTableViewCell.swift */,
-				B26F6B3B25B7C47400EA2057 /* ReminderTableViewCell.swift */,
+				B26F6B3D25B7C47400EA2057 /* EventListListViewCell.swift */,
+				B26F6B3B25B7C47400EA2057 /* ReminderListViewCell.swift */,
 				B24ED38925BF4FBD00F0B809 /* TimePassingView.swift */,
 				B24C5F5225BE156500F51FE7 /* CalendarItemIconBar.swift */,
 				B26F6B3925B7C47400EA2057 /* ContentStackView.swift */,
-				B223655B25D3808C00AC00DA /* NoMeetingsTableViewCell.swift */,
+				B223655B25D3808C00AC00DA /* NoMeetingsListViewCell.swift */,
 			);
-			path = TableCell;
+			path = ListViewCell;
 			sourceTree = "<group>";
 		};
 		B255348F25B2191700E17EEF /* UI */ = {
@@ -1065,7 +1076,6 @@
 				B259A35925C9B90300CF4C95 /* NotificationPreferences.swift */,
 				B259A35E25C9B91900CF4C95 /* MenuBarPreferences.swift */,
 				B259A3EE25CB095400CF4C95 /* SingleSoundPreference.swift */,
-				B259A3F325CB0AC400CF4C95 /* URL+Randomized.swift */,
 			);
 			path = ModelObjects;
 			sourceTree = "<group>";
@@ -1124,9 +1134,11 @@
 		B25F6B3E25BD090A0067C096 /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
+				B2118DDB25D31312002AE939 /* MenuBarItemViewController.swift */,
 				B2118DDD25D31323002AE939 /* MenuBarEventList */,
 				B25F6B4025BD09180067C096 /* MenuBarController.swift */,
-				B2118DE125D313E9002AE939 /* MenuBarItems */,
+				B2B0F74E25D2DC6D00E8EFBD /* MenuBarMenuItem.swift */,
+				B2747CFA25D497D90071D5DF /* MenuBarItem.swift */,
 			);
 			path = MenuBar;
 			sourceTree = "<group>";
@@ -1173,7 +1185,6 @@
 				B26F6B5025B7C47400EA2057 /* CalendarChooser */,
 				B26F6B3525B7C47400EA2057 /* EventListViewController */,
 				B2A58B4E2592A2E200188584 /* UserNotificationCenterController.swift */,
-				B2E2251025B640BE0052758C /* TableViewController */,
 				B255349825B22C9200E17EEF /* AppControllers.swift */,
 				B2E224F125B635600052758C /* TimeRemainingViewController.swift */,
 				B2E2250225B63B3C0052758C /* MainWindowViewController.swift */,
@@ -1189,6 +1200,7 @@
 				B25F6BA025BDF2D80067C096 /* macOS */,
 				B2CEF17425B8A77700CA01E2 /* Views */,
 				B2E2250A25B640BE0052758C /* ViewLayout */,
+				B2E2251025B640BE0052758C /* ListViewController */,
 				B25F6BD125BDF8A80067C096 /* Controllers */,
 			);
 			path = UI;
@@ -1205,20 +1217,20 @@
 		B26F6B3525B7C47400EA2057 /* EventListViewController */ = {
 			isa = PBXGroup;
 			children = (
-				B26F6B3625B7C47400EA2057 /* CalendarItemTableView */,
+				B26F6B3625B7C47400EA2057 /* CalendarItemListView */,
 				B26F6B3C25B7C47400EA2057 /* EventListViewModel.swift */,
 				B26F6B3E25B7C47400EA2057 /* EventListViewController.swift */,
 			);
 			path = EventListViewController;
 			sourceTree = "<group>";
 		};
-		B26F6B3625B7C47400EA2057 /* CalendarItemTableView */ = {
+		B26F6B3625B7C47400EA2057 /* CalendarItemListView */ = {
 			isa = PBXGroup;
 			children = (
-				B24ED36D25BF22C000F0B809 /* TableCell */,
-				B26F6B3725B7C47400EA2057 /* CalendarItemTableViewController.swift */,
+				B24ED36D25BF22C000F0B809 /* ListViewCell */,
+				B26F6B3725B7C47400EA2057 /* CalendarItemListViewController.swift */,
 			);
-			path = CalendarItemTableView;
+			path = CalendarItemListView;
 			sourceTree = "<group>";
 		};
 		B26F6B3F25B7C47400EA2057 /* Preferences */ = {
@@ -1250,9 +1262,9 @@
 			isa = PBXGroup;
 			children = (
 				B26F6B4A25B7C47400EA2057 /* SoundPickerViewController.swift */,
-				B26F6B4B25B7C47400EA2057 /* SoundPickerTableViewCell.swift */,
-				B26F6B4C25B7C47400EA2057 /* SoundPickerTableViewController.swift */,
-				B26F6B4D25B7C47400EA2057 /* SoundPickerTableViewModel.swift */,
+				B26F6B4B25B7C47400EA2057 /* SoundPickerListViewCell.swift */,
+				B26F6B4C25B7C47400EA2057 /* SoundPickerListViewController.swift */,
+				B26F6B4D25B7C47400EA2057 /* SoundPickerListViewModel.swift */,
 				B259A3E625CAF6E400CF4C95 /* QuickSearchView.swift */,
 			);
 			path = SoundPicker;
@@ -1266,6 +1278,46 @@
 				B25F6B0425BC95100067C096 /* CalendarList */,
 			);
 			path = CalendarChooser;
+			sourceTree = "<group>";
+		};
+		B270D47B25D5FB0C00195661 /* PlayLists */ = {
+			isa = PBXGroup;
+			children = (
+				B204B3A425CDA5B900795BC6 /* PlayListIteratorProtocol.swift */,
+				B270D47125D5E08A00195661 /* PlayListIterator.swift */,
+				B29F4AC525CF55C00078F8B5 /* MultiPlayListIterator.swift */,
+				B29F4B0025D19F670078F8B5 /* RandomizationDescriptor.swift */,
+			);
+			path = PlayLists;
+			sourceTree = "<group>";
+		};
+		B2747CFD25D57FE80071D5DF /* SoundFolderItem */ = {
+			isa = PBXGroup;
+			children = (
+				B2747CFE25D580010071D5DF /* SoundFolderItem.swift */,
+			);
+			path = SoundFolderItem;
+			sourceTree = "<group>";
+		};
+		B2747D1025D5816F0071D5DF /* SoundFolder */ = {
+			isa = PBXGroup;
+			children = (
+				B298C44C25AB8CB90085BBA0 /* SoundFolder.swift */,
+				B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */,
+				B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */,
+				B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */,
+				B2747D0425D580900071D5DF /* SoundFolder+Searching.swift */,
+				B2747D0125D5807B0071D5DF /* SoundFolder+Visitor.swift */,
+			);
+			path = SoundFolder;
+			sourceTree = "<group>";
+		};
+		B2747D1425D582EF0071D5DF /* SoundFile */ = {
+			isa = PBXGroup;
+			children = (
+				B259A3F825CB165A00CF4C95 /* SoundFile.swift */,
+			);
+			path = SoundFile;
 			sourceTree = "<group>";
 		};
 		B274EFC125BA1D0300F9D473 /* VerticalTabView */ = {
@@ -1474,10 +1526,8 @@
 			isa = PBXGroup;
 			children = (
 				B204B3A025CD9CC900795BC6 /* SoundSet.swift */,
-				B204B3A425CDA5B900795BC6 /* SoundSetIterator.swift */,
-				B29F4AC525CF55C00078F8B5 /* MultipleSoundSetIterator.swift */,
-				B29F4AC725CF56370078F8B5 /* SoundSetPlayer.swift */,
-				B29F4B0025D19F670078F8B5 /* SoundSetRandomizer.swift */,
+				B270D47B25D5FB0C00195661 /* PlayLists */,
+				B270D47425D5E71600195661 /* SoundPlayListGenerator.swift */,
 			);
 			path = SoundSets;
 			sourceTree = "<group>";
@@ -1486,9 +1536,9 @@
 			isa = PBXGroup;
 			children = (
 				B2F6B51D256433F3000BC78E /* AVAlarmSound.swift */,
-				B2A58B47259290F700188584 /* SoundSetAlarmSound.swift */,
-				B236FCDA255F196E00A2E58D /* AlarmSound.swift */,
-				B20AACE725950EE300F9B50C /* AlarmSoundBehavior.swift */,
+				B2A58B47259290F700188584 /* SoundPlayList.swift */,
+				B236FCDA255F196E00A2E58D /* Sound.swift */,
+				B20AACE725950EE300F9B50C /* SoundBehavior.swift */,
 				B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */,
 				B274EF9C25BA12A700F9D473 /* SoundFileAlarmSound.swift */,
 			);
@@ -1538,7 +1588,7 @@
 			children = (
 				B2F817F825768FAE00B28119 /* Adornments */,
 				B2F817CD25768DCE00B28119 /* ViewModel */,
-				B2AFE690256ACC05006B3C58 /* TableViewController.swift */,
+				B2AFE690256ACC05006B3C58 /* ListViewController.swift */,
 			);
 			path = TableViewController;
 			sourceTree = "<group>";
@@ -1614,6 +1664,8 @@
 				B26F6B8A25B7C6EB00EA2057 /* TopBar.swift */,
 				B274EFC125BA1D0300F9D473 /* VerticalTabView */,
 				B225CDB525C0801400F3BA15 /* SwayAnimation.swift */,
+				B223655125D376F800AC00DA /* MouseTrackingCollectionView.swift */,
+				B22365B625D41F4500AC00DA /* MenuBarScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1696,24 +1748,23 @@
 			path = ViewLayout;
 			sourceTree = "<group>";
 		};
-		B2E2251025B640BE0052758C /* TableViewController */ = {
+		B2E2251025B640BE0052758C /* ListViewController */ = {
 			isa = PBXGroup;
 			children = (
 				B2E2251125B640BE0052758C /* ViewModel */,
 				B2E2251625B640BE0052758C /* Adornments */,
-				B2E2251B25B640BE0052758C /* TableViewController.swift */,
-				B223655125D376F800AC00DA /* MouseTrackingCollectionViewController.swift */,
+				B2E2251B25B640BE0052758C /* ListViewController.swift */,
 			);
-			path = TableViewController;
+			path = ListViewController;
 			sourceTree = "<group>";
 		};
 		B2E2251125B640BE0052758C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B2E2251225B640BE0052758C /* TableViewRowCell.swift */,
-				B2E2251325B640BE0052758C /* TableViewSection.swift */,
-				B2E2251425B640BE0052758C /* TableViewModel.swift */,
-				B2E2251525B640BE0052758C /* TableViewRow.swift */,
+				B2E2251325B640BE0052758C /* ListViewSectionDescriptor.swift */,
+				B2E2251425B640BE0052758C /* ListViewModel.swift */,
+				B2E2251525B640BE0052758C /* ListViewRowDescriptor.swift */,
+				B22365D425D426F800AC00DA /* EventHandler.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1722,11 +1773,11 @@
 			isa = PBXGroup;
 			children = (
 				B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */,
-				B2E2251725B640BE0052758C /* TableViewSectionAdornment.swift */,
-				B2E2251825B640BE0052758C /* TableViewSectionAdornmentProtocol.swift */,
+				B2E2251725B640BE0052758C /* ListViewSectionAdornment.swift */,
+				B2E2251825B640BE0052758C /* ListViewSectionAdornmentProtocol.swift */,
 				B2E2251925B640BE0052758C /* DividerAdornment.swift */,
 				B2E2251A25B640BE0052758C /* SpacerAdornment.swift */,
-				B25F6B1D25BCC9600067C096 /* TableViewAdornmentView.swift */,
+				B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */,
 			);
 			path = Adornments;
 			sourceTree = "<group>";
@@ -2184,7 +2235,7 @@
 				B2CA1146258FE95B00B8BF81 /* WindowController.swift in Sources */,
 				B24C5F4025BE06F400F51FE7 /* SDKButton.swift in Sources */,
 				B28662AE258F9C7C00D3A538 /* EventKitHelper.swift in Sources */,
-				B2866278258EC50400D3A538 /* AlarmSound.swift in Sources */,
+				B2866278258EC50400D3A538 /* Sound.swift in Sources */,
 				B2CA114E258FF10100B8BF81 /* WindowControllerHelper.m in Sources */,
 				B286627A258EC51C00D3A538 /* SilenceAlarmSound.swift in Sources */,
 				B20AACDE2594FDE800F9B50C /* Loggable.swift in Sources */,
@@ -2201,7 +2252,7 @@
 				B2866265258EC1F500D3A538 /* String+Utilities.swift in Sources */,
 				B28661DD258E8FA100D3A538 /* MenuBarController+ContentView.swift in Sources */,
 				B2866264258EC1F500D3A538 /* Date+Utilities.swift in Sources */,
-				B20AACE925950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */,
+				B20AACE925950EE300F9B50C /* SoundBehavior.swift in Sources */,
 				B25F6B9525BDF05B0067C096 /* iOSThemes.swift in Sources */,
 				B288E91425A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */,
 				B25B65DF258CF96B0006B771 /* AppKitPluginProtocol.swift in Sources */,
@@ -2214,13 +2265,14 @@
 			files = (
 				B274EF8825BA0D0000F9D473 /* BottomBar.swift in Sources */,
 				B2FAD94525B6022B00598B9E /* DataModelFactory.swift in Sources */,
+				B2747CFC25D497D90071D5DF /* MenuBarItem.swift in Sources */,
 				B294935725B5F6E400FCCF9E /* SimpleTimer.swift in Sources */,
 				B29F4ACF25D045F10078F8B5 /* AppDelegate+Controller.swift in Sources */,
 				B29492ED25B5F4D000FCCF9E /* AppDelegate.swift in Sources */,
 				B2FAD8F725B601DB00598B9E /* DataModelController.swift in Sources */,
 				B2FAD94725B6022B00598B9E /* DataModelFactory+IntermediateDataModel.swift in Sources */,
 				B2FAD92625B6022300598B9E /* EKController+DataModelFactory.swift in Sources */,
-				B26F6B5925B7C47400EA2057 /* CalendarItemTableViewCell.swift in Sources */,
+				B26F6B5925B7C47400EA2057 /* CalendarItemListViewCell.swift in Sources */,
 				B24ED38B25BF4FBD00F0B809 /* TimePassingView.swift in Sources */,
 				B2FAD93025B6022300598B9E /* EKDataModelFactory.swift in Sources */,
 				B274EFF925BA2C1D00F9D473 /* CalendarListViewModel.swift in Sources */,
@@ -2230,32 +2282,33 @@
 				B2FAD94325B6022B00598B9E /* CalendarItem+FindURL.swift in Sources */,
 				B25F6B4C25BDE9990067C096 /* NSImage+Utilities.swift in Sources */,
 				B2CEF18B25B8B09C00CA01E2 /* DividerView.swift in Sources */,
-				B2118DE625D31464002AE939 /* MenuBarEventListTableViewCell.swift in Sources */,
+				B2118DE625D31464002AE939 /* MenuBarEventListListViewCell.swift in Sources */,
 				B274EFC625BA1D0400F9D473 /* VerticalTabViewController.swift in Sources */,
 				B274EFD125BA229500F9D473 /* SingleSoundChoiceView.swift in Sources */,
-				B259A3F425CB0AC400CF4C95 /* URL+Randomized.swift in Sources */,
+				B22365D525D426F800AC00DA /* EventHandler.swift in Sources */,
 				B2E2251D25B640BE0052758C /* HorizontallyOpposedLayout.swift in Sources */,
 				B2E224D925B61E610052758C /* LoadingWindowController.swift in Sources */,
-				B2EB25AC25C7256C00906E41 /* PrimaryMenuBarItem.swift in Sources */,
 				B274EFA825BA188D00F9D473 /* GroupBoxView.swift in Sources */,
+				B2A2D32325D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift in Sources */,
 				B2FAD92A25B6022300598B9E /* Calendar+EKCalender.swift in Sources */,
 				B2FAD90125B601DB00598B9E /* Alarm+DictionaryCodable.swift in Sources */,
 				B274EF9825BA11D600F9D473 /* PlaySoundButton.swift in Sources */,
+				B2747CF925D48F220071D5DF /* MenuBarMenuChoiceView.swift in Sources */,
 				B2E224EA25B62F550052758C /* MainWindowController.swift in Sources */,
-				B2E2252325B640BE0052758C /* TableViewModel.swift in Sources */,
+				B2E2252325B640BE0052758C /* ListViewModel.swift in Sources */,
 				B29F4AFF25D18D0B0078F8B5 /* ApplicationSupportPreferencesFolder.swift in Sources */,
 				B259A34F25C9B3A900CF4C95 /* SinglePreferenceChoiceView.swift in Sources */,
 				B2E224BB25B61B420052758C /* SavedState.swift in Sources */,
 				B274EFD925BA247300F9D473 /* StartDelayView.swift in Sources */,
 				B2FAD8FF25B601DB00598B9E /* Alarm.swift in Sources */,
 				B25F6B0D25BC9AE50067C096 /* PreferencesWindow.swift in Sources */,
+				B2747D1D25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */,
 				B259A3E725CAF6E400CF4C95 /* QuickSearchView.swift in Sources */,
 				B274F00D25BA2DD800F9D473 /* CalendarChooserViewController.swift in Sources */,
-				B29F4AC825CF56370078F8B5 /* SoundSetPlayer.swift in Sources */,
-				B223655C25D3808C00AC00DA /* NoMeetingsTableViewCell.swift in Sources */,
+				B223655C25D3808C00AC00DA /* NoMeetingsListViewCell.swift in Sources */,
 				B2FAD87A25B5F91500598B9E /* UserNotificationCenterController.swift in Sources */,
 				B294937225B5F71500FCCF9E /* DataModelReloader.swift in Sources */,
-				B2E2252525B640BE0052758C /* TableViewSectionAdornment.swift in Sources */,
+				B2E2252525B640BE0052758C /* ListViewSectionAdornment.swift in Sources */,
 				B259A35F25C9B91900CF4C95 /* MenuBarPreferences.swift in Sources */,
 				B274EFAC25BA18DB00F9D473 /* SimpleStackView.swift in Sources */,
 				B25F6BAE25BDF3270067C096 /* Types.swift in Sources */,
@@ -2274,33 +2327,37 @@
 				B26F6B5A25B7C47400EA2057 /* ContentStackView.swift in Sources */,
 				B259A3EF25CB095400CF4C95 /* SingleSoundPreference.swift in Sources */,
 				B274EFCD25BA21CC00F9D473 /* SoundRepeatView.swift in Sources */,
+				B2747D0025D580010071D5DF /* SoundFolderItem.swift in Sources */,
+				B2747D0F25D5815D0071D5DF /* SoundFolder+Bundle.swift in Sources */,
 				B2E224CB25B61B420052758C /* ItemPreference.swift in Sources */,
 				B294935025B5F6E400FCCF9E /* Date+Utilities.swift in Sources */,
 				B274EFC725BA1D0400F9D473 /* VerticalButtonListTableCell.swift in Sources */,
 				B24ED37B25BF362100F0B809 /* CountdownHeaderView.swift in Sources */,
 				B29F4AEB25D0B8D30078F8B5 /* DirectoryIterator.swift in Sources */,
-				B29F4AC625CF55C00078F8B5 /* MultipleSoundSetIterator.swift in Sources */,
+				B29F4AC625CF55C00078F8B5 /* MultiPlayListIterator.swift in Sources */,
 				B2FAD8F125B601DB00598B9E /* Alarm+SavedState.swift in Sources */,
 				B2E224C525B61B420052758C /* Preferences.swift in Sources */,
 				B225CDB725C0801400F3BA15 /* SwayAnimation.swift in Sources */,
-				B2118DE925D31475002AE939 /* MenuBarReminderTableViewCell.swift in Sources */,
-				B2E2252625B640BE0052758C /* TableViewSectionAdornmentProtocol.swift in Sources */,
+				B2118DE925D31475002AE939 /* MenuBarReminderListViewCell.swift in Sources */,
+				B2E2252625B640BE0052758C /* ListViewSectionAdornmentProtocol.swift in Sources */,
 				B2E224E025B624CD0052758C /* FirstLaunchWindowController.swift in Sources */,
 				B294935225B5F6E400FCCF9E /* Date+CountDownStringFormatter.swift in Sources */,
-				B274EFED25BA26DD00F9D473 /* SoundPickerTableViewCell.swift in Sources */,
+				B274EFED25BA26DD00F9D473 /* SoundPickerListViewCell.swift in Sources */,
 				B294934F25B5F6E400FCCF9E /* Bundle+Utilities.swift in Sources */,
-				B26F6B5825B7C47400EA2057 /* CalendarItemTableViewController.swift in Sources */,
+				B26F6B5825B7C47400EA2057 /* CalendarItemListViewController.swift in Sources */,
 				B274EFBD25BA1CE000F9D473 /* PreferencesViewController.swift in Sources */,
 				B2FAD90925B601DB00598B9E /* Reminder.swift in Sources */,
 				B2FAD92425B6022300598B9E /* EKReminder+UniqueID.swift in Sources */,
-				B2118DE325D3142E002AE939 /* MenuBarEventListViewController.swift in Sources */,
+				B2118DE325D3142E002AE939 /* MenuBarItemViewController.swift in Sources */,
 				B2FAD92025B6022300598B9E /* EKController.swift in Sources */,
-				B2118DEC25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift in Sources */,
+				B2118DEC25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift in Sources */,
 				B2E2252725B640BE0052758C /* DividerAdornment.swift in Sources */,
+				B270D47325D5E08A00195661 /* PlayListIterator.swift in Sources */,
 				B2FAD8FD25B601DB00598B9E /* Event.swift in Sources */,
 				B274EFD525BA244800F9D473 /* SoundPreferencesView.swift in Sources */,
 				B29493A125B5F7F500FCCF9E /* AlarmNotification.swift in Sources */,
-				B2E2252925B640BE0052758C /* TableViewController.swift in Sources */,
+				B2E2252925B640BE0052758C /* ListViewController.swift in Sources */,
+				B2747D0325D5807B0071D5DF /* SoundFolder+Visitor.swift in Sources */,
 				B294937925B5F71F00FCCF9E /* String+Localized.swift in Sources */,
 				B25F6C0325BDFEB10067C096 /* NSView+CrossPlatform.swift in Sources */,
 				B294934C25B5F6E400FCCF9E /* EventNotifier.swift in Sources */,
@@ -2310,8 +2367,9 @@
 				B294935625B5F6E400FCCF9E /* DictionaryCodable.swift in Sources */,
 				B2FAD92C25B6022300598B9E /* EKController+ReloadingState.swift in Sources */,
 				B2E224BD25B61B420052758C /* UserDefaults+IdentifierList.swift in Sources */,
-				B223655225D376F800AC00DA /* MouseTrackingCollectionViewController.swift in Sources */,
+				B223655225D376F800AC00DA /* MouseTrackingCollectionView.swift in Sources */,
 				B2E224C325B61B420052758C /* PreferencesController.swift in Sources */,
+				B2747D0625D580900071D5DF /* SoundFolder+Searching.swift in Sources */,
 				B29493A325B5F7F500FCCF9E /* CalendarItem+LocationURL.swift in Sources */,
 				B274EF9425BA10F800F9D473 /* FancyButton.swift in Sources */,
 				B2E224F925B635E20052758C /* Theme.swift in Sources */,
@@ -2320,20 +2378,17 @@
 				B2FAD93425B6022300598B9E /* Reminder+EKReminder.swift in Sources */,
 				B25F6B8F25BDF04E0067C096 /* MacThemes.swift in Sources */,
 				B2CEF19025B8B0A500CA01E2 /* ContentAwareView.swift in Sources */,
-				B2E2252125B640BE0052758C /* TableViewRowCell.swift in Sources */,
 				B274EF9D25BA12A700F9D473 /* SoundFileAlarmSound.swift in Sources */,
-				B2E2252425B640BE0052758C /* TableViewRow.swift in Sources */,
+				B2E2252425B640BE0052758C /* ListViewRowDescriptor.swift in Sources */,
 				B259A35A25C9B90300CF4C95 /* NotificationPreferences.swift in Sources */,
 				B274EFE925BA26CC00F9D473 /* SoundPickerViewController.swift in Sources */,
 				B2FAD90325B601DB00598B9E /* DataModel.swift in Sources */,
 				B2CEF18C25B8B09C00CA01E2 /* SpacerView.swift in Sources */,
 				B259A3F925CB165A00CF4C95 /* SoundFile.swift in Sources */,
 				B294935125B5F6E400FCCF9E /* Reloader.swift in Sources */,
-				B26F6B5E25B7C47400EA2057 /* EventListTableViewCell.swift in Sources */,
-				B2EB25EC25C72C3100906E41 /* MenuBarItem.swift in Sources */,
+				B26F6B5E25B7C47400EA2057 /* EventListListViewCell.swift in Sources */,
 				B274EFB125BA191700F9D473 /* SliderView.swift in Sources */,
 				B2FAD92E25B6022300598B9E /* EKDataModel.swift in Sources */,
-				B2EB25EA25C72BD800906E41 /* StopAlarmMenuBarButton.swift in Sources */,
 				B274EF8D25BA0F6800F9D473 /* BlurView.swift in Sources */,
 				B225CDA325C073E800F3BA15 /* SDKAlert.swift in Sources */,
 				B274EF8425BA0CFC00F9D473 /* TopBar.swift in Sources */,
@@ -2344,12 +2399,13 @@
 				B294935525B5F6E400FCCF9E /* Loggable.swift in Sources */,
 				B2FAD93225B6022300598B9E /* Event+EKEvent.swift in Sources */,
 				B25F6AEE25BB60740067C096 /* WindowController.swift in Sources */,
-				B294936325B5F6F100FCCF9E /* AlarmSoundBehavior.swift in Sources */,
-				B29F4B0125D19F670078F8B5 /* SoundSetRandomizer.swift in Sources */,
+				B294936325B5F6F100FCCF9E /* SoundBehavior.swift in Sources */,
+				B29F4B0125D19F670078F8B5 /* RandomizationDescriptor.swift in Sources */,
 				B2E224C125B61B420052758C /* UserDefaults+IdentifierDictionary.swift in Sources */,
-				B2E2252225B640BE0052758C /* TableViewSection.swift in Sources */,
-				B2118DE225D3142E002AE939 /* MenuBarEventListViewModel.swift in Sources */,
-				B274EFF525BA27B000F9D473 /* SoundPickerTableViewModel.swift in Sources */,
+				B22365B825D41F4500AC00DA /* MenuBarScrollView.swift in Sources */,
+				B2E2252225B640BE0052758C /* ListViewSectionDescriptor.swift in Sources */,
+				B2118DE225D3142E002AE939 /* MenuBarItemViewModel.swift in Sources */,
+				B274EFF525BA27B000F9D473 /* SoundPickerListViewModel.swift in Sources */,
 				B2CEF18425B8ADAD00CA01E2 /* Geometry.swift in Sources */,
 				B29F4AD725D050A60078F8B5 /* DeveloperAction.swift in Sources */,
 				B26F6B5D25B7C47400EA2057 /* EventListViewModel.swift in Sources */,
@@ -2358,6 +2414,7 @@
 				B25F6AAF25BA70550067C096 /* PreferenceSlider.swift in Sources */,
 				B2FAD92225B6022300598B9E /* EKEvent+UniqueID.swift in Sources */,
 				B2E2252825B640BE0052758C /* SpacerAdornment.swift in Sources */,
+				B270D47625D5E71600195661 /* SoundPlayListGenerator.swift in Sources */,
 				B2FAD90525B601DB00598B9E /* DataModelStorage.swift in Sources */,
 				B26F6B5F25B7C47400EA2057 /* EventListViewController.swift in Sources */,
 				B2CEF1A925B8CD7200CA01E2 /* LinkButton.swift in Sources */,
@@ -2366,7 +2423,7 @@
 				B24C5F1725BE007100F51FE7 /* Geometry+Extensions.swift in Sources */,
 				B2FAD94125B6022B00598B9E /* Reminder+DictionaryCodable.swift in Sources */,
 				B294934E25B5F6E400FCCF9E /* StringFormatter.swift in Sources */,
-				B25F6B1E25BCC9600067C096 /* TableViewAdornmentView.swift in Sources */,
+				B25F6B1E25BCC9600067C096 /* ListViewAdornmentView.swift in Sources */,
 				B29F4AFA25D18B620078F8B5 /* PreferencesStorage.swift in Sources */,
 				B24C5F6825BE37E100F51FE7 /* SystemUtilities.swift in Sources */,
 				B29F4AF825D0D67D0078F8B5 /* Dictionary+JSON.swift in Sources */,
@@ -2375,13 +2432,12 @@
 				B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */,
 				B24C5F4125BE06F400F51FE7 /* SDKButton.swift in Sources */,
 				B2B0F74F25D2DC6D00E8EFBD /* MenuBarMenuItem.swift in Sources */,
-				B204B3A525CDA5B900795BC6 /* SoundSetIterator.swift in Sources */,
-				B2118DE025D313A7002AE939 /* MenuItemView.swift in Sources */,
+				B204B3A525CDA5B900795BC6 /* PlayListIteratorProtocol.swift in Sources */,
 				B274EFC925BA1D0400F9D473 /* VerticalButtonListViewController.swift in Sources */,
 				B29493A225B5F7F500FCCF9E /* AlarmNotificationController.swift in Sources */,
 				B2E2250325B63B3C0052758C /* MainWindowViewController.swift in Sources */,
 				B2E224F325B635600052758C /* TimeRemainingViewController.swift in Sources */,
-				B274EFF125BA279B00F9D473 /* SoundPickerTableViewController.swift in Sources */,
+				B274EFF125BA279B00F9D473 /* SoundPickerListViewController.swift in Sources */,
 				B24ED39A25BF684200F0B809 /* SDKCustomButton.swift in Sources */,
 				B204B3A125CD9CC900795BC6 /* SoundSet.swift in Sources */,
 				B2EB268525C86B4A00906E41 /* NSImage+Tinting.m in Sources */,
@@ -2390,16 +2446,16 @@
 				B24C5F5525BE156500F51FE7 /* CalendarItemIconBar.swift in Sources */,
 				B294939F25B5F7F500FCCF9E /* DataModel+NextAlarmDate.swift in Sources */,
 				B2E2252025B640BE0052758C /* VerticalViewLayout.swift in Sources */,
-				B294938125B5F75B00FCCF9E /* SoundSetAlarmSound.swift in Sources */,
-				B29F4AFD25D18CCB0078F8B5 /* UserDefaultsPreferencesStorage.swift in Sources */,
+				B2747D0C25D581110071D5DF /* SoundFolder+DirectoryIterator.swift in Sources */,
+				B294938125B5F75B00FCCF9E /* SoundPlayList.swift in Sources */,
 				B259A34A25C9B34100CF4C95 /* MenuBarChoicesView.swift in Sources */,
 				B274EFA425BA181F00F9D473 /* TipView.swift in Sources */,
-				B26F6B5C25B7C47400EA2057 /* ReminderTableViewCell.swift in Sources */,
+				B26F6B5C25B7C47400EA2057 /* ReminderListViewCell.swift in Sources */,
 				B26F6B7F25B7C67500EA2057 /* Calendar+NSColor.swift in Sources */,
 				B294935425B5F6E400FCCF9E /* Dictionary+Utiities.swift in Sources */,
 				B29493A025B5F7F500FCCF9E /* DemoAlarmNotification.swift in Sources */,
 				B2FAD93F25B6022B00598B9E /* Event+DictionaryCodable.swift in Sources */,
-				B294936625B5F6F100FCCF9E /* AlarmSound.swift in Sources */,
+				B294936625B5F6F100FCCF9E /* Sound.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2433,15 +2489,15 @@
 				B24C5F2A25BE043200F51FE7 /* CalendarListCell.swift in Sources */,
 				B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */,
 				B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */,
-				B25F6BDC25BDF9B40067C096 /* TableViewSectionAdornmentProtocol.swift in Sources */,
+				B25F6BDC25BDF9B40067C096 /* ListViewSectionAdornmentProtocol.swift in Sources */,
 				B2BAD33325AA23F500C68027 /* VerticalButtonBarViewController.swift in Sources */,
 				B25F6B7C25BDEE240067C096 /* HorizontalViewLayout.swift in Sources */,
 				B25F6AA325BA58810067C096 /* FirstRunViewController.swift in Sources */,
 				B21DA217259CFF90002A56C8 /* SoundPickerViewController.swift in Sources */,
-				B25F6BE325BDF9BB0067C096 /* TableViewModel.swift in Sources */,
+				B25F6BE325BDF9BB0067C096 /* ListViewModel.swift in Sources */,
 				B21DA18B259BA6CB002A56C8 /* ViewLayout.swift in Sources */,
 				B2F817E525768E3600B28119 /* TableViewSectionAdornment.swift in Sources */,
-				B2118DE825D31475002AE939 /* MenuBarReminderTableViewCell.swift in Sources */,
+				B2118DE825D31475002AE939 /* MenuBarReminderListViewCell.swift in Sources */,
 				B20AAD0625954B2C00F9B50C /* AudioSessionController.swift in Sources */,
 				B2FAD92F25B6022300598B9E /* EKDataModelFactory.swift in Sources */,
 				B22EEAC025A63B2F00D2D19D /* ContentAwareView.swift in Sources */,
@@ -2449,6 +2505,7 @@
 				B2A181C42598134A00C1E7F0 /* NotificationChoicesView.swift in Sources */,
 				B2FAD92B25B6022300598B9E /* EKController+ReloadingState.swift in Sources */,
 				B260C83525A3D76400C03B2E /* SoundRepeatView.swift in Sources */,
+				B2747CFB25D497D90071D5DF /* MenuBarItem.swift in Sources */,
 				B2FAD94025B6022B00598B9E /* Reminder+DictionaryCodable.swift in Sources */,
 				B2F6B51325632AE8000BC78E /* Date+Utilities.swift in Sources */,
 				B225CDB625C0801400F3BA15 /* SwayAnimation.swift in Sources */,
@@ -2469,10 +2526,10 @@
 				B225CDA225C073E800F3BA15 /* SDKAlert.swift in Sources */,
 				B2F6B4FF2562DDC9000BC78E /* WindowSceneDelegate.swift in Sources */,
 				B2FAD90825B601DB00598B9E /* Reminder.swift in Sources */,
-				B25F6BE225BDF9BB0067C096 /* TableViewRowCell.swift in Sources */,
 				B2FAD8F825B601DB00598B9E /* DataModel+EventUtilities.swift in Sources */,
 				B2E1545E2575B5F3008BE604 /* DividerView.swift in Sources */,
 				B2FAD91F25B6022300598B9E /* EKController.swift in Sources */,
+				B270D47525D5E71600195661 /* SoundPlayListGenerator.swift in Sources */,
 				B233C55D25A39805005A7FB3 /* UIEdgeInsets+Sizes.swift in Sources */,
 				B288E91325A7860C00601B1E /* Date+CountDownStringFormatter.swift in Sources */,
 				B2DBBCE725A4BD6800D509C9 /* StartDelayView.swift in Sources */,
@@ -2480,7 +2537,7 @@
 				B2020A9E2577D88600F478CC /* Reloader.swift in Sources */,
 				B2AFE6E1256B2571006B3C58 /* EventNotifier.swift in Sources */,
 				B2F817CF25768DF000B28119 /* TableViewSectionAdornmentProtocol.swift in Sources */,
-				B20AACE825950EE300F9B50C /* AlarmSoundBehavior.swift in Sources */,
+				B20AACE825950EE300F9B50C /* SoundBehavior.swift in Sources */,
 				B21DA21B259D0375002A56C8 /* TopBottomBarVerticalLayout.swift in Sources */,
 				B2E78A1D2595656500DF0ACF /* DataModel+NextAlarmDate.swift in Sources */,
 				B24ED39925BF684200F0B809 /* SDKCustomButton.swift in Sources */,
@@ -2489,16 +2546,17 @@
 				B256BC16258028BD00FA67DC /* PersonalCalendarListViewController.swift in Sources */,
 				B2020AD72577DAC600F478CC /* CalendarItemTableViewController.swift in Sources */,
 				B2A58B4525928F0C00188584 /* Bundle+Utilities.swift in Sources */,
-				B2AFE691256ACC05006B3C58 /* TableViewController.swift in Sources */,
+				B2AFE691256ACC05006B3C58 /* ListViewController.swift in Sources */,
 				B2F817FC2576ABD900B28119 /* MainEventListViewController.swift in Sources */,
 				B2FAD93E25B6022B00598B9E /* Event+DictionaryCodable.swift in Sources */,
-				B25F6BE425BDF9BB0067C096 /* TableViewRow.swift in Sources */,
+				B25F6BE425BDF9BB0067C096 /* ListViewRowDescriptor.swift in Sources */,
 				B2B70987257FC5E900C48ED5 /* StringFormatter.swift in Sources */,
 				B2FAD92725B6022300598B9E /* EKCalendar+UniqueID.swift in Sources */,
+				B2747CF825D48F220071D5DF /* MenuBarMenuChoiceView.swift in Sources */,
 				B29D0575259260130027C152 /* SimpleTimer.swift in Sources */,
 				B2FAD8F425B601DB00598B9E /* Calendar.swift in Sources */,
 				B25F6BDB25BDF9B40067C096 /* SectionHeaderView.swift in Sources */,
-				B236FCDB255F196E00A2E58D /* AlarmSound.swift in Sources */,
+				B236FCDB255F196E00A2E58D /* Sound.swift in Sources */,
 				B25F6B7B25BDEE240067C096 /* TopBottomBarVerticalLayout.swift in Sources */,
 				B24C5F3125BE063500F51FE7 /* TimeRemainingViewController.swift in Sources */,
 				B2965516257BD3EC008D1858 /* DictionaryCodable.swift in Sources */,
@@ -2506,7 +2564,7 @@
 				B2FAD90225B601DB00598B9E /* DataModel.swift in Sources */,
 				B2F818292576FB1100B28119 /* String+Utilities.swift in Sources */,
 				B2965558257C1186008D1858 /* ReminderTableViewCell.swift in Sources */,
-				B24C5F2125BE022900F51FE7 /* CalendarItemTableViewCell.swift in Sources */,
+				B24C5F2125BE022900F51FE7 /* CalendarItemListViewCell.swift in Sources */,
 				B2BAD32F25AA23C700C68027 /* VerticalTabView.swift in Sources */,
 				B2E224BE25B61B420052758C /* PreferencesReloader.swift in Sources */,
 				B2FAD90425B601DB00598B9E /* DataModelStorage.swift in Sources */,
@@ -2520,7 +2578,7 @@
 				B256BC08258025EC00FA67DC /* CalendarChooserViewController.swift in Sources */,
 				B24C5F2525BE043200F51FE7 /* DelegateCalendarListViewController.swift in Sources */,
 				B2A181AC2597FC9600C1E7F0 /* AlarmNotification.swift in Sources */,
-				B25F6BDA25BDF9B40067C096 /* TableViewAdornmentView.swift in Sources */,
+				B25F6BDA25BDF9B40067C096 /* ListViewAdornmentView.swift in Sources */,
 				B24C5F3525BE064400F51FE7 /* MainWindowViewController.swift in Sources */,
 				B25F6BD825BDF9B40067C096 /* DividerAdornment.swift in Sources */,
 				B21DA1BC259BE5B5002A56C8 /* SoundPickerTableViewCell.swift in Sources */,
@@ -2528,12 +2586,14 @@
 				B2A58B732593B99100188584 /* TimeRemainingViewController_iOS.swift in Sources */,
 				B2FAD93325B6022300598B9E /* Reminder+EKReminder.swift in Sources */,
 				B25F6B8425BDEEEE0067C096 /* Geometry.swift in Sources */,
+				B2747D0525D580900071D5DF /* SoundFolder+Searching.swift in Sources */,
 				B25F6B9425BDF05B0067C096 /* iOSThemes.swift in Sources */,
 				B29F4AF425D0C99D0078F8B5 /* SoundFile.swift in Sources */,
 				B2FAD92325B6022300598B9E /* EKReminder+UniqueID.swift in Sources */,
+				B2747D0E25D5815D0071D5DF /* SoundFolder+Bundle.swift in Sources */,
 				B24C5F2625BE043200F51FE7 /* CalendarChooserViewController.swift in Sources */,
 				B2E1546C2575B7CF008BE604 /* SpacerAdornment.swift in Sources */,
-				B2118DEB25D3153F002AE939 /* CalendarItemTableViewCell+MenuBar.swift in Sources */,
+				B2118DEB25D3153F002AE939 /* CalendarItemListViewCell+MenuBar.swift in Sources */,
 				B2FAD8F225B601DB00598B9E /* CalendarlItem.swift in Sources */,
 				B22EEAB825A62BEA00D2D19D /* LoadingView.swift in Sources */,
 				B20AACD22594F3E900F9B50C /* AlarmNotificationController.swift in Sources */,
@@ -2541,14 +2601,18 @@
 				B24C5F2725BE043200F51FE7 /* CalendarListViewModel.swift in Sources */,
 				B255349525B222C200E17EEF /* CalendarItem+LocationURL.swift in Sources */,
 				B24C5F2925BE043200F51FE7 /* CalendarToolbarView.swift in Sources */,
+				B2747D1C25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */,
+				B2747D0225D5807B0071D5DF /* SoundFolder+Visitor.swift in Sources */,
 				B298C46E25ABCB940085BBA0 /* Theme.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,
 				B2AFE6D9256B01D6006B3C58 /* EventListViewModel.swift in Sources */,
 				B233C55925A3961F005A7FB3 /* SliderView.swift in Sources */,
 				B260C82925A3B7C500C03B2E /* FancyButton.swift in Sources */,
+				B2A2D32225D9C51C002C8066 /* MenuBarNoMeetingsListViewCell.swift in Sources */,
+				B2747CFF25D580010071D5DF /* SoundFolderItem.swift in Sources */,
 				B2AFE6DD256B028F006B3C58 /* EventListTableViewCell.swift in Sources */,
 				B260C82F25A3CEED00C03B2E /* SoundVolumeView.swift in Sources */,
-				B25F6BE125BDF9BB0067C096 /* TableViewSection.swift in Sources */,
+				B25F6BE125BDF9BB0067C096 /* ListViewSectionDescriptor.swift in Sources */,
 				B21DA1B4259BE488002A56C8 /* SoundPickerTableViewController.swift in Sources */,
 				B255349925B22C9200E17EEF /* AppControllers.swift in Sources */,
 				B256BC1C25802A0000FA67DC /* CalendarListViewModel.swift in Sources */,
@@ -2567,12 +2631,12 @@
 				B2E224C025B61B420052758C /* UserDefaults+IdentifierDictionary.swift in Sources */,
 				B296555F257C306E008D1858 /* CalendarItemTableViewCell.swift in Sources */,
 				B21DA187259BA697002A56C8 /* VerticalViewLayout.swift in Sources */,
-				B2118DE525D31464002AE939 /* MenuBarEventListTableViewCell.swift in Sources */,
+				B2118DE525D31464002AE939 /* MenuBarEventListListViewCell.swift in Sources */,
 				B2FAD8F025B601DB00598B9E /* Alarm+SavedState.swift in Sources */,
-				B25F6BDD25BDF9B40067C096 /* TableViewSectionAdornment.swift in Sources */,
+				B25F6BDD25BDF9B40067C096 /* ListViewSectionAdornment.swift in Sources */,
 				B2FAD8F625B601DB00598B9E /* DataModelController.swift in Sources */,
 				B2FAD94425B6022B00598B9E /* DataModelFactory.swift in Sources */,
-				B2A58B48259290F700188584 /* SoundSetAlarmSound.swift in Sources */,
+				B2A58B48259290F700188584 /* SoundPlayList.swift in Sources */,
 				B21DA22F259D3B3A002A56C8 /* TopBar.swift in Sources */,
 				B24C5F2825BE043200F51FE7 /* PersonalCalendarListViewController.swift in Sources */,
 				B2FAD93125B6022300598B9E /* Event+EKEvent.swift in Sources */,
@@ -2588,10 +2652,12 @@
 				B2E224C425B61B420052758C /* Preferences.swift in Sources */,
 				B2E224BC25B61B420052758C /* UserDefaults+IdentifierList.swift in Sources */,
 				B2A181C02598125800C1E7F0 /* SoundPreferencesView.swift in Sources */,
+				B22365B725D41F4500AC00DA /* MenuBarScrollView.swift in Sources */,
 				B25F6B7F25BDEE240067C096 /* ViewLayout.swift in Sources */,
 				B2E224BA25B61B420052758C /* SavedState.swift in Sources */,
 				B2E154682575B7A8008BE604 /* DividerAdornment.swift in Sources */,
 				B2A58B4F2592A2E200188584 /* UserNotificationCenterController.swift in Sources */,
+				B2747D0B25D581110071D5DF /* SoundFolder+DirectoryIterator.swift in Sources */,
 				B2A181C8259813D200C1E7F0 /* ButtonContainerView.swift in Sources */,
 				B2E224C225B61B420052758C /* PreferencesController.swift in Sources */,
 				B25F6B7E25BDEE240067C096 /* VerticalViewLayout.swift in Sources */,

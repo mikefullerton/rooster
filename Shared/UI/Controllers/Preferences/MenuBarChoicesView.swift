@@ -29,8 +29,7 @@ class MenuBarChoicesView : SimpleStackView {
             self.showInMenuBar,
             self.showCountdown,
             self.shortCountdown,
-            self.blink,
-            self.showStopAlarmButton
+            self.blink
         ])
 
         self.setContainedViews([
@@ -57,12 +56,6 @@ class MenuBarChoicesView : SimpleStackView {
     lazy var blink : SinglePreferenceChoiceView = {
         return MenuBarPreferenceView(title: "Blink Rooster when alarm is firing", option: .blink)
     }()
-
-    lazy var showStopAlarmButton : SinglePreferenceChoiceView = {
-        return MenuBarPreferenceView(title: "Show stop alarm button when alarm is firing", option: .showStopAlarmIcon)
-    }()
-
-    
 }
 
 class MenuBarPreferenceView: SinglePreferenceChoiceView {

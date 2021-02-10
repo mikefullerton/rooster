@@ -12,7 +12,7 @@ protocol AlarmNotificationDelegate : AnyObject {
     func alarmNotificationDidFinish(_ alarmNotification: AlarmNotification)
 }
 
-class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible, AlarmSoundDelegate, Identifiable {
+class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible, SoundDelegate, Identifiable {
     
     enum State: String {
         case none = "None"
@@ -26,7 +26,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     
     private var state: State
     private let timer: SimpleTimer
-    private var sound: AlarmSound?
+    private var sound: Sound?
     
     let id: String
     let itemID: String
@@ -90,29 +90,37 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
     private func startPlayingSound() {
         let soundPrefs = AppDelegate.instance.preferencesController.preferences(forItemIdentifier: self.itemID).soundPreference
         
-        guard soundPrefs.isEnabled else {
+        guard soundPrefs.hasEnabledSoundPreferences else {
             self.logger.log("sounds disabled not playing sound")
             return
         }
         
-        if let sound = soundPrefs.alarmSound {
-            sound.delegate = self
-            self.sound = sound
-            
-            let soundBehavior = AlarmSoundBehavior(playCount: soundPrefs.playCount,
-                                                   timeBetweenPlays: 0.1,
-                                                   fadeInTime: 0)
-            
-            let interval = TimeInterval(soundPrefs.startDelay)
-            
-            self.logger.log("starting alarm sound for \(self.description), with interval: \(interval)")
+        let iteratorList = soundPrefs.soundSets.map { return $0.soundSetIterator }
+        let iterator = MultiPlayListIterator(withIterators: iteratorList)
+       
+        guard iterator.sounds.count > 0 else {
+            self.logger.log("No sounds in iterators to play")
+            return
+        }
+        
+       //        return
+        let sound = SoundPlayList(withPlayListIterator: iterator, displayName: "")
+        sound.delegate = self
+        self.sound = sound
+        
+        let soundBehavior = SoundBehavior(playCount: soundPrefs.playCount,
+                                               timeBetweenPlays: 0.1,
+                                               fadeInTime: 0)
+        
+        let interval = TimeInterval(soundPrefs.startDelay)
+        
+        self.logger.log("starting alarm sound for \(self.description), with interval: \(interval)")
 
-            self.timer.start(withInterval:interval) { (timer) in
-                
-                self.logger.log("playing alarm sound: \(sound.displayName) for \(self.description)")
+        self.timer.start(withInterval:interval) { (timer) in
+            
+            self.logger.log("playing alarm sound: \(sound.displayName) for \(self.description)")
 
-                sound.play(withBehavior: soundBehavior)
-            }
+            sound.play(withBehavior: soundBehavior)
         }
     }
 
@@ -162,10 +170,16 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
         return "\(type(of:self)): \(self.id), itemID: \(self.itemID), state: \(self.state.rawValue)"
     }
     
-    func soundWillStartPlaying(_ sound: AlarmSound) {
+    func soundWillStartPlaying(_ sound: Sound) {
     }
     
-    func soundDidStopPlaying(_ sound: AlarmSound) {
+    func soundDidStartPlaying(_ sound: Sound) {
+    }
+
+    func soundDidUpdate(_ sound: Sound) {
+    }
+
+    func soundDidStopPlaying(_ sound: Sound) {
         self.logger.log("alarm stopped playing sound: \(self.description)")
         self.state = .finished
         if let delegate = self.delegate {

@@ -34,7 +34,7 @@ struct LightTheme : ThemeProtocol {
     
     var secondaryLabelColor: UIColor { UIColor.secondaryLabel }
     
-    var tableViewCellBackgroundColor: UIColor { UIColor.systemGroupedBackground }
+    var listViewCellBackgroundColor: UIColor { UIColor.systemGroupedBackground }
 
     var blurEffect: UIBlurEffect { UIBlurEffect(style: .systemThinMaterial) }
 
@@ -57,7 +57,7 @@ struct DarkTheme : ThemeProtocol {
     
     var secondaryLabelColor: UIColor { UIColor.secondaryLabel }
 
-    var tableViewCellBackgroundColor: UIColor { self.windowBackgroundColor }
+    var listViewCellBackgroundColor: UIColor { self.windowBackgroundColor }
 
     var blurEffect: UIBlurEffect { UIBlurEffect(style: .systemThinMaterial) }
 }

@@ -35,7 +35,7 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
         self.activateViewController(self.calendarsViewController)
     }
 
-    private func activateViewController(_ viewController: CalendarItemTableViewController<CalenderListViewModel>) {
+    private func activateViewController(_ viewController: CalendarItemListViewController<CalenderListViewModel>) {
         
         if let activeViewController = self.activeViewController {
             activeViewController.view.removeFromSuperview()

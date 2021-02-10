@@ -20,4 +20,8 @@ extension String {
     func prepend(with character: Character, count: Int) -> String {
         return String(repeatElement(character, count: count)) + self
     }
+    
+    static var guid: String {
+        return UUID().uuidString
+    }
 }

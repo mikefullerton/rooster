@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CalendarItemTableViewController<ViewModel> : TableViewController<ViewModel>, DataModelAware where ViewModel: TableViewModelProtocol {
+class CalendarItemTableViewController<ViewModel> : ListViewController<ViewModel>, DataModelAware where ViewModel: TableViewModelProtocol {
     
     private var reloader: DataModelReloader? = nil
 

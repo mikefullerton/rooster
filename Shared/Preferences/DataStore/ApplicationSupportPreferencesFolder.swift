@@ -15,7 +15,7 @@ class ApplicationSupportPreferencesFolder: PreferencesStorage {
         case missingPrefsFileURL
     }
     
-    private var cachedPreferences: [AnyHashable: Any]?
+    private var cachedPreferences: Preferences?
     
     private var directoryURL: URL?
     private var preferencesFileURL: URL?
@@ -48,7 +48,7 @@ class ApplicationSupportPreferencesFolder: PreferencesStorage {
         self.soundsSetsFolderURL = soundsSetsFolderURL
     }
     
-    func read() throws -> [AnyHashable: Any]? {
+    func read() throws -> Preferences? {
         
         if let cached = self.cachedPreferences {
             return cached
@@ -57,29 +57,33 @@ class ApplicationSupportPreferencesFolder: PreferencesStorage {
         try self.configureIfNeeded()
         
         if let prefsURL = self.preferencesFileURL {
-            var outPreferences:[AnyHashable: Any] = [:]
             
-            if let dictionary = try [AnyHashable: Any].readJSON(fromURL: prefsURL) {
-                outPreferences = dictionary
-            }
+            let data = try Data(contentsOf: prefsURL)
             
-            self.cachedPreferences = outPreferences
-            
-            return outPreferences
+            let decoder = JSONDecoder()
+            let prefs = try decoder.decode(Preferences.self, from: data)
+            self.cachedPreferences = prefs
+            return prefs
         }
         
         throw Errors.missingPrefsFileURL
     }
     
-    func write(_ preferences: [AnyHashable: Any]) throws {
+    func write(_ preferences: Preferences) throws {
         try self.configureIfNeeded()
 
         if let prefsURL = self.preferencesFileURL {
-            try preferences.writeJSON(toURL: prefsURL)
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [ .prettyPrinted, .sortedKeys ]
+
+            let data = try encoder.encode(preferences)
+
+            try data.write(to: prefsURL)
+
             self.cachedPreferences = preferences
             return
         }
-        
+
         throw Errors.missingPrefsFileURL
     }
 
@@ -94,8 +98,6 @@ class ApplicationSupportPreferencesFolder: PreferencesStorage {
         throw Errors.missingPrefsFileURL
     }
     
-    func write(_ object: DictionaryCodable) throws {
-        try self.write(object.dictionaryRepresentation)
-    }
+    
 
 }

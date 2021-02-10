@@ -8,15 +8,15 @@
 import Foundation
 import Cocoa
 
-class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Identifiable {
+class SoundFileAlarmSound : NSObject, Sound, NSSoundDelegate, Loggable, Identifiable {
     
     typealias ID = String
     
-    weak var delegate: AlarmSoundDelegate?
+    weak var delegate: SoundDelegate?
     
     var id: String
     
-    private(set) var behavior: AlarmSoundBehavior
+    private(set) var behavior: SoundBehavior
     let soundFile: SoundFile
     
     private var sound: NSSound?
@@ -26,7 +26,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
     
     init(withSoundFile soundFile: SoundFile) {
         self.soundFile = soundFile
-        self.behavior = AlarmSoundBehavior()
+        self.behavior = SoundBehavior()
         self.stopTimer = SimpleTimer(withName: "AVAlarmSoundStopTimer")
         self.id = soundFile.id
         self.isPlaying = false
@@ -51,8 +51,8 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
         }
         
         let soundFile = self.soundFile
-        if let url = soundFile.url,
-           let sound = NSSound(contentsOf: url, byReference: true){
+        let url = soundFile.url
+        if let sound = NSSound(contentsOf: url, byReference: true){
             sound.setName(soundFile.displayName)
             sound.delegate = self
             self.sound = sound
@@ -108,7 +108,7 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
         return lhs.id == rhs.id
     }
     
-    func play(withBehavior behavior: AlarmSoundBehavior) {
+    func play(withBehavior behavior: SoundBehavior) {
         self.createPlayerIfNeeded()
         self.isPlaying = true
         self.logger.log("Sound will start playing: \(self.displayName)")
@@ -128,8 +128,10 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
     }
     
     func stop() {
-        self.logger.log("Sound will be aborted: \(self.displayName)")
-        self.didStop()
+        if self.isPlaying {
+            self.logger.log("Sound will be aborted: \(self.displayName)")
+            self.didStop()
+        }
     }
     
     private func fadeOutAndStop() {
@@ -169,8 +171,8 @@ class SoundFileAlarmSound : NSObject, AlarmSound, NSSoundDelegate, Loggable, Ide
 }
 
 extension SoundFileAlarmSound {
-    static func alarmSounds(withSoundFiles soundFiles:[SoundFile]) -> [AlarmSound] {
-        var sounds:[AlarmSound] = []
+    static func alarmSounds(withSoundFiles soundFiles:[SoundFile]) -> [Sound] {
+        var sounds:[Sound] = []
         for soundFile in soundFiles {
             let alarm = SoundFileAlarmSound(withSoundFile: soundFile)
             sounds.append(alarm)

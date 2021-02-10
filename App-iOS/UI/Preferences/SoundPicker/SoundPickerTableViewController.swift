@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 
 
-class SoundPickerTableViewController : TableViewController<SoundPickerTableViewModel> {
+class SoundPickerTableViewController : ListViewController<SoundPickerTableViewModel> {
     
-    let soundIndex: SoundPreferences.SoundIndex
+    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
     let soundFolder: SoundFolder
     
-    init(withSoundIndex soundIndex: SoundPreferences.SoundIndex) {
-        self.soundIndex = soundIndex
+    init(withSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
+        self.soundPreferenceKey = soundPreferenceKey
         self.soundFolder = SoundFolder.loadFromBundle()
         
         super.init(nibName: nil, bundle: nil)
@@ -43,7 +43,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
     }
     
     func setSelectedRow() {
-        let sound = AppDelegate.instance.preferencesController.soundPreferences[self.soundIndex]
+        let sound = AppDelegate.instance.preferencesController.soundPreferences.soundPreferenceForKey(self.soundPreferenceKey)
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
             for(soundIndex, soundURL) in subfolder.soundURLs.enumerated() {

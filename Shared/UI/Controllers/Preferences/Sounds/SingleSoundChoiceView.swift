@@ -16,17 +16,18 @@ protocol SingleSoundChoiceViewDelegate : AnyObject {
     func soundChoiceViewChooserEditSoundsButtonPressed(_ view: SingleSoundChoiceView)
 }
 
-class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
+class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonSoundProvider {
     
     weak var delegate: SingleSoundChoiceViewDelegate?
 
-    let soundPrefIndex: SoundPreferences.SoundIndex
+    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
     
     init(frame: CGRect,
-         soundPreferenceIndex index: SoundPreferences.SoundIndex,
+         soundPreferenceKey: SoundPreferences.SoundPreferenceKey,
          delegate: SingleSoundChoiceViewDelegate) {
         self.delegate = delegate
-        self.soundPrefIndex = index
+        self.soundPreferenceKey = soundPreferenceKey
+        
         super.init(frame: frame)
 
         self.addSubview(self.checkbox)
@@ -38,7 +39,7 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
 
         NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
 
-        self.updatePlayButton()
+        self.updatePlayList()
         self.refresh()
     }
 
@@ -47,20 +48,22 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
     }
 
     @objc func preferencesDidChange(_ notification: Notification) {
-        self.updatePlayButton()
+        self.updatePlayList()
         self.refresh()
     }
 
     private var soundPreference: SingleSoundPreference {
         get {
-            return AppDelegate.instance.preferencesController.soundPreferences[self.soundPrefIndex]
+            return AppDelegate.instance.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
         }
-        set(newSound) {
-            AppDelegate.instance.preferencesController.soundPreferences[self.soundPrefIndex] = newSound
+        set(newPref) {
+            AppDelegate.instance.preferencesController.soundPreferences.setSoundPreference(newPref, forKey:self.soundPreferenceKey)
         }
     }
     
     private func setEnabledStates() {
+        
+        self.playButton.isEnabled = self.playList != nil && !self.playList!.isEmpty
         self.soundPickerButton.isEnabled = true
         self.checkbox.isEnabled = true
     }
@@ -104,11 +107,11 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
 //            let soundIdentifier = SoundFileDescriptor(with: self.playButton.soundFile?.id ?? "",
 //                                                  randomizerPriority: .never)
 //
-//            let soundSet = SoundSet(withIdentifier: "\(self.soundPrefIndex)",
-//                                    name: "\(self.soundPrefIndex)",
+//            let soundSet = SoundSet(withIdentifier: "\(self.soundPreferenceKey)",
+//                                    name: "\(self.soundPreferenceKey)",
 //                                    soundIdentifiers: [ soundIdentifier ])
 //
-//            self.soundPreference = SingleSoundPreference(withIdentifier: "\(self.soundPrefIndex)",
+//            self.soundPreference = SingleSoundPreference(withIdentifier: "\(self.soundPreferenceKey)",
 //                                                         soundSet: soundSet,
 //                                                         enabled: true)
 //
@@ -118,37 +121,43 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
 //
 //        self.refresh()
     }
-    
-    func makeSurePlayButtonHasSound() {
-//        if self.playButton.
-    }
-    
-    func playButtonSoundWillStart(_ playSoundButton: PlaySoundButton) {
-        self.updatePlayButton()
-        self.refresh()
-    }
-    
-    func playButtonSoundDidStart(_ playSoundButton: PlaySoundButton) {
-        self.refresh()
-    }
-    
-    func playButtonSoundDidStop(_ playSoundButton: PlaySoundButton) {
+        
+    func playSoundButton(_ playSoundButton: PlaySoundButton, willStartPlayingSound sound: Sound) {
         self.refresh()
     }
 
-    func playButton(_ playSoundButton: PlaySoundButton, alarmSoundDidChange alarmSound: AlarmSound?) {
+    func playSoundButton(_ playSoundButton: PlaySoundButton, didStartPlayingSound sound: Sound) {
         self.refresh()
     }
     
-    private func updatePlayButton() {
+    func playSoundButton(_ playSoundButton: PlaySoundButton, didStopPlayingSound sound: Sound) {
+        self.refresh()
+    }
+    
+    func playSoundButton(_ playSoundButton: PlaySoundButton, soundDidUpdate sound: Sound) {
+        self.refresh()
+    }
+
+    var playList: SoundPlayList?
+    
+    func updatePlayList() {
         let soundPref = self.soundPreference
         let soundSet = soundPref.soundSet
-        self.playButton.alarmSound = soundSet.alarmSound;
+        self.playList = soundSet.playList;
+    }
+    
+    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> Sound? {
+        return self.playList
+    }
+    
+    func playSoundButtonProvideSoundBehavior(_ playSoundButton: PlaySoundButton) -> SoundBehavior {
+        return SoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0)
     }
 
     private lazy var playButton: PlaySoundButton = {
         let button = PlaySoundButton()
         button.delegate = self
+        button.soundProvider = self
         return button
     }()
 
@@ -203,10 +212,17 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate {
         let soundPref = self.soundPreference
         self.checkbox.intValue = soundPref.isEnabled ? 1 : 0
         
-        if let soundDisplayName = self.playButton.soundDisplayName {
-            self.checkbox.title = soundDisplayName
+        if let playList = self.playList,
+            !playList.isEmpty {
+            let soundName = playList.currentSoundDisplayName
+//            let playListName = playList.displayName
+            
+//            if playListName.count > 0 {
+//                self.checkbox.title = "\(playListName): \(soundName)"
+//            } else {
+                self.checkbox.title = soundName
+//            }
         } else {
-
             if soundPref.isRandom {
                 self.checkbox.title = "Random sound will be chosen when played".localized
             } else {

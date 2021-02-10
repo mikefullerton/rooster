@@ -12,25 +12,27 @@ import Cocoa
 import UIKit
 #endif
 
-struct CalenderListViewModel : TableViewModelProtocol {
+struct CalenderListViewModel : ListViewModelProtocol {
     
-    let sections: [TableViewSectionProtocol]
+    let sections: [ListViewSectionDescriptor]
     
     init(withCalendars calendars: [CalendarSource: [Calendar]]) {
         
-        var sections: [TableViewSectionProtocol] = []
+        var sections: [ListViewSectionDescriptor] = []
 
         for source in calendars.sortedKeys {
             
-            let rowData = calendars[source]!
+            let rowContent = calendars[source]!
             
-            let header = TableViewSectionAdornment(withTitle: source)
+            let header = ListViewSectionAdornment(withTitle: source)
             
 //            let footer = SpacerAdornment(withHeight: 20)
             
-            let section = TableViewSection<Calendar, CalendarListCell>(withRowData:rowData,
-                                                                       header: header,
-                                                                       footer: nil /*footer*/)
+            let rows = rowContent.map { ListViewRowDescriptor<Calendar, CalendarListCell>(withContent: $0)}
+            
+            let section = ListViewSectionDescriptor(withRows: rows,
+                                          header: header,
+                                          footer: nil /*footer*/)
             
             sections.append(section)
         }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Preferences : CustomStringConvertible, Loggable {
+struct Preferences : CustomStringConvertible, Loggable, Codable {
 
     static let version = 2
     
@@ -32,58 +32,6 @@ struct Preferences : CustomStringConvertible, Loggable {
 
     var description: String {
         return "\(type(of:self)): notification: \(self.notificationPreferences.description), sounds: \(self.soundPreferences.description), menuBar: \(self.menuBarPreferences.description)"
-    }
-}
-
-extension Preferences : DictionaryCodable {
- 
-    enum CodingKeys: String, CodingKey {
-        case version = "version"
-        case sounds = "sounds"
-        case notifications = "notifications"
-        case menuBar = "menuBar"
-    }
-    
-    init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
-        
-        self.init()
-        
-        if let dictionary = dictionaryOrNil {
-        
-            guard let version = dictionary[CodingKeys.version.rawValue] as? Int,
-                  version == Self.version else {
-                
-                self.logger.log("Unexpected or invalid prefereces version, expecting: \(Self.version). Reset to defaults.")
-                
-                return
-            }
-            
-            if let dictionary = dictionary[CodingKeys.sounds.rawValue] as? [AnyHashable: Any] {
-                self.soundPreferences = SoundPreferences(withDictionary: dictionary)
-            }
-            
-            if let dictionary = dictionary[CodingKeys.notifications.rawValue] as? [AnyHashable: Any] {
-                self.notificationPreferences = NotificationPreferences(withDictionary: dictionary)
-            }
-            
-            if let dictionary = dictionary[CodingKeys.menuBar.rawValue] as? [AnyHashable: Any] {
-                self.menuBarPreferences = MenuBarPreferences(withDictionary: dictionary)
-            }
-            
-        } else {
-            return nil
-        }
-    }
-
-    var dictionaryRepresentation: [AnyHashable : Any] {
-        var dictionary: [AnyHashable : Any] = [:]
-        
-        dictionary[CodingKeys.version.rawValue] = Self.version
-        dictionary[CodingKeys.sounds.rawValue] = self.soundPreferences.asDictionary
-        dictionary[CodingKeys.notifications.rawValue] = self.notificationPreferences.asDictionary
-        dictionary[CodingKeys.menuBar.rawValue] = self.menuBarPreferences.asDictionary
-
-        return dictionary
     }
 }
 

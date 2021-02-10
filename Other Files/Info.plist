@@ -67,5 +67,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSPrincipalClass</key>
+    <string>Rooster.Application</string>
+     
 </dict>
 </plist>

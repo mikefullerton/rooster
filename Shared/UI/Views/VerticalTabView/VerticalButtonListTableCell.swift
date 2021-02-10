@@ -12,17 +12,18 @@ import Cocoa
 import UIKit
 #endif
 
-class VerticalButtonListTableCell : SDKCollectionViewItem, TableViewRowCell {
-    typealias ContentType = VerticalTabItem
+class VerticalButtonListTableCell : ListViewRowView<VerticalTabItem> {
     
     let insets = SDKEdgeInsets.twenty
     let spacing: CGFloat = 20
-    
-    static var preferredHeight: CGFloat {
+  
+//    var eventHandler: EventHandler<VerticalTabItem, VerticalButtonListTableCell>?
+  
+    class override var preferredHeight: CGFloat {
         return 46.0
     }
  
-    func viewWillAppear(withContent content: ContentType) {
+    override func viewWillAppear(withContent content: VerticalTabItem) {
         self.label.stringValue = content.title
         self.iconView.image = content.icon
     }

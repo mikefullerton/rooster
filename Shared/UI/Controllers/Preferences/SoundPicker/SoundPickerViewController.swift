@@ -21,11 +21,11 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
     
     weak var delegate: SoundPickerViewControllerDelegate?
     
-    let soundPreferenceIndex: SoundPreferences.SoundIndex
+    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
     
     
-    init(withSoundPreferenceIndex index: SoundPreferences.SoundIndex) {
-        self.soundPreferenceIndex = index
+    init(withSoundPreferenceKey soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
+        self.soundPreferenceKey = soundPreferenceKey
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,9 +47,9 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
     
     lazy var bottomBar = BottomBar()
     
-    lazy var soundPicker: SoundPickerTableViewController = {
+    lazy var soundPicker: SoundPickerListViewController = {
         
-        let soundPicker = SoundPickerTableViewController(withSoundIndex: self.soundPreferenceIndex)
+        let soundPicker = SoundPickerListViewController(withSoundIndex: self.soundPreferenceKey)
         
         soundPicker.scrollView.contentInsets = SDKEdgeInsets(top: self.searchField.preferredHeight,
                                                             left: 0,
@@ -78,7 +78,7 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
     
     @objc func doneButtonClicked(_ sender: SDKButton) {
         if let newSound = self.soundPicker.chosenSound {
-            AppDelegate.instance.preferencesController.soundPreferences[self.soundPreferenceIndex] = newSound
+            AppDelegate.instance.preferencesController.soundPreferences.setSoundPreference(newSound, forKey: self.soundPreferenceKey)
         }
         
         self.dismissWindow()
@@ -126,9 +126,6 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
             } else {
                 self.soundPicker.updateSoundFolder(SoundFolder.empty)
             }
-            
-            
-            
         } else {
             self.soundPicker.updateSoundFolder(SoundFolder.instance)
         }
@@ -142,7 +139,7 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
 }
 
 extension ModalWindowController {
-    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreferences.SoundIndex) {
-        SoundPickerViewController(withSoundPreferenceIndex: soundPreference).presentInModalWindow()
+    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreferences.SoundPreferenceKey) {
+        SoundPickerViewController(withSoundPreferenceKey: soundPreference).presentInModalWindow()
     }
 }

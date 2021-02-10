@@ -59,31 +59,40 @@ class PreferencesController: ObservableObject, Loggable {
     var preferences: Preferences {
         get {
             do {
-                if let prefsDictionary = try self.storage.read(),
-                   let prefs = Preferences(withDictionary: prefsDictionary) {
+                if let prefs = try self.storage.read() {
                     return prefs
                 }
             } catch {
-                self.logger.error("Reading preferences failed with error: \(error.localizedDescription)")
+                self.logger.error("Reading old preferences failed with error: \(error.localizedDescription)")
             }
                 
-            return Preferences()
+            let prefs = Preferences()
+            do {
+                try self.storage.write(prefs)
+                self.logger.log("Wrote new preferences: \(prefs.description)")
+            } catch {
+                self.logger.error("Writing new preferences failed with error: \(error.localizedDescription)")
+                
+            }
+            return prefs
         }
         set(newPrefs) {
             let previousPrefs = self.preferences
             do {
-                try self.storage.write(newPrefs.dictionaryRepresentation)
+                try self.storage.write(newPrefs)
             } catch {
                 self.logger.error("Writing preferences failed with error: \(error.localizedDescription)")
             }
 
-            NotificationCenter.default.post(name: PreferencesController.DidChangeEvent,
-                                            object: self,
-                                            userInfo: [
-                                                Self.OldPreferencesKey: previousPrefs,
-                                                Self.NewPreferencesKey: newPrefs
-                                            ])
-
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: PreferencesController.DidChangeEvent,
+                                                object: self,
+                                                userInfo: [
+                                                    Self.OldPreferencesKey: previousPrefs,
+                                                    Self.NewPreferencesKey: newPrefs
+                                                ])
+            }
+            
             self.logger.log("Wrote preferences: \(self.preferences.description)")
         }
     }

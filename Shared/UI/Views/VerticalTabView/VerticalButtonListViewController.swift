@@ -16,9 +16,9 @@ protocol VerticalButtonListViewControllerDelegate : AnyObject {
     func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController, didChooseItem item: VerticalTabItem)
 }
 
-typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonListTableCell>
+typealias VerticalButtonBarViewModel = ListViewModel<VerticalTabItem, VerticalButtonListTableCell>
 
-class VerticalButtonListViewController : TableViewController<VerticalButtonBarViewModel> {
+class VerticalButtonListViewController : ListViewController<VerticalButtonBarViewModel> {
 
     weak var delegate : VerticalButtonListViewControllerDelegate?
     
@@ -34,7 +34,7 @@ class VerticalButtonListViewController : TableViewController<VerticalButtonBarVi
     }
 
     override func provideDataModel() -> VerticalButtonBarViewModel? {
-        return VerticalButtonBarViewModel(withData: self.tabItems)
+        return VerticalButtonBarViewModel(withContent: self.tabItems)
     }
     
     private var selectedIndex: Int {

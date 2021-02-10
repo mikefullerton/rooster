@@ -8,8 +8,9 @@
 import Foundation
 
 
-struct NotificationPreferences: CustomStringConvertible {
-    struct Options: OptionSet, CustomStringConvertible {
+struct NotificationPreferences: CustomStringConvertible, Codable {
+    
+    struct Options: OptionSet, CustomStringConvertible, Codable {
         let rawValue: Int
         
         static let useSystemNotifications   = Options(rawValue: 1 << 1)
@@ -54,30 +55,3 @@ struct NotificationPreferences: CustomStringConvertible {
     }
 }
 
-extension NotificationPreferences {
-    
-    enum CodingKeys: String, CodingKey {
-        case options = "options"
-        case systemNotificationDelay = "systemNotificationDelay"
-    }
-    
-    init(withDictionary dictionary: [AnyHashable : Any]) {
-    
-        self.init()
-        
-        if let options = dictionary[CodingKeys.options.rawValue] as? Int {
-            self.options = Options(rawValue: options)
-        }
-        
-        if let delay = dictionary[CodingKeys.systemNotificationDelay.rawValue] as? TimeInterval {
-            self.systemNotificationDelay = delay
-        }
-    }
-
-    var asDictionary: [AnyHashable : Any] {
-        var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.options.rawValue] = self.options.rawValue
-        dictionary[CodingKeys.systemNotificationDelay.rawValue] = self.systemNotificationDelay
-        return dictionary
-    }
-}

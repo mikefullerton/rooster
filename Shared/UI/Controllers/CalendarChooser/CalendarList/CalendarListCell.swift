@@ -12,16 +12,19 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
-    
-    typealias ContentType = Calendar
+class CalendarListCell : ListViewRowView<Calendar> {
     
     private var calendar: Calendar?
-
+//    var eventHandler: EventHandler<Calendar, CalendarListCell>?
+    
     private let padding:CGFloat = 8
     
     override func loadView() {
         self.view = SDKView()
+    }
+    
+    override class var preferredHeight: CGFloat {
+        return 28
     }
     
     private lazy var checkBox: SDKSwitch = {
@@ -66,7 +69,7 @@ class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
         self.calendar = nil
     }
     
-    func viewWillAppear(withContent calendar: Calendar) {
+    override func viewWillAppear(withContent calendar: Calendar) {
         self.calendar = calendar
         self.checkBox.title = calendar.title
         self.checkBox.intValue = calendar.isSubscribed ? 1 : 0
@@ -85,7 +88,5 @@ class CalendarListCell : SDKCollectionViewItem, TableViewRowCell {
         }
     }
     
-    static var preferredHeight: CGFloat {
-        return 28
-    }
+    
 }

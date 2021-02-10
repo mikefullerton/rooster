@@ -12,24 +12,49 @@ import Cocoa
 import UIKit
 #endif
 
+class MainEventListViewController: EventListViewController, Loggable {
+
+
+
+
+}
+
 class MainWindowViewController : EventListViewController, Loggable {
-    
     static let DidChangeEvent = Notification.Name("MainWindowViewControllerDidChange")
 
+    let listViewController = MainEventListViewController()
+
+    lazy var visualEffectView: NSVisualEffectView = {
+        let visualEffectView = NSVisualEffectView(frame: CGRect.zero)
+        visualEffectView.material =  .underWindowBackground //.titlebar //.headerView
+        visualEffectView.blendingMode = .behindWindow
+        visualEffectView.state = .active
+        return visualEffectView
+    }()
+    
     override func loadView() {
-        super.loadView()
-        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        self.view = self.visualEffectView
+        
+        let view = self.listViewController.view
+        
+        self.addChild(self.listViewController)
+        self.view.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: self.view.topAnchor),
+//            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+
         self.title = "Rooster"
     }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        self.sendSizeChangedEvent()
-    }
-    
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        self.sendSizeChangedEvent()
+
+    override func preferredContentSizeDidChange(for viewController: NSViewController) {
+        if viewController == self.listViewController {
+            self.preferredContentSize = viewController.preferredContentSize
+        }
     }
     
     func sendSizeChangedEvent() {
@@ -37,10 +62,18 @@ class MainWindowViewController : EventListViewController, Loggable {
             NotificationCenter.default.post(name: Self.DidChangeEvent, object: self)
         }
     }
+    
+    override var preferredContentSize: NSSize {
+        get {
+            return super.preferredContentSize
+        }
+        set(size) {
+            super.preferredContentSize = size
+            
+            var frame = self.view.frame
+            frame.size = self.preferredContentSize
+            self.view.frame = frame
 
-    override func dataModelDidReload(_ dataModel: DataModel) {
-        super.dataModelDidReload(dataModel)
-        DispatchQueue.main.async {
             self.sendSizeChangedEvent()
         }
     }

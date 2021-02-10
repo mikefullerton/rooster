@@ -16,10 +16,10 @@ class SingleSoundChoiceView : UIView {
     
     weak var delegate: SoundChoiceViewDelegate?
 
-    let index: SoundPreferences.SoundIndex
+    let index: SoundPreferences.SoundPreferenceKey
     
     init(frame: CGRect,
-         soundPreferenceIndex index: SoundPreferences.SoundIndex,
+         soundPreferenceIndex index: SoundPreferences.SoundPreferenceKey,
          delegate: SoundChoiceViewDelegate) {
         self.delegate = delegate
         self.index = index

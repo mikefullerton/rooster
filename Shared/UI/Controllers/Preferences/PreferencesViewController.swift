@@ -83,9 +83,9 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
 
     
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundIndex: SoundPreferences.SoundIndex) {
+                              presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
         
-        SoundPickerViewController(withSoundPreferenceIndex: soundIndex).presentInModalWindow(fromWindow: self.view.window)
+        SoundPickerViewController(withSoundPreferenceKey: soundPreferenceKey).presentInModalWindow(fromWindow: self.view.window)
     }
     
     private func addBottomBar() {

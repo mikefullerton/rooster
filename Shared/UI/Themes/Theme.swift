@@ -29,7 +29,7 @@ protocol ThemeProtocol {
     
     var secondaryLabelColor: SDKColor { get }
     
-    var tableViewCellBackgroundColor: SDKColor { get }
+    var listViewCellBackgroundColor: SDKColor { get }
     
     var disabledControlColor: SDKColor { get }
 

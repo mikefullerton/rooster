@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct MenuBarPreferences: CustomStringConvertible {
-    struct Options: OptionSet, CustomStringConvertible {
+struct MenuBarPreferences: CustomStringConvertible, Codable {
+    
+    struct Options: OptionSet, CustomStringConvertible, Codable {
         let rawValue: Int
         
         static let showIcon             = Options(rawValue: 1 << 1)
         static let countDown            = Options(rawValue: 1 << 2)
         static let popoverView          = Options(rawValue: 1 << 3)
         static let blink                = Options(rawValue: 1 << 4)
-        static let showStopAlarmIcon    = Options(rawValue: 1 << 5)
         static let shortCountdownFormat = Options(rawValue: 1 << 6)
 
-        static let all:Options = [ .showIcon, .countDown, .popoverView, .blink, .showStopAlarmIcon, .shortCountdownFormat ]
+        static let all:Options = [ .showIcon, .countDown, .popoverView, .blink, .shortCountdownFormat ]
 
-        static let `default`:Options = [ .showIcon, .countDown, .popoverView, .blink, .showStopAlarmIcon ]
+        static let `default`:Options = [ .showIcon, .countDown, .popoverView, .blink ]
 
         init(rawValue: Int) {
             self.rawValue = rawValue
@@ -31,7 +31,6 @@ struct MenuBarPreferences: CustomStringConvertible {
             (.countDown, "countDown"),
             (.popoverView, "popoverView"),
             (.blink, "blink"),
-            (.showStopAlarmIcon, "showStopAlarmIcon"),
             (.shortCountdownFormat, "shortCoundownFormat"),
         ]
 
@@ -64,27 +63,5 @@ struct MenuBarPreferences: CustomStringConvertible {
     func keyEquivalent(for equivalent: KeyEquivalents) -> String {
         
         return ""
-    }
-}
-
-extension MenuBarPreferences {
-    
-    enum CodingKeys: String, CodingKey {
-        case options = "options"
-    }
-    
-    init(withDictionary dictionary: [AnyHashable : Any]) {
-    
-        self.init()
-        
-        if let options = dictionary[CodingKeys.options.rawValue] as? Int {
-            self.options = Options(rawValue: options)
-        }
-    }
-
-    var asDictionary: [AnyHashable : Any] {
-        var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.options.rawValue] = self.options.rawValue
-        return dictionary
     }
 }

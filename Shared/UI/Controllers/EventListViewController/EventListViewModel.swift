@@ -17,9 +17,9 @@ struct NoMeetingsModelObject {
 }
 
 
-struct EventListViewModel : TableViewModelProtocol {
+struct EventListViewModel : ListViewModelProtocol {
     
-    let sections: [TableViewSectionProtocol]
+    let sections: [ListViewSectionDescriptor]
     
     init(withEvents events: [Event],
          reminders: [Reminder]) {
@@ -30,35 +30,23 @@ struct EventListViewModel : TableViewModelProtocol {
             return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
         }
         
-        let section = CalendarItemsSection(withCalendarItems: sortedList)
+        var rows: [AbstractListViewRowDescriptor] = []
         
-        self.sections = [ section ]
-    }
-}
-
-struct CalendarItemsSection : TableViewSectionProtocol {
-    var rows: [TableViewRowProtocol]
-    
-    var layout = TableViewSectionLayout(rowSpacing: 2, insets: SDKEdgeInsets.zero)
-
-    init(withCalendarItems calendarItems: [CalendarItem]) {
-       
-        var rows: [TableViewRowProtocol] = []
-        
-        if calendarItems.count == 0 {
-            rows.append(TableViewRow<NoMeetingsModelObject, EventListTableViewCell>(withData: NoMeetingsModelObject()))
+        if sortedList.count == 0 {
+            rows.append(ListViewRowDescriptor<NoMeetingsModelObject, NoMeetingsListViewCell>(withContent: NoMeetingsModelObject()))
         } else {
-            for item in calendarItems {
+            for item in sortedList {
                 if let event = item as? Event {
-                    rows.append(TableViewRow<Event, EventListTableViewCell>(withData: event))
+                    rows.append(ListViewRowDescriptor<Event, EventListListViewCell>(withContent: event))
                 }
                 
                 if let reminder = item as? Reminder {
-                    rows.append(TableViewRow<Reminder, ReminderTableViewCell>(withData: reminder))
+                    rows.append(ListViewRowDescriptor<Reminder, ReminderListViewCell>(withContent: reminder))
                 }
             }
         }
-        self.rows = rows
+    
+        self.sections = [ ListViewSectionDescriptor(withRows: rows) ]
     }
 }
 

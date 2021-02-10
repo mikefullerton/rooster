@@ -21,7 +21,7 @@ class MainWindowController: WindowController {
         self.autosaveKey = "MainWindow"
         self.setContentViewController(self.mainWindowViewController)
         
-        self.mainWindowViewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//        self.mainWindowViewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
     }
     

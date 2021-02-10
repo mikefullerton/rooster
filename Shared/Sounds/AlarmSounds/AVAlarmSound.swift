@@ -25,7 +25,7 @@ extension URL {
 }
 
 class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
-    weak var delegate: AlarmSoundDelegate?
+    weak var delegate: SoundDelegate?
     
     var identifier: String
     
@@ -55,14 +55,14 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     }
     
     var name: String {
-        if self.url.isRandomizedSound {
-            if let player = self.player {
-                return "randomized: \(player.url!.soundName)"
-            } else {
-                return "randomized: (not loadeded)"
-            }
-        }
-        
+//        if self.url.isRandomizedSound {
+//            if let player = self.player {
+//                return "randomized: \(player.url!.soundName)"
+//            } else {
+//                return "randomized: (not loadeded)"
+//            }
+//        }
+//        
         return self.url.soundName
     }
     

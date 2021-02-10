@@ -9,7 +9,7 @@ import Foundation
 
 protocol DirectoryIteratorItem: AnyObject {
     var isDirectory: Bool { get }
-    var url: URL? { get }
+    var url: URL { get }
     var name: String { get }
     var parent: DirectoryIterator? { get }
 }
@@ -20,7 +20,7 @@ extension DirectoryIteratorItem {
     }
     
     var name: String {
-        return self.url?.lastPathComponent ?? ""
+        return self.url.lastPathComponent
     }
     
     var relativePath: String {
@@ -45,10 +45,10 @@ class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringConvertib
     private(set) var files: [Item]
     private(set) var contents: [DirectoryIteratorItem]
     
-    let url: URL?
+    let url: URL
     weak private(set) var parent: DirectoryIterator?
     
-    init(withURL url: URL?,
+    init(withURL url: URL,
          parent: DirectoryIterator? = nil) throws {
         
         self.parent = parent
@@ -58,14 +58,12 @@ class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringConvertib
         self.files = []
         self.contents = []
 
-        if url != nil {
-            try self.updateContents()
-        }
+        try self.updateContents()
     }
     
     init() {
         self.parent = nil
-        self.url = nil
+        self.url = URL.emptyRoosterURL
         self.directories = []
         self.files = []
         self.contents = []
@@ -76,8 +74,9 @@ class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringConvertib
     }
     
     private func updateContents() throws {
-        
-        if let parentURL = self.url {
+        let parentURL = self.url
+        if !parentURL.isRoosterURL {
+            
             var files:[Item] = []
             var directories:[DirectoryIterator] = []
             var contents:[DirectoryIteratorItem] = []
@@ -147,7 +146,7 @@ class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringConvertib
         
         let allItemsString = allItems.joined(separator: "\n")
         
-        return "\(type(of:self)): \(self.url?.path ?? "nil"):\n\(allItemsString)"
+        return "\(type(of:self)): \(self.url.absoluteString):\n\(allItemsString)"
     }
     
     static func == (lhs: DirectoryIterator, rhs: DirectoryIterator) -> Bool {
@@ -159,10 +158,10 @@ class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringConvertib
 
 extension DirectoryIterator {
     class Item: DirectoryIteratorItem, Equatable, CustomStringConvertible {
-        let url: URL?
+        let url: URL
         weak private(set) var parent: DirectoryIterator?
 
-        init(withURL url: URL?,
+        init(withURL url: URL,
              parent: DirectoryIterator?) {
             self.url = url
             self.parent = parent
@@ -173,7 +172,7 @@ extension DirectoryIterator {
         }
        
         var description: String {
-            return "\(type(of:self)): url:\(self.url?.path ?? "nil")"
+            return "\(type(of:self)): url:\(self.url.absoluteString)"
         }
     }
 }

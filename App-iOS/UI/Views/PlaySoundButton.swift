@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class PlaySoundButton : FancyButton, AlarmSoundDelegate {
+class PlaySoundButton : FancyButton, SoundDelegate {
     
     private(set) var sound: AVAlarmSound? = nil
     private var _url: URL? = nil
@@ -110,14 +110,14 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
             if sound.isPlaying {
                 sound.stop()
             } else {
-                sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
+                sound.play(withBehavior: SoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
             }
         } else if let url = self.url {
             let sound = AVAlarmSound(withURL: url) 
             sound.delegate = self
             self.sound = sound
             
-            sound.play(withBehavior: AlarmSoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
+            sound.play(withBehavior: SoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
         }
 
         self.refresh()
@@ -135,7 +135,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         return imageView
     }
     
-    func soundWillStartPlaying(_ sound: AlarmSound) {
+    func soundWillStartPlaying(_ sound: Sound) {
         self.refresh()
 
         self.timer.start(withInterval: 0.3, fireCount: SimpleTimer.RepeatEndlessly) { [weak self] timer in
@@ -151,7 +151,7 @@ class PlaySoundButton : FancyButton, AlarmSoundDelegate {
         }
     }
     
-    func soundDidStopPlaying(_ sound: AlarmSound) {
+    func soundDidStopPlaying(_ sound: Sound) {
         self.timer.stop()
         self.sound = nil
         self.refresh()

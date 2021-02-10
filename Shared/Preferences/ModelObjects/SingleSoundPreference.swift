@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SingleSoundPreference : CustomStringConvertible, Equatable, Identifiable {
+struct SingleSoundPreference : CustomStringConvertible, Equatable, Identifiable, Codable {
     
     typealias ID = String
     
@@ -65,33 +65,3 @@ struct SingleSoundPreference : CustomStringConvertible, Equatable, Identifiable 
     }
     
 }
-
-extension SingleSoundPreference {
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case enabled = "enabled"
-        case soundSet = "random"
-    }
-    
-    init?(withDictionary dictionaryOrNil: [AnyHashable : Any]?) {
-        if let dictionary = dictionaryOrNil,
-           let id = dictionary[CodingKeys.id.rawValue] as? String,
-           let enabled = dictionary[CodingKeys.enabled.rawValue] as? Bool,
-           let soundSetDictionary = dictionary[CodingKeys.soundSet.rawValue] as? [AnyHashable: Any],
-           let soundSet = SoundSet(withDictionary: soundSetDictionary) {
-            
-            self.init(withIdentifier: id, soundSet: soundSet, enabled: enabled)
-        } else {
-            return nil
-        }
-    }
-
-    var asDictionary: [AnyHashable : Any] {
-        var dictionary: [AnyHashable : Any] = [:]
-        dictionary[CodingKeys.id.rawValue] = self.id
-        dictionary[CodingKeys.enabled.rawValue] = self.isEnabled
-        dictionary[CodingKeys.soundSet.rawValue] = self.soundSet.asDictionary
-        return dictionary
-    }
-}
-

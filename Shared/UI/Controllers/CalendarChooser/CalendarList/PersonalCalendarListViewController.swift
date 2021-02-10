@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class PersonalCalendarListViewController : CalendarItemTableViewController<CalenderListViewModel> {
+class PersonalCalendarListViewController : CalendarItemListViewController<CalenderListViewModel> {
 
     override func provideDataModel() -> CalenderListViewModel? {
         let dataModel = AppDelegate.instance.dataModelController.dataModel

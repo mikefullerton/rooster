@@ -20,22 +20,22 @@ class SoundMetaDataUpdater: DeveloperAction, Loggable {
                 return
             }
             
-            do {
-                let dir = try DirectoryIterator(withURL: soundsURL)
+//            do {
+//                let dir = try DirectoryIterator(withURL: soundsURL)
+//
+//                let soundFolder = SoundFolder(withDirectory: dir)
+//
+//                let soundFolderDictionary = soundFolder.asDictionary
+//
+//                let soundFolderURL = soundsURL.deletingLastPathComponent().appendingPathComponent("Sounds.json")
+//
+//                try soundFolderDictionary.writeJSON(toURL: soundFolderURL)
                 
-                let soundFolder = SoundFolder(withDirectory: dir)
+//                print("\(soundFolder.debugDescription)")
                 
-                let soundFolderDictionary = soundFolder.asDictionary
-                
-                let soundFolderURL = soundsURL.deletingLastPathComponent().appendingPathComponent("Sounds.json")
-                
-                try soundFolderDictionary.writeJSON(toURL: soundFolderURL)
-                
-//                print("\(soundFolder.lengthyDescription)")
-                
-            } catch {
-                self.showErrorAlert(withMessage: "\(error)", info: "")
-            }
+//            } catch {
+//                self.showErrorAlert(withMessage: "\(error)", info: "")
+//            }
             
         }
     }

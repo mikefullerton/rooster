@@ -7,6 +7,15 @@
 import Foundation
 import Cocoa
 
+class Application: NSApplication, Loggable {
+    
+    override func sendEvent(_ event: NSEvent) {
+        super.sendEvent(event)
+        
+        print("tracking: Event: \(event)")
+    }
+}
+
 @main
 class AppDelegate: NSObject,
                    NSApplicationDelegate,
@@ -23,10 +32,10 @@ class AppDelegate: NSObject,
         return NSApplication.shared.delegate as! AppDelegate
     }
     
-    private var mainWindowController: MainWindowController?
+    private(set) var mainWindowController: MainWindowController?
     private var launchWindow: NSWindowController?
     
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
+func applicationDidFinishLaunching(_ aNotification: Notification) {
         self.showLoadingWindow()
 
         self.showDeveloperMenuIfNeeded()
@@ -38,6 +47,17 @@ class AppDelegate: NSObject,
                 self.didAuthenticate()
             }
         }
+        
+//        NSEvent.addLocalMonitorForEvents(matching: .any) { event in
+//            print("event: \(event)")
+//            
+//            return event
+//        }
+//
+//        NSEvent.addGlobalMonitorForEvents(matching: .any) { event in
+//            print("global event: \(event)")
+//        }
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -95,6 +115,7 @@ class AppDelegate: NSObject,
     }
     
     @IBAction @objc func fileRadar(_ sender: Any) {
+        NSApp.activate(ignoringOtherApps: true)
         self.showRadarAlert()
     }
     

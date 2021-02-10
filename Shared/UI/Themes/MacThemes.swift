@@ -34,7 +34,7 @@ struct LightTheme : ThemeProtocol {
     
     var secondaryLabelColor: SDKColor { SDKColor.secondaryLabelColor }
     
-    var tableViewCellBackgroundColor: SDKColor { SDKColor.windowBackgroundColor }
+    var listViewCellBackgroundColor: SDKColor { SDKColor.windowBackgroundColor }
 
     var disabledControlColor: SDKColor { SDKColor.lightGray }
 
@@ -59,7 +59,7 @@ struct DarkTheme : ThemeProtocol {
     
     var secondaryLabelColor: SDKColor { SDKColor.secondaryLabelColor }
     
-    var tableViewCellBackgroundColor: SDKColor { SDKColor.windowBackgroundColor }
+    var listViewCellBackgroundColor: SDKColor { SDKColor.windowBackgroundColor }
 
     var disabledControlColor: SDKColor { SDKColor.lightGray }
 
@@ -79,7 +79,7 @@ struct DarkTheme : ThemeProtocol {
 //
 //    var secondaryLabelColor: SDKColor { SDKColor.secondaryLabel }
 //
-//    var tableViewCellBackgroundColor: SDKColor { self.windowBackgroundColor }
+//    var listViewCellBackgroundColor: SDKColor { self.windowBackgroundColor }
 //
 //    var blurEffect: UIBlurEffect { UIBlurEffect(style: .systemThinMaterial) }
 }

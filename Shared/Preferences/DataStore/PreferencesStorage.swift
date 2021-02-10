@@ -8,8 +8,8 @@
 import Foundation
 
 protocol PreferencesStorage {
-    func read() throws -> [AnyHashable: Any]?
-    func write(_ preferences: [AnyHashable: Any]) throws
+    func read() throws -> Preferences?
+    func write(_ preferences: Preferences) throws
     func delete() throws
 }
 
