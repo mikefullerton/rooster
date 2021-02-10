@@ -12,6 +12,11 @@ import Cocoa
 import UIKit
 #endif
 
+struct NoMeetingsModelObject {
+    
+}
+
+
 struct EventListViewModel : TableViewModelProtocol {
     
     let sections: [TableViewSectionProtocol]
@@ -36,23 +41,24 @@ struct CalendarItemsSection : TableViewSectionProtocol {
     
     var layout = TableViewSectionLayout(rowSpacing: 2, insets: SDKEdgeInsets.zero)
 
-//    var header: TableViewSectionAdornmentProtocol? = TableViewSectionAdornment(withViewClass: CountDownHeaderView.self)
-    
     init(withCalendarItems calendarItems: [CalendarItem]) {
        
         var rows: [TableViewRowProtocol] = []
-        for item in calendarItems {
-            if let event = item as? Event {
-                rows.append(TableViewRow<Event, EventListTableViewCell>(withData: event))
-            }
-            
-            if let reminder = item as? Reminder {
-                rows.append(TableViewRow<Reminder, ReminderTableViewCell>(withData: reminder))
+        
+        if calendarItems.count == 0 {
+            rows.append(TableViewRow<NoMeetingsModelObject, EventListTableViewCell>(withData: NoMeetingsModelObject()))
+        } else {
+            for item in calendarItems {
+                if let event = item as? Event {
+                    rows.append(TableViewRow<Event, EventListTableViewCell>(withData: event))
+                }
+                
+                if let reminder = item as? Reminder {
+                    rows.append(TableViewRow<Reminder, ReminderTableViewCell>(withData: reminder))
+                }
             }
         }
         self.rows = rows
-        
-        
     }
-    
 }
+

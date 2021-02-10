@@ -11,7 +11,7 @@ import UIKit
 
 class DelegateCalendarListViewController : CalendarItemTableViewController<CalenderListViewModel> {
     
-    override func reloadViewModel() -> CalenderListViewModel? {
+    override func provideDataModel() -> CalenderListViewModel? {
         let dataModel = AppDelegate.instance.dataModelController.dataModel
         return CalenderListViewModel(withCalendars: dataModel.delegateCalendars)
     }

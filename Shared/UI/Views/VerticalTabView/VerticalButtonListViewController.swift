@@ -33,7 +33,7 @@ class VerticalButtonListViewController : TableViewController<VerticalButtonBarVi
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func reloadViewModel() -> VerticalButtonBarViewModel? {
+    override func provideDataModel() -> VerticalButtonBarViewModel? {
         return VerticalButtonBarViewModel(withData: self.tabItems)
     }
     

@@ -75,7 +75,7 @@ class MenuBarItem: Loggable, DataModelAware, AppControllerAware {
         
     }
     
-    lazy var statusBarItem: NSStatusItem = {
+    func createStatusBarItem() -> NSStatusItem {
         let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
         
         if let button = statusBarItem.button {
@@ -86,6 +86,10 @@ class MenuBarItem: Loggable, DataModelAware, AppControllerAware {
         }
         
         return statusBarItem
+    }
+    
+    lazy var statusBarItem: NSStatusItem = {
+        self.createStatusBarItem()
     }()
     
     var isVisible: Bool {

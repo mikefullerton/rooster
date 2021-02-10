@@ -12,14 +12,14 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
     
     private(set) var viewModel: ViewModel?
     
-    func reloadViewModel() -> ViewModel? {
+    func provideDataModel() -> ViewModel? {
         return nil
     }
     
     // MARK: TableView
     
     public func reloadData() {
-        self.viewModel = self.reloadViewModel()
+        self.viewModel = self.provideDataModel()
         self.tableView.reloadData()
     }
     
@@ -31,7 +31,7 @@ class TableViewController<ViewModel> : UITableViewController, Reloadable where V
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.viewModel = self.reloadViewModel()
+        self.viewModel = self.provideDataModel()
         super.viewWillAppear(animated)
     }
     

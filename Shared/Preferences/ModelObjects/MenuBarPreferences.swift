@@ -54,6 +54,17 @@ struct MenuBarPreferences: CustomStringConvertible {
     var description: String {
         return "\(type(of: self)): \(self.options)"
     }
+    
+    enum KeyEquivalents: String {
+        case stopAlarms = "stopAlarms"
+        case showPreferences = "showPreferences"
+        case bringToFrong = "bringToFront"
+    }
+    
+    func keyEquivalent(for equivalent: KeyEquivalents) -> String {
+        
+        return ""
+    }
 }
 
 extension MenuBarPreferences {

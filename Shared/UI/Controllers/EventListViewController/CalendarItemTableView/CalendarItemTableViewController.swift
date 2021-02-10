@@ -38,12 +38,9 @@ class CalendarItemTableViewController<ViewModel> : TableViewController<ViewModel
         self.reloadData()
     }
 
-    override var calculatedContentSize: CGSize {
+    override var preferredContentSize: NSSize {
         get {
-            if let viewModel = self.viewModel {
-                return CGSize(width: self.view.frame.size.width, height: viewModel.height)
-            }
-            return self.preferredContentSize
+            return self.viewModelContentSize
         }
         set(size) {
             

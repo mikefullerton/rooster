@@ -107,9 +107,27 @@ class AppDelegate: NSObject,
     }
     
     @IBAction @objc func showPreferences(_ sender: Any) {
+        NSApp.activate(ignoringOtherApps: true)
         PreferencesWindow.show()
     }
+    
+    @IBAction @objc func stopAllAlarms(_ sender: Any) {
+        self.alarmNotificationController.handleUserClickedStopAll()
+    }
 
+    @IBAction @objc func bringAppToFront(_ sender: Any) {
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    @IBAction @objc func quitRooster(_ sender: Any) {
+        NSApp.terminate(self)
+    }
+    
+    @IBAction @objc func eventListWasClicked(_ sender: Any) {
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    
     func hideLaunchWindow() {
         if let launchWindow = self.launchWindow {
             launchWindow.close()

@@ -25,7 +25,7 @@ class SoundPickerTableViewController : TableViewController<SoundPickerTableViewM
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func reloadViewModel() -> SoundPickerTableViewModel? {
+    override func provideDataModel() -> SoundPickerTableViewModel? {
         return SoundPickerTableViewModel(with: self.soundFolder)
     }
 

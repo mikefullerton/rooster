@@ -16,8 +16,8 @@ class MenuBarController: Loggable,
     
     private var reloader: DataModelReloader? = nil
     
-    lazy var primaryMenuItem = PrimaryMenuBarItem()
-    lazy var stopAlarmItem = StopAlarmMenuBarButton()
+    lazy var primaryMenuItem = MenuBarMenuItem()
+//    lazy var stopAlarmItem = StopAlarmMenuBarButton()
     
     init() {
         self.reloader = DataModelReloader(for: self)
@@ -35,11 +35,11 @@ class MenuBarController: Loggable,
         if prefs.options.contains(.showIcon) {
             self.primaryMenuItem.isVisible = true
             
-            if !prefs.options.contains(.showStopAlarmIcon) {
-                self.stopAlarmItem.isVisible = false;
-            } else if self.alarmNotificationController.alarmsAreFiring {
-                self.stopAlarmItem.isVisible = true;
-            }
+//            if !prefs.options.contains(.showStopAlarmIcon) {
+//                self.stopAlarmItem.isVisible = false;
+//            } else if self.alarmNotificationController.alarmsAreFiring {
+//                self.stopAlarmItem.isVisible = true;
+//            }
             
             if !prefs.options.contains(.countDown) {
                 self.primaryMenuItem.stopCountdown()
@@ -47,7 +47,7 @@ class MenuBarController: Loggable,
             
         } else {
             self.primaryMenuItem.isVisible = false
-            self.stopAlarmItem.isVisible = false;
+//            self.stopAlarmItem.isVisible = false;
         }
     }
     
@@ -62,11 +62,11 @@ class MenuBarController: Loggable,
         if prefs.options.contains(.showIcon) {
             self.primaryMenuItem.alarmStateDidChange()
             
-            if self.alarmNotificationController.alarmsAreFiring && prefs.options.contains(.showStopAlarmIcon) {
-                self.stopAlarmItem.isVisible = true
-            } else {
-                self.stopAlarmItem.isVisible = false
-            }
+//            if self.alarmNotificationController.alarmsAreFiring && prefs.options.contains(.showStopAlarmIcon) {
+//                self.stopAlarmItem.isVisible = true
+//            } else {
+//                self.stopAlarmItem.isVisible = false
+//            }
         } else {
             self.primaryMenuItem.stopCountdown()
         }

@@ -16,16 +16,17 @@ class TableViewController<ViewModel> : SDKViewController,
                                        NSCollectionViewDataSource,
                                        NSCollectionViewDelegate,
                                        NSCollectionViewDelegateFlowLayout,
+                                       MouseTrackingCollectionViewDelegate,
                                        Reloadable where ViewModel: TableViewModelProtocol {
-    
+   
     private(set) var viewModel: ViewModel?
     
-    func reloadViewModel() -> ViewModel? {
+    func provideDataModel() -> ViewModel? {
         return nil
     }
     
     public func reloadData() {
-        self.viewModel = self.reloadViewModel()
+        self.viewModel = self.provideDataModel()
         self.collectionView.reloadData()
         self.scrollView.invalidateIntrinsicContentSize()
 //        self.collectionView.invalidateIntrinsicContentSize()
@@ -50,8 +51,8 @@ class TableViewController<ViewModel> : SDKViewController,
         return view
     }()
 
-    lazy var collectionView: NSCollectionView = {
-        let collectionView = NSCollectionView()
+    lazy var collectionView: MouseTrackingCollectionView = {
+        let collectionView = MouseTrackingCollectionView()
         
         let layout = self.createCollectionViewLayout()
         self.didCreateCollectionViewLayout(layout)
@@ -59,6 +60,7 @@ class TableViewController<ViewModel> : SDKViewController,
         collectionView.collectionViewLayout = layout
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.mouseTrackingDelegate = self
         return collectionView
     } ()
         
@@ -93,7 +95,7 @@ class TableViewController<ViewModel> : SDKViewController,
         self.collectionView.reloadData()
     }
     
-    var calculatedContentSize: CGSize {
+    var viewModelContentSize: CGSize {
         if let viewModel = self.viewModel {
             return CGSize(width: self.view.frame.size.width, height: viewModel.height)
         }
@@ -266,7 +268,10 @@ class TableViewController<ViewModel> : SDKViewController,
         let identifier = NSUserInterfaceItemIdentifier(rawValue: row.cellReuseIdentifer)
         self.collectionView.register(row.viewClass, forItemWithIdentifier:identifier)
 
-        return self.collectionView.makeItem(withIdentifier: identifier, for: indexPath)
+        let item = self.collectionView.makeItem(withIdentifier: identifier, for: indexPath)
+        item.highlightState = .none
+        
+        return item
     }
     
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
@@ -290,6 +295,7 @@ class TableViewController<ViewModel> : SDKViewController,
             if let view = self.collectionView.makeSupplementaryView(ofKind: kind,
                                                              withIdentifier: identifier,
                                                              for: indexPath) as? TableViewAdornmentView {
+                
                 return view as! SDKView
             }
         }
@@ -313,6 +319,55 @@ class TableViewController<ViewModel> : SDKViewController,
 
         return SDKView()
     }
+    
+    /// MARK: mouse tracking
+    
+    func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
+                                     mouseEnteredCellAtIndexPath indexPath: IndexPath,
+                                     withEvent event: NSEvent) {
+    
+        if let collectionViewItem = self.collectionView.item(at: indexPath) {
+            collectionViewItem.highlightState = .forSelection
+        }
+
+    }
+    
+    func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
+                                     mouseMovedInCellAtIndexPath indexPath: IndexPath,
+                                     withEvent event: NSEvent) {
+        
+    }
+    
+    func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
+                                     mouseExitedCellAtIndexPath indexPath: IndexPath) {
+        
+        if let collectionViewItem = self.collectionView.item(at: indexPath) {
+            collectionViewItem.highlightState = .none
+        }
+    }
+    
+    func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
+                                     mouseDidEnterWithEvent event: NSEvent) {
+        
+    }
+    
+    func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
+                                     mouseDidExitWithEvent event: NSEvent) {
+        
+        for item in self.collectionView.visibleItems() {
+            if item.highlightState != .none {
+                item.highlightState = .none
+            }
+        }
+    }
+    
+    func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
+                                     mouseDownAtIndexPath indexPath: IndexPath,
+                                     withEvent event: NSEvent) {
+        
+    }
+
+    
 }
 
 

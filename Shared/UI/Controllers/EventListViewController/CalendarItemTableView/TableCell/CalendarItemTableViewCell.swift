@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDelegate {
+class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDelegate, Loggable {
     
     let contentInsets = SDKEdgeInsets(top: 14, left: 10, bottom: 14, right: 10)
     
@@ -41,6 +41,7 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         self.view.sdkLayer.borderColor = SDKColor.separatorColor.cgColor
         self.view.sdkLayer.masksToBounds = true
         
+        self.addHighlightBackgroundView()
         
         // left
         self.addCalendarColorBar()
@@ -57,9 +58,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         self.addIconBar()
         
         self.addTimePassingView()
-
-
-        
     }
     
     override func prepareForReuse() {
@@ -74,72 +72,52 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         return 80
     }
 
+    override var highlightState: NSCollectionViewItem.HighlightState {
+        get { return super.highlightState }
+        set(state) {
+            super.highlightState = state
+            
+            switch(state) {
+            case .none:
+                self.highlightBackgroundView.isHidden = true
+                
+            case .forSelection:
+                self.highlightBackgroundView.isHidden = false
+                
+            case .forDeselection:
+                self.highlightBackgroundView.isHidden = false
+
+            case .asDropTarget:
+                self.highlightBackgroundView.isHidden = false
+            
+            @unknown default:
+                self.highlightBackgroundView.isHidden = true
+            }
+        
+            self.view.needsDisplay = true
+        }
+        
+        
+    }
+    
+    /// MARK: Views
+    
+    lazy var highlightBackgroundView: NSVisualEffectView = {
+        var effectView = NSVisualEffectView()
+        effectView.state = .active
+        effectView.material = .selection
+        effectView.isEmphasized = true
+        effectView.blendingMode = .behindWindow
+        return effectView
+    }()
+    
     lazy var timePassingView = TimePassingView()
     
-    func addTimePassingView() {
-        let view = self.timePassingView
-        
-        self.view.addSubview(view, positioned: .above, relativeTo:self.calendarColorBar)
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            view.topAnchor.constraint(equalTo: self.startTimeLabel.centerYAnchor),
-            view.bottomAnchor.constraint(equalTo: self.endTimeLabel.centerYAnchor)
-        ])
-    }
-    
     lazy var iconBar = CalendarItemIconBar()
-    
-    func addIconBar() {
-        let view = self.iconBar
-        
-        self.view.addSubview(view)
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.contentInsets.right),
-            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        ])
-    }
     
     lazy var calendarColorBar = VerticalColorBar(insets: SDKEdgeInsets.zero,
                                                  barWidth: 8,
                                                  roundedCorners: false)
-    
-    func addCalendarColorBar() {
-
-        let view = self.calendarColorBar
-        
-        self.view.addSubview(view)
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-        ])
-    }
-    
-    
-    func addDividerView() {
-        let dividerView = self.dividerView
-        self.view.addSubview(dividerView)
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            dividerView.heightAnchor.constraint(equalToConstant: 1),
-            dividerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            dividerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-        ])
-        
-        self.dividerView = dividerView
-    }
     
     lazy var startCountDownLabel: CountDownTextField = {
         let label = CountDownTextField()
@@ -166,43 +144,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         
         return label
     }()
-    
-    func countDownTextFieldNextFireDate(_ countDownTextField: CountDownTextField) -> Date? {
-        if countDownTextField === self.startCountDownLabel {
-            return self.calendarItem?.alarm.startDate
-        } else if countDownTextField === self.endCountDownLabel,
-                  countDownTextField.isHidden == false {
-            return self.calendarItem?.alarm.endDate
-        }
-        
-        return nil
-    }
-    
-    func addStartCountDownLabel() {
-        let view = self.startCountDownLabel
-        
-        self.view.addSubview(view)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.startTimeLabel.trailingAnchor, constant: 0),
-            view.lastBaselineAnchor.constraint(equalTo: self.startTimeLabel.lastBaselineAnchor)
-        ])
-    }
-    
-    func addEndCountDownLabel() {
-        let view = self.endCountDownLabel
-        
-        self.view.addSubview(view)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.endTimeLabel.trailingAnchor, constant: 0),
-            view.lastBaselineAnchor.constraint(equalTo: self.endTimeLabel.lastBaselineAnchor)
-        ])
-    }
 
     var timeLabel: SDKTextField {
         let label = SDKTextField()
@@ -231,6 +172,105 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         return self.timeLabel
     }()
     
+    lazy var combinedTimeLabel: SDKTextField = {
+        let label = SDKTextField()
+        label.textColor = Theme(for: self.view).secondaryLabelColor
+        label.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+        label.isEditable = false
+        label.isBordered = false
+        label.drawsBackground = false
+
+        return label
+    }()
+    
+    lazy var eventTitleLabel: SDKTextField = {
+        let label = SDKTextField()
+        label.textColor = Theme(for: self.view).labelColor
+        label.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
+        label.isEditable = false
+        label.isBordered = false
+        label.drawsBackground = false
+
+        return label
+    }()
+
+    /// MARK: Adding views
+    
+    func addHighlightBackgroundView() {
+        let view = self.highlightBackgroundView
+        
+        self.view.addSubview(view)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+        
+        view.isHidden = true
+    }
+    
+    func addTimePassingView() {
+        let view = self.timePassingView
+        
+        self.view.addSubview(view, positioned: .above, relativeTo:self.calendarColorBar)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: self.startTimeLabel.centerYAnchor),
+            view.bottomAnchor.constraint(equalTo: self.endTimeLabel.centerYAnchor)
+        ])
+    }
+    
+    func addIconBar() {
+        let view = self.iconBar
+        
+        self.view.addSubview(view)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.contentInsets.right),
+            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        ])
+    }
+
+    func addCalendarColorBar() {
+
+        let view = self.calendarColorBar
+        
+        self.view.addSubview(view)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+        ])
+    }
+    
+    func addDividerView() {
+        let dividerView = self.dividerView
+        self.view.addSubview(dividerView)
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dividerView.heightAnchor.constraint(equalToConstant: 1),
+            dividerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            dividerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+        ])
+        
+        self.dividerView = dividerView
+    }
+    
     func addStartTimeLabel() {
         let view = self.startTimeLabel
 
@@ -257,17 +297,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         ])
     }
     
-    lazy var combinedTimeLabel: SDKTextField = {
-        let label = SDKTextField()
-        label.textColor = Theme(for: self.view).secondaryLabelColor
-        label.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
-        label.isEditable = false
-        label.isBordered = false
-        label.drawsBackground = false
-
-        return label
-    }()
-    
     func addCombinedTimeLabel() {
         let view = self.combinedTimeLabel
         
@@ -281,17 +310,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
         ])
     }
     
-    lazy var eventTitleLabel: SDKTextField = {
-        let label = SDKTextField()
-        label.textColor = Theme(for: self.view).labelColor
-        label.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
-        label.isEditable = false
-        label.isBordered = false
-        label.drawsBackground = false
-
-        return label
-    }()
-    
     func addEventTitleLabel() {
         let view = self.eventTitleLabel
         
@@ -304,6 +322,46 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
             view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0),
         ])
     }
+    
+    func addStartCountDownLabel() {
+        let view = self.startCountDownLabel
+        
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.startTimeLabel.trailingAnchor, constant: 0),
+            view.lastBaselineAnchor.constraint(equalTo: self.startTimeLabel.lastBaselineAnchor)
+        ])
+    }
+    
+    func addEndCountDownLabel() {
+        let view = self.endCountDownLabel
+        
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.endTimeLabel.trailingAnchor, constant: 0),
+            view.lastBaselineAnchor.constraint(equalTo: self.endTimeLabel.lastBaselineAnchor)
+        ])
+    }
+
+    /// MARK: Utils
+    
+    func countDownTextFieldNextFireDate(_ countDownTextField: CountDownTextField) -> Date? {
+        if countDownTextField === self.startCountDownLabel {
+            return self.calendarItem?.alarm.startDate
+        } else if countDownTextField === self.endCountDownLabel,
+                  countDownTextField.isHidden == false {
+            return self.calendarItem?.alarm.endDate
+        }
+        
+        return nil
+    }
+    
     
     func updateCell(withCalendarItem calendarItem: CalendarItem) {
         
@@ -344,7 +402,6 @@ class CalendarItemTableViewCell : SDKCollectionViewItem, CountDownTextFieldDeleg
             self.startCountDownLabel.startCountDown()
         }
         
-//        self.timeLabel.stringValue = calendarItem.timeLabelDisplayString
         self.eventTitleLabel.stringValue = calendarItem.title
         
         self.view.needsLayout = true

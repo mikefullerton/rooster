@@ -7,16 +7,21 @@
 
 import Cocoa
 
-class MainWindowController: WindowController, MainWindowViewControllerDelegate {
+class MainWindowController: WindowController {
     
+    let mainWindowViewController = MainWindowViewController()
+
     override func windowDidLoad() {
         super.windowDidLoad()
-        let viewController = MainWindowViewController()
-        viewController.delegate = self
-        self.autosaveKey = "MainWindow"
-        self.setContentViewController(viewController)
         
-        viewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(mainWindowDidUpdate(_:)),
+                                               name: MainWindowViewController.DidChangeEvent, object: self.mainWindowViewController)
+    
+        self.autosaveKey = "MainWindow"
+        self.setContentViewController(self.mainWindowViewController)
+        
+        self.mainWindowViewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
     }
     
@@ -32,11 +37,15 @@ class MainWindowController: WindowController, MainWindowViewControllerDelegate {
         AppDelegate.instance.showCodeAlert()
     }
 
-    
-    func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {
+    @objc func mainWindowDidUpdate(_ notification: Notification) {
         if let window = self.window {
-            window.setContentSize(size)
+            let preferredContentSize = self.mainWindowViewController.preferredContentSize
+            self.logger.log("Updating main window size: \(NSStringFromSize(preferredContentSize))")
+            window.setContentSize(preferredContentSize)
         }
+    }
+
+    func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {
     }
 
 }
