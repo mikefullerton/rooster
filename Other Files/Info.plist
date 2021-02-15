@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.32</string>
+	<string>1.0.33</string>
 	<key>CFBundleVersion</key>
-	<string>32</string>
+	<string>33</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -28,6 +28,8 @@
 	<string>Rooster will help you be on time to online meetings!</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>Rooster.Application</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Rooster will help you complete your reminders on time!</string>
 	<key>NSUserActivityTypes</key>
@@ -67,8 +69,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSPrincipalClass</key>
-    <string>Rooster.Application</string>
-     
 </dict>
 </plist>
