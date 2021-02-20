@@ -8,81 +8,15 @@
 import Foundation
 import Sparkle
 
-//AppKitInstallationUpdater
-
-@objc public class SparkleController : NSObject, SUUpdaterDelegate, Loggable {
+@objc public class SparkleController : NSObject, SUUpdaterDelegate, Loggable, SparkleTimerDelegate {
     
 //    public weak var delegate: AppKitInstallationUpdaterDelegate?
     
     private var updater: SUUpdater? = nil
     private var error: Error?
     private var showErrorDialog = false
-    private var timer: SimpleTimer
     
-    public override init() {
-        self.timer = SimpleTimer(withName: "SparkleControllerTimer")
-    }
-    
-    let nextUpdateCheckDateKey = "nextUpdateCheckDateKey"
-    let lastUpdateCheckDateKey = "lastUpdateCheckDateKey"
-    let tryAgainInterval:TimeInterval = 60 * 60
-    let updateCheckInterval: TimeInterval = 60 * 60 * 24
-    
-    var nextCheckDate: Date {
-        get {
-            if let date = UserDefaults.standard.object(forKey: self.nextUpdateCheckDateKey) as? Date {
-                return date
-            }
-            
-            return Date()
-        }
-        set(newDate) {
-            UserDefaults.standard.setValue(newDate, forKey: self.nextUpdateCheckDateKey)
-        }
-    }
-    
-    var lastUpdateCheckDate: Date? {
-        get {
-            return UserDefaults.standard.object(forKey: self.lastUpdateCheckDateKey) as? Date
-        }
-        set(newDate) {
-            if newDate == nil {
-                UserDefaults.standard.removeObject(forKey: self.lastUpdateCheckDateKey)
-            } else {
-                UserDefaults.standard.setValue(newDate, forKey: self.lastUpdateCheckDateKey)
-            }
-        }
-    }
-   
-    func removeNextCheckDate() {
-        UserDefaults.standard.removeObject(forKey: self.nextUpdateCheckDateKey)
-    }
-
-    var isTimeForUpdate: Bool {
-        return self.nextCheckDate.isEqualToOrBeforeDate(Date())
-    }
-    
-
-    func startNextCheckTimer() {
-        self.logger.log("Starting next check timer at \(Date().shortDateAndTimeString), will check again at \(self.nextCheckDate.shortDateAndTimeString)")
-        self.timer.start(withDate: self.nextCheckDate) { [weak self] timer in
-            self?.logger.log("Timer expired, will check for updates if needed")
-            self?.checkForUpdatesIfNeeded()
-        }
-    }
-    
-    func didSuccessfullyCheck() {
-        self.lastUpdateCheckDate = Date()
-        self.nextCheckDate = Date().addingTimeInterval(self.updateCheckInterval)
-        self.logger.log("Did succussfully check for updates.")
-        self.startNextCheckTimer()
-    }
-    
-    func didFailCheck() {
-        self.nextCheckDate = Date().addingTimeInterval(self.tryAgainInterval)
-        self.logger.log("Did fail check for updates, will try again in \( Int(self.tryAgainInterval / 60)) minutes")
-        self.startNextCheckTimer()
-    }
+    let timer = SparkleTimer(withDelegate: self)
 
     func checkForUpdatesIfNeeded() {
         self.timer.stop()
@@ -90,20 +24,25 @@ import Sparkle
         DispatchQueue.main.async {
             if let updater = self.updater {
                 if !updater.updateInProgress {
-                    if self.isTimeForUpdate {
+                    if self.timer.isTimeForUpdate {
                         self.logger.log("Starting check for updates in the backgound on feed: \(updater.feedURL)")
                         updater.checkForUpdatesInBackground()
                     } else {
                         self.logger.log("Not checking for updates yet")
-                        self.startNextCheckTimer()
+                        self.timer.startNextCheckTimer()
                     }
                 } else {
                     self.logger.log("Update in progress, not checking")
-                    self.startNextCheckTimer()
+                    self.timer.startNextCheckTimer()
                 }
             }
         }
     }
+    
+    func sparkleTimerCheckForUpdates(_ timer: SparkleTimer) {
+        self.checkForUpdatesIfNeeded()
+    }
+
     
     @objc func appDidBecomeActiveNotification(_ sender: Notification) {
         self.checkForUpdatesIfNeeded()
@@ -116,7 +55,7 @@ import Sparkle
             updater.automaticallyChecksForUpdates = false // this updates its check date if it fails. Dumb.
             updater.automaticallyDownloadsUpdates = true
             self.updater = updater
-            self.logger.log("Sparkle updater configured. Last update check was: \(self.lastUpdateCheckDate?.description ?? "None" )")
+            self.logger.log("Sparkle updater configured. Last update check was: \(self.timer.lastUpdateCheckDate?.description ?? "None" )")
             
             self.checkForUpdatesIfNeeded()
             
@@ -137,12 +76,12 @@ import Sparkle
     
     public func updaterDidNotFindUpdate(_ updater: SUUpdater) {
         self.logger.log("Sparkle did not find update")
-        self.didSuccessfullyCheck()
+        self.timer.didSuccessfullyCheck()
     }
     
     public func updater(_ updater: SUUpdater, didFindValidUpdate item: SUAppcastItem) {
         self.logger.log("Sparkle did find valid update (will automatically download)");
-        self.didSuccessfullyCheck()
+        self.timer.didSuccessfullyCheck()
     }
     
 //    public func updaterShouldPromptForPermissionToCheck(forUpdates updater: SUUpdater) -> Bool {
@@ -171,12 +110,12 @@ import Sparkle
             }
         }
         
-        self.didFailCheck()
+        self.timer.didFailCheck()
     }
     
     public func updater(_ updater: SUUpdater, failedToDownloadUpdate item: SUAppcastItem, error: Error) {
         self.logger.error("Sparkle failed to download update with error: \(error.localizedDescription)")
-        self.didFailCheck()
+        self.timer.didFailCheck()
     }
 
     public func updaterWillShowModalAlert(_ updater: SUUpdater) {
@@ -189,7 +128,7 @@ import Sparkle
     }
 
     public func updater(_ updater: SUUpdater, didDownloadUpdate item: SUAppcastItem) {
-        self.logger.log("Sparkle did download update. Next check: \(self.nextCheckDate.description)")
+        self.logger.log("Sparkle did download update. Next check: \(self.timer.nextCheckDate.description)")
     }
 
     public func updaterDidShowModalAlert(_ updater: SUUpdater) {
