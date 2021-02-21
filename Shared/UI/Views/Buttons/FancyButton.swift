@@ -15,7 +15,23 @@ import UIKit
 class FancyButton : Button {
     
     private var index: Int = 0
-
+    
+    convenience init() {
+        self.init(frame: CGRect.zero)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.contentViewAlignment = .left
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    
+        self.contentViewAlignment = .left
+    }
+    
     var contentViews: [SDKView] = [] {
         didSet {
             self.contentViewIndex = 0

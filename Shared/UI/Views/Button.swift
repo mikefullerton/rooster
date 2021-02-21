@@ -49,7 +49,7 @@ class Button : MouseTrackingView {
         self.addSubview(view)
         
         self.setPositionalContraints(forSubview: view, alignment: self.contentViewAlignment )
-        self.setFillInParentConstraints(forSubview: view)
+        self.setIntrinsicSizeConstraints(forSubview: view)
     
         self.invalidateIntrinsicContentSize()
         
@@ -68,6 +68,9 @@ class Button : MouseTrackingView {
         if  self.isEnabled,
             let target = self.target,
             let action = self.action {
+                
+            print("button: sending event")
+                
             let _ = target.perform(action, with: self)
         }
     }
@@ -80,7 +83,7 @@ class Button : MouseTrackingView {
                 if self.isMouseDown {
                     self.drawButtonPressed()
                 } else {
-                    self.drawButtonMouseOver()
+                    self.drawButtonIdle()
                 }
             } else {
                 self.drawButtonIdle()
@@ -101,6 +104,10 @@ class Button : MouseTrackingView {
     var pressedColor: SDKColor = NSColor.blue
     
     func drawButtonPressed() {
+        
+        print("button: drawing pressed")
+        
+        
         if let view = self.contentView as? SDKImageView {
 //            view.alphaValue = 0.6
             
@@ -114,8 +121,13 @@ class Button : MouseTrackingView {
     }
     
     func drawButtonIdle() {
-        if let view = self.contentView as? SDKImageView {
+        
+        
+        if let view = self.contentView as? SDKImageView,
+            view.contentTintColor != nil {
             view.contentTintColor = nil
+            
+            print("button: drawing idle")
         }
         
         if let view = self.contentView as? SDKTextField {

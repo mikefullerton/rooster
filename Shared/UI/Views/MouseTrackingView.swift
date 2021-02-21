@@ -112,7 +112,7 @@ class MouseTrackingView : AnimateableView, MouseTrackingViewDelegate {
     
     override func mouseDragged(with event: NSEvent) {
         super.mouseDragged(with: event)
-//        print("tracking: mouse dragged")
+        print("tracking: mouse dragged")
         self.mouseTrackingDelegate?.mouseTrackingView(self,
                                                       mouseDraggedAtLocation: self.convert(event.locationInWindow, from: nil),
                                                       withEvent: event)
@@ -121,7 +121,7 @@ class MouseTrackingView : AnimateableView, MouseTrackingViewDelegate {
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         self.isMouseDown = true
-//        print("tracking: mouse down")
+        print("tracking: mouse down")
         self.mouseTrackingDelegate?.mouseTrackingView(self,
                                                       mouseDownAtLocation:self.convert(event.locationInWindow, from: nil),
                                                       withEvent: event);
@@ -130,7 +130,7 @@ class MouseTrackingView : AnimateableView, MouseTrackingViewDelegate {
     override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
         self.isMouseDown = false
-//        print("tracking: mouse up")
+        print("tracking: mouse up")
         self.mouseTrackingDelegate?.mouseTrackingView(self,
                                                       mouseUpAtLocation:self.convert(event.locationInWindow, from: nil),
                                                       withEvent: event);
