@@ -20,25 +20,19 @@ func DegreesFromRadians(_ radians: Double) -> Double {
     return radians * 180.0 / .pi
 }
 
-class SwayAnimation {
+class SwayAnimation : NSObject, Loggable {
     let view: SDKView
     init(withView view: SDKView) {
-        self.view = view
+        self.view = view.animator()
+        super.init()
     }
 
     private(set) var isAnimating: Bool = false
-    
-    func startAnimating() {
-        
-        if self.isAnimating {
-            return
-        }
-        
-        self.isAnimating = true
-        
-        let duration = 0.5
-        let repeatCount:Float = .greatestFiniteMagnitude
 
+    private let duration = 0.5
+    private let repeatCount:Float = .greatestFiniteMagnitude
+
+    private lazy var scaleAnimation: CAKeyframeAnimation = {
         let scaleAmount:CGFloat = 0.08
         
         let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale.xy")
@@ -50,10 +44,13 @@ class SwayAnimation {
         scaleAnimation.autoreverses = true
         scaleAnimation.fillMode = .forwards
         scaleAnimation.isRemovedOnCompletion = true
-        
+        return scaleAnimation
+    }()
+    
+    private lazy var rotateAnimation: CAKeyframeAnimation = {
         let swayAmount: CGFloat = 0.45
         
-        let rotation = CAKeyframeAnimation(keyPath: "transform.rotation")
+        let rotation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
         rotation.values = [ -swayAmount, swayAmount ]
         rotation.calculationMode = .cubicPaced
         rotation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
@@ -62,20 +59,53 @@ class SwayAnimation {
         rotation.fillMode = .forwards
         rotation.isRemovedOnCompletion = true
         rotation.duration = duration
+        return rotation
+    }()
+    
+    
+    func startAnimating() {
         
-        let layer = view.sdkLayer
-        layer.position = CGPoint.init(x: self.view.frame.midX, y: self.view.frame.midY)
-        layer.anchorPoint = CGPoint.init(x: 0.5, y: 0.5)
-
-        layer.add(scaleAnimation, forKey: "sway-scale")
-        layer.add(rotation, forKey: "sway-rotation")
+        if self.isAnimating {
+            return
+        }
+        
+        self.isAnimating = true
+        
+        let layer = self.view.sdkLayer
+        
+        layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        layer.position = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY)
+        
+        CATransaction.begin()
+        layer.add(self.scaleAnimation, forKey: "sway-scale")
+        layer.add(self.rotateAnimation, forKey: "sway-rotation")
+        CATransaction.commit()
     }
     
     func stopAnimating() {
         if self.isAnimating {
-            self.view.sdkLayer.removeAnimation(forKey: "sway-scale")
-            self.view.sdkLayer.removeAnimation(forKey: "sway-rotation")
+            let layer = self.view.sdkLayer
+            
+            self.logger.error("ending position: \(NSStringFromPoint(layer.position)), anchorPoint: \(NSStringFromPoint(layer.anchorPoint))")
+            
+            layer.removeAnimation(forKey: "sway-scale")
+            layer.removeAnimation(forKey: "sway-rotation")
             self.isAnimating = false
+        }
+    }
+}
+
+
+extension NSView {
+    func rotate(amount: CGFloat) {
+        if let layer = self.layer, let animatorLayer = self.animator().layer {
+            layer.position = CGPoint(x: layer.frame.midX, y: layer.frame.midY)
+            layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+
+            NSAnimationContext.beginGrouping()
+            NSAnimationContext.current.allowsImplicitAnimation = true
+            animatorLayer.transform = CATransform3DMakeRotation(amount * CGFloat.pi / 2, 0, 0, 1)
+            NSAnimationContext.endGrouping()
         }
     }
 }

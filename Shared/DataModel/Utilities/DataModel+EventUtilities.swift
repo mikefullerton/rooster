@@ -10,19 +10,13 @@ import Foundation
 extension DataModel {
     
     private func nextAlarmDate(forItems items: [CalendarItem]) -> Date? {
-        let now = Date()
         var nextDate:Date? = nil
         
         for item in items {
-
             let alarm = item.alarm
             
-            if alarm.state != .neverFired {
-                continue
-            }
-           
-            if alarm.startDate.isAfterDate(now),
-               (nextDate == nil || alarm.startDate.isBeforeDate(nextDate!)) {
+            if alarm.willFire &&
+                (nextDate == nil || alarm.startDate.isBeforeDate(nextDate!)) {
                 nextDate = alarm.startDate
             }
         }

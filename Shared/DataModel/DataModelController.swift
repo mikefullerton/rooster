@@ -233,26 +233,28 @@ class DataModelController : EKControllerDelegate, Loggable {
     // MARK: Alarms
     
     func stopAllAlarms() {
-        if let updatedEvents = self.stopAlarms(forItems: AppDelegate.instance.dataModelController.dataModel.events)  {
+        if let updatedEvents = self.muteAlarms(forItems: AppDelegate.instance.dataModelController.dataModel.events)  {
             self.update(someEvents: updatedEvents)
         }
 
-        if let updatedReminders = self.stopAlarms(forItems: AppDelegate.instance.dataModelController.dataModel.reminders) {
+        if let updatedReminders = self.muteAlarms(forItems: AppDelegate.instance.dataModelController.dataModel.reminders) {
             self.update(someReminders: updatedReminders)
         }
     }
     
-    private func stopAlarms<T>(forItems items: [T]) -> [T]? where T: CalendarItem {
+    private func muteAlarms<T>(forItems items: [T]) -> [T]? where T: CalendarItem {
         var outList:[T] = []
         var madeChange = false
         
         for item in items {
-            if item.alarm.state == .firing {
-                var updatedAlarm = item.alarm
-                updatedAlarm.state = .finished
+            
+            var alarm = item.alarm
+            
+            if  alarm.isFiring {
+                alarm.mutedDate = Date()
                 
                 var updatedItem = item
-                updatedItem.alarm = updatedAlarm
+                updatedItem.alarm = alarm
                 outList.append(updatedItem)
                 
                 madeChange = true
@@ -269,36 +271,15 @@ class DataModelController : EKControllerDelegate, Loggable {
         var madeChange = false
         
         for item in items {
-            let alarm = item.alarm
-            var alarmState = alarm.state
-            
-            if !alarm.isEnabled {
-                alarmState = .disabled
-            
-            } else if alarm.isHappeningNow {
-                
-                if alarmState == .neverFired {
-                    alarmState = .firing
-                }
-                    
-            } else {
-                alarmState = .neverFired
-            }
-            
-            if alarmState != alarm.state {
-                
-                var updatedAlarm = alarm
-                updatedAlarm.state = alarmState
-                
+            var alarm = item.alarm
+            if alarm.updateState() {
                 var updatedItem = item
-                updatedItem.alarm = updatedAlarm
+                updatedItem.alarm = alarm
                 outList.append(updatedItem)
-
                 madeChange = true
             } else {
                 outList.append(item)
             }
-                
         }
         
         return madeChange ? outList : nil
@@ -376,9 +357,9 @@ class DataModelController : EKControllerDelegate, Loggable {
 }
 
 extension Event {
-    func stopAlarm() {
+    func setAlarmMuted(_ isMuted: Bool) {
         var newAlarm = self.alarm
-        newAlarm.state = .finished
+        newAlarm.mutedDate = isMuted ? Date() : nil
         
         var newEvent = self
         newEvent.alarm = newAlarm
@@ -388,10 +369,10 @@ extension Event {
 }
 
 extension Reminder {
-    func stopAlarm() {
+    func setAlarmMuted(_ isMuted: Bool) {
         var newAlarm = self.alarm
-        newAlarm.state = .finished
-        
+        newAlarm.mutedDate = isMuted ? Date() : nil
+
         var newReminder = self
         newReminder.alarm = newAlarm
         

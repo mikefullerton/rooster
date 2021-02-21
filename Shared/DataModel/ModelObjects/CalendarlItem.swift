@@ -27,6 +27,34 @@ protocol CalendarItem: CustomStringConvertible, Loggable, CalendarItemBehavior {
     
     func isEqualTo(_ item: CalendarItem) -> Bool
     
+    var startDate: Date { get }
+    var endDate: Date { get }
+}
+
+extension CalendarItem {
+
+    var isHappeningNow: Bool {
+        let now = Date()
+        return now.isEqualToOrAfterDate(self.startDate) && now.isEqualToOrBeforeDate(self.endDate)
+    }
+
+    var willHappen: Bool {
+        let now = Date()
+        return now.isBeforeDate(self.startDate)
+    }
     
+    var didHappen: Bool {
+        let now = Date()
+        return now.isAfterDate(self.endDate)
+    }
+    
+    var startDate: Date {
+        return self.alarm.startDate
+    }
+    
+    var endDate: Date {
+        return self.alarm.endDate
+    }
+
 }
 

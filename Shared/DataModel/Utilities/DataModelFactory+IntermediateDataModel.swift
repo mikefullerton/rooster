@@ -55,16 +55,16 @@ extension DataModelFactory {
                                                       calendar: calendar,
                                                       savedState: savedState)
                     } else {
-                        let alarm = Alarm(withState: .neverFired,
-                                                  startDate: ekEvent.startDate,
-                                                  endDate: ekEvent.endDate,
-                                                  isEnabled: true,
-                                                  snoozeInterval: 0)
+                        let alarm = Alarm(startDate: ekEvent.startDate,
+                                          endDate: ekEvent.endDate,
+                                          isEnabled: true,
+                                          mutedDate: nil,
+                                          snoozeInterval: 0)
                         
                         eventKitEvent = Event(withEvent: ekEvent,
-                                                      calendar: calendar,
-                                                      subscribed: true,
-                                                      alarm: alarm)
+                                              calendar: calendar,
+                                              subscribed: true,
+                                              alarm: alarm)
                     }
                     
                     self.events.append(eventKitEvent!)
@@ -113,21 +113,21 @@ extension DataModelFactory {
                     var reminder: Reminder? = nil
                     if let savedState = self.dataModelStorage.reminderState(forKey: ekReminder.uniqueID) {
                         reminder = Reminder(withReminder: ekReminder,
-                                                         calendar: calendar,
-                                                         startDate: startDate!,
-                                                         endDate: endDate,
-                                                         savedState: savedState)
+                                            calendar: calendar,
+                                            startDate: startDate!,
+                                            endDate: endDate,
+                                            savedState: savedState)
                     } else {
-                        let alarm = Alarm(withState: .neverFired,
-                                                  startDate: startDate!,
-                                                  endDate: endDate,
-                                                  isEnabled: true,
-                                                  snoozeInterval: 0)
+                        let alarm = Alarm(startDate: startDate!,
+                                          endDate: endDate,
+                                          isEnabled: true,
+                                          mutedDate: nil,
+                                          snoozeInterval: 0)
                         
                         reminder = Reminder(withReminder: ekReminder,
-                                                    calendar: calendar,
-                                                    subscribed: true,
-                                                    alarm: alarm)
+                                            calendar: calendar,
+                                            subscribed: true,
+                                            alarm: alarm)
                     }
 
                     self.reminders.append(reminder!)

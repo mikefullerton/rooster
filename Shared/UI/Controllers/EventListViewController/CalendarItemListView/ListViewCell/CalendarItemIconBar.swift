@@ -34,7 +34,7 @@ class CalendarItemIconBar : SimpleStackView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func handleLocationButtonClick(_ sender: SDKButton) {
+    @objc func handleLocationButtonClick(_ sender: Any?) {
         if let event = self.calendarItem {
             event.logger.log("open location button clicked")
             event.openLocationURL()
@@ -54,28 +54,41 @@ class CalendarItemIconBar : SimpleStackView {
         return view
     }()
 
-    @objc func handleMuteButtonClick(_ sender: SDKButton) {
+    @objc func handleMuteButtonClick(_ sender: Any?) {
         self.calendarItem?.stopAlarmButtonClicked()
     }
     
-    lazy var stopButton: SDKCustomButton = {
-        let view = SDKCustomButton(systemImageName: "speaker.wave.3",
-                                  target: self,
-                                  action: #selector(handleMuteButtonClick(_:)),
-                                  toolTip: "Silence Alarm")
-        return view
-    }()
+//    lazy var stopButton: SDKCustomButton = {
+//        let view = SDKCustomButton(systemImageName: "speaker.wave.3",
+//                                  target: self,
+//                                  action: #selector(handleMuteButtonClick(_:)),
+//                                  toolTip: "Silence Alarm")
+//        return view
+//    }()
 
-    @objc func handleAlarmButtonClicked(_ sender: SDKCustomButton) {
+    @objc func handleAlarmButtonClicked(_ sender: Any?) {
         self.calendarItem?.stopAlarmButtonClicked()
     }
+    
+    lazy var symbolConfig = NSImage.SymbolConfiguration(scale: .large)
+    
+    lazy var enabledAlarmImage: SDKImage = {
+        let image = SDKImage(systemSymbolName: "bell", accessibilityDescription: "mute alarm")?.withSymbolConfiguration(self.symbolConfig)
+        return image!
+    }()
 
-    lazy var alarmIcon: SDKCustomButton = {
+    lazy var disabledAlarmImage: SDKImage = {
+        let image = SDKImage(systemSymbolName: "bell.slash", accessibilityDescription: "mute alarm")?.withSymbolConfiguration(self.symbolConfig)
+        return image!
+    }()
+
+    lazy var alarmIcon: ImageButton = {
         
-        let view = SDKCustomButton(systemImageName: "bell",
-                                  target: self,
-                                  action: #selector(handleAlarmButtonClicked(_:)),
-                                  toolTip: "Alarm Enabled")
+        let view = ImageButton()
+        
+        view.setTarget(self, action: #selector(handleAlarmButtonClicked(_:)))
+        view.toolTip = "Alarm Enabled"
+                       
         view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
@@ -121,10 +134,20 @@ class CalendarItemIconBar : SimpleStackView {
     
     func update(withCalendarItem calendarItem: CalendarItem) {
         
-        self.alarmIcon.isEnabled = calendarItem.alarm.isFiring
-        
         self.calendarItem = calendarItem
+        self.alarmIcon.isEnabled = true
         
+        let alarm = calendarItem.alarm
+        
+        self.alarmIcon.image = alarm.isMuted ? self.disabledAlarmImage : self.enabledAlarmImage
+        if calendarItem.alarm.isFiring {
+            DispatchQueue.main.async {
+                self.alarmAnimation.startAnimating()
+            }
+        } else {
+            self.alarmAnimation.stopAnimating()
+        }
+
         var views:[SDKView] = []
 
         if let locationURL = calendarItem.knownLocationURL {
@@ -132,18 +155,7 @@ class CalendarItemIconBar : SimpleStackView {
             views.append(self.locationButton)
         }
         
-//        views.append(self.stopButton)
         views.append(self.alarmIcon)
-        
-//        views.append(self.calendarIcon)
-        
-        self.stopButton.isEnabled = calendarItem.alarm.isFiring
-        
-        if self.stopButton.isEnabled {
-            self.alarmAnimation.startAnimating()
-        } else {
-            self.alarmAnimation.stopAnimating()
-        }
         
         self.setContainedViews(views)
     }

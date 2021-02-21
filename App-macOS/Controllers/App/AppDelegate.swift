@@ -9,11 +9,11 @@ import Cocoa
 
 class Application: NSApplication, Loggable {
     
-    override func sendEvent(_ event: NSEvent) {
-        super.sendEvent(event)
-        
-        print("tracking: Event: \(event)")
-    }
+//    override func sendEvent(_ event: NSEvent) {
+//        super.sendEvent(event)
+//        
+//        print("global event tracking: Event: \(event)")
+//    }
 }
 
 @main

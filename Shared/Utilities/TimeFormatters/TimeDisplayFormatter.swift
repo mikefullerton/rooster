@@ -18,6 +18,39 @@ protocol TimeDisplayFormatter {
     var componentDelimeter: String { get }
     
     var showSecondsWithMinutes: TimeInterval { get }
+    
+    func displayString(withIntervalUntilFire interval: TimeInterval) -> String
+}
+
+
+struct CalculatedTimes {
+    var minutes: Int
+    var seconds: Int
+    var hours: Int
+    var showSeconds: Bool
+    
+    init(withInterval interval: TimeInterval,
+         showSecondsWithMinutesInterval: TimeInterval) {
+        
+        let minutesInterval = interval / (60.0)
+        
+        let showSeconds = showSecondsWithMinutesInterval > 0 && showSecondsWithMinutesInterval >= minutesInterval
+        
+        let hours = floor(interval / (60.0 * 60.0))
+        
+        let truncatedSeconds = hours * 60 * 60
+        
+        let truncatedMinutes = ((interval - truncatedSeconds) / 60)
+        
+        let minutes = showSeconds ? floor(truncatedMinutes) : round(truncatedMinutes)
+        
+        let seconds = interval - (truncatedSeconds) - (floor(minutes) * 60)
+        
+        self.showSeconds = showSeconds
+        self.minutes = Int(minutes)
+        self.hours = Int(hours)
+        self.seconds = Int(seconds)
+    }
 }
 
 extension TimeDisplayFormatter {
@@ -48,28 +81,17 @@ extension TimeDisplayFormatter {
     
         if interval > 0 {
 
-            let minutes = interval / (60.0)
+            let times = CalculatedTimes(withInterval: interval, showSecondsWithMinutesInterval: self.showSecondsWithMinutes)
             
-            let hours = floor(interval / (60.0 * 60.0))
-
-            let showSeconds = self.showSecondsWithMinutes > 0 && self.showSecondsWithMinutes >= minutes
-            
-            let displayMinutes = showSeconds ?
-                                    floor((interval - (hours * 60 * 60)) / 60) :
-                                    round((interval - (hours * 60 * 60)) / 60)
-            
-            let displaySeconds = interval - (hours * 60 * 60) - (floor(minutes) * 60)
-    
             var shouldDisplaySeconds = false
-            if hours > 0 {
-                
-                text += self.hoursString(Int(hours))
-                if displayMinutes > 1 {
-                    text += self.componentDelimeter + self.minutesString(Int(displayMinutes))
+            if times.hours > 0 {
+                text += self.hoursString(times.hours)
+                if times.minutes > 1 {
+                    text += self.componentDelimeter + self.minutesString(times.minutes)
                 }
-            } else if displayMinutes > 0 {
-                text += self.minutesString(Int(displayMinutes))
-                shouldDisplaySeconds = showSeconds
+            } else if times.minutes > 0 {
+                text += self.minutesString(times.minutes)
+                shouldDisplaySeconds = times.showSeconds
 
                 if shouldDisplaySeconds {
                     text += self.componentDelimeter
@@ -79,7 +101,7 @@ extension TimeDisplayFormatter {
             }
             
             if shouldDisplaySeconds {
-                text += self.secondsString(Int(displaySeconds))
+                text += self.secondsString(times.seconds)
             }
         }
     

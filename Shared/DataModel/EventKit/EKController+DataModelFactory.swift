@@ -17,9 +17,9 @@ extension EKController {
                                                completion: @escaping (_ dataModel: DataModel)-> Void) {
 
         let factory = DataModelFactory(personalCalendarModel: calendarDataModel,
-                                               delegateCalendarModel: delegateCalendarModel,
-                                               previousDataModel: previousDataModel,
-                                               dataModelStorage: self.dataModelStorage)
+                                       delegateCalendarModel: delegateCalendarModel,
+                                       previousDataModel: previousDataModel,
+                                       dataModelStorage: self.dataModelStorage)
 
         let dataModel = factory.createDataModel()
         

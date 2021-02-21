@@ -27,7 +27,7 @@ class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemView
         self.scrollView.drawsBackground = false
         self.scrollView.contentView.drawsBackground = false
         
-        self.collectionView.trackingAreaEnabled = true
+        self.collectionView.isMouseTrackingEnabled = true
     }
 
     override var preferredContentSize: NSSize {

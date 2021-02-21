@@ -12,24 +12,13 @@ import Cocoa
 import UIKit
 #endif
 
-class FancyButton : SDKCustomButton {
+class FancyButton : Button {
     
     private var index: Int = 0
-    
-    override init(frame: CGRect) {
-        self.contentViews = []
-        super.init(frame: frame)
-        self.alignment = .left
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
-    var contentViews: [SDKView] {
+    var contentViews: [SDKView] = [] {
         didSet {
             self.contentViewIndex = 0
-            self.setConstraints()
         }
     }
     
@@ -46,49 +35,14 @@ class FancyButton : SDKCustomButton {
             
             let view = self.contentViews[index]
 
-            self.setContentView(withView: view)
+            self.setContentView(view)
         }
     }
     
     var contentViewCount: Int {
         return self.contentViews.count
     }
-    
-    override func setSizeContraints(forImageView view: NSImageView) {
-        NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: self.intrinsicContentSize.height),
-            view.widthAnchor.constraint(equalToConstant: self.intrinsicContentSize.width)
-        ])
-    }
-    
-    override func setSizeConstraints(forTextField view: NSTextField) {
-        NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: view.intrinsicContentSize.height),
-            view.widthAnchor.constraint(equalToConstant: self.intrinsicContentSize.width)
-        ])
-    }
-    
-    
-    private func setContentView(withView view: SDKView) {
-        
-        if let imageView = view as? SDKImageView {
-            self.title = ""
-            self.image = imageView.image
-            self.symbolConfiguration = imageView.symbolConfiguration
-            self.contentTintColor = imageView.contentTintColor
-        } else {
-            self.image = nil
-        }
-        
-        if let label = view as? SDKTextField {
-            self.title = label.stringValue
-            self.contentTintColor = label.textColor
-            self.font = label.font
-            self.alignment = label.alignment
-        }
-        
-    }
-    
+
     override var intrinsicContentSize: CGSize {
         var maxAspectRatio: CGFloat = 0
         var maxSize = CGSize.zero

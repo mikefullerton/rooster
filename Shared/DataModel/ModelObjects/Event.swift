@@ -88,7 +88,7 @@ struct Event: Identifiable, Hashable, CalendarItem {
 
 extension Event {
     func stopAlarmButtonClicked() {
-        self.stopAlarm()
+        self.setAlarmMuted(!self.alarm.isMuted)
     }
 
     var timeLabelDisplayString: String {

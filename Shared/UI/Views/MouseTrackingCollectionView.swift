@@ -40,7 +40,11 @@ protocol MouseTrackingCollectionViewDelegate: AnyObject {
                                      withEvent event: NSEvent)
 }
 
+
+
 class MouseTrackingCollectionView: NSCollectionView {
+
+    lazy var mouseTracker = MouseTracker(withView: self)
     
     var debugging: Bool {
         return false
@@ -53,63 +57,13 @@ class MouseTrackingCollectionView: NSCollectionView {
     private var mouseInIndexPath: IndexPath?
     private var mouseInItem: NSCollectionViewItem?
 
-    var trackingAreaEnabled: Bool = false {
-        didSet {
-            if self.trackingAreaEnabled {
-                self.updateTrackingArea()
-                self.postsFrameChangedNotifications = true
-                NotificationCenter.default.addObserver(self, selector: #selector(frameDidChange(_:)), name: NSView.frameDidChangeNotification, object: self)
-
-            } else {
-                self.removeTrackingArea()
-                self.postsFrameChangedNotifications = false
-                NotificationCenter.default.removeObserver(self, name: NSView.frameDidChangeNotification, object: self)
-            }
+    var isMouseTrackingEnabled: Bool {
+        get { return self.mouseTracker.isTrackingEnabled }
+        set(value) {
+            self.mouseTracker.isTrackingEnabled = value
         }
     }
-    
-    private func removeTrackingArea() {
-        if let trackingViewAreas = self.collectionViewTrackingAreas {
-            trackingViewAreas.forEach { self.removeTrackingArea($0)}
-            
-            self.collectionViewTrackingAreas = nil
-        }
-    }
-    
-    private func updateTrackingArea() {
         
-        self.removeTrackingArea()
-       
-        var areas:[NSTrackingArea] = []
-        
-        areas.append( NSTrackingArea(rect: self.frame,
-                                     options: [ .mouseEnteredAndExited, .activeAlways, .enabledDuringMouseDrag ],
-                                     owner: self,
-                                     userInfo: nil))
-        
-        areas.append( NSTrackingArea(rect: self.frame,
-                                     options: [ NSTrackingArea.Options.mouseMoved, .activeAlways, .enabledDuringMouseDrag ],
-                                     owner: self,
-                                     userInfo: nil))
-
-        self.collectionViewTrackingAreas = areas
-        areas.forEach { self.addTrackingArea($0) }
-    }
-    
-    override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
-
-//        if self.window != nil {
-//            self.updateTrackingArea()
-//        } else {
-//            self.removeTrackingArea()
-//        }
-    }
-    
-    @objc func frameDidChange(_ notification: Notification) {
-        self.updateTrackingArea()
-    }
-    
     private func mouseDidExit() {
         
         if let item = self.mouseInItem, let indexPath = self.mouseInIndexPath {
@@ -171,7 +125,9 @@ class MouseTrackingCollectionView: NSCollectionView {
     
     override var acceptsFirstResponder: Bool {
         let accepts = super.acceptsFirstResponder
-        print("tracking: accepts: \(accepts)")
+        if self.debugging {
+            print("tracking: accepts firstresponder: \(accepts)")
+        }
         
         return true
     }
@@ -179,7 +135,9 @@ class MouseTrackingCollectionView: NSCollectionView {
     override func becomeFirstResponder() -> Bool {
         
         let becameFirstResponder = super.becomeFirstResponder()
-        print("tracking: becameFirstResponder: \(becameFirstResponder)")
+        if self.debugging {
+            print("tracking: becameFirstResponder: \(becameFirstResponder)")
+        }
         
         return becameFirstResponder
     }

@@ -87,7 +87,7 @@ struct Reminder: Identifiable, Hashable, CalendarItem {
 
 extension Reminder {
     func stopAlarmButtonClicked() {
-        self.snoozeAlarm()
+        self.setAlarmMuted(!self.alarm.isMuted)
     }
 
     var timeLabelDisplayString: String {

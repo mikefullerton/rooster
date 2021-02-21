@@ -43,7 +43,7 @@ class SoundRepeatView : PreferenceSlider {
     
     lazy var button: FancyButton = {
         let button = FancyButton()
-        button.alignment = .left
+        button.contentViewAlignment = .left
         button.contentViews = [
             button.defaultLabel(withTitle: "Once"),
             button.defaultLabel(withTitle: "Twice"),
@@ -52,8 +52,9 @@ class SoundRepeatView : PreferenceSlider {
             button.defaultLabel(withTitle: "Five Times"),
             button.defaultLabel(withTitle: "Infinite"),
         ]
-        button.target = self
-        button.action = #selector(setMaxValue(_:))
+        
+        button.setTarget(self, action: #selector(setMaxValue(_:)))
+        
         return button
     } ()
     

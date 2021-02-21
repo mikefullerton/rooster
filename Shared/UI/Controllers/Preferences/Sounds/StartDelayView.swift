@@ -46,7 +46,7 @@ class StartDelayView : PreferenceSlider {
     
     lazy var rhsButton: FancyButton = {
         let button = FancyButton()
-        button.alignment = .left
+        button.contentViewAlignment = .left
         button.contentViews = [
             self.label(withTitle: "None"),
             self.label(withTitle: "1 second"),
@@ -61,9 +61,7 @@ class StartDelayView : PreferenceSlider {
             self.label(withTitle: "10 seconds"),
         ]
         
-        button.target = self
-        button.action = #selector(setMaxValue(_:))
-        
+        button.setTarget(self, action: #selector(setMaxValue(_:)))
         return button
     } ()
     

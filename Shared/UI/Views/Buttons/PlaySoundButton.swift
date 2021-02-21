@@ -44,10 +44,10 @@ class PlaySoundButton : FancyButton, SoundDelegate {
             self.imageView(withName: "speaker.wave.3"),
         ]
   
-        self.alignment = .left
+        self.contentViewAlignment = .left
         self.contentViewIndex = 0
-        self.target = self
-        self.action = #selector(playSound(_:))
+        
+        self.setTarget(self, action: #selector(playSound(_:)))
         self.toolTip = "Play Sound"
     }
     

@@ -130,7 +130,7 @@ class AlarmNotificationController : Loggable, AlarmNotificationDelegate, DataMod
         var startedCount = 0
         
         for item in items {
-            if item.alarm.state == .firing {
+            if item.alarm.isFiring {
                 startedCount += 1
                 // this will do nothing if already firing
                 self.scheduleNotification(forItem: item)

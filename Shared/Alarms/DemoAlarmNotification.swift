@@ -32,11 +32,11 @@ class DemoAlarmNotification : AlarmNotification {
         let startDate = Date().addingTimeInterval(-60)
         let endDate = startDate.addingTimeInterval(60 * 60)
         
-        let alarm = Alarm(withState: .firing,
-                                  startDate: startDate,
-                                  endDate: endDate,
-                                  isEnabled: true,
-                                  snoozeInterval: 0)
+        let alarm = Alarm(startDate: startDate,
+                          endDate: endDate,
+                          isEnabled: true,
+                          mutedDate: nil,
+                          snoozeInterval: 0)
         
         return Event(withIdentifier: self.itemIdentifier,
                      ekEventID: "",

@@ -122,7 +122,7 @@ class TimeRemainingView : ContentAwareView {
         }
         
         let countDown = CountDown(withFireDate: fireDate,
-                                  formatter: LongCountDownStringFormatter(),
+                                  formatter: VerboseTimeDisplayFormatter(),
                                   showSecondsWithMinutes: self.showSecondsWithMinutes)
         if countDown.intervalUntilFire > 0 {
             self.label.text = self.prefixString + countDown.displayString

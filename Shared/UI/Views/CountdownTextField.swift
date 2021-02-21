@@ -20,7 +20,7 @@ class CountDownTextField : SDKTextField, CountDownDelegate {
     
     static let showSecondsDefault = 2.0
     
-    lazy var countDown = CountDown(withDelegate: self)
+    lazy var countDown = CountDownTimer(withDelegate: self)
 
     var outOfRangeString: String = ""
     
@@ -74,13 +74,13 @@ class CountDownTextField : SDKTextField, CountDownDelegate {
         self.countDown.start()
     }
    
-    func countdown(_ countDown: CountDown, willStart: Bool) {
+    func countdown(_ countDown: CountDownTimer, willStart: Bool) {
         if !willStart {
             self.stringValue = self.outOfRangeString
         }
     }
     
-    func countdown(_ countDown: CountDown, didUpdate displayString: String) {
+    func countdown(_ countDown: CountDownTimer, didUpdate displayString: String) {
         if let outputFormatter = self.outputFormatter {
             self.stringValue = outputFormatter(self.prefixString, displayString)
         } else {
@@ -88,7 +88,7 @@ class CountDownTextField : SDKTextField, CountDownDelegate {
         }
     }
     
-    func countdownFireDate(_ countDown: CountDown) -> Date? {
+    func countdownFireDate(_ countDown: CountDownTimer) -> Date? {
         
         // stop if we're hidden
         if self.isHidden {
@@ -102,11 +102,11 @@ class CountDownTextField : SDKTextField, CountDownDelegate {
         return nil
     }
 
-    func countdownDisplayFormatter(_ countDown: CountDown) -> CountDownStringFormatter {
-        return LongCountDownStringFormatter(showSecondsWithMinutes: self.showSecondsWithMinutes)
+    func countdownDisplayFormatter(_ countDown: CountDownTimer) -> TimeDisplayFormatter {
+        return VerboseTimeDisplayFormatter(showSecondsWithMinutes: self.showSecondsWithMinutes)
     }
     
-    func countdown(_ countDown: CountDown, didFinish displayString: String) {
+    func countdown(_ countDown: CountDownTimer, didFinish displayString: String) {
         self.countDownFinished()
     }
     

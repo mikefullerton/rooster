@@ -42,7 +42,7 @@ class SoundVolumeView : PreferenceSlider {
     
     lazy var button: FancyButton = {
         let imageButton = FancyButton()
-        imageButton.alignment = .left
+        imageButton.contentViewAlignment = .left
         imageButton.contentViews = [
             self.imageView(withName: "speaker.slash"),
             self.imageView(withName: "speaker"),
@@ -50,9 +50,9 @@ class SoundVolumeView : PreferenceSlider {
             self.imageView(withName: "speaker.wave.2"),
             self.imageView(withName: "speaker.wave.3")
         ]
-        imageButton.target = self
-        imageButton.action = #selector(setMaxValue(_:))
-
+        
+        imageButton.setTarget(self, action: #selector(setMaxValue(_:)))
+        
         return imageButton
     } ()
 

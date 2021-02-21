@@ -339,7 +339,7 @@ class CalendarItemListViewCell<ITEM_TYPE: CalendarItem> : ListViewRowView<ITEM_T
         self.startCountDownLabel.stopCountDown()
         self.endCountDownLabel.stopCountDown()
         
-        if calendarItem.alarm.isHappeningNow {
+        if calendarItem.isHappeningNow {
             self.startCountDownLabel.isHidden = true
             self.endCountDownLabel.isHidden = false
             

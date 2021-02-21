@@ -116,7 +116,7 @@ extension NSImage {
                 
                 if let nextFireDate = delegate.appKitMenuBarControllerNextFireDate(self) {
                     let countDown = CountDown(withFireDate: nextFireDate,
-                                              formatter: LongCountDownStringFormatter(),
+                                              formatter: LongTimeDisplayFormatter(),
                                               showSecondsWithMinutes: false)
 
                     title = countDown.displayString
