@@ -7,36 +7,41 @@
 
 import Foundation
 
-extension SoundFolder {
-
-    private static func cleanupName(_ url: URL?) -> String {
-        if let theURL = url {
-            
-            var cleanedName = theURL.deletingPathExtension().lastPathComponent
-            
-            [ "-", "_" ].forEach { cleanedName = cleanedName.replacingOccurrences(of: $0, with: " ")}
-
-            return cleanedName
-        }
-        
-        return ""
+extension URL {
+    static var soundExtensions: [String] {
+        return [ "wav", "mp3" ]
     }
+    
+    var isSoundFile: Bool {
+        if let _ = Self.soundExtensions.firstIndex(where: { $0 == self.pathExtension } ) {
+            return true
+        }
 
-    convenience init(withDirectory directory: DirectoryIterator) {
-        
-        self.init(withID: UUID().uuidString,
-                  url: directory.url,
-                  displayName: Self.cleanupName(directory.url))
-        
+        return false
+    }
+    
+}
+
+extension SoundFolder {
+    
+    convenience init(withDirectory directory: DirectoryIterator) throws {
+        let descriptor = try SoundFolderItemDescriptor.read(fromURL: Self.descriptorFileURL(forURL: directory.url))
+        self.init(withDescriptor: descriptor, atPath: directory.url)
+        try self.addContents(inDirectory: directory)
+    }
+    
+    private func addContents(inDirectory directory: DirectoryIterator) throws {
         for file in directory.files {
-            self.addSoundFile(SoundFile(withID: String.guid,
-                                        fileName: file.url.lastPathComponent,
-                                        displayName: Self.cleanupName(url)))
+            if file.url.isSoundFile {
+                let fileDescriptor = try SoundFolderItemDescriptor.read(fromURL: SoundFile.descriptorFileURL(forURL: file.url))
+                let soundFile = SoundFile(withDescriptor: fileDescriptor, atPath: file.url)
+                self.addSoundFile(soundFile)
+            }
         }
 
         for directory in directory.directories {
-            self.addSubFolder(SoundFolder(withDirectory: directory))
+            self.addSubFolder(try SoundFolder(withDirectory: directory))
         }
     }
-}
 
+}

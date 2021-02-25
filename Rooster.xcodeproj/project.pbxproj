@@ -206,8 +206,6 @@
 		B2747D0C25D581110071D5DF /* SoundFolder+DirectoryIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */; };
 		B2747D0E25D5815D0071D5DF /* SoundFolder+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */; };
 		B2747D0F25D5815D0071D5DF /* SoundFolder+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */; };
-		B2747D1C25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */; };
-		B2747D1D25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */; };
 		B274EF8425BA0CFC00F9D473 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8A25B7C6EB00EA2057 /* TopBar.swift */; };
 		B274EF8825BA0D0000F9D473 /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8825B7C6EB00EA2057 /* BottomBar.swift */; };
 		B274EF8D25BA0F6800F9D473 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B274EF8C25BA0F6800F9D473 /* BlurView.swift */; };
@@ -335,6 +333,8 @@
 		B2AA0B7025E6CD8D0014F873 /* AbstractListViewRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B6F25E6CD8D0014F873 /* AbstractListViewRowController.swift */; };
 		B2AA0B7225E6CDC40014F873 /* AbstractListViewRowController+RowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */; };
 		B2AA0B7425E6CDDE0014F873 /* ListViewRowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */; };
+		B2AA0BC525E823ED0014F873 /* SoundFolderItemDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0BC425E823ED0014F873 /* SoundFolderItemDescriptor.swift */; };
+		B2AA0BC725E8246A0014F873 /* JsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0BC625E8246A0014F873 /* JsonFile.swift */; };
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
@@ -729,7 +729,6 @@
 		B2747D0425D580900071D5DF /* SoundFolder+Searching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Searching.swift"; sourceTree = "<group>"; };
 		B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+DirectoryIterator.swift"; sourceTree = "<group>"; };
 		B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Bundle.swift"; sourceTree = "<group>"; };
-		B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Extensions.swift"; sourceTree = "<group>"; };
 		B274EF8C25BA0F6800F9D473 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B274EF9C25BA12A700F9D473 /* SoundFileSoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFileSoundPlayer.swift; sourceTree = "<group>"; };
 		B274EFB025BA191700F9D473 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
@@ -802,6 +801,8 @@
 		B2AA0B6F25E6CD8D0014F873 /* AbstractListViewRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractListViewRowController.swift; sourceTree = "<group>"; };
 		B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractListViewRowController+RowView.swift"; sourceTree = "<group>"; };
 		B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewRowViewController.swift; sourceTree = "<group>"; };
+		B2AA0BC425E823ED0014F873 /* SoundFolderItemDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFolderItemDescriptor.swift; sourceTree = "<group>"; };
+		B2AA0BC625E8246A0014F873 /* JsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonFile.swift; sourceTree = "<group>"; };
 		B2AFE64E2569782D006B3C58 /* CalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
 		B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utiities.swift"; sourceTree = "<group>"; };
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
@@ -1392,6 +1393,7 @@
 			isa = PBXGroup;
 			children = (
 				B2747CFE25D580010071D5DF /* SoundFolderItem.swift */,
+				B2AA0BC425E823ED0014F873 /* SoundFolderItemDescriptor.swift */,
 			);
 			path = SoundFolderItem;
 			sourceTree = "<group>";
@@ -1400,7 +1402,6 @@
 			isa = PBXGroup;
 			children = (
 				B298C44C25AB8CB90085BBA0 /* SoundFolder.swift */,
-				B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */,
 				B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */,
 				B2747D0A25D581110071D5DF /* SoundFolder+DirectoryIterator.swift */,
 				B2747D0425D580900071D5DF /* SoundFolder+Searching.swift */,
@@ -1520,6 +1521,7 @@
 				B29F4AD825D052700078F8B5 /* FileManager+Utilities.swift */,
 				B29F4AE125D084300078F8B5 /* DirectoryIterator.swift */,
 				B29F4AF725D0D67D0078F8B5 /* Dictionary+JSON.swift */,
+				B2AA0BC625E8246A0014F873 /* JsonFile.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2380,9 +2382,9 @@
 				B274EFD925BA247300F9D473 /* StartDelayView.swift in Sources */,
 				B2FAD8FF25B601DB00598B9E /* Alarm.swift in Sources */,
 				B25F6B0D25BC9AE50067C096 /* PreferencesWindow.swift in Sources */,
-				B2747D1D25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */,
 				B259A3E725CAF6E400CF4C95 /* QuickSearchView.swift in Sources */,
 				B274F00D25BA2DD800F9D473 /* CalendarChooserViewController.swift in Sources */,
+				B2AA0BC725E8246A0014F873 /* JsonFile.swift in Sources */,
 				B223655C25D3808C00AC00DA /* NoMeetingsListViewCell.swift in Sources */,
 				B2FAD87A25B5F91500598B9E /* UserNotificationCenterController.swift in Sources */,
 				B294937225B5F71500FCCF9E /* DataModelReloader.swift in Sources */,
@@ -2542,6 +2544,7 @@
 				B274EFA425BA181F00F9D473 /* TipView.swift in Sources */,
 				B26F6B5C25B7C47400EA2057 /* ReminderListViewCell.swift in Sources */,
 				B26F6B7F25B7C67500EA2057 /* Calendar+NSColor.swift in Sources */,
+				B2AA0BC525E823ED0014F873 /* SoundFolderItemDescriptor.swift in Sources */,
 				B294935425B5F6E400FCCF9E /* Dictionary+Utiities.swift in Sources */,
 				B29493A025B5F7F500FCCF9E /* DemoAlarmNotification.swift in Sources */,
 				B2FAD93F25B6022B00598B9E /* Event+DictionaryCodable.swift in Sources */,
@@ -2696,7 +2699,6 @@
 				B24C5F2725BE043200F51FE7 /* CalendarListViewModel.swift in Sources */,
 				B255349525B222C200E17EEF /* CalendarItem+LocationURL.swift in Sources */,
 				B24C5F2925BE043200F51FE7 /* CalendarToolbarView.swift in Sources */,
-				B2747D1C25D583CC0071D5DF /* SoundFolder+Extensions.swift in Sources */,
 				B2747D0225D5807B0071D5DF /* SoundFolder+Visitor.swift in Sources */,
 				B298C46E25ABCB940085BBA0 /* Theme.swift in Sources */,
 				B2742C922560538F0087E4B6 /* AppDelegate.swift in Sources */,

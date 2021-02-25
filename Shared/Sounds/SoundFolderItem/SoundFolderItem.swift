@@ -11,6 +11,8 @@ protocol SoundFolderItem: AnyObject, CustomStringConvertible {
     var parent: SoundFolder? { get }
     var displayName: String { get }
     var id: String { get }
+    var relativePath: URL { get }
+    var absolutePath: URL? { get }
     func setParent(_ soundFolder: SoundFolder?)
 }
 
@@ -66,5 +68,23 @@ extension SoundFolderItem {
     func setParent(_ soundFolder: SoundFolder?) {
         
     }
+    
+    var relativePathFromRootFolder: URL {
+        if let parent = self.parent {
+            return parent.relativePathFromRootFolder.appendingPathComponent(self.relativePath.lastPathComponent)
+        }
+        
+        return URL(withRelativePath: self.relativePath.lastPathComponent)
+    }
+
+    var rootFolder: SoundFolder? {
+        if let parent = self.parent {
+            return parent.rootFolder
+        }
+        
+        return self as? SoundFolder
+    }
+
+    
 }
 

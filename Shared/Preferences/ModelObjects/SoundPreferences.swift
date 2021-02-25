@@ -89,5 +89,12 @@ struct SoundPreferences: CustomStringConvertible, Equatable, Loggable, Codable {
     var soundSets: [SoundSet] {
         return self.soundPreferences.values.map { $0.soundSet }
     }
+    
+    var allSoundsIterator: MultiPlayListIterator {
+        let iteratorList = self.soundSets.map { return $0.soundSetIterator }
+        let iterator = MultiPlayListIterator(withIterators: iteratorList)
+      
+        return iterator
+    }
 }
 

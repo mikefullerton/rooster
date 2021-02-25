@@ -95,8 +95,7 @@ class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible,
             return
         }
         
-        let iteratorList = soundPrefs.soundSets.map { return $0.soundSetIterator }
-        let iterator = MultiPlayListIterator(withIterators: iteratorList)
+        let iterator = soundPrefs.allSoundsIterator
        
         guard iterator.sounds.count > 0 else {
             self.logger.log("No sounds in iterators to play")

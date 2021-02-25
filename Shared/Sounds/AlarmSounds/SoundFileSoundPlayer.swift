@@ -54,8 +54,8 @@ class SoundFileSoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identif
         
         let soundFile = self.soundFile
         
-        if  let url = soundFile.url,
-            let sound = NSSound(contentsOf: url, byReference: true){
+        if  let path = soundFile.absolutePath,
+            let sound = NSSound(contentsOf: path, byReference: true){
             
             sound.setName(soundFile.displayName)
             sound.delegate = self
@@ -115,7 +115,7 @@ class SoundFileSoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identif
     func play(withBehavior behavior: SoundBehavior) {
         self.createPlayerIfNeeded()
         self.isPlaying = true
-        self.logger.log("Sound will start playing: \(self.displayName)")
+        self.logger.log("Sound will start playing: \(self.displayName): url: \(self.soundFile.absolutePath?.path ?? "nil")")
         if let delegate = self.delegate {
             delegate.soundWillStartPlaying(self)
         }

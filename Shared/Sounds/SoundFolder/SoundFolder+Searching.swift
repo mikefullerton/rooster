@@ -63,31 +63,30 @@ extension SoundFolder {
     }
     
     func findSubFolder(containing searchString: String, parent: SoundFolder?) -> SoundFolder? {
-        
-        let outFolder = SoundFolder(withID: self.id,
-                                    url: URL.roosterURL("search-\(searchString)"),
-                                    displayName: self.displayName)
-        
+
         var sounds:[SoundFile] = []
         for sound in self.soundFiles {
             if sound.searchMatches(searchString) {
-                sounds.append(sound)
+                sounds.append(sound.copy() as! SoundFile)
             }
         }
-        
+
         var subFolders: [SoundFolder] = []
         for subFolder in self.subFolders {
             if subFolder.searchMatches(searchString) {
-                subFolders.append(subFolder)
+                subFolders.append(subFolder.copy() as! SoundFolder)
             } else if let foundFolder = subFolder.findSubFolder(containing: searchString, parent: self) {
-                subFolders.append(foundFolder)
+                subFolders.append(foundFolder.copy() as! SoundFolder)
             }
         }
-        
+
         if sounds.count > 0 || subFolders.count > 0 {
-            outFolder.setSoundFiles(sounds)
-            outFolder.setSubFolders(subFolders)
-            
+            let outFolder = SoundFolder(withID: self.id,
+                                        directoryName: self.directoryName,
+                                        displayName: self.displayName,
+                                        sounds: sounds,
+                                        subFolders: subFolders)
+
             return outFolder
         }
 

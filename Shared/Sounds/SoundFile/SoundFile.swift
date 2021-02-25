@@ -7,22 +7,33 @@
 
 import Foundation
 
-class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible, Equatable, NSCopying {
+class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible, Equatable, NSCopying, Loggable {
+    
     typealias ID = String
     
     let id: String
     let fileName: String
     var displayName: String
-
-    private(set) var url: URL?
+    
+    private(set) var relativePath: URL {
+        didSet {
+            print("New SoundFile relative path: \(self.relativePath.path)")
+        }
+    }
+    
+    var absolutePath: URL? {
+        if let rootFolderPath = self.rootFolder?.absolutePath {
+            let outPath = rootFolderPath.deletingLastPathComponent().appendingPathComponent(self.relativePath.path)
+            self.logger.log("sound file path: \(outPath)")
+            return outPath
+        }
+        
+        return nil
+    }
     
     weak var parent: SoundFolder? {
         didSet {
-            if let parent = self.parent {
-                self.url = parent.url.appendingPathComponent(self.fileName)
-            } else {
-                self.url = nil
-            }
+            self.updateRelativePath()
         }
     }
   
@@ -38,14 +49,14 @@ class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible
         self.fileName = fileName
         self.id = id
         self.displayName = displayName
-        self.url = nil
+        self.relativePath = URL(withRelativePath: fileName)
     }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case fileName = "fileName"
         case displayName = "displayName"
-        case url = "url"
+        case relativePath = "relativePath"
     }
     
     required init(from decoder: Decoder) throws {
@@ -53,7 +64,7 @@ class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible
         try self.id = values.decode(String.self, forKey: .id)
         try self.displayName = values.decode(String.self, forKey: .displayName)
         try self.fileName = values.decode(String.self, forKey: .fileName)
-        try self.url = URL(string: values.decode(String.self, forKey: .url))
+        try self.relativePath = values.decode(URL.self, forKey: .relativePath)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -61,7 +72,7 @@ class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible
         try container.encode(self.id, forKey: .id)
         try container.encode(self.displayName, forKey: .displayName)
         try container.encode(self.fileName, forKey: .fileName)
-        try container.encode(self.url?.absoluteString, forKey: .url)
+        try container.encode(self.relativePath.path, forKey: .relativePath)
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
@@ -69,12 +80,38 @@ class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible
     }
 
     var description: String {
-        return "\(type(of:self)): \(self.id), displayName: \(self.displayName), fileName: \(self.fileName), url: \(String(describing:self.url)))"
+        return """
+        \(type(of:self)): \
+        id: \(self.id), \
+        displayName: \(self.displayName), \
+        fileName: \(self.fileName), \
+        relativePath: \(self.relativePath.path), \
+        absolutePath: \(self.absolutePath?.path ?? "nil")"
+        """
     }
 
     static func == (lhs: SoundFile, rhs: SoundFile) -> Bool {
         return  lhs.id == rhs.id &&
                 lhs.displayName == rhs.displayName &&
                 lhs.fileName == rhs.fileName
+    }
+    
+    func updateRelativePath() {
+        self.relativePath = self.relativePathFromRootFolder
+        
+        self.logger.log("New url for \(self.description)")
+    }
+}
+
+extension SoundFile {
+    convenience init(withDescriptor descriptor: SoundFolderItemDescriptor, atPath url: URL) {
+        self.init(withID: descriptor.id,
+                  fileName:url.lastPathComponent,
+                  displayName: descriptor.displayName)
+    }
+    
+    static func descriptorFileURL(forURL url: URL) -> URL {
+        let name = url.deletingPathExtension().lastPathComponent
+        return url.deletingLastPathComponent().appendingPathComponent("\(name).roosterSound")
     }
 }

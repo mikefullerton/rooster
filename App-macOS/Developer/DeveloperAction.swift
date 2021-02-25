@@ -16,7 +16,7 @@ protocol DeveloperAction {
 extension DeveloperAction {
     
     static var workspace:URL {
-        return URL(fileURLWithPath: "Rooster.xcworkspace")
+        return URL(withRelativePath: "Rooster.xcworkspace")
     }
     
     func findRoosterProjectDirectory() -> URL? {
