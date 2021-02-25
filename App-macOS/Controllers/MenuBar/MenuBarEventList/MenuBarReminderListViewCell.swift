@@ -9,8 +9,9 @@ import Foundation
 import Cocoa
 
 class MenuBarReminderListViewCell: ReminderListViewCell, MenuBarItem {
-    override func loadView() {
-        super.loadView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.updateForMenuBar()
     }
 }

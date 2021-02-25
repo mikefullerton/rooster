@@ -21,11 +21,11 @@ extension SoundFolder {
         
     }
     
-    func findSounds(containing: [String],
-                    excluding exactExclusions: [String] = []) -> [SoundFile]? {
+    func findSoundFiles(containing: [String],
+                        excluding exactExclusions: [String] = []) -> [SoundFile]? {
         
         var sounds:[SoundFile] = []
-        for sound in self.allSounds {
+        for sound in self.allSoundFiles {
             containing.forEach {
                 if sound.searchMatches($0) &&
                     !self.isExcluded(sound.displayName, exactExclusions: exactExclusions){
@@ -36,8 +36,8 @@ extension SoundFolder {
         return sounds.count > 0 ? sounds: nil
     }
     
-    func findSound(forIdentifier id: String) -> SoundFile? {
-        for sound in self.allSounds {
+    func findSoundFile(forIdentifier id: String) -> SoundFile? {
+        for sound in self.allSoundFiles {
             if sound.id == id {
                 return sound
             }
@@ -46,11 +46,11 @@ extension SoundFolder {
         return nil
     }
     
-    func findSounds(forIdentifiers identifiers: [String]) -> [SoundFile] {
+    func findSoundFiles(forIdentifiers identifiers: [String]) -> [SoundFile] {
         var outSounds:[SoundFile] = []
         
         identifiers.forEach {
-            if let soundFile = self.findSound(forIdentifier: $0) {
+            if let soundFile = self.findSoundFile(forIdentifier: $0) {
                 outSounds.append(soundFile)
             }
         }
@@ -58,18 +58,18 @@ extension SoundFolder {
         return outSounds
     }
     
-    func findFolder(containing name: String) -> SoundFolder? {
-        return self.findFolder(containing: name, parent: nil)
+    func findSubFolder(containing name: String) -> SoundFolder? {
+        return self.findSubFolder(containing: name, parent: nil)
     }
     
-    func findFolder(containing searchString: String, parent: SoundFolder?) -> SoundFolder? {
+    func findSubFolder(containing searchString: String, parent: SoundFolder?) -> SoundFolder? {
         
         let outFolder = SoundFolder(withID: self.id,
                                     url: URL.roosterURL("search-\(searchString)"),
                                     displayName: self.displayName)
         
         var sounds:[SoundFile] = []
-        for sound in self.sounds {
+        for sound in self.soundFiles {
             if sound.searchMatches(searchString) {
                 sounds.append(sound)
             }
@@ -79,13 +79,13 @@ extension SoundFolder {
         for subFolder in self.subFolders {
             if subFolder.searchMatches(searchString) {
                 subFolders.append(subFolder)
-            } else if let foundFolder = subFolder.findFolder(containing: searchString, parent: self) {
+            } else if let foundFolder = subFolder.findSubFolder(containing: searchString, parent: self) {
                 subFolders.append(foundFolder)
             }
         }
         
         if sounds.count > 0 || subFolders.count > 0 {
-            outFolder.setSounds(sounds)
+            outFolder.setSoundFiles(sounds)
             outFolder.setSubFolders(subFolders)
             
             return outFolder
@@ -94,10 +94,10 @@ extension SoundFolder {
         return nil
     }
 
-    func findSounds(forName name: String) -> [SoundFile] {
+    func findSoundFiles(forName name: String) -> [SoundFile] {
         var sounds: [SoundFile] = []
         
-        for sound in self.allSounds {
+        for sound in self.allSoundFiles {
             if sound.displayName.localizedCaseInsensitiveContains(name) {
                 sounds.append(sound)
             }
@@ -107,7 +107,7 @@ extension SoundFolder {
     }
     
     func contains(soundID id: String) -> Bool {
-        return self.findSound(forIdentifier: id) != nil
+        return self.findSoundFile(forIdentifier: id) != nil
     }
     
 }

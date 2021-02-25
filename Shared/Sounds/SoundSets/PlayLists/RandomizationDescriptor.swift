@@ -76,7 +76,7 @@ struct RandomizationDescriptor: Loggable, Codable {
         self.alwaysFirst = alwaysFirst
     }
     
-    static var none = RandomizationDescriptor()
+    static var never = RandomizationDescriptor()
     
     static var always = RandomizationDescriptor(withBehavior: .always)
 }

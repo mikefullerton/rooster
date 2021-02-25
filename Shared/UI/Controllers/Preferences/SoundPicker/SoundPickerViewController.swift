@@ -121,7 +121,7 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
         self.logger.log("Got search string: \(content)")
         
         if content.count > 0 {
-            if let soundFolder = SoundFolder.instance.findFolder(containing: content) {
+            if let soundFolder = SoundFolder.instance.findSubFolder(containing: content) {
                 self.soundPicker.updateSoundFolder(soundFolder)
             } else {
                 self.soundPicker.updateSoundFolder(SoundFolder.empty)

@@ -22,7 +22,7 @@ struct SoundPickerListViewModel : ListViewModelProtocol {
         
         soundFolder.visitEach { item in
             if let soundFolder = item as? SoundFolder {
-                let rows = soundFolder.sounds.map { ListViewRowDescriptor<SoundFile, SoundPickerListViewCell>(withContent: $0) }
+                let rows = soundFolder.soundFiles.map { ListViewRowDescriptor<SoundFile, SoundPickerListViewCell>(withContent: $0) }
                 if rows.count > 0 {
                     var elements = soundFolder.pathComponents
                     elements.remove(at: 0)

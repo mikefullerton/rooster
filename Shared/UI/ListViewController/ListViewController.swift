@@ -12,12 +12,13 @@ import Cocoa
 import UIKit
 #endif
 
-class ListViewController<ViewModel> : SDKViewController,
-                                       NSCollectionViewDataSource,
-                                       NSCollectionViewDelegate,
-                                       NSCollectionViewDelegateFlowLayout,
-                                       MouseTrackingCollectionViewDelegate,
-                                       Reloadable where ViewModel: ListViewModelProtocol {
+class ListViewController<ViewModel: ListViewModelProtocol> :    SDKViewController,
+                                                                NSCollectionViewDataSource,
+                                                                NSCollectionViewDelegate,
+                                                                NSCollectionViewDelegateFlowLayout,
+                                                                MouseTrackingCollectionViewDelegate,
+                                                                Reloadable,
+                                                                Loggable {
    
     private(set) var viewModel: ViewModel?
     
@@ -104,17 +105,26 @@ class ListViewController<ViewModel> : SDKViewController,
     override func viewWillAppear() {
         self.reloadData()
         super.viewWillAppear()
+
+    
+        self.collectionView.postsFrameChangedNotifications = false
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
         self.scrollToTop()
+        
+        // not sure why this is needed??
+        self.collectionView.collectionViewLayout?.invalidateLayout()
+       
     }
     
     override func viewDidDisappear() {
         super.viewWillDisappear()
         self.viewModel = nil
         self.collectionView.reloadData()
+
+        self.collectionView.postsFrameChangedNotifications = false
     }
 
     override var preferredContentSize: NSSize {

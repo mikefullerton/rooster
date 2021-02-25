@@ -13,7 +13,7 @@ extension SoundFolder {
     func visitEach(_ visitor: Visitor) {
         visitor(self)
         
-        self.sounds.forEach { soundFile in
+        self.soundFiles.forEach { soundFile in
             visitor(soundFile)
         }
         

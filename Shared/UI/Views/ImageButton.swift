@@ -32,7 +32,7 @@ class ImageButton: Button {
 //                self.imageView.sizeToFit()
                 self.invalidateIntrinsicContentSize()
                 
-                self.mouseStateDidChange()
+                self.updateContents()
             }
         }
     }

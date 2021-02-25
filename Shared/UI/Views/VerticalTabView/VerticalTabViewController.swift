@@ -53,8 +53,17 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
     
     lazy var verticalButtonBarController = VerticalButtonListViewController(with: self.items)
     private var contentView: SDKView?
+    
+    private(set) var selectedItem: VerticalTabItem? {
+        didSet {
+            if let item = self.selectedItem {
+                self.setContentView(item.view)
+            }
+        }
+    }
 
     let buttonBarInsets = SDKEdgeInsets.ten
+    
     let buttonListWidth:CGFloat
     
     init(with items: [VerticalTabItem],
@@ -77,6 +86,8 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
         
         view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .vertical)
         view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .horizontal)
+        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         self.addButtonList()
         self.addContentContainerView()
@@ -97,7 +108,7 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
 
     func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController,
                                          didChooseItem item: VerticalTabItem) {
-        self.setContentView(item.view)
+        self.selectedItem = item
         self.delegate?.verticalTabViewController(self, didChangeTab: item)
     }
 
@@ -148,8 +159,10 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
             controller.view.bottomAnchor.constraint(equalTo: container.bottomAnchor)
         ])
         
-        container.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
-        container.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+//        container.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+//        container.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+//        container.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//        container.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     private func addContentContainerView() {
@@ -166,9 +179,14 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
             view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.buttonBarInsets.top),
             view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -self.buttonBarInsets.bottom)
         ])
+        
+//        view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .vertical)
+//        view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .horizontal)
+//        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
     
-    func setContentView(_ view: SDKView) {
+    private func setContentView(_ view: SDKView) {
         if let contentView = self.contentView {
             contentView.removeFromSuperview()
             self.contentView = nil
@@ -185,6 +203,11 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
             view.leadingAnchor.constraint(equalTo: self.contentContainerView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.contentContainerView.trailingAnchor),
         ])
+
+//        view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .vertical)
+//        view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .horizontal)
+//        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+//        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         self.contentView = view
     }
 }

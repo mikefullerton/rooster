@@ -18,7 +18,7 @@ protocol SoundPreferencesViewDelegate : AnyObject {
                               presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey)
 }
 
-class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
+class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate, PreferencesContentView {
     weak var delegate: SoundPreferencesViewDelegate?
 
     init(frame: CGRect) {

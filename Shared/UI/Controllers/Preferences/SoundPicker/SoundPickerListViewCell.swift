@@ -12,21 +12,15 @@ import Cocoa
 import UIKit
 #endif
 
-class SoundPickerListViewCell : ListViewRowView<SoundFile>, PlaySoundButtonSoundProvider {
-    
-//    typealias ContentType = SoundFile
-//    typealias ViewType = SoundPickerListViewCell
-    
-//    var eventHandler: EventHandler<SoundFile, SoundPickerListViewCell>?
+class SoundPickerListViewCell : ListViewRowController<SoundFile>, PlaySoundButtonSoundProvider {
 
-    
     private var soundFile: SoundFile?
     private var soundPreferenceKey: SoundPreferences.SoundPreferenceKey = .sound1
     private var sound: Sound?
     
-    override func loadView() {
-        self.view = SDKView()
-        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    
         self.view.wantsLayer = true
         
         self.addPlayButton()
@@ -35,7 +29,7 @@ class SoundPickerListViewCell : ListViewRowView<SoundFile>, PlaySoundButtonSound
     
     override func viewWillAppear(withContent content: SoundFile) {
         self.soundFile = content
-        self.sound = SoundFileAlarmSound(withSoundFile: content)
+        self.sound = SoundFileSoundPlayer(withSoundFile: content, randomizer: RandomizationDescriptor.never)
         
         self.playButton.isEnabled = true
         

@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarItemListViewCell<ITEM_TYPE: CalendarItem> : ListViewRowView<ITEM_TYPE>, CountDownTextFieldDelegate, Loggable {
+class CalendarItemListViewCell<ITEM_TYPE: CalendarItem> : ListViewRowController<ITEM_TYPE>, CountDownTextFieldDelegate {
     
     let contentInsets = SDKEdgeInsets(top: 14, left: 10, bottom: 14, right: 10)
     
@@ -34,9 +34,8 @@ class CalendarItemListViewCell<ITEM_TYPE: CalendarItem> : ListViewRowView<ITEM_T
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
-        
-        self.view = SDKView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         self.view.sdkLayer.cornerRadius = 0.0
         self.view.sdkLayer.backgroundColor = NSColor.clear.cgColor

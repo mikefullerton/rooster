@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemViewModel>, MenuBarScrollViewDelegate, Loggable, AppControllerAware, NSMenuDelegate {
+class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemViewModel>, MenuBarScrollViewDelegate, AppControllerAware, NSMenuDelegate {
     
     override func provideDataModel() -> MenuBarItemViewModel? {
         return MenuBarItemViewModel(withEvents: AppDelegate.instance.dataModelController.dataModel.events,

@@ -8,33 +8,76 @@
 import Foundation
 import AppKit
 
-class Button : MouseTrackingView {
+protocol ButtonContentView {
+    func updateSettings(inButton button: Button)
+    func wasAdded(toButton button: Button)
+    var preferredButtonSize: CGSize { get }
+}
+
+class Button : AnimateableView, Loggable, TrackingButtonDelegate {
+
+    private lazy var button: TrackingButton = {
+        let button = TrackingButton()
+        button.isTransparent = true
+        button.delegate = self
+        return button
+    }()
     
-    private(set) weak var target: AnyObject? = nil
-    private(set) var action:Selector? = nil
+    var target: AnyObject? {
+        get {
+            return self.button.target
+        }
+        set(target) {
+            self.button.target = target
+        }
+    }
     
+    var action: Selector? {
+        get {
+            return self.button.action
+        }
+        set(action) {
+            self.button.action = action
+        }
+    }
     var isEnabled: Bool = true {
         didSet {
-            self.mouseStateDidChange()
+            self.button.isEnabled = self.isEnabled
+            self.updateContents()
         }
     }
     
     private(set) var contentView: NSView?
     
-    var contentViewAlignment: SubviewAlignment = .center
+    var contentViewAlignment: SubviewAlignment = .center {
+        didSet {
+            self.updateContents()
+        }
+    }
+    
+    var isHighlighted: Bool = false {
+        didSet {
+            self.updateContents()
+        }
+    }
+    
+    var contentInsets: SDKEdgeInsets = SDKEdgeInsets.zero
     
     init(withContentView view: NSView) {
         super.init(frame: CGRect.zero)
         
         self.setContentView(view)
+        self.addButton()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.addButton()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        self.addButton()
     }
     
     func setContentView(_ view: SDKView) {
@@ -45,15 +88,30 @@ class Button : MouseTrackingView {
         if let contentView = self.contentView {
             contentView.removeFromSuperview()
         }
+        
         self.contentView = view
-        self.addSubview(view)
+        self.addSubview(view, positioned: .below, relativeTo: self.button)
         
         self.setPositionalContraints(forSubview: view, alignment: self.contentViewAlignment )
-        self.setIntrinsicSizeConstraints(forSubview: view)
-    
-        self.invalidateIntrinsicContentSize()
         
-        self.mouseStateDidChange()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        
+        if let view = self.contentView as? ButtonContentView {
+            view.wasAdded(toButton: self)
+        } else {
+            self.logger.error("Unexpected view type in button: \(type(of:view))")
+        }
+
+        self.invalidateIntrinsicContentSize()
+
+        self.updateContents()
+    }
+    
+    func updateContents() {
+        if let view = self.contentView as? ButtonContentView {
+            view.updateSettings(inButton: self)
+        }
     }
     
     func setTarget(_ target: AnyObject?, action: Selector?) {
@@ -61,88 +119,188 @@ class Button : MouseTrackingView {
         self.action = action
     }
     
-    override func mouseTrackingView(_ view: MouseTrackingView,
-                                    mouseUpAtLocation: CGPoint,
-                                    withEvent event: NSEvent) {
+    override var intrinsicContentSize: CGSize {
+        var outSize = CGSize.zero
         
-        if  self.isEnabled,
-            let target = self.target,
-            let action = self.action {
-                
-            print("button: sending event")
-                
-            let _ = target.perform(action, with: self)
+        if let contentView = self.contentView {
+            if let view = self.contentView as? ButtonContentView {
+                outSize = view.preferredButtonSize
+            } else {
+                outSize = contentView.intrinsicContentSize
+            }
         }
+            
+        outSize.width += self.contentInsets.left + self.contentInsets.right
+        outSize.height += self.contentInsets.top + self.contentInsets.bottom
+        
+        return outSize
+    }
+    
+    private func addButton() {
+        let view = self.button
+        self.addSubview(view)
+        
+        self.setFillInParentConstraints(forSubview: view)
+//        view.setContentHuggingPriority(.defaultLow, for: .horizontal)
+//        view.setContentHuggingPriority(.defaultLow, for: .vertical)
+//        view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+//        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    }
+    
+    func trackingButton(_ buttton: TrackingButton, didHighlight isHighlighted: Bool) {
+        self.isHighlighted = isHighlighted
     }
 
-    override func mouseStateDidChange() {
-        if self.isEnabled == false {
-            self.drawButtonDisabled()
+}
+
+extension NSImageView : ButtonContentView {
+
+    func updateSettings(inButton button: Button) {
+        switch(button.contentViewAlignment) {
+            case .left:
+                self.imageAlignment = .alignLeft
+                
+            case .center:
+                self.imageAlignment = .alignCenter
+                
+            case .right:
+                self.imageAlignment = .alignRight
+        }
+    
+        if !button.isEnabled {
+            self.alphaValue = 0.4
+        } else if button.isHighlighted {
+            self.alphaValue = 0.6
         } else {
-            if self.isMouseInside {
-                if self.isMouseDown {
-                    self.drawButtonPressed()
-                } else {
-                    self.drawButtonIdle()
-                }
-            } else {
-                self.drawButtonIdle()
-            }
+            self.alphaValue = 1.0
         }
     }
     
-    override var intrinsicContentSize: CGSize {
-        if let view = self.contentView {
-            let size = view.fittingSize
-            print("intrinsic size: \(NSStringFromSize(size))")
+    var preferredButtonSize: CGSize {
+        if let size = self.image?.size {
             return size
         }
         
-        return CGSize.zero
+        return self.intrinsicContentSize
     }
     
-    var pressedColor: SDKColor = NSColor.blue
-    
-    func drawButtonPressed() {
+    func wasAdded(toButton button: Button) {
         
-        print("button: drawing pressed")
+        button.setFillInParentConstraints(forSubview: self)
         
+//        NSLayoutConstraint.activate([
+//            self.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: button.contentInsets.left),
+//            self.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -button.contentInsets.right),
+//            self.heightAnchor.constraint(equalToConstant: self.preferredButtonSize.height),
+//            self.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+//        ])
+
         
-        if let view = self.contentView as? SDKImageView {
-//            view.alphaValue = 0.6
-            
-            view.contentTintColor = self.pressedColor
-            
-        }
-        
-        if let view = self.contentView as? SDKTextField {
-            view.textColor = self.pressedColor
-        }
+//        self.drawsBackground = false
+//        self.isBordered = false
+//        self.isBezeled = false
+//        self.isEditable = false
+//        self.isSelectable = false
     }
+
+}
+
+extension NSTextView : ButtonContentView {
     
-    func drawButtonIdle() {
-        
-        
-        if let view = self.contentView as? SDKImageView,
-            view.contentTintColor != nil {
-            view.contentTintColor = nil
-            
-            print("button: drawing idle")
+    func updateSettings(inButton button: Button) {
+//        switch(button.contentViewAlignment) {
+//            case .left:
+//                self.imageAlignment = .alignLeft
+//
+//            case .center:
+//                self.imageAlignment = .alignCenter
+//
+//            case .right:
+//                self.imageAlignment = .alignRight
+//        }
+        switch(button.contentViewAlignment) {
+            case .left:
+                self.alignment = .left
+                
+            case .center:
+                self.alignment = .center
+                
+            case .right:
+                self.alignment = .right
         }
+
         
-        if let view = self.contentView as? SDKTextField {
-            view.textColor = nil
+        if !button.isEnabled {
+            self.alphaValue = 1.0
+        } else if button.isHighlighted {
+            self.alphaValue = 0.6
+        } else {
+            self.alphaValue = 1.0
         }
     }
 
-    func drawButtonDisabled() {
-        if let view = self.contentView {
-            view.alphaValue = 0.6
+    var preferredButtonSize: CGSize {
+        return self.intrinsicContentSize
+    }
+
+    func wasAdded(toButton button: Button) {
+        
+        NSLayoutConstraint.activate([
+            self.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: button.contentInsets.left),
+            self.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -button.contentInsets.right),
+            self.heightAnchor.constraint(equalToConstant: self.intrinsicContentSize.height),
+            self.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
+
+//        self.drawsBackground = false
+//        self.isBordered = false
+//        self.isBezeled = false
+//        self.isEditable = false
+//        self.isSelectable = false
+    }
+
+}
+
+extension NSTextField : ButtonContentView {
+    
+    func updateSettings(inButton button: Button) {
+//        switch(button.contentViewAlignment) {
+//            case .left:
+//                self.imageAlignment = .alignLeft
+//
+//            case .center:
+//                self.imageAlignment = .alignCenter
+//
+//            case .right:
+//                self.imageAlignment = .alignRight
+//        }
+    
+        if !button.isEnabled {
+            self.alphaValue = 1.0
+        } else if button.isHighlighted {
+            self.alphaValue = 0.6
+        } else {
+            self.alphaValue = 1.0
         }
     }
 
-    func drawButtonMouseOver() {
-        
+    var preferredButtonSize: CGSize {
+        return self.intrinsicContentSize
     }
-    
+
+    func wasAdded(toButton button: Button) {
+        self.drawsBackground = false
+        self.isBordered = false
+        self.isBezeled = false
+        self.isEditable = false
+        self.isSelectable = false
+        
+        NSLayoutConstraint.activate([
+            self.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: button.contentInsets.left),
+            self.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -button.contentInsets.right),
+            self.heightAnchor.constraint(equalToConstant: self.intrinsicContentSize.height),
+            self.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+        ])
+
+    }
 }

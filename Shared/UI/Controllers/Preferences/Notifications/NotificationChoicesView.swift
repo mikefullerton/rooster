@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class NotificationChoicesView : SimpleStackView {
+class NotificationChoicesView : SimpleStackView, PreferencesContentView {
     
     init(frame: CGRect) {
         super.init(frame: frame,

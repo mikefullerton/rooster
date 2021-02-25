@@ -10,8 +10,8 @@ import Cocoa
 
 class MenuBarEventListListViewCell: EventListListViewCell, MenuBarItem {
     
-    override func loadView() {
-        super.loadView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.updateForMenuBar()
     }
 }

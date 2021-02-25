@@ -14,12 +14,16 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     static let instance = SoundFolder.loadFromBundle()
     
     var id: String
-    var url: URL
+    private(set) var url: URL
     var displayName: String
     
-    fileprivate(set) weak var parent: SoundFolder?
+    fileprivate(set) weak var parent: SoundFolder? {
+        didSet {
+            self.updateURLForNewParent()
+        }
+    }
     
-    private(set) var sounds: [SoundFile] {
+    fileprivate(set) var soundFiles: [SoundFile] {
         didSet {
             self.cachedAllSounds = nil
         }
@@ -42,7 +46,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         self.id = id
         self.url = url
         self.displayName = displayName
-        self.sounds = []
+        self.soundFiles = []
         self.subFolders = []
     }
 
@@ -55,7 +59,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         self.init(withID: id,
                   url: url,
                   displayName: displayName) 
-        self.setSounds(sounds)
+        self.setSoundFiles(sounds)
         self.setSubFolders(subFolders)
     }
 
@@ -66,7 +70,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     }
 
     var soundCount: Int {
-        return self.sounds.count
+        return self.soundFiles.count
     }
     
     var subFolderCount: Int {
@@ -81,7 +85,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         return self.itemCount == 0
     }
 
-    var allSounds: [SoundFile] {
+    var allSoundFiles: [SoundFile] {
         
         if let allSounds = cachedAllSounds {
             return allSounds
@@ -89,12 +93,12 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         
         var allSounds: [SoundFile] = []
         
-        self.sounds.forEach() {
+        self.soundFiles.forEach() {
             allSounds.append($0)
         }
         
         self.subFolders.forEach() {
-            allSounds.append(contentsOf: $0.allSounds)
+            allSounds.append(contentsOf: $0.allSoundFiles)
         }
 
         let sortedAllSounds = allSounds.sorted { lhs, rhs in
@@ -107,7 +111,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     }
 
     func index(forSoundFileID id: String) -> Int? {
-        if let index = self.sounds.firstIndex(where: { $0.id == id }) {
+        if let index = self.soundFiles.firstIndex(where: { $0.id == id }) {
             return index
         }
         
@@ -125,32 +129,32 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     // MARK: -
     // MARK: Sounds
     
-    func addSound(_ soundFile: SoundFile) {
+    func addSoundFile(_ soundFile: SoundFile) {
         if let newSound = soundFile.copy() as? SoundFile {
             newSound.setParent(self)
-            self.sounds.append(newSound)
+            self.soundFiles.append(newSound)
         }
     }
 
-    func addSounds(_ sounds: [SoundFile]) {
-        sounds.forEach { self.addSound($0) }
+    func addSoundFiles(_ sounds: [SoundFile]) {
+        sounds.forEach { self.addSoundFile($0) }
     }
     
-    func removeSound(forID id: String) {
+    func removeSoundFile(forID id: String) {
         if let index = index(forSoundFileID: id) {
-            self.sounds[index].setParent(nil)
-            self.sounds.remove(at: index)
+            self.soundFiles[index].setParent(nil)
+            self.soundFiles.remove(at: index)
         }
     }
 
-    func setSounds(_ sounds: [SoundFile]) {
-        self.removeAllSounds()
-        self.addSounds(sounds)
+    func setSoundFiles(_ sounds: [SoundFile]) {
+        self.removeAllSoundFiles()
+        self.addSoundFiles(sounds)
     }
     
-    func removeAllSounds() {
-        self.sounds.forEach { $0.setParent(nil) }
-        self.sounds = []
+    func removeAllSoundFiles() {
+        self.soundFiles.forEach { $0.setParent(nil) }
+        self.soundFiles = []
     }
     
     // MARK: -
@@ -188,7 +192,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     // MARK: Misc
     
     func removeAll() {
-        self.removeAllSounds()
+        self.removeAllSoundFiles()
         self.removeAllSubFolders()
     }
 
@@ -196,7 +200,7 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         case id = "id"
         case url = "url"
         case displayName = "displayName"
-        case sounds = "sounds"
+        case soundFiles = "soundFiles"
         case subFolders = "subFolders"
     }
     
@@ -205,13 +209,13 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         try self.id = values.decode(String.self, forKey: .id)
         try self.displayName = values.decode(String.self, forKey: .displayName)
         try self.url = values.decode(URL.self, forKey: .url)
-        try self.sounds = values.decode([SoundFile].self, forKey: .sounds)
+        try self.soundFiles = values.decode([SoundFile].self, forKey: .soundFiles)
         try self.subFolders = values.decode([SoundFolder].self, forKey: .subFolders)
 
         if self.id == Self.defaultSoundFolderID {
             let defaultFolder = Self.instance
             self.url = defaultFolder.url
-            self.sounds = defaultFolder.sounds
+            self.soundFiles = defaultFolder.soundFiles
             self.subFolders = defaultFolder.subFolders
         }
     }
@@ -222,13 +226,29 @@ class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         try container.encode(self.displayName, forKey: .displayName)
         try container.encode(self.url, forKey: .url)
         if self.isDefaultSoundFolder {
-            try container.encode([] as [SoundFile], forKey: .sounds)
+            try container.encode([] as [SoundFile], forKey: .soundFiles)
             try container.encode([] as [SoundFolder], forKey: .subFolders)
         } else {
-            try container.encode(self.sounds, forKey: .sounds)
+            try container.encode(self.soundFiles, forKey: .soundFiles)
             try container.encode(self.subFolders, forKey: .subFolders)
         }
-    }}
+    }
+    
+    func updateURLForNewParent() {
+        self.url = self.updatedURL
+        
+        self.subFolders.forEach { $0.updateURLForNewParent() }
+    }
+
+    var updatedURL: URL {
+        if let parent = self.parent {
+            return parent.url.appendingPathComponent(self.url.lastPathComponent)
+        }
+        
+        return self.url
+    }
+}
+
 
 extension SoundFile {
     fileprivate func setParent(_ soundFolder: SoundFolder?) {
@@ -240,6 +260,7 @@ extension SoundFolder {
     internal func setParent(_ soundFolder: SoundFolder?) {
         self.parent = soundFolder
     }
+
 }
 
 

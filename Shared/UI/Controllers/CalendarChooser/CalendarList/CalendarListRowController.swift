@@ -12,16 +12,10 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarListCell : ListViewRowView<Calendar> {
+class CalendarListRowController : ListViewRowController<Calendar> {
     
     private var calendar: Calendar?
-//    var eventHandler: EventHandler<Calendar, CalendarListCell>?
-    
     private let padding:CGFloat = 8
-    
-    override func loadView() {
-        self.view = SDKView()
-    }
     
     override class var preferredHeight: CGFloat {
         return 28
@@ -35,10 +29,10 @@ class CalendarListCell : ListViewRowView<Calendar> {
         
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
-            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            view.widthAnchor.constraint(greaterThanOrEqualToConstant: view.intrinsicContentSize.width),
+            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
+        
         return view
     }()
     
@@ -87,6 +81,6 @@ class CalendarListCell : ListViewRowView<Calendar> {
             calendar.set(subscribed: !calendar.isSubscribed)
         }
     }
-    
+
     
 }

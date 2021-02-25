@@ -71,7 +71,7 @@
 		B24C5F2725BE043200F51FE7 /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */; };
 		B24C5F2825BE043200F51FE7 /* PersonalCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5425B7C47400EA2057 /* PersonalCalendarListViewController.swift */; };
 		B24C5F2925BE043200F51FE7 /* CalendarToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5525B7C47400EA2057 /* CalendarToolbarView.swift */; };
-		B24C5F2A25BE043200F51FE7 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5325B7C47400EA2057 /* CalendarListCell.swift */; };
+		B24C5F2A25BE043200F51FE7 /* CalendarListRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5325B7C47400EA2057 /* CalendarListRowController.swift */; };
 		B24C5F3125BE063500F51FE7 /* TimeRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224F125B635600052758C /* TimeRemainingViewController.swift */; };
 		B24C5F3525BE064400F51FE7 /* MainWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250225B63B3C0052758C /* MainWindowViewController.swift */; };
 		B24C5F4025BE06F400F51FE7 /* SDKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24C5F3F25BE06F400F51FE7 /* SDKButton.swift */; };
@@ -213,7 +213,7 @@
 		B274EF8D25BA0F6800F9D473 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B274EF8C25BA0F6800F9D473 /* BlurView.swift */; };
 		B274EF9425BA10F800F9D473 /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8B25B7C6EB00EA2057 /* FancyButton.swift */; };
 		B274EF9825BA11D600F9D473 /* PlaySoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8C25B7C6EB00EA2057 /* PlaySoundButton.swift */; };
-		B274EF9D25BA12A700F9D473 /* SoundFileAlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = B274EF9C25BA12A700F9D473 /* SoundFileAlarmSound.swift */; };
+		B274EF9D25BA12A700F9D473 /* SoundFileSoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B274EF9C25BA12A700F9D473 /* SoundFileSoundPlayer.swift */; };
 		B274EFA425BA181F00F9D473 /* TipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8725B7C6EB00EA2057 /* TipView.swift */; };
 		B274EFA825BA188D00F9D473 /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8625B7C6EB00EA2057 /* GroupBoxView.swift */; };
 		B274EFAC25BA18DB00F9D473 /* SimpleStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B8D25B7C6EC00EA2057 /* SimpleStackView.swift */; };
@@ -234,7 +234,7 @@
 		B274EFF125BA279B00F9D473 /* SoundPickerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4C25B7C47400EA2057 /* SoundPickerListViewController.swift */; };
 		B274EFF525BA27B000F9D473 /* SoundPickerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4D25B7C47400EA2057 /* SoundPickerListViewModel.swift */; };
 		B274EFF925BA2C1D00F9D473 /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */; };
-		B274EFFD25BA2C4200F9D473 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5325B7C47400EA2057 /* CalendarListCell.swift */; };
+		B274EFFD25BA2C4200F9D473 /* CalendarListRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5325B7C47400EA2057 /* CalendarListRowController.swift */; };
 		B274F00525BA2DCE00F9D473 /* CalendarToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5525B7C47400EA2057 /* CalendarToolbarView.swift */; };
 		B274F00925BA2DD300F9D473 /* PersonalCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5425B7C47400EA2057 /* PersonalCalendarListViewController.swift */; };
 		B274F00D25BA2DD800F9D473 /* CalendarChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5625B7C47400EA2057 /* CalendarChooserViewController.swift */; };
@@ -331,6 +331,10 @@
 		B2A58B48259290F700188584 /* SoundPlayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B47259290F700188584 /* SoundPlayList.swift */; };
 		B2A58B4F2592A2E200188584 /* UserNotificationCenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B4E2592A2E200188584 /* UserNotificationCenterController.swift */; };
 		B2A58B732593B99100188584 /* TimeRemainingViewController_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A58B722593B99100188584 /* TimeRemainingViewController_iOS.swift */; };
+		B2AA0B6D25E6B8490014F873 /* PreferencesContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B6C25E6B8490014F873 /* PreferencesContentView.swift */; };
+		B2AA0B7025E6CD8D0014F873 /* AbstractListViewRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B6F25E6CD8D0014F873 /* AbstractListViewRowController.swift */; };
+		B2AA0B7225E6CDC40014F873 /* AbstractListViewRowController+RowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */; };
+		B2AA0B7425E6CDDE0014F873 /* ListViewRowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */; };
 		B2AFE65525697957006B3C58 /* Dictionary+Utiities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
@@ -699,7 +703,7 @@
 		B26F6B4E25B7C47400EA2057 /* NotificationChoicesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationChoicesView.swift; sourceTree = "<group>"; };
 		B26F6B4F25B7C47400EA2057 /* SingleNotificationChoiceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleNotificationChoiceView.swift; sourceTree = "<group>"; };
 		B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListViewModel.swift; sourceTree = "<group>"; };
-		B26F6B5325B7C47400EA2057 /* CalendarListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
+		B26F6B5325B7C47400EA2057 /* CalendarListRowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarListRowController.swift; sourceTree = "<group>"; };
 		B26F6B5425B7C47400EA2057 /* PersonalCalendarListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalCalendarListViewController.swift; sourceTree = "<group>"; };
 		B26F6B5525B7C47400EA2057 /* CalendarToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarToolbarView.swift; sourceTree = "<group>"; };
 		B26F6B5625B7C47400EA2057 /* CalendarChooserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarChooserViewController.swift; sourceTree = "<group>"; };
@@ -727,7 +731,7 @@
 		B2747D0D25D5815D0071D5DF /* SoundFolder+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Bundle.swift"; sourceTree = "<group>"; };
 		B2747D1B25D583CC0071D5DF /* SoundFolder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SoundFolder+Extensions.swift"; sourceTree = "<group>"; };
 		B274EF8C25BA0F6800F9D473 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		B274EF9C25BA12A700F9D473 /* SoundFileAlarmSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFileAlarmSound.swift; sourceTree = "<group>"; };
+		B274EF9C25BA12A700F9D473 /* SoundFileSoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFileSoundPlayer.swift; sourceTree = "<group>"; };
 		B274EFB025BA191700F9D473 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		B274EFC225BA1D0400F9D473 /* VerticalButtonListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalButtonListTableCell.swift; sourceTree = "<group>"; };
 		B274EFC325BA1D0400F9D473 /* VerticalTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalTabViewController.swift; sourceTree = "<group>"; };
@@ -794,6 +798,10 @@
 		B2A58B47259290F700188584 /* SoundPlayList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayList.swift; sourceTree = "<group>"; };
 		B2A58B4E2592A2E200188584 /* UserNotificationCenterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationCenterController.swift; sourceTree = "<group>"; };
 		B2A58B722593B99100188584 /* TimeRemainingViewController_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRemainingViewController_iOS.swift; sourceTree = "<group>"; };
+		B2AA0B6C25E6B8490014F873 /* PreferencesContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesContentView.swift; sourceTree = "<group>"; };
+		B2AA0B6F25E6CD8D0014F873 /* AbstractListViewRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractListViewRowController.swift; sourceTree = "<group>"; };
+		B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractListViewRowController+RowView.swift"; sourceTree = "<group>"; };
+		B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewRowViewController.swift; sourceTree = "<group>"; };
 		B2AFE64E2569782D006B3C58 /* CalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListView.swift; sourceTree = "<group>"; };
 		B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utiities.swift"; sourceTree = "<group>"; };
 		B2AFE6592569846F006B3C58 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
@@ -1210,7 +1218,7 @@
 		B25F6B0425BC95100067C096 /* CalendarList */ = {
 			isa = PBXGroup;
 			children = (
-				B26F6B5325B7C47400EA2057 /* CalendarListCell.swift */,
+				B26F6B5325B7C47400EA2057 /* CalendarListRowController.swift */,
 				B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */,
 				B26F6B5425B7C47400EA2057 /* PersonalCalendarListViewController.swift */,
 				B26F6B5725B7C47400EA2057 /* DelegateCalendarListViewController.swift */,
@@ -1330,6 +1338,7 @@
 				B26F6B4925B7C47400EA2057 /* SoundPicker */,
 				B259A37D25C9C44200CF4C95 /* Notifications */,
 				B259A34925C9B34100CF4C95 /* MenuBarChoicesView.swift */,
+				B2AA0B6C25E6B8490014F873 /* PreferencesContentView.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -1630,7 +1639,7 @@
 				B236FCDA255F196E00A2E58D /* Sound.swift */,
 				B20AACE725950EE300F9B50C /* SoundBehavior.swift */,
 				B2F6B52025643434000BC78E /* SilenceAlarmSound.swift */,
-				B274EF9C25BA12A700F9D473 /* SoundFileAlarmSound.swift */,
+				B274EF9C25BA12A700F9D473 /* SoundFileSoundPlayer.swift */,
 			);
 			path = AlarmSounds;
 			sourceTree = "<group>";
@@ -1643,6 +1652,16 @@
 				B29F4AD625D050A60078F8B5 /* DeveloperAction.swift */,
 			);
 			path = Developer;
+			sourceTree = "<group>";
+		};
+		B2AA0B6E25E6CD770014F873 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B2AA0B6F25E6CD8D0014F873 /* AbstractListViewRowController.swift */,
+				B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */,
+				B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B2AFE66F2569DFD6006B3C58 /* F SwiftUI (sorry SwiftUI) */ = {
@@ -1846,6 +1865,7 @@
 		B2E2251025B640BE0052758C /* ListViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B2AA0B6E25E6CD770014F873 /* Views */,
 				B2E2251125B640BE0052758C /* ViewModel */,
 				B2E2251625B640BE0052758C /* Adornments */,
 				B2E2251B25B640BE0052758C /* ListViewController.swift */,
@@ -2349,10 +2369,12 @@
 				B2FAD92A25B6022300598B9E /* Calendar+EKCalender.swift in Sources */,
 				B2FAD90125B601DB00598B9E /* Alarm+DictionaryCodable.swift in Sources */,
 				B274EF9825BA11D600F9D473 /* PlaySoundButton.swift in Sources */,
+				B2AA0B6D25E6B8490014F873 /* PreferencesContentView.swift in Sources */,
 				B2747CF925D48F220071D5DF /* MenuBarMenuChoiceView.swift in Sources */,
 				B2E224EA25B62F550052758C /* MainWindowController.swift in Sources */,
 				B2E2252325B640BE0052758C /* ListViewModel.swift in Sources */,
 				B29F4AFF25D18D0B0078F8B5 /* ApplicationSupportPreferencesFolder.swift in Sources */,
+				B2AA0B7025E6CD8D0014F873 /* AbstractListViewRowController.swift in Sources */,
 				B259A34F25C9B3A900CF4C95 /* SinglePreferenceChoiceView.swift in Sources */,
 				B2E224BB25B61B420052758C /* SavedState.swift in Sources */,
 				B274EFD925BA247300F9D473 /* StartDelayView.swift in Sources */,
@@ -2375,7 +2397,7 @@
 				B2E224BF25B61B420052758C /* PreferencesReloader.swift in Sources */,
 				B2FAD8F325B601DB00598B9E /* CalendarlItem.swift in Sources */,
 				B2E2251F25B640BE0052758C /* TopBottomBarVerticalLayout.swift in Sources */,
-				B274EFFD25BA2C4200F9D473 /* CalendarListCell.swift in Sources */,
+				B274EFFD25BA2C4200F9D473 /* CalendarListRowController.swift in Sources */,
 				B24ED39425BF682700F0B809 /* SDKSwitch.swift in Sources */,
 				B24C5F4825BE0F6100F51FE7 /* VerticalColorBar.swift in Sources */,
 				B2E2251C25B640BE0052758C /* HorizontalViewLayout.swift in Sources */,
@@ -2439,7 +2461,7 @@
 				B2FAD93425B6022300598B9E /* Reminder+EKReminder.swift in Sources */,
 				B25F6B8F25BDF04E0067C096 /* MacThemes.swift in Sources */,
 				B2CEF19025B8B0A500CA01E2 /* ContentAwareView.swift in Sources */,
-				B274EF9D25BA12A700F9D473 /* SoundFileAlarmSound.swift in Sources */,
+				B274EF9D25BA12A700F9D473 /* SoundFileSoundPlayer.swift in Sources */,
 				B2E2252425B640BE0052758C /* ListViewRowDescriptor.swift in Sources */,
 				B259A35A25C9B90300CF4C95 /* NotificationPreferences.swift in Sources */,
 				B274EFE925BA26CC00F9D473 /* SoundPickerViewController.swift in Sources */,
@@ -2472,6 +2494,7 @@
 				B274EFF525BA27B000F9D473 /* SoundPickerListViewModel.swift in Sources */,
 				B2CEF18425B8ADAD00CA01E2 /* Geometry.swift in Sources */,
 				B29F4AD725D050A60078F8B5 /* DeveloperAction.swift in Sources */,
+				B2AA0B7225E6CDC40014F873 /* AbstractListViewRowController+RowView.swift in Sources */,
 				B25C374225E2B94000D45251 /* Button.swift in Sources */,
 				B26F6B5D25B7C47400EA2057 /* EventListViewModel.swift in Sources */,
 				B294936825B5F6F100FCCF9E /* SoundFolder.swift in Sources */,
@@ -2482,6 +2505,7 @@
 				B2E2252825B640BE0052758C /* SpacerAdornment.swift in Sources */,
 				B270D47625D5E71600195661 /* SoundPlayListGenerator.swift in Sources */,
 				B2FAD90525B601DB00598B9E /* DataModelStorage.swift in Sources */,
+				B2AA0B7425E6CDDE0014F873 /* ListViewRowViewController.swift in Sources */,
 				B26F6B5F25B7C47400EA2057 /* EventListViewController.swift in Sources */,
 				B2CEF1A925B8CD7200CA01E2 /* LinkButton.swift in Sources */,
 				B274F01125BA2DDC00F9D473 /* DelegateCalendarListViewController.swift in Sources */,
@@ -2553,7 +2577,7 @@
 				B2F817E125768E2200B28119 /* TableViewModel.swift in Sources */,
 				B2866253258EC09600D3A538 /* Calendar+UIColor.swift in Sources */,
 				B25C374725E2C97C00D45251 /* ImageButton.swift in Sources */,
-				B24C5F2A25BE043200F51FE7 /* CalendarListCell.swift in Sources */,
+				B24C5F2A25BE043200F51FE7 /* CalendarListRowController.swift in Sources */,
 				B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */,
 				B2F817ED25768E4F00B28119 /* TableViewSection.swift in Sources */,
 				B25F6BDC25BDF9B40067C096 /* ListViewSectionAdornmentProtocol.swift in Sources */,

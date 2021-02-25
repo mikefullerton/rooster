@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDelegate {
+class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDelegate, PreferencesContentView, AppControllerAware {
     let preferredWidth:CGFloat = 450
 
     private lazy var calendarsViewController = PersonalCalendarListViewController()
@@ -84,6 +84,10 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ])
+    }
+    
+    func resetButtonWasPressed() {
+        self.dataModelController.enableAllPersonalCalendars()
     }
 }
 

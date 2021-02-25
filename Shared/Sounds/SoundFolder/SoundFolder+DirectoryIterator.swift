@@ -29,11 +29,9 @@ extension SoundFolder {
                   displayName: Self.cleanupName(directory.url))
         
         for file in directory.files {
-            let url = file.url
-            self.addSound(SoundFile(withID:String.guid,
-                                    url: url,
-                                    displayName: Self.cleanupName(url),
-                                    randomizer: RandomizationDescriptor.none))
+            self.addSoundFile(SoundFile(withID: String.guid,
+                                        fileName: file.url.lastPathComponent,
+                                        displayName: Self.cleanupName(url)))
         }
 
         for directory in directory.directories {

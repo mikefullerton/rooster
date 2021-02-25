@@ -14,10 +14,10 @@ struct MenuBarMenuChoice {
     let systemSymbolName: String?
 }
 
-class MenuBarMenuChoiceView : ListViewRowView<MenuBarMenuChoice>, MenuBarItem {
+class MenuBarMenuChoiceView : ListViewRowController<MenuBarMenuChoice>, MenuBarItem {
  
-    override func loadView() {
-        self.view = SDKView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 //        self.view.sdkLayer.cornerRadius = 6.0
 //        self.view.sdkLayer.borderWidth = 0.5
 //        self.view.sdkLayer.borderColor = SDKColor.separatorColor.cgColor

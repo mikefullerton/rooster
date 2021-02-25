@@ -50,9 +50,9 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
         let soundSet = AppDelegate.instance.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey).soundSet
         
         for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
-            for(soundPreferenceKey, soundFile) in subfolder.sounds.enumerated() {
+            for(soundIndex, soundFile) in subfolder.soundFiles.enumerated() {
                 if soundSet.soundFolder.contains(soundID: soundFile.id) {
-                    self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundPreferenceKey, section: folderIndex) ]),
+                    self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundIndex, section: folderIndex) ]),
                                                     scrollPosition: .centeredVertically)
                     break
                 }
@@ -88,14 +88,17 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
     var chosenSound : SingleSoundPreference? {
         
         var chosenSounds:[SoundFile] = []
+        var randomizers:[String: RandomizationDescriptor] = [:]
         
         if let selectedIndexPath = self.selectedIndexPath {
             for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
-                for(index, soundFile) in subfolder.sounds.enumerated() {
+                for(index, soundFile) in subfolder.soundFiles.enumerated() {
                     if folderIndex == selectedIndexPath.section &&
                     index == selectedIndexPath.item {
                         
                         chosenSounds.append(soundFile)
+                        
+                        randomizers[soundFile.id] = RandomizationDescriptor.never
                     }
                 }
             }
@@ -105,23 +108,7 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
             return nil
         }
        
-        let id = String.guid
-        
-        let soundFolder = SoundFolder(withID: id,
-                                      url: URL.roosterURL("user-sound-set-\(id)"),
-                                      displayName: "",
-                                      sounds: chosenSounds,
-                                      subFolders: [])
-
-//        let soundFolder = soundFolder(with)
-        
-        let soundSet = SoundSet(withID: soundFolder.id,
-                                url: soundFolder.url,
-                                displayName: soundFolder.displayName,
-                                randomizer: RandomizationDescriptor.none,
-                                soundFolder: soundFolder)
-        
-        return SingleSoundPreference(withIdentifier: id, soundSet: soundSet, enabled: true)
+        return SingleSoundPreference.singleSoundPref(withSoundFiles: chosenSounds, randomizers: randomizers)
     }
 
     func togglePlayingOnCurrentCell() {

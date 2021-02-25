@@ -70,7 +70,7 @@ extension ListViewModelProtocol {
     }
 }
 
-struct ListViewModel<ContentType, ViewType: AbstractListViewRowView> : ListViewModelProtocol {
+struct ListViewModel<ContentType, ViewType: AbstractListViewRowController> : ListViewModelProtocol {
 
     let sections: [ListViewSectionDescriptor]
 

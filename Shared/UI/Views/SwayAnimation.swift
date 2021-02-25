@@ -85,9 +85,6 @@ class SwayAnimation : NSObject, Loggable {
     func stopAnimating() {
         if self.isAnimating {
             let layer = self.view.sdkLayer
-            
-            self.logger.error("ending position: \(NSStringFromPoint(layer.position)), anchorPoint: \(NSStringFromPoint(layer.anchorPoint))")
-            
             layer.removeAnimation(forKey: "sway-scale")
             layer.removeAnimation(forKey: "sway-rotation")
             self.isAnimating = false

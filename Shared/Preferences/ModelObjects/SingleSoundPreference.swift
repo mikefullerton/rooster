@@ -61,7 +61,32 @@ struct SingleSoundPreference : CustomStringConvertible, Equatable, Identifiable,
     }
     
     static var random: SingleSoundPreference {
-        return SingleSoundPreference(withIdentifier: "Random", soundSet: SoundSet.random, enabled: true)
+        return SingleSoundPreference(withIdentifier: SoundSet.random.id, soundSet: SoundSet.random, enabled: true)
+    }
+
+    static var empty: SingleSoundPreference {
+        return SingleSoundPreference(withIdentifier: SoundSet.empty.id, soundSet: SoundSet.empty, enabled: true)
+    }
+
+    static func singleSoundPref(withSoundFiles soundFiles: [SoundFile], randomizers:[String: RandomizationDescriptor]) -> SingleSoundPreference {
+
+        let id = String.guid
+        
+        var sounds: [String: RandomizationDescriptor] = [:]
+        for soundFile in soundFiles {
+            if let randomizer = randomizers[soundFile.id] {
+                sounds[soundFile.id] = randomizer
+            }
+        }
+        
+        let soundSet = SoundSet(withID: id,
+                                url: nil,
+                                displayName: "single sound pref",
+                                randomizer: RandomizationDescriptor.never,
+                                sounds:sounds,
+                                soundFolder: SoundFolder.instance)
+        
+        return SingleSoundPreference(withIdentifier: id, soundSet: soundSet, enabled: true)
     }
     
 }

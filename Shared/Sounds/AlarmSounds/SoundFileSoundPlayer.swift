@@ -8,7 +8,7 @@
 import Foundation
 import Cocoa
 
-class SoundFileAlarmSound : NSObject, Sound, NSSoundDelegate, Loggable, Identifiable {
+class SoundFileSoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifiable {
     
     typealias ID = String
     
@@ -18,14 +18,16 @@ class SoundFileAlarmSound : NSObject, Sound, NSSoundDelegate, Loggable, Identifi
     
     private(set) var behavior: SoundBehavior
     let soundFile: SoundFile
+    let randomizer: RandomizationDescriptor
     
     private var sound: NSSound?
     private let stopTimer: SimpleTimer
     
     private(set) var isPlaying: Bool
     
-    init(withSoundFile soundFile: SoundFile) {
+    init(withSoundFile soundFile: SoundFile, randomizer: RandomizationDescriptor?) {
         self.soundFile = soundFile
+        self.randomizer = randomizer == nil ? RandomizationDescriptor.never : randomizer!
         self.behavior = SoundBehavior()
         self.stopTimer = SimpleTimer(withName: "AVAlarmSoundStopTimer")
         self.id = soundFile.id
@@ -51,8 +53,10 @@ class SoundFileAlarmSound : NSObject, Sound, NSSoundDelegate, Loggable, Identifi
         }
         
         let soundFile = self.soundFile
-        let url = soundFile.url
-        if let sound = NSSound(contentsOf: url, byReference: true){
+        
+        if  let url = soundFile.url,
+            let sound = NSSound(contentsOf: url, byReference: true){
+            
             sound.setName(soundFile.displayName)
             sound.delegate = self
             self.sound = sound
@@ -104,7 +108,7 @@ class SoundFileAlarmSound : NSObject, Sound, NSSoundDelegate, Loggable, Identifi
         return 0
     }
         
-    static func == (lhs: SoundFileAlarmSound, rhs: SoundFileAlarmSound) -> Bool {
+    static func == (lhs: SoundFileSoundPlayer, rhs: SoundFileSoundPlayer) -> Bool {
         return lhs.id == rhs.id
     }
     
@@ -169,19 +173,4 @@ class SoundFileAlarmSound : NSObject, Sound, NSSoundDelegate, Loggable, Identifi
         }
     }
 }
-
-extension SoundFileAlarmSound {
-    static func alarmSounds(withSoundFiles soundFiles:[SoundFile]) -> [Sound] {
-        var sounds:[Sound] = []
-        for soundFile in soundFiles {
-            let alarm = SoundFileAlarmSound(withSoundFile: soundFile)
-            sounds.append(alarm)
-            self.logger.error("Loaded sound for SoundFile: \(soundFile)")
-        }
-        return sounds
-    }
-    
-}
-
-
 

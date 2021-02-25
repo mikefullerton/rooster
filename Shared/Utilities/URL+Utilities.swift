@@ -25,4 +25,18 @@ extension URL {
     var isRoosterURL: Bool {
         return self.absoluteString.contains("rooster")
     }
+    
+    func url(fromURL url: URL) -> URL? {
+        
+        let path = self.path;
+        let parentPath = url.path;
+        
+        let finalPath = path.replacingOccurrences(of: parentPath, with: "")
+        
+        return URL(fileURLWithPath: finalPath)
+    }
+    
+    func fullURL(relativeTo url: URL) -> URL? {
+        return URL(fileURLWithPath: self.path, relativeTo: url)
+    }
 }

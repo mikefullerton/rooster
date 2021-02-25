@@ -12,14 +12,14 @@ import Cocoa
 import UIKit
 #endif
 
-class MainEventListViewController: EventListViewController, Loggable {
+class MainEventListViewController: EventListViewController {
 
 
 
 
 }
 
-class MainWindowViewController : EventListViewController, Loggable {
+class MainWindowViewController : EventListViewController {
     static let DidChangeEvent = Notification.Name("MainWindowViewControllerDidChange")
 
     let listViewController = MainEventListViewController()

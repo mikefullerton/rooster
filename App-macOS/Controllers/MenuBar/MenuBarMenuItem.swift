@@ -20,6 +20,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware, AppControlle
     let menuItemViewController = MenuBarItemViewController()
 
     enum AlarmState: Int {
+        case none
         case normal
         case warning
         case firing1
@@ -28,7 +29,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware, AppControlle
     
     var firingTime: Date?
     
-    var alarmState: AlarmState = .normal {
+    var alarmState: AlarmState = .none {
         didSet {
             self.updateDisplayColors()
         }
@@ -117,6 +118,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware, AppControlle
     }
     
     func dataModelDidReload(_ dataModel: DataModel) {
+        self.alarmState = .none
         self.alarmStateDidChange()
     }
     
@@ -167,6 +169,10 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware, AppControlle
     
     func colorForState(_ state: AlarmState) -> NSColor {
         switch(state) {
+            
+        case .none:
+            return NSColor.white
+            
         case .normal:
             return NSColor.white
             
@@ -291,6 +297,10 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware, AppControlle
     
     func updateDisplayColors() {
         switch self.alarmState {
+            
+        case .none:
+            self.buttonImage = self.whiteRoosterImage
+            
         case .normal:
             self.buttonImage = self.whiteRoosterImage
             

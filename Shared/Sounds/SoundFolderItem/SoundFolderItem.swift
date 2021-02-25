@@ -11,7 +11,6 @@ protocol SoundFolderItem: AnyObject, CustomStringConvertible {
     var parent: SoundFolder? { get }
     var displayName: String { get }
     var id: String { get }
-    var url: URL { get }
     func setParent(_ soundFolder: SoundFolder?)
 }
 

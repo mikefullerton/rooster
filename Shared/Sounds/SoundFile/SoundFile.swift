@@ -11,63 +11,70 @@ class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible
     typealias ID = String
     
     let id: String
-    var url: URL
+    let fileName: String
     var displayName: String
-    var randomizer: RandomizationDescriptor?
+
+    private(set) var url: URL?
     
-    weak var parent: SoundFolder?
-    
+    weak var parent: SoundFolder? {
+        didSet {
+            if let parent = self.parent {
+                self.url = parent.url.appendingPathComponent(self.fileName)
+            } else {
+                self.url = nil
+            }
+        }
+    }
+  
     convenience init() {
         self.init(withID: "",
-                  url: URL.emptyRoosterURL,
-                  displayName: "",
-                  randomizer: nil)
+                  fileName: "",
+                  displayName: "")
     }
 
     init(withID id: String,
-         url: URL,
-         displayName: String,
-         randomizer: RandomizationDescriptor? = nil) {
-        self.url = url
+         fileName: String,
+         displayName: String) {
+        self.fileName = fileName
         self.id = id
         self.displayName = displayName
-        self.randomizer = randomizer
+        self.url = nil
     }
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
-        case url = "url"
+        case fileName = "fileName"
         case displayName = "displayName"
-        case randomizer = "randomizer"
+        case url = "url"
     }
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         try self.id = values.decode(String.self, forKey: .id)
         try self.displayName = values.decode(String.self, forKey: .displayName)
-        try self.url = values.decode(URL.self, forKey: .url)
-        try self.randomizer = values.decode(RandomizationDescriptor.self, forKey: .randomizer)
+        try self.fileName = values.decode(String.self, forKey: .fileName)
+        try self.url = URL(string: values.decode(String.self, forKey: .url))
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.id, forKey: .id)
         try container.encode(self.displayName, forKey: .displayName)
-        try container.encode(self.url, forKey: .url)
-        try container.encode(self.randomizer, forKey: .randomizer)
+        try container.encode(self.fileName, forKey: .fileName)
+        try container.encode(self.url?.absoluteString, forKey: .url)
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
-        return SoundFile(withID: self.id, url: self.url, displayName: self.displayName, randomizer: self.randomizer)
+        return SoundFile(withID: self.id, fileName: self.fileName, displayName: self.displayName)
     }
 
     var description: String {
-        return "\(type(of:self)): \(self.id), displayName: \(self.displayName), url: \(self.url.absoluteString), randomizingBehavior: \(self.randomizer?.description ?? "none"))"
+        return "\(type(of:self)): \(self.id), displayName: \(self.displayName), fileName: \(self.fileName), url: \(String(describing:self.url)))"
     }
 
     static func == (lhs: SoundFile, rhs: SoundFile) -> Bool {
-        return lhs.id == rhs.id &&
-            lhs.displayName == rhs.displayName &&
-            lhs.url == rhs.url &&
-            lhs.randomizer == rhs.randomizer
+        return  lhs.id == rhs.id &&
+                lhs.displayName == rhs.displayName &&
+                lhs.fileName == rhs.fileName
     }
 }

@@ -13,13 +13,28 @@ enum PlayListIteratorState {
 
 protocol PlayListIteratorProtocol {
     
-    var sounds: [SoundFile] { get }
+    var sounds: [SoundFileSoundPlayer] { get }
     
     var state: PlayListIteratorState { get }
     
-    func step() -> SoundFile?
+    func step() -> SoundFileSoundPlayer?
     
     func stop()
     
     func resetToIdleState()
+}
+
+extension PlayListIteratorProtocol {
+    
+    func soundPlayer(forIdentifier identifier: String) -> SoundFileSoundPlayer? {
+        for sound in self.sounds {
+            if sound.id == identifier {
+                return sound
+            }
+        }
+        
+        return nil
+    }
+    
+    
 }

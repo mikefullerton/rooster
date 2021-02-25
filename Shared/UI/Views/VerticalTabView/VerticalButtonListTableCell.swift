@@ -12,7 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
-class VerticalButtonListTableCell : ListViewRowView<VerticalTabItem> {
+class VerticalButtonListTableCell : ListViewRowController<VerticalTabItem> {
     
     let insets = SDKEdgeInsets.twenty
     let spacing: CGFloat = 20
@@ -28,8 +28,9 @@ class VerticalButtonListTableCell : ListViewRowView<VerticalTabItem> {
         self.iconView.image = content.icon
     }
 
-    override func loadView() {
-        self.view = SDKView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         self.view.wantsLayer = true
         
         self.addIconView()

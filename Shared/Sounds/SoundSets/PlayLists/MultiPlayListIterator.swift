@@ -19,44 +19,29 @@ class MultiPlayListIterator : PlayListIteratorProtocol {
         self.iteratorStack = nil
         self.currentIterator = nil
         self.state = .idle
+        
+        self.updatePlaylist()
     }
 
-    private func didStopIterating() {
-        self.iteratorStack = nil
-        self.currentIterator = nil
-        self.state = .done
-    }
     
     func stop() {
         if self.state == .iterating {
             self.didStopIterating()
         }
         self.iterators.forEach { $0.stop() }
+        
     }
     
     func resetToIdleState() {
         self.stop()
         self.state = .idle
     }
-    
-    private func rebuildIteratorStack() {
-        if self.iterators.count > 0 {
-            self.iteratorStack = self.iterators
-            self.iteratorStack!.forEach { $0.resetToIdleState() }
-            
-            if self.iteratorStack!.count > 0 {
-                self.currentIterator = self.iteratorStack!.first
-                self.iteratorStack!.remove(at: 0)
-            }
-        }
-    }
- 
-    func step() -> SoundFile? {
+
+    func step() -> SoundFileSoundPlayer? {
         
         switch(self.state) {
         case .idle:
             self.state = .iterating
-            self.rebuildIteratorStack()
             
         case .done:
             self.state = .idle
@@ -81,8 +66,8 @@ class MultiPlayListIterator : PlayListIteratorProtocol {
         return nil;
     }
     
-    var sounds: [SoundFile] {
-        var sounds:[SoundFile] = []
+    var sounds: [SoundFileSoundPlayer] {
+        var sounds:[SoundFileSoundPlayer] = []
         self.iterators.forEach {
             let iteratorSounds = $0.sounds
             if iteratorSounds.count > 0 {
@@ -92,20 +77,42 @@ class MultiPlayListIterator : PlayListIteratorProtocol {
         return sounds
     }
 
+    
     var soundCount: Int {
         return self.sounds.count
     }
 
     // MARK: private
-    
+
+    private func didStopIterating() {
+        self.iteratorStack = nil
+        self.currentIterator = nil
+        self.state = .done
+        self.updatePlaylist()
+    }
+
+    private func updatePlaylist() {
+        if self.iterators.count > 0 {
+            self.iteratorStack = self.iterators
+            self.iteratorStack!.forEach { $0.resetToIdleState() }
+            
+            if self.iteratorStack!.count > 0 {
+                self.currentIterator = self.iteratorStack!.first
+                self.iteratorStack!.remove(at: 0)
+            }
+        }
+    }
+
     private func updateIteratorState() {
         if let currentIterator = self.currentIterator, currentIterator.state == .iterating {
             return
         }
         
+        self.currentIterator = nil
+        
         if var iteratorStack = self.iteratorStack {
             iteratorStack.forEach { $0.resetToIdleState() }
-            while iteratorStack.count > 0 && self.currentIterator == nil {
+            while iteratorStack.count > 0 {
                 let first = iteratorStack.first!
                 iteratorStack.remove(at: 0)
                 self.currentIterator = first
@@ -117,7 +124,7 @@ class MultiPlayListIterator : PlayListIteratorProtocol {
         }
     }
     
-    private func advanceCurrentIterator() -> SoundFile? {
+    private func advanceCurrentIterator() -> SoundFileSoundPlayer? {
         if let currentIterator = self.currentIterator,
            let sound = currentIterator.step() {
             
@@ -126,16 +133,4 @@ class MultiPlayListIterator : PlayListIteratorProtocol {
         
         return nil
     }
-    
-    private func createIteratorStack() {
-        if self.iterators.count > 0 {
-            self.iteratorStack = self.iterators
-            
-        } else {
-            self.iteratorStack = nil
-        }
-    
-    }
-    
-    
 }

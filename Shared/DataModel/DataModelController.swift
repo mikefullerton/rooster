@@ -304,34 +304,18 @@ class DataModelController : EKControllerDelegate, Loggable {
             
             if !savedState.bool(forKey: .lookedForCalendarOnFirstRun) {
                 savedState.setBool(true, forKey: .lookedForCalendarOnFirstRun)
-                self.findFirstCalendarSubscription()
+                self.enableAllPersonalCalendars()
             }
         }
     }
     
-    private func findFirstCalendarSubscription() {
-        
-        let ignoreList = [
-            "tasks",
-            "reminders",
-            "birthdays"
-        ]
-        
-        for (calendarSource, calendars) in self.dataModel.calendars {
-            if calendarSource == "apple.com" {
-                for calendar in calendars {
-                    var newCalendar = calendar
-                    
-                    if ignoreList.contains(where: { ignoreTitle in
-                        return newCalendar.title.localizedCaseInsensitiveContains(ignoreTitle)
-                    }) {
-                        continue
-                    }
-                    
-                    newCalendar.isSubscribed = true
-                    self.update(calendar: newCalendar)
-                    self.logger.log("Found first run calendar: \(calendar)")
-                }
+    func enableAllPersonalCalendars() {
+        for (_, calendars) in self.dataModel.calendars {
+            for calendar in calendars {
+                var newCalendar = calendar
+                newCalendar.isSubscribed = true
+                self.update(calendar: newCalendar)
+                self.logger.log("Enabled default calendar: \(calendar)")
             }
         }
     }

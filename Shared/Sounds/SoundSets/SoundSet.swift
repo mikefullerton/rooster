@@ -7,50 +7,79 @@
 
 import Foundation
 
-struct SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringConvertible {
+class SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringConvertible {
     
     typealias ID = String
     
     let id: String
-    let url: URL
+    let url: URL?
     let displayName: String
     let randomizer: RandomizationDescriptor
     let soundFolder: SoundFolder
+    let sounds: [String: RandomizationDescriptor]
     
     init(withID id: String,
-         url: URL,
+         url: URL?,
          displayName: String,
          randomizer: RandomizationDescriptor,
+         sounds: [String: RandomizationDescriptor],
          soundFolder: SoundFolder) {
     
+        self.sounds = sounds
         self.randomizer = randomizer
         self.url = url
         self.displayName = displayName
         self.id = id
         self.soundFolder = soundFolder
+        
     }
 
+    static let randomSoundSetID = "b5ce82ee-30eb-4607-826f-8beb098124a0"
+    static let defaultSoundSetID = "008ca3dd-f8b0-444f-a93a-5db1e9dbb353"
+    static let randomSoundID = "0d67e781-826a-4c4f-807c-0dbe6514da3e"
+    
     static var random: SoundSet {
-        return SoundSet(withID: "All Sounds",
-                        url: URL.roosterURL("All Sounds Sound Set"),
-                        displayName: "All Sounds",
+        
+        return SoundSet(withID: Self.randomSoundSetID,
+                        url: nil,
+                        displayName: "",
                         randomizer: RandomizationDescriptor(withBehavior: .always,
-                                                       minSounds: 1,
-                                                       maxSounds: 1),
+                                                            minSounds: 1,
+                                                            maxSounds: 1),
+                        sounds: [ Self.randomSoundID: RandomizationDescriptor(withBehavior: .always) ],
                         soundFolder: SoundFolder.instance)
 
     }
     
     static var empty: SoundSet {
         return SoundSet(withID: "Empty",
-                        url: URL.roosterURL("Empty Sound Set"),
+                        url: nil,
                         displayName: "Empty",
-                        randomizer: RandomizationDescriptor.none,
+                        randomizer: RandomizationDescriptor.never,
+                        sounds: [:],
                         soundFolder: SoundFolder.empty)
     }
     
+    lazy var soundPlayers: [SoundFileSoundPlayer] = {
+        var soundPlayers:[SoundFileSoundPlayer] = []
+        for (soundID, randomizer) in self.sounds {
+            
+            if let soundFile = self.soundFolder.findSoundFile(forIdentifier: soundID) {
+                let player = SoundFileSoundPlayer(withSoundFile: soundFile,
+                                                  randomizer: randomizer)
+                soundPlayers.append(player)
+            } else {
+                self.logger.error("Failed to load sound for SoundFile: \(soundID) in folder: \(self.soundFolder)")
+            }
+        }
+        
+        return soundPlayers
+    }()
+    
+    
     var soundSetIterator: PlayListIteratorProtocol {
-        return PlayListIterator(withSounds: self.soundFolder.allSounds, randomizer: self.randomizer)
+        return PlayListIterator(withSoundPlayers: self.soundPlayers,
+                                randomizer: self.randomizer)
     }
     
     var playList: SoundPlayList {
@@ -66,67 +95,56 @@ struct SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringConvert
     }
     
     var description: String {
-        return "\(type(of:self)): id: \(self.id), displayName: \(self.displayName), randomizer: \(self.randomizer), soundFolder: \(self.soundFolder.description)"
+        let sounds = self.soundPlayers.map { $0.soundFile.description }.joined(separator: ",")
+        return """
+        \(type(of:self)): \
+        id: \(self.id), \
+        displayName: \
+        \(self.displayName), \
+        url: \(String(describing:self.url)), \
+        randomizer: \(self.randomizer), \
+        sounds: \(sounds), \
+        soundFolder: \(self.soundFolder.description)"
+        """
     }
 
     static func == (lhs: SoundSet, rhs: SoundSet) -> Bool {
-        return lhs.id == rhs.id &&
-        lhs.url == rhs.url &&
-        lhs.displayName == rhs.displayName &&
-        lhs.soundFolder == rhs.soundFolder
-        
+        return  lhs.id == rhs.id &&
+                lhs.url == rhs.url &&
+                lhs.displayName == rhs.displayName &&
+                lhs.soundFolder == rhs.soundFolder &&
+                lhs.sounds == rhs.sounds
     }
 }
 
 extension SoundSet {
     static var `default`: SoundSet {
-        let folder = SoundFolder.defaultSoundSetFolder
+        var sounds: [String: RandomizationDescriptor] = [:]
         
+        if let roosterSounds = SoundFolder.instance.findSoundFiles(containing: ["rooster crowing"]) {
+            let sound = roosterSounds[0]
+            sounds[sound.id] = RandomizationDescriptor(withBehavior: .always, frequency: .normal, alwaysFirst: true)
+        }
+
+        if let rudeSounds = SoundFolder.instance.findSoundFiles(containing: ["excuse me"]) {
+            let sound = rudeSounds[0]
+            sounds[sound.id] = RandomizationDescriptor(withBehavior: .always, frequency: .almostNever, alwaysFirst: false)
+        }
+
+        if let chickenSounds = SoundFolder.instance.findSoundFiles(containing: [ "chicken", "rooster" ], excluding: ["rooster crowing"]) {
+            chickenSounds.forEach {
+                sounds[$0.id] = RandomizationDescriptor(withBehavior: .always, frequency: .normal, alwaysFirst: false)
+            }
+        }
+
         let soundSet = SoundSet(withID: "Rooster_Default",
-                                url: folder.url,
+                                url: URL.emptyRoosterURL,
                                 displayName: "Default Sound Set",
                                 randomizer: RandomizationDescriptor.always,
-                                soundFolder: SoundFolder.defaultSoundSetFolder)
+                                sounds: sounds,
+                                soundFolder: SoundFolder.instance)
         return soundSet
         
     }
 }
 
-extension SoundFolder {
-    static var defaultSoundSetFolder: SoundFolder {
-        
-        var sounds: [SoundFile] = []
-        
-        if let roosterSounds = SoundFolder.instance.findSounds(containing: ["rooster crowing"]) {
-            let sound = roosterSounds[0]
-            sound.randomizer = RandomizationDescriptor(withBehavior: .always, frequency: .normal, alwaysFirst: true)
-            sounds.append(contentsOf: [sound])
-        }
-
-        if let rudeSounds = SoundFolder.instance.findSounds(containing: ["excuse me"]) {
-            let sound = rudeSounds[0]
-            sound.randomizer = RandomizationDescriptor(withBehavior: .always, frequency: .almostNever, alwaysFirst: false)
-            sounds.append(contentsOf: [sound])
-        }
-
-        if let chickenSounds = SoundFolder.instance.findSounds(containing: [ "chicken", "rooster" ], excluding: ["rooster crowing"]) {
-            sounds.append(contentsOf: chickenSounds)
-        }
-
-        var newSounds:[SoundFile] = []
-        for (index, sound) in sounds.enumerated() {
-            let newSound = SoundFile(withID: "rooster-default-\(index)",
-                                     url: sound.url,
-                                     displayName: sound.displayName,
-                                     randomizer: sound.randomizer)
-            
-            newSounds.append(newSound)
-        }
-        
-        return SoundFolder(withID: "rooster_default_sound_set",
-                           url: URL.roosterURL("default-sound-set"),
-                           displayName: "rooster_default_sound_set",
-                           sounds: newSounds,
-                           subFolders: [])
-    }
-}

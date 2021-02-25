@@ -17,6 +17,8 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
     private let tabViewController: VerticalTabViewController
     private lazy var bottomBar = BottomBar(frame: CGRect.zero)
     
+    private static let windowSize = CGSize(width: 800, height: 600)
+    
     init() {
         let soundPreferencesView = SoundPreferencesView(frame: CGRect.zero)
         
@@ -50,7 +52,7 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
         
         soundPreferencesView.delegate = self
         self.tabViewController.delegate = self
-        self.preferredContentSize = CGSize(width: 800, height: 600)
+        self.preferredContentSize = Self.windowSize
         self.title = "Preferences"
     }
     
@@ -74,11 +76,18 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
     }
 
     @objc func resetButtonPressed(_ sender: SDKButton) {
-        AppDelegate.instance.preferencesController.preferences = Preferences()
+        
+        if let selectedItem = self.tabViewController.selectedItem {
+            if let viewController = selectedItem.viewController as? PreferencesContentView {
+                viewController.resetButtonWasPressed()
+            } else if let selectedView = selectedItem.view as? PreferencesContentView {
+                selectedView.resetButtonWasPressed()
+            }
+        }
     }
     
     func verticalTabViewController(_ verticalTabViewController: VerticalTabViewController, didChangeTab tab: VerticalTabItem) {
-        self.bottomBar.leftButton.isEnabled = tab.identifier != "calendars"
+//        self.bottomBar.leftButton.isEnabled = tab.identifier != "calendars"
     }
 
     
@@ -113,6 +122,9 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
         ])
+        
+        view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+        view.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
     }
 }
 

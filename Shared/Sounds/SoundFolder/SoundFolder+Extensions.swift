@@ -9,13 +9,13 @@ import Foundation
 
 extension SoundFolder: NSCopying {
     func copy(with zone: NSZone? = nil) -> Any {
-        return SoundFolder(withID: self.id, url: self.url, displayName: self.displayName, sounds: self.sounds, subFolders: self.subFolders)
+        return SoundFolder(withID: self.id, url: self.url, displayName: self.displayName, sounds: self.soundFiles, subFolders: self.subFolders)
     }
 }
 
 extension SoundFolder: CustomStringConvertible {
     var description: String {
-        return "\(type(of:self)): id: \(self.id), displayName: \(self.displayName), url: \(String(describing:self.url)), soundCount: \(self.sounds.count), subFoldersCount:\(self.subFolders.count), parent: \(self.parent?.description ?? "nil")"
+        return "\(type(of:self)): id: \(self.id), displayName: \(self.displayName), url: \(String(describing:self.url)), soundCount: \(self.soundFiles.count), subFoldersCount:\(self.subFolders.count), parent: \(self.parent?.description ?? "nil")"
     }
 }
 
@@ -24,7 +24,7 @@ extension SoundFolder: Equatable {
         return lhs.id == rhs.id &&
             lhs.url == rhs.url &&
             lhs.displayName == rhs.displayName &&
-            lhs.sounds == rhs.sounds &&
+            lhs.soundFiles == rhs.soundFiles &&
             lhs.subFolders == rhs.subFolders
     }
 }

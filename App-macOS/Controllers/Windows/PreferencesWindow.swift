@@ -14,7 +14,14 @@ class PreferencesWindow: WindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         self.autosaveKey = "Preferences"
-        self.setContentViewController(PreferencesViewController())
+        let viewController = PreferencesViewController()
+        self.setContentViewController(viewController)
+        
+        if let window = self.window {
+            let preferredContentSize = viewController.preferredContentSize
+            self.logger.log("Updating prefs window size: \(NSStringFromSize(preferredContentSize))")
+            window.setContentSize(preferredContentSize)
+        }
     }
         
     static func show() {

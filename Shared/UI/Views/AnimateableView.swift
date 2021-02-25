@@ -10,13 +10,53 @@ import AppKit
 
 class AnimateableLayer : CALayer {
     
+    var isAnimating: Bool = false {
+        didSet {
+            if (self.isAnimating) {
+                super.anchorPoint = self.animationAnchorPoint
+            } else {
+                super.anchorPoint = self.previousAnchorPoint
+            }
+        }
+    }
+    
+    private var previousAnchorPoint: CGPoint = CGPoint.zero
+    
+    var animationAnchorPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)
+    
     override var anchorPoint: CGPoint {
         get {
-            return super.anchorPoint
+            if (self.isAnimating) {
+                return self.animationAnchorPoint
+            } else {
+                return super.anchorPoint
+            }
         }
-        set(new) {
-            super.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        set(anchorPoint) {
+            if (!self.isAnimating) {
+                super.anchorPoint = anchorPoint
+                self.previousAnchorPoint = anchorPoint
+            }
         }
+    }
+    
+    override func add(_ anim: CAAnimation, forKey key: String?) {
+        self.isAnimating = true
+        super.add(anim, forKey: key)
+    }
+    
+    override func removeAnimation(forKey key: String) {
+        super.removeAnimation(forKey: key)
+        let keys = self.animationKeys()
+        
+        if keys == nil || keys!.count == 0 {
+            self.isAnimating = false
+        }
+    }
+    
+    override func removeAllAnimations() {
+        super.removeAllAnimations()
+        self.isAnimating = false
     }
 }
 

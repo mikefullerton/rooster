@@ -28,7 +28,7 @@ struct CalenderListViewModel : ListViewModelProtocol {
             
 //            let footer = SpacerAdornment(withHeight: 20)
             
-            let rows = rowContent.map { ListViewRowDescriptor<Calendar, CalendarListCell>(withContent: $0)}
+            let rows = rowContent.map { ListViewRowDescriptor<Calendar, CalendarListRowController>(withContent: $0)}
             
             let section = ListViewSectionDescriptor(withRows: rows,
                                           header: header,

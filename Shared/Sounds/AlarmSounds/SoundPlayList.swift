@@ -16,25 +16,26 @@ class SoundPlayList : Sound, SoundDelegate, Identifiable {
     
     let displayName: String
 
-    private(set) var sounds:[Sound]
-
     var playListIterator: PlayListIteratorProtocol
     
     private(set) var behavior: SoundBehavior
-    private(set) var currentSound: Sound?
+    private(set) var currentSound: SoundFileSoundPlayer?
     private var playCount: Int = 0
     
     init(withPlayListIterator playListIterator: PlayListIteratorProtocol, displayName: String) {
 
         self.playListIterator = playListIterator
-        self.sounds = playListIterator.sounds.map {
-            return SoundFileAlarmSound(withSoundFile: $0)
-        }
         self.displayName = displayName
         self.behavior = SoundBehavior()
         self.id = String.guid
+        
+        self.setNextSoundFromPlaylist()
     }
-
+    
+    var sounds: [SoundFileSoundPlayer] {
+        return self.playListIterator.sounds
+    }
+   
     var isPlaying: Bool {
         if let currentSound = self.currentSound {
             return currentSound.isPlaying
@@ -89,41 +90,20 @@ class SoundPlayList : Sound, SoundDelegate, Identifiable {
         }
     }
     
-    private func advance() -> Bool {
-        self.didStopCurrentSound()
-        
-        if let nextSound = self.playListIterator.step(),
-           let alarmSound = self.sounds.first(where: { $0.id == nextSound.id }) {
-            
-            self.currentSound = alarmSound
-            
-            return true
-        }
-        
-        return false
-    }
-    
-    private func playNextSound() {
-
-        self.didStopCurrentSound()
-        
-        if let nextSound = self.playListIterator.step(),
-           let alarmSound = self.sounds.first(where: { $0.id == nextSound.id }) {
-            self.currentSound = alarmSound
+    private func setNextSoundFromPlaylist() {
+        if let nextSound = self.playListIterator.step() {
+           self.currentSound = nextSound
         } else {
             self.playCount += 1
             if self.behavior.playCount > self.playCount {
                 if let nextSound = self.playListIterator.step() {
-                    self.sounds = self.playListIterator.sounds.map {
-                        return SoundFileAlarmSound(withSoundFile: $0)
-                    }
-                    if let alarmSound = self.sounds.first(where: { $0.id == nextSound.id }) {
-                        self.currentSound = alarmSound
-                    }
+                    self.currentSound = nextSound
                 }
             }
         }
-        
+    }
+    
+    private func playNextSound() {
         if let currentSound = self.currentSound {
             self.delegate?.soundDidUpdate(self)
 
@@ -160,6 +140,8 @@ class SoundPlayList : Sound, SoundDelegate, Identifiable {
 
     func soundDidStopPlaying(_ sound: Sound) {
         self.logger.log("Sound did stop: \(sound.displayName)")
+        self.didStopCurrentSound()
+        self.setNextSoundFromPlaylist()
         self.playNextSound()
     }
     
@@ -167,6 +149,10 @@ class SoundPlayList : Sound, SoundDelegate, Identifiable {
         if !self.isPlaying {
             self.logger.log("Playing sounds: \(self.displayName): \(self.currentSoundDisplayName)")
             self.behavior = behavior
+            
+            if self.currentSound == nil {
+                self.setNextSoundFromPlaylist()
+            }
             
             self.delegate?.soundWillStartPlaying(self)
             self.playCount = 0
@@ -185,6 +171,10 @@ class SoundPlayList : Sound, SoundDelegate, Identifiable {
         
         self.delegate?.soundDidStopPlaying(self)
         self.logger.log("All sounds stopped playing: \(self.displayName): \(self.currentSoundDisplayName)")
+        
+        self.setNextSoundFromPlaylist()
+        
+        self.delegate?.soundDidUpdate(self)
     }
     
     func stop() {
