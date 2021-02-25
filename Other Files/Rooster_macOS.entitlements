@@ -18,5 +18,17 @@
 	<true/>
 	<key>com.apple.security.personal-information.calendars</key>
 	<true/>
+    <key>com.apple.security.temporary-exception.apple-events</key>
+    <array>
+        <string>com.apple.Notes</string>
+        <string>com.apple.systemevents</string>
+    </array>
+    <key>com.apple.security.scripting-targets</key>
+    <dict>
+        <key>com.apple.Notes</key>
+        <array>
+            <string>com.apple.Notes.openlocation</string>
+        </array>
+    </dict>
 </dict>
 </plist>

@@ -69,5 +69,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>Rooster can create meeting agendas in Notes.app for you.</string>
 </dict>
 </plist>
