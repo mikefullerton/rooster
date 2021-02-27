@@ -2505,7 +2505,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/Other Files/IncrementVersion.sh\" || {\n    echo \"Failed to increment version\"\n    exit 1\n}\n";
+			shellScript = "\"${PROJECT_DIR}/Rooster-macOS/Other Files/IncrementVersion.sh\" || {\n    echo \"Failed to increment version\"\n    exit 1\n}\n";
 			showEnvVarsInLog = 0;
 		};
 		B233C52925A23885005A7FB3 /* ShellScript */ = {

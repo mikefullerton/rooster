@@ -17,19 +17,21 @@ REVISION_NUMBER=0
 
 INFO_FILE_PATH="${MY_PATH}/Info.plist"
 
-#PLUGIN_DIR="`( cd "$MY_PATH/../AppKitPlugin" && pwd )`" || {
-#    echo "Can't find plugin dir"
-#    exit 1
-#}
-
-#PLUGIN_INFO_FILE_PATH="${PLUGIN_DIR}/Info.plist"
-
-GIT_STATUS="`( cd "$MY_PATH/.." && git status )`"
-
-if [[ "${GIT_STATUS}" != *"nothing to commit"* ]]; then
-    echo "Please commit changes before building a release!"
+FRAMEWORK_PATH="`( cd "$MY_PATH/../../RoosterCore/Other Files" && pwd )`" || {
+    echo "Can't find plugin dir"
     exit 1
-fi
+}
+
+FRAMEWORK_INFO_FILE_PATH="${FRAMEWORK_PATH}/Info.plist"
+
+function check_git_status() {
+    GIT_STATUS="`( cd "$MY_PATH/.." && git status )`"
+
+    if [[ "${GIT_STATUS}" != *"nothing to commit"* ]]; then
+        echo "Please commit changes before building a release!"
+        exit 1
+    fi
+}
 
 function get_version_number() {
     local SHORT_VERSION="$(defaults read "${INFO_FILE_PATH}" CFBundleShortVersionString)" || {
@@ -80,6 +82,8 @@ function write_build_number_to_file() {
     echo "Wrote ${REVISION_NUMBER} to CFBundleVersion in ${FILE_PATH}"
 }
 
+#check_git_status
+
 get_version_number
 get_revision_number
 
@@ -90,9 +94,11 @@ echo "New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
 
 write_build_number_to_file "${INFO_FILE_PATH}"
 
-#write_build_number_to_file "${PLUGIN_INFO_FILE_PATH}"
+write_build_number_to_file "${FRAMEWORK_INFO_FILE_PATH}"
 
 set -x
+
+exit 0
 
 cd "${MY_PATH}/.."
 git add "${INFO_FILE_PATH}" || {
@@ -100,10 +106,10 @@ git add "${INFO_FILE_PATH}" || {
     exit 1
 }
 
-#git add "${PLUGIN_INFO_FILE_PATH}" || {
-#    echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
-#    exit 1
-#}
+git add "${FRAMEWORK_INFO_FILE_PATH}" || {
+    echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
+    exit 1
+}
 
 git status
 
