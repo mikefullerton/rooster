@@ -82,7 +82,7 @@ function write_build_number_to_file() {
     echo "Wrote ${REVISION_NUMBER} to CFBundleVersion in ${FILE_PATH}"
 }
 
-#check_git_status
+check_git_status
 
 get_version_number
 get_revision_number
@@ -97,8 +97,6 @@ write_build_number_to_file "${INFO_FILE_PATH}"
 write_build_number_to_file "${FRAMEWORK_INFO_FILE_PATH}"
 
 set -x
-
-exit 0
 
 cd "${MY_PATH}/.."
 git add "${INFO_FILE_PATH}" || {
