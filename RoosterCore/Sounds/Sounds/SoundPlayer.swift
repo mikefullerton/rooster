@@ -8,8 +8,7 @@
 import Foundation
 import Cocoa
 
-public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifiable {
-    
+public class SoundPlayer : NSObject, SoundPlayerProtocol, SoundDelegate, Loggable, Identifiable {
     public typealias ID = String
     
     public weak var delegate: SoundDelegate?
@@ -18,22 +17,21 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
     
     private(set) public var behavior: SoundBehavior
     public let soundFile: SoundFile
-    public let randomizer: PlayListRandomizer
-    
-    private var sound: NSSound?
+    public let randomizer: SoundPlayerRandomizer
     private let stopTimer: SimpleTimer
     
     private(set) public var isPlaying: Bool
     
-    public init(withSoundFile soundFile: SoundFile, randomizer: PlayListRandomizer?) {
+    public init(withSoundFile soundFile: SoundFile, randomizer: SoundPlayerRandomizer?) {
         self.soundFile = soundFile
-        self.randomizer = randomizer == nil ? PlayListRandomizer.never : randomizer!
+        self.randomizer = randomizer == nil ? SoundPlayerRandomizer.default : randomizer!
         self.behavior = SoundBehavior()
         self.stopTimer = SimpleTimer(withName: "SoundPlayer")
         self.id = soundFile.id
         self.isPlaying = false
-        self.sound = nil
         super.init()
+        
+        self.soundFile.soundPlayer.delegate = self
   
         NotificationCenter.default.addObserver(self, selector: #selector(soundVolumeChanged(_:)), name: GlobalSoundVolume.volumeChangedNotification, object: nil)
     }
@@ -44,35 +42,11 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
     }
     
     public var displayName: String {
-        return self.soundFile.displayName
-    }
-    
-    private func createPlayerIfNeeded() {
-        guard self.sound == nil else {
-            return
-        }
-        
-        let soundFile = self.soundFile
-        
-        if  let path = soundFile.absolutePath,
-            let sound = NSSound(contentsOf: path, byReference: true){
-            
-            sound.setName(soundFile.displayName)
-            sound.delegate = self
-            self.sound = sound
-            
-        } else {
-            self.logger.error("Failed to create sound for soundFile: \(soundFile)")
-            return
-        }
-        
-        self.updateVolume()
+        return self.soundFile.displayNameWithParentsExcludingRoot
     }
     
     private func updateVolume() {
-        if let sound = self.sound {
-            sound.volume = GlobalSoundVolume.volume
-        }
+        self.set(volume: GlobalSoundVolume.volume, fadeDuration: 0)
     }
     
     @objc func soundVolumeChanged(_ sender: Notification) {
@@ -80,32 +54,19 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
     }
 
     public var volume: Float {
-        if let sound = self.sound {
-            return sound.volume
-        }
-        return 0
+        return self.soundFile.soundPlayer.volume
     }
     
     public var duration: TimeInterval {
-        if let sound = self.sound {
-            return sound.duration
-        }
-        
-        return 0
+        return self.soundFile.soundPlayer.duration
     }
     
     public func set(volume: Float, fadeDuration: TimeInterval) {
-        if let sound = self.sound {
-            sound.volume = volume
-        }
+        self.soundFile.soundPlayer.set(volume: volume, fadeDuration: fadeDuration)
     }
     
     public var currentTime: TimeInterval {
-        if let sound = self.sound {
-            return sound.currentTime
-        }
-        
-        return 0
+        return self.soundFile.soundPlayer.currentTime
     }
         
     public static func == (lhs: SoundPlayer, rhs: SoundPlayer) -> Bool {
@@ -113,7 +74,6 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
     }
     
     public func play(withBehavior behavior: SoundBehavior) {
-        self.createPlayerIfNeeded()
         self.isPlaying = true
         self.logger.log("Sound will start playing: \(self.displayName): url: \(self.soundFile.absolutePath?.path ?? "nil")")
         if let delegate = self.delegate {
@@ -121,27 +81,18 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
         }
 
         DispatchQueue.main.async {
-            if let sound = self.sound {
-                sound.loops = false
-                self.updateVolume()
-                sound.play()
-            } else {
-                self.didStop()
-            }
+            self.updateVolume()
+            self.soundFile.soundPlayer.play(withBehavior: behavior)
         }
     }
     
     public func stop() {
-        if self.isPlaying {
-            self.logger.log("Sound will be aborted: \(self.displayName)")
-            self.didStop()
-        }
+        self.didStop()
     }
     
     private func fadeOutAndStop() {
-        if let sound = self.sound,
-            sound.isPlaying {
-            sound.stop()
+        if self.soundFile.soundPlayer.isPlaying {
+            self.soundFile.soundPlayer.stop()
         }
     }
     
@@ -151,9 +102,7 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
         self.fadeOutAndStop()
         self.stopTimer.stop()
         
-        if let delegate = self.delegate {
-            delegate.soundDidStopPlaying(self)
-        }
+        self.delegate?.soundDidStopPlaying(self)
     }
     
     private func notifyStopped() {
@@ -171,6 +120,21 @@ public class SoundPlayer : NSObject, Sound, NSSoundDelegate, Loggable, Identifia
             self.logger.log("Sound did stop playing: \(self.displayName)")
             self.notifyStopped()
         }
+    }
+
+    public func soundWillStartPlaying(_ sound: SoundPlayerProtocol) {
+    }
+    
+    public func soundDidStartPlaying(_ sound: SoundPlayerProtocol) {
+    }
+    
+    public func soundDidStopPlaying(_ sound: SoundPlayerProtocol) {
+        self.logger.log("Sound did stop playing: \(self.displayName)")
+        self.notifyStopped()
+    }
+    
+    public func soundDidUpdate(_ sound: SoundPlayerProtocol) {
+        self.delegate?.soundDidUpdate(self)
     }
 }
 

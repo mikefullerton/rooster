@@ -181,7 +181,7 @@ struct EKDataModelFactory: Loggable {
             return
         }
         
-        let predicate = store.predicateForIncompleteReminders(withDueDateStarting: dates.today,
+        let predicate = store.predicateForIncompleteReminders(withDueDateStarting: nil,
                                                               ending: dates.tomorrow,
                                                               calendars: subscribedCalendars)
         

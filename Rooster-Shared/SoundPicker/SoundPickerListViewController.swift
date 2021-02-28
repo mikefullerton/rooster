@@ -16,10 +16,10 @@ import UIKit
 
 class SoundPickerListViewController : ListViewController<SoundPickerListViewModel> {
     
-    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
+    let soundPreferenceKey: SoundPreferences.PreferenceKey
     private(set) var soundFolder: SoundFolder
     
-    init(withSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
+    init(withSoundIndex soundPreferenceKey: SoundPreferences.PreferenceKey) {
         self.soundPreferenceKey = soundPreferenceKey
         self.soundFolder = SoundFolder.instance
         
@@ -38,7 +38,7 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
         super.viewDidLoad()
         
         self.collectionView.allowsEmptySelection = false
-        self.collectionView.allowsMultipleSelection = true
+        self.collectionView.allowsMultipleSelection = false // TODO: enabled multiple sounds
         self.collectionView.isSelectable = true
     }
     
@@ -48,16 +48,27 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
     }
     
     func setSelectedRow() {
-        let soundSet = Controllers.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey).soundSet
+        let singleSoundPref = Controllers.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
+        let soundSet = singleSoundPref.soundSet
+        let soundFiles = soundSet.soundFiles
         
-        for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
-            for(soundIndex, soundFile) in subfolder.soundFiles.enumerated() {
-                if soundSet.soundFolder.contains(soundID: soundFile.id) {
-                    self.collectionView.selectItems(at: Set<IndexPath>([ IndexPath(item: soundIndex, section: folderIndex) ]),
-                                                    scrollPosition: .centeredVertically)
-                    break
-                }
+        self.collectionView.deselectAll(self)
+        
+        /// TODO: Enable multiple sounds
+        if soundFiles.count != 1 {
+            return
+        }
+        
+        var indexPathsToSelect = Set<IndexPath>()
+        for sound in soundFiles {
+            if let indexPath = self.viewModel?.indexPath(forSoundFile: sound) {
+                indexPathsToSelect.insert(indexPath)
             }
+        }
+
+        if indexPathsToSelect.count > 0 {
+            self.collectionView.selectItems(at: indexPathsToSelect,
+                                            scrollPosition: .centeredVertically)
         }
     }
     
@@ -86,22 +97,13 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
         return nil
     }
     
-    var chosenSound : SingleSoundPreference? {
-        
+    var chosenSound : [SoundFile]? {
         var chosenSounds:[SoundFile] = []
-        var randomizers:[String: PlayListRandomizer] = [:]
         
+        // TODO: add multiple sound selection
         if let selectedIndexPath = self.selectedIndexPath {
-            for (folderIndex, subfolder) in self.soundFolder.subFolders.enumerated() {
-                for(index, soundFile) in subfolder.soundFiles.enumerated() {
-                    if folderIndex == selectedIndexPath.section &&
-                    index == selectedIndexPath.item {
-                        
-                        chosenSounds.append(soundFile)
-                        
-                        randomizers[soundFile.id] = PlayListRandomizer.never
-                    }
-                }
+            if let soundFile = self.viewModel?.soundFile(forIndexPath: selectedIndexPath) {
+                chosenSounds.append(soundFile)
             }
         }
 
@@ -109,7 +111,7 @@ class SoundPickerListViewController : ListViewController<SoundPickerListViewMode
             return nil
         }
        
-        return SingleSoundPreference.singleSoundPref(withSoundFiles: chosenSounds, randomizers: randomizers)
+        return chosenSounds
     }
 
     func togglePlayingOnCurrentCell() {

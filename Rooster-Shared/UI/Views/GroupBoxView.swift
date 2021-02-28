@@ -64,11 +64,12 @@ class GroupBoxView : SDKView {
         
         self.addSubview(view)
         NSLayoutConstraint.activate([
-            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6 - 10),
+//            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6 - 10),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             view.topAnchor.constraint(equalTo: self.topAnchor, constant: self.insets.top),
         ])
-        view.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
-        view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
+        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     func addOutlineView() {
@@ -95,7 +96,7 @@ class GroupBoxView : SDKView {
     lazy private var titleView: SDKTextField = {
         let titleView = NSTextField()
         titleView.isEditable = false
-        titleView.textColor = Theme(for: self).labelColor
+        titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
         titleView.alignment = .right
         titleView.translatesAutoresizingMaskIntoConstraints = false

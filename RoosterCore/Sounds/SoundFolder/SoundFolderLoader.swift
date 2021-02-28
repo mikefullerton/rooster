@@ -12,14 +12,13 @@ class SoundFolderLoader: Loggable {
     private var loadedFolder: SoundFolder?
     private var path: URL?
     
-    private var semaphore = DispatchSemaphore(value: 1)
+    private var folderLoadingSemaphore: DispatchSemaphore?
     
     init(withPath path: URL? ) {
         self.loadedFolder = nil
         self.path = path
         
         if path == nil {
-            self.semaphore.signal()
             self.loadedFolder = SoundFolder.empty
         }
     }
@@ -28,12 +27,17 @@ class SoundFolderLoader: Loggable {
 
         let url = self.path!
         
+        let semaphore = DispatchSemaphore(value: 1)
+        self.folderLoadingSemaphore = semaphore
+        
         self.logger.log("Starting to load sound folder for url: \(url.path)")
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             if let strongSelf = self {
                 do {
-                    let directory = try DirectoryIterator(withURL: url)
+                    let directory = DirectoryIterator(withURL: url)
+                    try directory.scan()
+                    
                     let soundFolder = try SoundFolder(withDirectory: directory)
                     strongSelf.loadedFolder = soundFolder
                     strongSelf.logger.log("Creating SoundFolder ok: \(soundFolder.description)")
@@ -43,13 +47,19 @@ class SoundFolderLoader: Loggable {
                     strongSelf.loadedFolder = SoundFolder.empty
                     
                 }
-                strongSelf.semaphore.signal()
+                semaphore.signal()
             }
         }
     }
     
     public var soundFolder: SoundFolder {
-        self.semaphore.wait()
+        if let semaphore = self.folderLoadingSemaphore {
+            self.logger.log("Waiting for folder to load...")
+            semaphore.wait()
+            self.folderLoadingSemaphore = nil
+            self.logger.log("Done loading...")
+        }
+        
         return self.loadedFolder!
     }
 }

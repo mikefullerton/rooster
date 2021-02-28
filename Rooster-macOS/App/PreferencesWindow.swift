@@ -11,16 +11,20 @@ class PreferencesWindow: WindowController {
     
     static private weak var instance: PreferencesWindow?
     
+    @IBOutlet var viewController: PreferencesViewController?
+    
     override func windowDidLoad() {
         super.windowDidLoad()
         self.autosaveKey = "Preferences"
-        let viewController = PreferencesViewController()
-        self.setContentViewController(viewController)
         
-        if let window = self.window {
-            let preferredContentSize = viewController.preferredContentSize
-            self.logger.log("Updating prefs window size: \(NSStringFromSize(preferredContentSize))")
-            window.setContentSize(preferredContentSize)
+        if let viewController = self.viewController {
+            self.setContentViewController(viewController)
+            
+//            if let window = self.window {
+//                let preferredContentSize = viewController.preferredContentSize
+//                self.logger.log("Updating prefs window size: \(NSStringFromSize(preferredContentSize))")
+//                window.setContentSize(preferredContentSize)
+//            }
         }
     }
         
@@ -36,4 +40,9 @@ class PreferencesWindow: WindowController {
             
         }
     }
+    
+//    @IBAction @objc close(_ sender: Any?) {
+//        
+//        self.cl
+//    }
 }

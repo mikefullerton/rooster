@@ -13,6 +13,7 @@ struct SavedState {
     enum SavedStateKey: String, CodingKey {
         case lookedForCalendarOnFirstRun = "lookedForCalendarOnFirstRun"
         case firstRunWasPresented = "firstRunWasPresented"
+        case applicationStateVersion = "applicationStateVersion"
     }
     
     private var storage: UserDefaults.IdentifierDictionary
@@ -21,6 +22,17 @@ struct SavedState {
         self.storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "SavedState")
     }
 
+    func int(forKey key: SavedStateKey) -> Int {
+        if let value = self.storage.value(forKey: key.rawValue) as? Int {
+            return value
+        }
+        return 0
+    }
+    
+    mutating func setInt(_ value: Int, forKey key: SavedStateKey) {
+        self.storage.set(value: value, forKey: key.rawValue)
+    }
+    
     func bool(forKey key: SavedStateKey) -> Bool {
         if let value = self.storage.value(forKey: key.rawValue) as? Bool {
             return value

@@ -1,28 +1,116 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11163" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19052" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11163"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19052"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindow" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindow" customModule="Rooster" customModuleProvider="target">
             <connections>
+                <outlet property="viewController" destination="gih-tv-hCo" id="P0F-eA-5tR"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+        <window title="Rooster Settings" separatorStyle="shadow" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" visibleAtLaunch="NO" animationBehavior="default" toolbarStyle="preference" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <rect key="contentRect" x="196" y="240" width="800" height="600"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3360" height="1865"/>
+            <value key="minSize" type="size" width="800" height="600"/>
+            <value key="maxSize" type="size" width="1000" height="1000"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="803378BF-AC45-4D69-9EA7-3ECDCD131398" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="ICE-Ea-xpu">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="4072212A-C88E-447D-B9D9-0B1EFE9CA31F" explicitItemIdentifier="general" label="General" paletteLabel="General" tag="-1" selectable="YES" id="y0g-Ik-qTl">
+                        <imageReference key="image" image="gear" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="50.5" height="34"/>
+                        <size key="maxSize" width="50.5" height="34"/>
+                        <connections>
+                            <action selector="generalToolbarItemChosen:" target="gih-tv-hCo" id="jtQ-Aq-icp"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="8EE457E4-688F-431A-BEA4-2E3D23FDD243" explicitItemIdentifier="calendars" label="Calendars" paletteLabel="Calendars" tag="-1" selectable="YES" id="mhs-RF-Quv">
+                        <imageReference key="image" image="calendar" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="48.5" height="30"/>
+                        <size key="maxSize" width="48.5" height="30"/>
+                        <connections>
+                            <action selector="calendarsToolbarItemChosen:" target="gih-tv-hCo" id="IoM-mN-XPu"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="76C34B6E-AC48-4832-9E6A-AAEEB7025069" explicitItemIdentifier="sounds" label="Sounds" paletteLabel="Sounds" tag="-1" selectable="YES" id="SKd-a1-cLL">
+                        <imageReference key="image" image="speaker.wave.3" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="64" height="31"/>
+                        <size key="maxSize" width="64" height="31"/>
+                        <connections>
+                            <action selector="soundsToolbarItemChosen:" target="gih-tv-hCo" id="7b9-JI-HNP"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="38A8F2BD-315E-4FBD-ABAD-7C31EE362AD1" explicitItemIdentifier="notifications" label="Notifications" paletteLabel="Notifications" tag="-1" selectable="YES" id="7I2-7K-O0o">
+                        <imageReference key="image" image="bell" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="45.5" height="32"/>
+                        <size key="maxSize" width="45.5" height="32"/>
+                        <connections>
+                            <action selector="notificationsToolbarItemChosen:" target="gih-tv-hCo" id="82o-p6-U79"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="5A84BC16-BA71-41F1-B2FA-0BFF04F063BD" explicitItemIdentifier="menubar" label="Menu Bar" paletteLabel="Menu Bar" tag="-1" selectable="YES" id="6jr-ge-jnK">
+                        <imageReference key="image" image="menubar.rectangle" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="55.5" height="30"/>
+                        <size key="maxSize" width="55.5" height="30"/>
+                        <connections>
+                            <action selector="menuBarToolbarItemChosen:" target="gih-tv-hCo" id="3ei-59-o7s"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="ChU-sB-ORx"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="yzK-Di-DpB"/>
+                    <toolbarItem implicitItemIdentifier="8427A76E-F303-4B35-92D5-937BFDCD959C" label="Toolbar Item" paletteLabel="Toolbar Item" tag="-1" bordered="YES" id="aY5-6h-R9e">
+                        <size key="minSize" width="12" height="25"/>
+                        <size key="maxSize" width="12" height="25"/>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="31AB1C29-2680-43A0-98D8-462FA2A891E2" explicitItemIdentifier="spacer" label="" paletteLabel="" tag="-1" id="sYk-1R-e5z">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="163" height="30"/>
+                        <size key="maxSize" width="163" height="30"/>
+                        <customView key="view" id="3vW-bC-gLE">
+                            <rect key="frame" x="0.0" y="14" width="163" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </customView>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="y0g-Ik-qTl"/>
+                    <toolbarItem reference="SKd-a1-cLL"/>
+                    <toolbarItem reference="7I2-7K-O0o"/>
+                    <toolbarItem reference="6jr-ge-jnK"/>
+                </defaultToolbarItems>
+            </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
+            <point key="canvasLocation" x="139" y="144"/>
         </window>
+        <toolbarItem implicitItemIdentifier="8EE457E4-688F-431A-BEA4-2E3D23FDD243" label="Calendars" paletteLabel="Calendars" tag="-1" title="Calendars" id="Q2l-IT-NjS">
+            <imageReference key="image" image="calendar" catalog="system" symbolScale="large"/>
+            <size key="minSize" width="85" height="17"/>
+            <size key="maxSize" width="85" height="17"/>
+        </toolbarItem>
+        <viewController id="gih-tv-hCo" customClass="PreferencesViewController" customModule="Rooster" customModuleProvider="target">
+            <connections>
+                <outlet property="customToolbarSpacer" destination="sYk-1R-e5z" id="3B8-Gj-YIk"/>
+                <outlet property="toolbar" destination="ICE-Ea-xpu" id="951-Nz-Iko"/>
+            </connections>
+        </viewController>
     </objects>
+    <resources>
+        <image name="bell" catalog="system" width="19" height="19"/>
+        <image name="calendar" catalog="system" width="20" height="17"/>
+        <image name="gear" catalog="system" width="21" height="21"/>
+        <image name="menubar.rectangle" catalog="system" width="23" height="17"/>
+        <image name="speaker.wave.3" catalog="system" width="26" height="18"/>
+    </resources>
 </document>

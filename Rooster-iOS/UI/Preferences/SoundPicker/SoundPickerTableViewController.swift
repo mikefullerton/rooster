@@ -11,10 +11,10 @@ import UIKit
 
 class SoundPickerTableViewController : ListViewController<SoundPickerTableViewModel> {
     
-    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
+    let soundPreferenceKey: SoundPreferences.PreferenceKey
     let soundFolder: SoundFolder
     
-    init(withSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
+    init(withSoundIndex soundPreferenceKey: SoundPreferences.PreferenceKey) {
         self.soundPreferenceKey = soundPreferenceKey
         self.soundFolder = SoundFolder.loadFromBundle()
         

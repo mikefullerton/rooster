@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class SilenceAlarmSound : Sound, Identifiable {
+public class SilenceAlarmSound : SoundPlayerProtocol, Identifiable {
     struct FakeSound {
         var isPlaying: Bool
         var duration: TimeInterval

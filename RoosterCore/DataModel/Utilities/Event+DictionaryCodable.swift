@@ -64,22 +64,23 @@ extension RCEvent {
     public func update(withSavedState state: SavedState) -> RCEvent {
         
         let alarm = RCAlarm(withSavedState: state.alarmState,
-                                  startDate: self.startDate,
-                                  endDate: self.endDate)
+                            startDate: self.startDate,
+                            endDate: self.endDate,
+                            canExpire: true)
         
         return RCEvent(withIdentifier: self.id,
-                             ekEventID: self.ekEventID,
-                             externalIdentifier: self.externalIdentifier,
-                             calendar: self.calendar,
-                             subscribed: state.isSubscribed,
-                             alarm: alarm,
-                             startDate: self.startDate,
-                             endDate: self.endDate,
-                             title: self.title,
-                             location: self.location,
-                             url: self.url,
-                             notes: self.notes,
-                             organizer: self.organizer)
+                       ekEventID: self.ekEventID,
+                       externalIdentifier: self.externalIdentifier,
+                       calendar: self.calendar,
+                       subscribed: state.isSubscribed,
+                       alarm: alarm,
+                       startDate: self.startDate,
+                       endDate: self.endDate,
+                       title: self.title,
+                       location: self.location,
+                       url: self.url,
+                       notes: self.notes,
+                       organizer: self.organizer)
 
     }
 
@@ -88,8 +89,9 @@ extension RCEvent {
                 savedState: SavedState) {
         
         let alarm = RCAlarm(withSavedState: savedState.alarmState,
-                                  startDate: EKEvent.startDate,
-                                  endDate: EKEvent.endDate)
+                            startDate: EKEvent.startDate,
+                            endDate: EKEvent.endDate,
+                            canExpire: true)
 
         self.init(withIdentifier: EKEvent.uniqueID,
                   ekEventID: EKEvent.eventIdentifier,

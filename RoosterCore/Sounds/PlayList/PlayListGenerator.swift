@@ -19,33 +19,28 @@ public struct PlayListGenerator: Loggable {
         self.randomizer = randomizer
     }
     
-    public func generate(withSounds sounds: [SoundPlayer],
-                         playListRandomizer: PlayListRandomizer) -> [SoundPlayer] {
+    public func generate(withSoundSet soundSet: SoundSet,
+                         previousPlayList: [SoundPlayer]) -> [SoundPlayer] {
         
-        if playListRandomizer.behavior == .never {
-            self.logger.log("built non-random playlist: \(sounds.map { $0.displayName }.joined(separator:", "))")
-            return sounds
+        let playListRandomizer = soundSet.randomizer
+        
+        if previousPlayList.count > 0 && !playListRandomizer.behavior.contains( .regenerateEachPlay ) {
+            return previousPlayList
         }
         
+        let sounds = soundSet.soundPlayers
         var soundBucket:[SoundPlayer] = sounds
         
         guard soundBucket.count > 0 else {
             return []
         }
         
-        self.logger.log("building random playlist")
+        let count = sounds.count
+        let soundFolder = soundSet.soundFolder
+        
+        self.logger.log("building playlist for soundSet: \(soundSet)")
         
         var newPlayList: [SoundPlayer] = []
-
-        let minSounds = playListRandomizer.minSounds == 0 ? 1 : playListRandomizer.minSounds
-        let maxSounds = playListRandomizer.maxSounds == 0 ? soundBucket.count : playListRandomizer.maxSounds
-        
-        let count = maxSounds - minSounds + 1
-        
-//        if count != 1 {
-//            count = Int.random(in: minSounds...maxSounds)
-//        }
-        
         var additionalSounds: [SoundPlayer] = []
         
         var countDown = count
@@ -56,13 +51,25 @@ public struct PlayListGenerator: Loggable {
                 soundBucket = sounds
             }
             
-            let randomIndex = Int.random(in: 0...soundBucket.count-1)
-            let sound = soundBucket[randomIndex]
-            soundBucket.remove(at: randomIndex)
+            var soundIndex = 0
+            
+            if playListRandomizer.behavior.contains(.randomizeOrder) {
+                soundIndex = Int.random(in: 0...soundBucket.count-1)
+            }
+            
+            let originalSoundPlayer = soundBucket[soundIndex]
+            
+            var actualSoundPlayer = originalSoundPlayer
+            
+            soundBucket.remove(at: soundIndex)
             
             var willPlay = false
+                        
+            if originalSoundPlayer.randomizer.behavior == .replaceWithRandomSoundFromSoundFolder  {
+                actualSoundPlayer = SoundPlayer(withSoundFile: soundFolder.randomSoundFile, randomizer: originalSoundPlayer.randomizer)
+            }
             
-            switch sound.randomizer.frequency {
+            switch actualSoundPlayer.randomizer.frequency {
             case .almostNever:
                 willPlay = self.randomizer.randomChoice(withLikelihoodPercent: 0.01)
                 
@@ -81,19 +88,19 @@ public struct PlayListGenerator: Loggable {
             case .high:
                 willPlay = true
                 // TODO: add in more proportional to length of playlist
-                additionalSounds.append(sound)
+                additionalSounds.append(actualSoundPlayer)
 
             case .frequent:
                 willPlay = true
                 // TODO: add in more proportional to length of playlist
-                additionalSounds.append(sound)
-                additionalSounds.append(sound)
+                additionalSounds.append(actualSoundPlayer)
+                additionalSounds.append(actualSoundPlayer)
             }
 
-            self.logger.log("Sound: '\(sound.displayName)', priority: \(sound.randomizer.frequency.description), willPlay: \(willPlay)")
+            self.logger.log("Sound: '\(actualSoundPlayer.displayName)', priority: \(actualSoundPlayer.randomizer.frequency.description), willPlay: \(willPlay)")
 
             if willPlay {
-                newPlayList.append(sound)
+                newPlayList.append(actualSoundPlayer)
             }
         }
         
@@ -109,13 +116,18 @@ public struct PlayListGenerator: Loggable {
         var randomPlayList: [SoundPlayer] = []
         for sound in newPlayList {
             let randomizer = sound.randomizer
-            if randomizer.alwaysFirst {
+            if randomizer.behavior.contains( .alwaysFirst ) {
                 outPlayList.append(sound)
             } else {
                 randomPlayList.append(sound)
             }
         }
-        
+       
+        if !playListRandomizer.behavior.contains([.randomizeOrder]) {
+            randomPlayList.forEach { outPlayList.append($0) }
+            return outPlayList
+        }
+            
         while randomPlayList.count > 0 {
             let randomIndex = self.randomizer.randomize(in: 0...randomPlayList.count-1)
             let sound = randomPlayList[randomIndex]
@@ -126,7 +138,7 @@ public struct PlayListGenerator: Loggable {
         
         self.logger.log("final play list: \(outPlayList.map { $0.displayName }.joined(separator: ", "))")
         
-        return outPlayList;
+        return outPlayList
     }
 }
 

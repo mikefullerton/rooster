@@ -13,16 +13,16 @@ import Cocoa
 import UIKit
 #endif
 
-class VerticalViewLayout : ViewLayout {
-    let hostView: SDKView
-    let insets:SDKEdgeInsets
-    let spacing:SDKOffset
+public class VerticalViewLayout : ViewLayout {
+    public let hostView: SDKView
+    public let insets:SDKEdgeInsets
+    public let spacing:SDKOffset
 
 //    private(set) var didSetConstraints: Bool = false;
     
-    private(set) var views:[SDKView]
+    private(set) public var views:[SDKView]
     
-    init(hostView view: SDKView,
+    public init(hostView view: SDKView,
          insets: SDKEdgeInsets,
          spacing: SDKOffset) {
         self.hostView = view
@@ -51,7 +51,7 @@ class VerticalViewLayout : ViewLayout {
         ])
     }
         
-    func setViews(_ views: [SDKView]) {
+    public func setViews(_ views: [SDKView]) {
         
         self.views = views
 
@@ -69,7 +69,7 @@ class VerticalViewLayout : ViewLayout {
         self.hostView.invalidateIntrinsicContentSize()
     }
     
-    var intrinsicContentSize: CGSize {
+    public var intrinsicContentSize: CGSize {
         return self.verticalLayoutIntrinsicContentSize
     }
 }

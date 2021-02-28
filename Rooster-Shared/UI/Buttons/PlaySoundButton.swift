@@ -14,14 +14,14 @@ import UIKit
 #endif
 
 protocol PlaySoundButtonDelegate : AnyObject {
-    func playSoundButton(_ playSoundButton: PlaySoundButton, willStartPlayingSound sound: Sound)
-    func playSoundButton(_ playSoundButton: PlaySoundButton, didStartPlayingSound sound: Sound)
-    func playSoundButton(_ playSoundButton: PlaySoundButton, didStopPlayingSound sound: Sound)
-    func playSoundButton(_ playSoundButton: PlaySoundButton, soundDidUpdate sound: Sound)
+    func playSoundButton(_ playSoundButton: PlaySoundButton, willStartPlayingSound sound: SoundPlayerProtocol)
+    func playSoundButton(_ playSoundButton: PlaySoundButton, didStartPlayingSound sound: SoundPlayerProtocol)
+    func playSoundButton(_ playSoundButton: PlaySoundButton, didStopPlayingSound sound: SoundPlayerProtocol)
+    func playSoundButton(_ playSoundButton: PlaySoundButton, soundDidUpdate sound: SoundPlayerProtocol)
 }
 
 protocol PlaySoundButtonSoundProvider : AnyObject {
-    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> Sound?
+    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> SoundPlayerProtocol?
     func playSoundButtonProvideSoundBehavior(_ playSoundButton: PlaySoundButton) -> SoundBehavior
 }
 
@@ -71,7 +71,7 @@ class PlaySoundButton : FancyButton, SoundDelegate {
         return Self.defaultSoundBehavior
     }
 
-    private var playingSound: Sound?
+    private var playingSound: SoundPlayerProtocol?
 
     private func resetContentViewsIfNeeded() {
         if self.playingSound == nil || !self.playingSound!.isPlaying {
@@ -103,8 +103,10 @@ class PlaySoundButton : FancyButton, SoundDelegate {
     
     private func didStop() {
         if let sound = self.playingSound {
-            sound.stop()
-            sound.delegate = nil
+            if sound.isPlaying {
+                sound.delegate = nil
+                sound.stop()
+            }
             self.playingSound = nil
             self.delegate?.playSoundButton(self, didStopPlayingSound: sound)
         }
@@ -168,18 +170,18 @@ class PlaySoundButton : FancyButton, SoundDelegate {
         self.resetContentViewsIfNeeded()
     }
 
-    func soundWillStartPlaying(_ sound: Sound) {
+    func soundWillStartPlaying(_ sound: SoundPlayerProtocol) {
     }
     
-    func soundDidStartPlaying(_ sound: Sound) {
+    func soundDidStartPlaying(_ sound: SoundPlayerProtocol) {
         self.delegate?.playSoundButton(self, didStartPlayingSound: sound)
     }
     
-    func soundDidStopPlaying(_ alarmSound: Sound) {
+    func soundDidStopPlaying(_ alarmSound: SoundPlayerProtocol) {
         self.didStop()
     }
     
-    func soundDidUpdate(_ sound: Sound) {
+    func soundDidUpdate(_ sound: SoundPlayerProtocol) {
         self.delegate?.playSoundButton(self, soundDidUpdate: sound)
     }
 }

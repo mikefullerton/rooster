@@ -8,128 +8,95 @@
 import Foundation
 
 public class MultiPlayListIterator : PlayListIteratorProtocol {
+    public private(set) var current: SoundPlayer?
     
     private let iterators:[PlayListIteratorProtocol]
     private var iteratorStack: [PlayListIteratorProtocol]?
     private var currentIterator: PlayListIteratorProtocol?
-    private(set) public var state: PlayListIteratorState
-
+    
+    public var description: String {
+        return """
+        type(of: self): \
+        iterators: \(self.iterators.map { $0.description}.joined(separator:", "))
+        """
+    }
+    
+    public var isRandom: Bool {
+        return false
+    }
+    
+    public var isEmpty: Bool {
+        return self.iterators.count == 0
+    }
+    
     public init(withIterators soundSetIterators: [PlayListIteratorProtocol]) {
-        self.iterators = soundSetIterators.filter { $0.sounds.count > 0 }
+        self.iterators = soundSetIterators //soundSetIterators.filter { $0.sounds.count > 0 }
         self.iteratorStack = nil
         self.currentIterator = nil
-        self.state = .idle
-        
-        self.updatePlaylist()
-    }
-
-    public func stop() {
-        if self.state == .iterating {
-            self.didStopIterating()
-        }
-        self.iterators.forEach { $0.stop() }
-        
-    }
-    
-    public func resetToIdleState() {
-        self.stop()
-        self.state = .idle
-    }
-
-    public func step() -> SoundPlayer? {
-        
-        switch(self.state) {
-        case .idle:
-            self.state = .iterating
-            
-        case .done:
-            self.state = .idle
-            
-        case .iterating:
-            break
-        }
-
-        if self.state == .iterating {
-           if let sound = self.advanceCurrentIterator() {
-                self.updateIteratorState()
-                return sound
-            }
-            
-            self.updateIteratorState()
-            if let sound = self.advanceCurrentIterator() {
-                self.updateIteratorState()
-                return sound
-            }
-        }
-        
-        return nil;
-    }
-    
-    public var sounds: [SoundPlayer] {
-        var sounds:[SoundPlayer] = []
-        self.iterators.forEach {
-            let iteratorSounds = $0.sounds
-            if iteratorSounds.count > 0 {
-                sounds.append(contentsOf: iteratorSounds)
-            }
-        }
-        return sounds
-    }
-
-    
-    public var soundCount: Int {
-        return self.sounds.count
     }
 
     // MARK: private
 
-    private func didStopIterating() {
-        self.iteratorStack = nil
-        self.currentIterator = nil
-        self.state = .done
-        self.updatePlaylist()
-    }
-
     private func updatePlaylist() {
         if self.iterators.count > 0 {
             self.iteratorStack = self.iterators
-            self.iteratorStack!.forEach { $0.resetToIdleState() }
-            
-            if self.iteratorStack!.count > 0 {
-                self.currentIterator = self.iteratorStack!.first
-                self.iteratorStack!.remove(at: 0)
-            }
         }
     }
 
-    private func updateIteratorState() {
-        if let currentIterator = self.currentIterator, currentIterator.state == .iterating {
-            return
-        }
-        
+    private func nextIterator() {
         self.currentIterator = nil
+        self.current = nil
         
         if var iteratorStack = self.iteratorStack {
-            iteratorStack.forEach { $0.resetToIdleState() }
             while iteratorStack.count > 0 {
                 let first = iteratorStack.first!
                 iteratorStack.remove(at: 0)
-                self.currentIterator = first
+                self.iteratorStack = iteratorStack
+                
+                first.start()
+                
+                if !first.isDone {
+                    self.current = first.current
+                    self.currentIterator = first
+                    break
+                }
             }
-        }
-        
-        if self.currentIterator == nil {
-            self.didStopIterating()
         }
     }
     
-    private func advanceCurrentIterator() -> SoundPlayer? {
-        if let currentIterator = self.currentIterator,
-           let sound = currentIterator.step() {
-            
-            return sound
-        }
-        
-        return nil
+    public func start() {
+        self.current = nil
+        self.iteratorStack = []
+        self.updatePlaylist()
+        self.nextIterator()
     }
+    
+    public func next() {
+        self.current = nil
+        if let currentIterator = self.currentIterator {
+            currentIterator.next()
+            if !currentIterator.isDone {
+                self.current = currentIterator.current
+            } else {
+                self.nextIterator()
+            }
+        }
+    }
+    
+    public var isDone: Bool {
+        self.current == nil || self.currentIterator == nil
+    }
+    
+    public func stop() {
+        self.iteratorStack = []
+        self.currentIterator = nil
+        self.current = nil
+    }
+    
+    public var soundPlayers: [SoundPlayer] {
+        var soundPlayers:[SoundPlayer] = []
+        self.iterators.forEach { soundPlayers.append(contentsOf: $0.soundPlayers) }
+        return soundPlayers
+    }
+
 }

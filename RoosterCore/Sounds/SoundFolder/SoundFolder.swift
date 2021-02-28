@@ -8,31 +8,8 @@
 import Foundation
 
 
-public class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
-    public typealias ID = String
-    public var id: String
-    
-    private(set) public var absolutePath: URL? {
-        didSet {
-            self.logger.log("New url (absolute): \(self.absolutePath?.path ?? "nil"), for folder: \(self.description)")
-        }
-    }
-    
-    private(set) public var relativePath: URL {
-        didSet {
-            self.logger.log("New url (relative): \(self.relativePath.path), old: \(oldValue)")
-            self.updateChildrensRelativePaths()
-        }
-    }
+public class SoundFolder: SoundFolderItem, Codable {
 
-    public var displayName: String
-    
-    fileprivate(set) public weak var parent: SoundFolder? {
-        didSet {
-            self.updateRelativePath()
-        }
-    }
-    
     fileprivate(set) public var soundFiles: [SoundFile] {
         didSet {
             self.cachedAllSounds = nil
@@ -85,12 +62,13 @@ public class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
                      soundFiles: [SoundFile],
                      subFolders: [SoundFolder]) {
 
-        self.id = id
-        self.relativePath = URL(withRelativePath: directoryName)
-        self.absolutePath = directoryPath
-        self.displayName = displayName
         self.soundFiles = []
         self.subFolders = []
+
+        super.init(withID: id, displayName: displayName)
+        
+        self.relativePath = URL(withRelativePath: directoryName)
+        self.absolutePath = directoryPath
         self.setSoundFiles(soundFiles)
         self.setSubFolders(subFolders)
     }
@@ -129,6 +107,10 @@ public class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     
     public var isEmpty: Bool {
         return self.itemCount == 0
+    }
+    
+    public var randomSoundFile: SoundFile {
+        return self.allSoundFiles.randomElement() ?? SoundFile.empty
     }
 
     public var allSoundFiles: [SoundFile] {
@@ -252,6 +234,11 @@ public class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
     }
     
     public required init(from decoder: Decoder) throws {
+        self.soundFiles = []
+        self.subFolders = []
+
+        super.init(withID: "", displayName: "")
+        
         let values = try decoder.container(keyedBy: CodingKeys.self)
         try self.id = values.decode(String.self, forKey: .id)
         try self.displayName = values.decode(String.self, forKey: .displayName)
@@ -290,7 +277,11 @@ public class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
         self.soundFiles.forEach { $0.updateRelativePath() }
     }
     
-    public func updateRelativePath() {
+    override func didSetRelativePath() {
+        self.updateChildrensRelativePaths()
+    }
+    
+    public override func updateRelativePath() {
         self.relativePath = self.relativePathFromRootFolder
 
         if  self.parent != nil,
@@ -299,42 +290,8 @@ public class SoundFolder: Identifiable, Loggable, SoundFolderItem, Codable {
             self.absolutePath = rootFolderPath.appendingPathComponent(self.relativePath.path)
         }
     }
-    
-}
 
-
-extension SoundFile {
-//    fileprivate
-    
-    // TODO: fix this
-    public func setParent(_ soundFolder: SoundFolder?) {
-        self.parent = soundFolder
-    }
-}
-
-extension SoundFolder {
-//    internal
-    // TODO: fix this
-    
-    public func setParent(_ soundFolder: SoundFolder?) {
-        self.parent = soundFolder
-    }
-
-}
-
-extension SoundFolder: NSCopying {
-    public func copy(with zone: NSZone? = nil) -> Any {
-        return SoundFolder(withID: self.id,
-                           directoryPath: self.absolutePath,
-                           directoryName: self.directoryName,
-                           displayName: self.displayName,
-                           soundFiles: self.soundFiles.map { $0.copy() as! SoundFile },
-                           subFolders: self.subFolders.map { $0.copy() as! SoundFolder })
-    }
-}
-
-extension SoundFolder: CustomStringConvertible {
-    public var description: String {
+    public override var description: String {
         return """
             \(type(of:self)): \
             id: \(self.id), \
@@ -346,6 +303,47 @@ extension SoundFolder: CustomStringConvertible {
             subFoldersCount:\(self.subFolders.count), \
             parent: \(self.parent?.description ?? "nil")"
             """
+    }
+
+    public convenience init(withDescriptor descriptor: SoundFolderDescriptor,
+                            atPath url: URL) {
+        
+        self.init(withID: descriptor.metadata.id,
+                  directoryPath: url,
+                  displayName: descriptor.metadata.displayName)
+    }
+    
+
+}
+
+//
+//extension SoundFile {
+////    fileprivate
+//
+//    // TODO: fix this
+//    public func setParent(_ soundFolder: SoundFolder?) {
+//        self.parent = soundFolder
+//    }
+//}
+//
+//extension SoundFolder {
+////    internal
+//    // TODO: fix this
+//
+//    public func setParent(_ soundFolder: SoundFolder?) {
+//        self.parent = soundFolder
+//    }
+//
+//}
+
+extension SoundFolder: NSCopying {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        return SoundFolder(withID: self.id,
+                           directoryPath: self.absolutePath,
+                           directoryName: self.directoryName,
+                           displayName: self.displayName,
+                           soundFiles: self.soundFiles.map { $0.copy() as! SoundFile },
+                           subFolders: self.subFolders.map { $0.copy() as! SoundFolder })
     }
 }
 
@@ -376,18 +374,3 @@ extension SoundFolder: CustomDebugStringConvertible {
     }
 }
 
-extension SoundFolder {
-    public convenience init(withDescriptor descriptor: SoundFolderItemDescriptor, atPath url: URL) {
-        self.init(withID: descriptor.id,
-                  directoryPath: url,
-                  directoryName: url.lastPathComponent,
-                  displayName: descriptor.displayName,
-                  soundFiles: [],
-                  subFolders: [])
-    }
-    
-    public static func descriptorFileURL(forURL url: URL) -> URL {
-        return url.appendingPathComponent("SoundFolder.roosterFolder")
-    }
-
-}

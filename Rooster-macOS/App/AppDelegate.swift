@@ -24,9 +24,10 @@ class AppDelegate: NSObject,
                    NSWindowDelegate,
                    FirstLaunchWindowControllerDelegate {
 
-    
+    public static let ApplicationStateVersion = 2
     public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
-
+    public static let ResetApplicationState = Notification.Name("ResetApplicationState")
+    
     static var instance: AppDelegate {
         return NSApplication.shared.delegate as! AppDelegate
     }
@@ -35,9 +36,22 @@ class AppDelegate: NSObject,
     private var launchWindow: NSWindowController?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        
+        
+        
         self.showLoadingWindow()
 
-        self.showDeveloperMenuIfNeeded()
+        var resetAppState = false
+        
+        var savedState = SavedState()
+        if savedState.int(forKey: .applicationStateVersion) != Self.ApplicationStateVersion {
+            resetAppState = true
+            savedState.setInt(Self.ApplicationStateVersion, forKey: .applicationStateVersion)
+        }
+        
+        if NSEvent.modifierFlags.intersection(.deviceIndependentFlagsMask) == .option {
+            resetAppState = true
+        }
         
         SoundFolder.startLoadingDefaultSoundFolder()
         
@@ -45,7 +59,7 @@ class AppDelegate: NSObject,
         
         Controllers.dataModelController.authenticate { (success) in
             DispatchQueue.main.async {
-                self.didAuthenticate()
+                self.didAuthenticate(resetAppState: resetAppState)
             }
         }
         
@@ -133,6 +147,14 @@ class AppDelegate: NSObject,
         PreferencesWindow.show()
     }
     
+    @IBAction @objc func showCalendars(_ sender: Any) {
+        NSApp.activate(ignoringOtherApps: true)
+//        CalendarWindow.show()
+        
+        CalendarChooserViewController().presentInModalWindow(fromWindow: self.mainWindowController?.window)
+   
+    }
+    
     @IBAction @objc func stopAllAlarms(_ sender: Any) {
         Controllers.alarmNotificationController.handleUserClickedStopAll()
     }
@@ -198,10 +220,16 @@ class AppDelegate: NSObject,
     func firstLaunchWindowControllerShowCalendars(_ firstLaunchWindowController: FirstLaunchWindowController) {
     }
     
-    public func didAuthenticate() {
+    public func didAuthenticate(resetAppState: Bool) {
         
         self.logger.log("Application authenticate EventKit access")
         
+        if  resetAppState {
+            self.resetAppLaunchState()
+        }
+
+        self.showDeveloperMenuIfNeeded()
+
         Controllers.setupControllers()
         
         NotificationCenter.default.post(name: AppDelegate.CalendarDidAuthenticateEvent, object: self)
@@ -214,6 +242,16 @@ class AppDelegate: NSObject,
             Controllers.dataModelController.enableAllPersonalCalendars()
             self.showFirstRunWindow()
         }
+    }
+    
+    func resetAppLaunchState() {
+        Controllers.preferencesController.delete()
+        
+        UserDefaults.resetStandardUserDefaults()
+        
+        NotificationCenter.default.post(name: AppDelegate.ResetApplicationState, object: self)
+        
+        self.logger.log("Reset application state")
     }
 }
 

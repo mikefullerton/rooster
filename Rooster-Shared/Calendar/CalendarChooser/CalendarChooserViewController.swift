@@ -13,14 +13,14 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDelegate, PreferencesContentView {
-    let preferredWidth:CGFloat = 450
-
+class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDelegate {
+    private static let minSize = CGSize(width: 300, height: 100)
     private lazy var calendarsViewController = PersonalCalendarListViewController()
     private lazy var delegateCalendarsViewController = DelegateCalendarListViewController()
     private var activeViewController: SDKViewController?
     
-    lazy var topBar = CalendarToolbarView()
+    private lazy var topBar = CalendarToolbarView()
+    private lazy var bottomBar = BottomBar()
 
     override func loadView() {
         let view = NSView()
@@ -29,13 +29,46 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
         self.view = view
 
         self.addTopBar()
+        self.addBottomBar()
         self.topBar.delegate = self
         
         self.addChild(self.calendarsViewController)
         self.addChild(self.delegateCalendarsViewController)
         self.activateViewController(self.calendarsViewController)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.updatePreferredContentSize()
+        
+        self.title = "Rooster Calendar Chooser"
+    }
+    
+    func updatePreferredContentSize() {
+        
+        self.calendarsViewController.reloadData()
+        self.delegateCalendarsViewController.reloadData()
+        
+        let calendarSize = self.calendarsViewController.viewModelContentSize
+        let delegateCalendarsSize = self.delegateCalendarsViewController.viewModelContentSize
+        
+        var size = Self.minSize
+        
+        size.width = max(size.width, calendarSize.width)
+        size.width = max(size.width, delegateCalendarsSize.width)
 
+        size.height = max(size.height, calendarSize.height)
+        size.height = max(size.height, delegateCalendarsSize.height)
+        
+        size.height += self.topBar.preferredHeight + self.bottomBar.preferredHeight
+
+        size.width += 20
+//        size.height *= 2
+        
+        self.preferredContentSize = size
+    }
+    
     private func activateViewController(_ viewController: CalendarItemListViewController<CalenderListViewModel>) {
         
         if let activeViewController = self.activeViewController {
@@ -45,7 +78,7 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
         viewController.scrollView.automaticallyAdjustsContentInsets = false
         viewController.scrollView.contentInsets = NSEdgeInsets(top: self.topBar.preferredHeight,
                                                                left: 0,
-                                                               bottom: 0,
+                                                               bottom: self.bottomBar.preferredHeight,
                                                                right: 0)
 
         self.setContentView(viewController.view)
@@ -87,9 +120,25 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
         ])
     }
     
-    func resetButtonWasPressed() {
+    @objc func resetButtonPressed(_ sender: SDKButton) {
         Controllers.dataModelController.enableAllPersonalCalendars()
     }
+    
+    @objc func doneButtonPressed(_ sender: SDKButton) {
+        self.dismissWindow()
+    }
+    
+    private func addBottomBar() {
+        self.bottomBar.addToView(self.view)
+
+        self.bottomBar.doneButton.target = self
+        self.bottomBar.doneButton.action = #selector(doneButtonPressed(_:))
+
+        let leftButton = self.bottomBar.addLeftButton(title: "RESET".localized)
+        leftButton.target = self
+        leftButton.action = #selector(resetButtonPressed(_:))
+    }
+
 }
 
 

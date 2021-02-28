@@ -13,7 +13,7 @@ import Cocoa
 import UIKit
 #endif
 
-protocol ViewLayout {
+public protocol ViewLayout {
     var insets:SDKEdgeInsets { get }
     var spacing:SDKOffset { get }
     var intrinsicContentSize: CGSize { get }
@@ -22,7 +22,7 @@ protocol ViewLayout {
     func setViews(_ views: [SDKView])
 }
 
-extension ViewLayout {
+public extension ViewLayout {
     
     var horizontalLayoutIntrinsicContentSize: CGSize {
         var outSize = CGSize.zero

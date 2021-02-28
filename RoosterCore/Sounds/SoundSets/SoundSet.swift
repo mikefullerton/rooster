@@ -11,62 +11,35 @@ public class SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringC
     
     public typealias ID = String
     
-    public let id: String
-    public let url: URL?
-    public let displayName: String
-    public let randomizer: PlayListRandomizer
-    public let soundFolder: SoundFolder
-    public let sounds: [String: PlayListRandomizer]
+    public var id: String
+    public var url: URL?
+    public var displayName: String
+    public var randomizer: PlayListRandomizer
+    public var soundFolder: SoundFolder
+    public var soundFileCollection: SoundFileCollection
     
     public init(withID id: String,
                 url: URL?,
                 displayName: String,
                 randomizer: PlayListRandomizer,
-                sounds: [String: PlayListRandomizer],
+                soundFileCollection: SoundFileCollection,
                 soundFolder: SoundFolder) {
     
-        self.sounds = sounds
+        self.soundFileCollection = soundFileCollection
         self.randomizer = randomizer
         self.url = url
         self.displayName = displayName
         self.id = id
         self.soundFolder = soundFolder
-        
     }
 
-    public static let randomSoundSetID = "b5ce82ee-30eb-4607-826f-8beb098124a0"
-    public static let defaultSoundSetID = "008ca3dd-f8b0-444f-a93a-5db1e9dbb353"
-    public static let randomSoundID = "0d67e781-826a-4c4f-807c-0dbe6514da3e"
-    
-    public static var random: SoundSet {
-        
-        return SoundSet(withID: Self.randomSoundSetID,
-                        url: nil,
-                        displayName: "",
-                        randomizer: PlayListRandomizer(withBehavior: .always,
-                                                            minSounds: 1,
-                                                            maxSounds: 1),
-                        sounds: [ Self.randomSoundID: PlayListRandomizer(withBehavior: .always) ],
-                        soundFolder: SoundFolder.instance)
-
-    }
-    
-    public static var empty: SoundSet {
-        return SoundSet(withID: "Empty",
-                        url: nil,
-                        displayName: "Empty",
-                        randomizer: PlayListRandomizer.never,
-                        sounds: [:],
-                        soundFolder: SoundFolder.empty)
-    }
-    
     public lazy var soundPlayers: [SoundPlayer] = {
         var soundPlayers:[SoundPlayer] = []
-        for (soundID, randomizer) in self.sounds {
+        for (soundID, randomizer) in self.soundFileCollection.randomizerMap {
             
             if let soundFile = self.soundFolder.findSoundFile(forIdentifier: soundID) {
                 let player = SoundPlayer(withSoundFile: soundFile,
-                                                  randomizer: randomizer)
+                                         randomizer: randomizer)
                 soundPlayers.append(player)
             } else {
                 self.logger.error("Failed to load sound for SoundFile: \(soundID) in folder: \(self.soundFolder)")
@@ -76,25 +49,15 @@ public class SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringC
         return soundPlayers
     }()
     
-    public var soundSetIterator: PlayListIteratorProtocol {
-        return PlayListIterator(withSoundPlayers: self.soundPlayers,
-                                randomizer: self.randomizer)
-    }
-    
-    public var playList: PlayList {
-        return PlayList(withPlayListIterator: self.soundSetIterator, displayName: self.displayName)
-    }
-    
-    public var isRandom: Bool {
-        return self.randomizer.behavior != .never
-    }
+    public lazy var soundFiles: [SoundFile] = {
+        return self.soundPlayers.map { $0.soundFile }
+    }()
     
     public var isEmpty: Bool {
         return self.soundFolder.isEmpty
     }
     
     public var description: String {
-        let sounds = self.soundPlayers.map { $0.soundFile.description }.joined(separator: ",")
         return """
         \(type(of:self)): \
         id: \(self.id), \
@@ -102,7 +65,7 @@ public class SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringC
         \(self.displayName), \
         url: \(String(describing:self.url)), \
         randomizer: \(self.randomizer), \
-        sounds: \(sounds), \
+        soundFileCollection: \(self.soundFileCollection.description), \
         soundFolder: \(self.soundFolder.description)"
         """
     }
@@ -111,36 +74,70 @@ public class SoundSet: Identifiable, Loggable, Codable, Equatable, CustomStringC
         return  lhs.id == rhs.id &&
                 lhs.url == rhs.url &&
                 lhs.displayName == rhs.displayName &&
+                lhs.randomizer == rhs.randomizer &&
                 lhs.soundFolder == rhs.soundFolder &&
-                lhs.sounds == rhs.sounds
+                lhs.soundFileCollection == rhs.soundFileCollection
     }
 }
 
 extension SoundSet {
+    
+    public static let randomSoundSetID = "b5ce82ee-30eb-4607-826f-8beb098124a0"
+    
+    public static var random: SoundSet {
+        
+        var soundFileCollection = SoundFileCollection()
+        soundFileCollection.addSound(SoundFolder.instance.randomSoundFile,
+                                     randomizer: SoundPlayerRandomizer(withBehavior: .replaceWithRandomSoundFromSoundFolder,
+                                                                       frequency: .normal))
+        
+        return SoundSet(withID: Self.randomSoundSetID,
+                        url: nil,
+                        displayName: "",
+                        randomizer: PlayListRandomizer(withBehavior: .randomizeOrder),
+                        soundFileCollection: soundFileCollection,
+                        soundFolder: SoundFolder.instance)
+
+    }
+    
+    public static let emptySoundSetID = "fbdea4b7-e0cb-43c9-bf52-fdd74ffd28f8"
+    
+    public static var empty: SoundSet {
+        return SoundSet(withID: Self.emptySoundSetID,
+                        url: nil,
+                        displayName: "",
+                        randomizer: PlayListRandomizer.default,
+                        soundFileCollection: SoundFileCollection(),
+                        soundFolder: SoundFolder.empty)
+    }
+
+    public static let defaultSoundSetID = "008ca3dd-f8b0-444f-a93a-5db1e9dbb353"
+    
     public static var `default`: SoundSet {
-        var sounds: [String: PlayListRandomizer] = [:]
+        var soundFileCollection = SoundFileCollection()
         
         if let roosterSounds = SoundFolder.instance.findSoundFiles(containing: ["rooster crowing"]) {
-            let sound = roosterSounds[0]
-            sounds[sound.id] = PlayListRandomizer(withBehavior: .always, frequency: .normal, alwaysFirst: true)
+            soundFileCollection.addSound(roosterSounds[0], randomizer: SoundPlayerRandomizer(withBehavior: .alwaysFirst,
+                                                                                             frequency: .normal))
         }
 
         if let rudeSounds = SoundFolder.instance.findSoundFiles(containing: ["excuse me"]) {
-            let sound = rudeSounds[0]
-            sounds[sound.id] = PlayListRandomizer(withBehavior: .always, frequency: .almostNever, alwaysFirst: false)
+            soundFileCollection.addSound(rudeSounds[0], randomizer: SoundPlayerRandomizer(withBehavior: [],
+                                                                                          frequency: .almostNever))
         }
 
         if let chickenSounds = SoundFolder.instance.findSoundFiles(containing: [ "chicken", "rooster" ], excluding: ["rooster crowing"]) {
             chickenSounds.forEach {
-                sounds[$0.id] = PlayListRandomizer(withBehavior: .always, frequency: .normal, alwaysFirst: false)
+                soundFileCollection.addSound($0, randomizer: SoundPlayerRandomizer(withBehavior: [],
+                                                                                   frequency: .normal))
             }
         }
 
         let soundSet = SoundSet(withID: "Rooster_Default",
-                                url: URL.emptyRoosterURL,
+                                url: URL.empty,
                                 displayName: "Default Sound Set",
-                                randomizer: PlayListRandomizer.always,
-                                sounds: sounds,
+                                randomizer: PlayListRandomizer(withBehavior: .randomizeOrder),
+                                soundFileCollection: soundFileCollection,
                                 soundFolder: SoundFolder.instance)
         return soundSet
         

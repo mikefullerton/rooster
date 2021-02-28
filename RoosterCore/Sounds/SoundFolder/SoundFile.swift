@@ -7,36 +7,37 @@
 
 import Foundation
 
-public class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConvertible, Equatable, NSCopying, Loggable {
+public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
     
-    public typealias ID = String
-    
-    public let id: String
     public let fileName: String
-    public var displayName: String
     
-    private(set) public var relativePath: URL {
-        didSet {
-            print("New SoundFile relative path: \(self.relativePath.path)")
+    public static let empty = SoundFile()
+    
+    lazy var soundPlayer = NativeSoundPlayer(withSoundFile: self)
+    
+    public var underlyingSoundFile: SoundFile {
+        return self
+    }
+     
+    public override func didSetRelativePath() {
+        print("New SoundFile relative path: \(self.relativePath.path)")
+    }
+    
+    public override var absolutePath: URL? {
+        get {
+            if let rootFolderPath = self.rootFolder?.absolutePath {
+                let outPath = rootFolderPath.deletingLastPathComponent().appendingPathComponent(self.relativePath.path)
+                self.logger.log("sound file path: \(outPath)")
+                return outPath
+            }
+            
+            return nil
+        }
+        set(path) {
+            
         }
     }
     
-    public var absolutePath: URL? {
-        if let rootFolderPath = self.rootFolder?.absolutePath {
-            let outPath = rootFolderPath.deletingLastPathComponent().appendingPathComponent(self.relativePath.path)
-            self.logger.log("sound file path: \(outPath)")
-            return outPath
-        }
-        
-        return nil
-    }
-    
-    public weak var parent: SoundFolder? {
-        didSet {
-            self.updateRelativePath()
-        }
-    }
-  
     public convenience init() {
         self.init(withID: "",
                   fileName: "",
@@ -46,9 +47,9 @@ public class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConv
     public init(withID id: String,
                 fileName: String,
                 displayName: String) {
+        
         self.fileName = fileName
-        self.id = id
-        self.displayName = displayName
+        super.init(withID: id, displayName: displayName)
         self.relativePath = URL(withRelativePath: fileName)
     }
     
@@ -60,10 +61,14 @@ public class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConv
     }
     
     public required init(from decoder: Decoder) throws {
+        
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        try self.fileName = values.decode(String.self, forKey: .fileName)
+        
+        super.init(withID: "", displayName: "")
+        
         try self.id = values.decode(String.self, forKey: .id)
         try self.displayName = values.decode(String.self, forKey: .displayName)
-        try self.fileName = values.decode(String.self, forKey: .fileName)
         try self.relativePath = values.decode(URL.self, forKey: .relativePath)
     }
 
@@ -79,7 +84,7 @@ public class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConv
         return SoundFile(withID: self.id, fileName: self.fileName, displayName: self.displayName)
     }
 
-    public var description: String {
+    public override var description: String {
         return """
         \(type(of:self)): \
         id: \(self.id), \
@@ -93,25 +98,28 @@ public class SoundFile: Identifiable, SoundFolderItem, Codable, CustomStringConv
     public static func == (lhs: SoundFile, rhs: SoundFile) -> Bool {
         return  lhs.id == rhs.id &&
                 lhs.displayName == rhs.displayName &&
-                lhs.fileName == rhs.fileName
+                lhs.fileName == rhs.fileName &&
+                lhs.relativePath == rhs.relativePath &&
+                lhs.absolutePath == rhs.absolutePath
     }
     
-    public func updateRelativePath() {
+    public override func updateRelativePath() {
         self.relativePath = self.relativePathFromRootFolder
         
         self.logger.log("New url for \(self.description)")
     }
-}
-
-extension SoundFile {
-    public convenience init(withDescriptor descriptor: SoundFolderItemDescriptor, atPath url: URL) {
-        self.init(withID: descriptor.id,
+    
+    public convenience init(withDescriptor descriptor: SoundFileDescriptor, atPath url: URL) {
+        self.init(withID: descriptor.metadata.id,
                   fileName:url.lastPathComponent,
-                  displayName: descriptor.displayName)
+                  displayName: descriptor.metadata.displayName)
     }
     
-    public static func descriptorFileURL(forURL url: URL) -> URL {
-        let name = url.deletingPathExtension().lastPathComponent
-        return url.deletingLastPathComponent().appendingPathComponent("\(name).roosterSound")
-    }
+//    public static let randomSoundID = "0d67e781-826a-4c4f-807c-0dbe6514da3e"
+// 
+//    public static let random = SoundFile(withID: SoundFile.randomSoundID, fileName: "", displayName: "")
+//    
+//    public var isRandom: Bool {
+//        return self.id == Self.randomSoundID
+//    }
 }

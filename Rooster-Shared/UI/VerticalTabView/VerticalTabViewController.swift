@@ -48,7 +48,7 @@ protocol VerticalTabViewControllerDelegate : AnyObject {
 }
 
 class VerticalTabViewController : SDKViewController, VerticalButtonListViewControllerDelegate {
-    let items: [VerticalTabItem]
+    private(set) var items: [VerticalTabItem]
     
     weak var delegate: VerticalTabViewControllerDelegate?
     
@@ -65,7 +65,7 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
 
     let buttonBarInsets = SDKEdgeInsets.ten
     
-    let buttonListWidth:CGFloat
+    private(set) var buttonListWidth:CGFloat
     
     init(with items: [VerticalTabItem],
          buttonListWidth: CGFloat) {
@@ -74,8 +74,23 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
         super.init(nibName: nil, bundle: nil)
     }
     
+    convenience init() {
+        self.init(with: [], buttonListWidth: 0)
+    }
+    
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
+        self.buttonListWidth = 0
+        self.items = []
+        super .init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setItems(_ items: [VerticalTabItem], buttonListWidth: CGFloat) {
+        self.items = items
+        self.buttonListWidth = buttonListWidth
     }
     
     override func loadView() {
@@ -89,6 +104,10 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
         view.setContentCompressionResistancePriority(.windowSizeStayPut, for: .horizontal)
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         self.addButtonList()
         self.addContentContainerView()
@@ -96,7 +115,7 @@ class VerticalTabViewController : SDKViewController, VerticalButtonListViewContr
         
         self.verticalButtonBarController.delegate = self
     }
-
+    
     lazy var contentContainerView : SDKView = {
         let view = SDKView()
         view.wantsLayer = true

@@ -14,7 +14,7 @@ class StartNotificationAlarmAction: AlarmNotificationStartAction {
         if let item = alarmNotification.item {
             alarmNotification.logger.log("performing start actions for \(alarmNotification.description)")
             
-            let prefs = Controllers.preferencesController.notificationPreferences
+            let prefs = Controllers.preferencesController.notificationPreferences.notificationPreferencesForAppState
             
             if prefs.options.contains(.autoOpenLocations) {
                 alarmNotification.logger.log("auto opening location URL (if available) for \(alarmNotification.description)")
@@ -57,15 +57,25 @@ class StartNotificationAlarmAction: AlarmNotificationStartAction {
 class StartPlayingSoundAlarmAction: AlarmNotificationStartAction {
 
     private let timer: SimpleTimer
-    private var sound: Sound?
+    private var playList: PlayList?
     
     init() {
         self.timer = SimpleTimer(withName: "AlarmNotificationTimer")
-        self.sound = nil
+        self.playList = nil
+    }
+    
+    deinit {
+        self.playList?.stop()
     }
     
     func alarmNotificationStartAction(_ alarmNotification: AlarmNotification) {
 
+        let prefs = Controllers.preferencesController.notificationPreferences.notificationPreferencesForAppState
+        
+        guard prefs.options.contains( .playSounds ) else {
+            return
+        }
+        
         let soundPrefs = Controllers.preferencesController.preferences(forItemIdentifier: alarmNotification.itemID).soundPreference
         
         guard soundPrefs.hasEnabledSoundPreferences else {
@@ -73,18 +83,16 @@ class StartPlayingSoundAlarmAction: AlarmNotificationStartAction {
             return
         }
         
-        let iterator = soundPrefs.allSoundsIterator
+        let playList = soundPrefs.enabledPlayList
        
-        guard iterator.sounds.count > 0 else {
+        guard !playList.isEmpty else {
             alarmNotification.logger.log("No sounds in iterators to play")
             return
         }
         
-       //        return
-        let sound = PlayList(withPlayListIterator: iterator, displayName: "")
-        sound.delegate = alarmNotification
+        playList.delegate = alarmNotification
         
-        self.sound = sound
+        self.playList = playList
         
         let soundBehavior = SoundBehavior(playCount: soundPrefs.playCount,
                                                timeBetweenPlays: 0.1,
@@ -96,18 +104,16 @@ class StartPlayingSoundAlarmAction: AlarmNotificationStartAction {
 
          self.timer.start(withInterval:interval) { (timer) in
             
-             alarmNotification.logger.log("playing alarm sound: \(sound.displayName) for \(alarmNotification.description)")
+             alarmNotification.logger.log("playing alarm sounds playlist: \(playList.description) for \(alarmNotification.description)")
 
-             sound.play(withBehavior: soundBehavior)
+             playList.play(withBehavior: soundBehavior)
          }
     }
     
     func alarmNotificationStopAction(_ alarmNotification: AlarmNotification) {
         self.timer.stop()
-        
-        if let sound = self.sound {
-            sound.stop()
-        }
+        self.playList?.stop()
+        self.playList = nil
     }
 }
 

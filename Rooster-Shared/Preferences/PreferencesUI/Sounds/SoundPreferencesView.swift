@@ -16,13 +16,19 @@ import UIKit
 
 protocol SoundPreferencesViewDelegate : AnyObject {
     func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey)
+                              presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.PreferenceKey)
 }
 
-class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate, PreferencesContentView {
+class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
     weak var delegate: SoundPreferencesViewDelegate?
 
+    
+    convenience init() {
+        self.init(frame: CGRect.zero)
+    }
+    
     init(frame: CGRect) {
+        
         super.init(frame: frame,
                    direction: .vertical,
                    insets: SDKEdgeInsets.ten,
@@ -69,15 +75,15 @@ class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate, Pre
     }
     
     lazy var firstSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
-                                                      soundPreferenceKey: .sound1,
+                                                      soundPreferenceKey: .first,
                                                       delegate: self)
     
     lazy var secondSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
-                                                       soundPreferenceKey: .sound2,
+                                                       soundPreferenceKey: .second,
                                                        delegate: self)
     
     lazy var thirdSoundChoice = SingleSoundChoiceView(frame: CGRect.zero,
-                                                      soundPreferenceKey: .sound3,
+                                                      soundPreferenceKey: .third,
                                                       delegate: self)
     
     lazy var soundVolumeView = SoundVolumeView()

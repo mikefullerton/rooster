@@ -21,13 +21,17 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     
     weak var delegate: SingleSoundChoiceViewDelegate?
 
-    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
+    var playList: PlayList
+    
+    let soundPreferenceKey: SoundPreferences.PreferenceKey
     
     init(frame: CGRect,
-         soundPreferenceKey: SoundPreferences.SoundPreferenceKey,
+         soundPreferenceKey: SoundPreferences.PreferenceKey,
          delegate: SingleSoundChoiceViewDelegate) {
         self.delegate = delegate
         self.soundPreferenceKey = soundPreferenceKey
+        self.soundPreference = Controllers.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
+        self.playList = PlayList()
         
         super.init(frame: frame)
 
@@ -50,14 +54,12 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
 
     @objc func preferencesDidChange(_ notification: Notification) {
         
-        if  let oldPrefs = notification.oldPreferences,
-            let newPrefs = notification.newPreferences {
-            
-            let oldSoundPrefs = oldPrefs.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
+        if  let newPrefs = notification.newPreferences {
             
             let newSoundPrefs = newPrefs.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
                 
-            if oldSoundPrefs != newSoundPrefs {
+            if self.soundPreference != newSoundPrefs {
+                self.soundPreference = newSoundPrefs
                 self.updatePlayList()
                 self.refresh()
             }
@@ -69,17 +71,16 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     }
 
     private var soundPreference: SingleSoundPreference {
-        get {
-            return Controllers.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
-        }
-        set(newPref) {
-            Controllers.preferencesController.soundPreferences.setSoundPreference(newPref, forKey:self.soundPreferenceKey)
+        didSet {
+            var soundPrefs = Controllers.preferencesController.soundPreferences
+            soundPrefs.setSoundPreference(self.soundPreference, forKey: self.soundPreferenceKey)
+            
+            Controllers.preferencesController.soundPreferences = soundPrefs
         }
     }
     
     private func setEnabledStates() {
-        
-        self.playButton.isEnabled = self.playList != nil && !self.playList!.isEmpty
+        self.playButton.isEnabled = !self.playList.isEmpty
         self.soundPickerButton.isEnabled = true
         self.checkbox.isEnabled = true
     }
@@ -87,10 +88,11 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     @objc private func checkboxChanged(_ sender: SDKSwitch) {
         
         var soundPref = self.soundPreference
+        let soundSet = soundPref.soundSet
         
         if sender.isOn {
             
-            if soundPref.isSoundSetEmpty {
+            if soundSet.isEmpty {
                 if let delegate = self.delegate {
                     delegate.soundChoiceViewChooserEditSoundsButtonPressed(self)
                 }
@@ -116,47 +118,68 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     }
 
     @objc private func shuffleSounds(_ sender: SDKButton) {
-        
-        if self.soundPreference.isRandom {
-            if let soundPlayer = self.playList?.currentSound {
-                self.soundPreference = SingleSoundPreference.singleSoundPref(withSoundFiles: [soundPlayer.soundFile],
-                                                                             randomizers: [soundPlayer.soundFile.id : PlayListRandomizer.never ] )
-            } else {
-                self.soundPreference = SingleSoundPreference.empty
-            }
 
+        if let currentSoundPlayer = self.playList.currentSoundPlayer {
+            
+            var soundFileCollection = SoundFileCollection()
+            
+            let soundRandomizer = self.playList.isRandom ?
+                                        SoundPlayerRandomizer.default :
+                                        SoundPlayerRandomizer(withBehavior: .replaceWithRandomSoundFromSoundFolder,
+                                                              frequency: .normal)
+                                                                                    
+            let playlistRandomizer = self.playList.isRandom ?
+                                        PlayListRandomizer.default :
+                                        PlayListRandomizer(withBehavior: .randomizeOrder)
+            
+            soundFileCollection.addSound(currentSoundPlayer.soundFile,
+                                         randomizer:  soundRandomizer)
+
+            let soundSet = SoundSet(withID: String.guid,
+                                    url: nil,
+                                    displayName: "",
+                                    randomizer: playlistRandomizer,
+                                    soundFileCollection: soundFileCollection,
+                                    soundFolder: SoundFolder.instance)
+            
+            let pref = SingleSoundPreference(withIdentifier: soundSet.id, soundSet: soundSet, enabled: true)
+        
+            self.soundPreference = pref
         } else {
-            self.soundPreference = SingleSoundPreference.random
+            self.soundPreference = self.playList.isRandom ? SingleSoundPreference.empty : SingleSoundPreference.random
         }
-
+        
+        self.updatePlayList()
         self.refresh()
     }
         
-    func playSoundButton(_ playSoundButton: PlaySoundButton, willStartPlayingSound sound: Sound) {
+    func playSoundButton(_ playSoundButton: PlaySoundButton, willStartPlayingSound sound: SoundPlayerProtocol) {
         self.refresh()
     }
 
-    func playSoundButton(_ playSoundButton: PlaySoundButton, didStartPlayingSound sound: Sound) {
+    func playSoundButton(_ playSoundButton: PlaySoundButton, didStartPlayingSound sound: SoundPlayerProtocol) {
         self.refresh()
     }
     
-    func playSoundButton(_ playSoundButton: PlaySoundButton, didStopPlayingSound sound: Sound) {
+    func playSoundButton(_ playSoundButton: PlaySoundButton, didStopPlayingSound sound: SoundPlayerProtocol) {
         self.refresh()
     }
     
-    func playSoundButton(_ playSoundButton: PlaySoundButton, soundDidUpdate sound: Sound) {
+    func playSoundButton(_ playSoundButton: PlaySoundButton, soundDidUpdate sound: SoundPlayerProtocol) {
         self.refresh()
     }
 
-    var playList: PlayList?
-    
     func updatePlayList() {
         let soundPref = self.soundPreference
         let soundSet = soundPref.soundSet
-        self.playList = soundSet.playList;
+        
+        if soundSet.randomizer.behavior.contains( .randomizeOrder ) {
+            soundSet.randomizer = PlayListRandomizer(withBehavior: [ .randomizeOrder, .regenerateEachPlay])
+        }
+        self.playList = PlayList(withSoundSet: soundSet)
     }
     
-    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> Sound? {
+    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> SoundPlayerProtocol? {
         return self.playList
     }
     
@@ -200,44 +223,43 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     
     func setShuffleButtonImage() {
         
-        let config = NSImage.SymbolConfiguration(textStyle: .largeTitle)
+        let playList = self.playList
         
-        let soundPref = self.soundPreference
-        if soundPref.isRandom {
+        if playList.isRandom {
             let image = NSImage(systemSymbolName: "shuffle.circle.fill", accessibilityDescription: "play")
             self.shuffleButton.image = image
             self.shuffleButton.toolTip = "Stop Shuffling Sounds"
-        } else if soundPref.isSoundSetEmpty || !soundPref.isRandom {
+        } else {
             let image = NSImage(systemSymbolName: "shuffle.circle", accessibilityDescription: "play")
             
             self.shuffleButton.image = image
             self.shuffleButton.toolTip = "Shuffle Sounds"
         }
         
-        self.shuffleButton.symbolConfiguration = config
-        
+        self.shuffleButton.symbolConfiguration = NSImage.SymbolConfiguration(textStyle: .largeTitle)
     }
     
     private func refresh() {
         let soundPref = self.soundPreference
+        
         self.checkbox.intValue = soundPref.isEnabled ? 1 : 0
         
-        if let playList = self.playList,
-            !playList.isEmpty {
-            let soundName = playList.currentSoundDisplayName
-            let playListName = playList.displayName
+        if !self.playList.isEmpty {
+            
+            let soundName = self.playList.currentSoundDisplayName
+            let playListName = self.playList.displayName
             
             if playListName.count > 0 {
                 self.checkbox.title = "\(playListName): \(soundName)"
             } else {
-                if soundPref.isRandom {
-                    self.checkbox.title = "\(soundName) (random)"
+                if self.playList.isRandom {
+                    self.checkbox.title = "\(soundName) (Random Example)"
                 } else {
                     self.checkbox.title = soundName
                 }
             }
         } else {
-            if soundPref.isRandom {
+            if self.playList.isRandom {
                 self.checkbox.title = "Random sound will be chosen when played".localized
             } else {
                 self.checkbox.title = "NONE".localized

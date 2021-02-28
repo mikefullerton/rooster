@@ -26,6 +26,8 @@ public struct RCAlarm: Equatable, CustomStringConvertible {
     public let startDate: Date
     public let endDate: Date
     
+    public let canExpire: Bool
+    
     private(set) var lastState: State
     
     // modifiable
@@ -34,10 +36,11 @@ public struct RCAlarm: Equatable, CustomStringConvertible {
     public var snoozeInterval: TimeInterval
     
     public init(startDate originalStartDate: Date,
-         endDate originalEndDate: Date,
-         isEnabled: Bool,
-         mutedDate: Date?,
-         snoozeInterval: TimeInterval) {
+                endDate originalEndDate: Date,
+                isEnabled: Bool,
+                mutedDate: Date?,
+                snoozeInterval: TimeInterval,
+                canExpire: Bool) {
 
         let snoozedStartDate = snoozeInterval > 0 ? originalStartDate.addingTimeInterval(snoozeInterval) : originalStartDate
         let snoozedEndDate = snoozeInterval > 0 ? originalEndDate.addingTimeInterval(snoozeInterval) : originalEndDate
@@ -52,6 +55,7 @@ public struct RCAlarm: Equatable, CustomStringConvertible {
         self.endDate = snoozedEndDate
         self.mutedDate = mutedDate
         self.lastState = .none
+        self.canExpire = canExpire
     }
 
     public static func == (lhs: RCAlarm, rhs: RCAlarm) -> Bool {
@@ -60,7 +64,8 @@ public struct RCAlarm: Equatable, CustomStringConvertible {
                 lhs.originalEndDate == rhs.originalEndDate &&
                 lhs.snoozeInterval == rhs.snoozeInterval &&
                 lhs.isEnabled == rhs.isEnabled &&
-                lhs.mutedDate == rhs.mutedDate
+                lhs.mutedDate == rhs.mutedDate &&
+                lhs.canExpire == rhs.canExpire
     }
     
     public var description: String {
@@ -74,13 +79,14 @@ public struct RCAlarm: Equatable, CustomStringConvertible {
         formatter.append("Snoozed End Date", self.snoozedEndDate.shortTimeString)
         formatter.append("Muted Date", self.mutedDate?.shortTimeString ?? "nil")
         formatter.append("isEnabled", self.isEnabled)
+        formatter.append("canExpired", self.canExpire)
         return formatter.string
     }
     
     private var state: State {
         let now = Date()
         
-        if self.endDate.isBeforeDate(now) {
+        if self.endDate.isBeforeDate(now) && self.canExpire {
             return .hasExpired
         }
         

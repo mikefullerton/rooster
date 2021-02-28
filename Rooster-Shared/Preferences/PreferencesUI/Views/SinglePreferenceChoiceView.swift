@@ -13,11 +13,11 @@ import Cocoa
 import UIKit
 #endif
 
-class SinglePreferenceChoiceView : SDKView {
+public class SinglePreferenceChoiceView : SDKView {
     
     let title: String
     
-    init(frame: CGRect,
+    public init(frame: CGRect,
          title: String) {
         
         self.title = title
@@ -32,7 +32,7 @@ class SinglePreferenceChoiceView : SDKView {
         self.refresh()
     }
     
-    override func updateConstraints() {
+    public override func updateConstraints() {
         self.addViewsToLayout()
         super.updateConstraints()
     }
@@ -45,7 +45,7 @@ class SinglePreferenceChoiceView : SDKView {
         self.refresh()
     }
 
-    func refresh() {
+    public func refresh() {
         self.checkbox.intValue = self.value ? 1 : 0
     }
     
@@ -56,24 +56,24 @@ class SinglePreferenceChoiceView : SDKView {
     @objc func checkboxChanged(_ sender: SDKButton) {
     }
     
-    lazy var checkbox : SDKButton = {
+    public lazy var checkbox : SDKButton = {
         let view = SDKButton(checkboxWithTitle: "", target: self, action: #selector(checkboxChanged(_:)))
         view.intValue = self.value ? 1 : 0
         return view
     }()
     
-    lazy var layout: VerticalViewLayout = {
+    public lazy var layout: VerticalViewLayout = {
         return VerticalViewLayout(hostView: self,
                                   insets: SDKEdgeInsets.zero,
                                   spacing: SDKOffset.zero)
         
     }()
     
-    var value: Bool {
+    public var value: Bool {
         return false
     }
 
-    override var intrinsicContentSize: CGSize {
+    public override var intrinsicContentSize: CGSize {
         return CGSize(width: SDKView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
 }

@@ -11,22 +11,22 @@ import Cocoa
 
 // views
 
-typealias SDKView = NSView
+public typealias SDKView = NSView
 
-typealias SDKTextField = NSTextField
-typealias SDKTextView = NSTextView
+public typealias SDKTextField = NSTextField
+public typealias SDKTextView = NSTextView
 
-typealias SDKImage = NSImage
-typealias SDKImageView = NSImageView
+public typealias SDKImage = NSImage
+public typealias SDKImageView = NSImageView
 
-typealias SDKSlider = NSSlider
+public typealias SDKSlider = NSSlider
 
-typealias SDKCollectionViewItem = NSCollectionViewItem
-typealias SDKCollectionView = NSCollectionView
+public typealias SDKCollectionViewItem = NSCollectionViewItem
+public typealias SDKCollectionView = NSCollectionView
 
 // view controllers
 
-typealias SDKViewController = NSViewController
+public typealias SDKViewController = NSViewController
 
-typealias SDKSegmentedControl = NSSegmentedControl
+public typealias SDKSegmentedControl = NSSegmentedControl
 

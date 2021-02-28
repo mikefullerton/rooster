@@ -13,54 +13,103 @@ import Cocoa
 import UIKit
 #endif
 
-class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegate, VerticalTabViewControllerDelegate {
+class PreferencesViewController : SDKViewController {
 
-    private let tabViewController: VerticalTabViewController
+//    private let tabViewController: VerticalTabViewController
     private lazy var bottomBar = BottomBar(frame: CGRect.zero)
     
     private static let windowSize = CGSize(width: 800, height: 600)
     
+    @IBOutlet var toolbar: NSToolbar?
+    @IBOutlet var customToolbarSpacer: NSToolbarItem?
+    
+    private let preferencePanels: [PreferencePanel]
+    private var currentPreferencePanel: PreferencePanel? = nil
+    
+    enum panelKey : Int, CaseIterable {
+        case general
+        case sounds
+        case notifications
+        case menubar
+    }
+    
     init() {
-        let soundPreferencesView = SoundPreferencesView(frame: CGRect.zero)
         
-        let items = [
-            VerticalTabItem(identifier: "calendars",
-                            title: "CALENDARS".localized,
-                            icon: SDKImage(systemSymbolName: "calendar", accessibilityDescription: "calendar"),
-                            viewController: CalendarChooserViewController()),
-            
-            VerticalTabItem(identifier: "sounds",
-                            title: "SOUNDS".localized,
-                            icon: SDKImage(systemSymbolName: "speaker.wave.3", accessibilityDescription: "sounds"),
-                            view: soundPreferencesView),
-            
-            VerticalTabItem(identifier: "notifications",
-                            title: "NOTIFICATIONS".localized,
-                            icon: SDKImage(systemSymbolName: "bell", accessibilityDescription: "sounds"),
-                            view: NotificationChoicesView(frame: CGRect.zero)),
-
-            VerticalTabItem(identifier: "menubar",
-                            title: "Menu Bar".localized,
-                            icon: SDKImage(systemSymbolName: "menubar.rectangle", accessibilityDescription: "sounds"),
-                            view: MenuBarChoicesView(frame: CGRect.zero))
-
+        self.preferencePanels = [
+            GeneralPreferencePanel(),
+            SoundsPreferencePanel(),
+            NotificationsPreferencePanel(),
+            MenuBarPreferencesPanel()
         ]
-        
-        self.tabViewController = VerticalTabViewController(with: items,
-                                                           buttonListWidth: 200)
-        
+
         super.init(nibName: nil, bundle: nil)
-        
-        soundPreferencesView.delegate = self
-        self.tabViewController.delegate = self
         self.preferredContentSize = Self.windowSize
         self.title = "Preferences"
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    convenience required init?(coder: NSCoder) {
+        self.init()
     }
     
+    private var currentViewController: SDKViewController? {
+        return self.currentPreferencePanel as? SDKViewController
+    }
+    
+    func setCurrentPanel(_ panelKey: panelKey) {
+        if let currentViewController = self.currentViewController {
+            currentViewController.view.removeFromSuperview()
+            self.currentPreferencePanel = nil
+        }
+        
+        let newCurrentPanel = self.preferencePanels[panelKey.rawValue]
+        self.currentPreferencePanel = newCurrentPanel
+        
+        if let currentViewController = self.currentViewController {
+            self.setCurrentView(currentViewController.view)
+        }
+        
+        if let items = self.toolbar?.items {
+            
+            for item in items {
+                if item.itemIdentifier == newCurrentPanel.toolbarButtonIdentifier {
+                    
+                    let selectedItem = toolbar!.selectedItemIdentifier
+                    if selectedItem != item.itemIdentifier {
+                        self.toolbar!.selectedItemIdentifier = item.itemIdentifier
+                    }
+                    
+                    self.setTitle(item.label)
+                }
+            }
+        }
+    }
+    
+    private func setTitle(_ titleOrNil: String?) {
+        if let title = titleOrNil {
+            self.title = "Rooster Settings - \(title)"
+        } else {
+            self.title = "Rooster Settings"
+        }
+        
+        self.view.window?.title = self.title!
+    }
+    
+    @IBAction @objc func generalToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.general)
+    }
+
+    @IBAction @objc func soundsToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.sounds)
+    }
+
+    @IBAction @objc func notificationsToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.notifications)
+    }
+
+    @IBAction @objc func menuBarToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.menubar)
+    }
+
     override func loadView() {
         
         let view = SDKView()
@@ -68,8 +117,14 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
         
         self.view = view
 
+        for prefPanel in self.preferencePanels {
+            if let viewController = prefPanel as? SDKViewController {
+                self.addChild(viewController)
+            }
+        }
+        
         self.addBottomBar()
-        self.addTabView()
+        self.setCurrentPanel(.general)
     }
     
     @objc func doneButtonPressed(_ sender: SDKButton) {
@@ -77,25 +132,9 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
     }
 
     @objc func resetButtonPressed(_ sender: SDKButton) {
-        
-        if let selectedItem = self.tabViewController.selectedItem {
-            if let viewController = selectedItem.viewController as? PreferencesContentView {
-                viewController.resetButtonWasPressed()
-            } else if let selectedView = selectedItem.view as? PreferencesContentView {
-                selectedView.resetButtonWasPressed()
-            }
+        if let currentPanel = self.currentPreferencePanel {
+            currentPanel.resetButtonPressed()
         }
-    }
-    
-    func verticalTabViewController(_ verticalTabViewController: VerticalTabViewController, didChangeTab tab: VerticalTabItem) {
-//        self.bottomBar.leftButton.isEnabled = tab.identifier != "calendars"
-    }
-
-    
-    func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
-        
-        SoundPickerViewController(withSoundPreferenceKey: soundPreferenceKey).presentInModalWindow(fromWindow: self.view.window)
     }
     
     private func addBottomBar() {
@@ -109,10 +148,8 @@ class PreferencesViewController : SDKViewController, SoundPreferencesViewDelegat
         leftButton.action = #selector(resetButtonPressed(_:))
     }
 
-    private func addTabView() {
-        self.addChild(self.tabViewController)
+    private func setCurrentView(_ view: SDKView) {
         
-        let view = self.tabViewController.view
         self.view.addSubview(view, positioned: .below, relativeTo: self.bottomBar)
         
         view.translatesAutoresizingMaskIntoConstraints = false

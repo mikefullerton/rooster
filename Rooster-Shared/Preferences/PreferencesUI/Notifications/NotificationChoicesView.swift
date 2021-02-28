@@ -13,23 +13,29 @@ import Cocoa
 import UIKit
 #endif
 
-class NotificationChoicesView : SimpleStackView, PreferencesContentView {
+class NotificationChoicesView : SimpleStackView {
     
-    init(frame: CGRect) {
-        super.init(frame: frame,
+    let notificationPreferencesKey: NotificationPreferences.PreferenceKey
+    
+    init(withPreferencesKey prefKey: NotificationPreferences.PreferenceKey) {
+        self.notificationPreferencesKey = prefKey
+        
+        super.init(frame: CGRect.zero,
                    direction: .vertical,
                    insets: SDKEdgeInsets.ten,
                    spacing: SDKOffset.zero)
         
+        
         let notifs =  GroupBoxView(frame: CGRect.zero,
-                                   title: "NOTIFICATION_EXPLANATION".localized,
+                                   title: self.blurb,
                                    groupBoxInsets: GroupBoxView.defaultGroupBoxInsets,
                                    groupBoxSpacing: SDKOffset(horizontal: 0, vertical: 14))
         
         notifs.setContainedViews([
-            self.automaticallyOpenLocationURLs,
-            self.bounceIconInDock,
-            self.useSystemNotifications
+            AutomaticallyOpenLocationURLsChoiceView(withNotificationPreferenceKey: self.notificationPreferencesKey),
+            BounceInDockChoiceView(withNotificationPreferenceKey: self.notificationPreferencesKey),
+            UseSystemNotificationsChoiceView(withNotificationPreferenceKey: self.notificationPreferencesKey),
+            NotificationChoiceCheckboxView(withTitle: "Play Sounds", notificationPreferenceKey: self.notificationPreferencesKey, options: .playSounds)
         ])
 
         self.setContainedViews([
@@ -40,19 +46,22 @@ class NotificationChoicesView : SimpleStackView, PreferencesContentView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    lazy var automaticallyOpenLocationURLs : SinglePreferenceChoiceView = {
-        return AutomaticallyOpenLocationURLsChoiceView(frame: self.bounds)
+        
+    lazy var blurb: String = {
+        
+        switch(self.notificationPreferencesKey) {
+        case .cameraOrMicrophoneOn:
+            return "What Rooster does when a meeting starts and your microphone or camera is on"
+            
+        case .machineLockedOrAsleep:
+            return "What Rooster does when a meeting starts and your computer is locked or asleep"
+            
+        case .normal:
+            return "What Rooster does when a meeting starts under normal circumstances"
+        }
+        
+        
     }()
-
-    lazy var bounceIconInDock : SinglePreferenceChoiceView = {
-        return BounceInDockChoiceView(frame: self.bounds)
-    }()
-
-    lazy var useSystemNotifications : SinglePreferenceChoiceView = {
-        return UseSystemNotificationsChoiceView(frame: self.bounds)
-    }()
-    
     
 }
 

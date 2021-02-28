@@ -13,7 +13,7 @@ class SoundPickerTableViewCell : UITableViewCell, TableViewRowCell {
     typealias ContentType = URL
     
     private var url: URL?
-    private var soundPreferenceKey: SoundPreferences.SoundPreferenceKey = .sound1
+    private var soundPreferenceKey: SoundPreferences.PreferenceKey = .first
     
     func viewWillAppear(withData data: URL, indexPath: IndexPath) {
         self.url = data

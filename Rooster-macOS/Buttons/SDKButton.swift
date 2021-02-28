@@ -10,9 +10,9 @@ import RoosterCore
 import Cocoa
 
 
-class SDKButton : NSButton {
+public class SDKButton : NSButton {
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
 
 //        self.isBordered = false

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class PlayList : Sound, SoundDelegate, Identifiable {
+public class PlayList : SoundPlayerProtocol, SoundDelegate, Identifiable, CustomStringConvertible {
     public typealias ID = String
     
     public let id: String
@@ -19,8 +19,34 @@ public class PlayList : Sound, SoundDelegate, Identifiable {
     public var playListIterator: PlayListIteratorProtocol
     
     private(set) public var behavior: SoundBehavior
-    private(set) public var currentSound: SoundPlayer?
+    
+    public var description: String {
+        return """
+        type(of: self): \
+        id: \(self.id), \
+        displayName: \(self.displayName), \
+        playListIterator: \(self.playListIterator.description)
+        """
+    }
+    
+    private(set) public var currentSoundPlayer: SoundPlayer? {
+        willSet {
+            self.currentSoundPlayer?.delegate = nil
+        }
+        didSet {
+            self.currentSoundPlayer?.delegate = self
+        }
+    }
+    
     private var playCount: Int = 0
+    
+    public convenience init() {
+        self.init(withPlayListIterator:PlayListIterator(), displayName: "")
+    }
+
+    convenience public init(withSoundSet soundSet: SoundSet) {
+        self.init(withPlayListIterator: PlayListIterator(withSoundSet: soundSet), displayName: soundSet.displayName)
+    }
     
     public init(withPlayListIterator playListIterator: PlayListIteratorProtocol, displayName: String) {
 
@@ -29,158 +55,161 @@ public class PlayList : Sound, SoundDelegate, Identifiable {
         self.behavior = SoundBehavior()
         self.id = String.guid
         
-        self.setNextSoundFromPlaylist()
+        self.currentSoundPlayer = nil
+        
+        self.playListIterator.start()
+        self.currentSoundPlayer = self.playListIterator.current
     }
     
-    public var sounds: [SoundPlayer] {
-        return self.playListIterator.sounds
+    public var isRandom: Bool {
+        return self.playListIterator.isRandom
+    }
+    
+    public var soundPlayers: [SoundPlayer] {
+        return self.playListIterator.soundPlayers
     }
    
     public var isPlaying: Bool {
-        if let currentSound = self.currentSound {
-            return currentSound.isPlaying
+        if let currentSoundPlayer = self.currentSoundPlayer {
+            return currentSoundPlayer.isPlaying
         }
         
         return false
     }
     
     public var isEmpty: Bool {
-        return self.sounds.count == 0
+        return self.soundPlayers.count == 0
     }
     
     public var volume: Float {
-        if let currentSound = self.currentSound {
-            return currentSound.volume
+        if let currentSoundPlayer = self.currentSoundPlayer {
+            return currentSoundPlayer.volume
         }
         
         return 0
     }
     
     public func set(volume: Float, fadeDuration: TimeInterval) {
-        self.sounds.forEach { $0.set(volume: volume, fadeDuration: fadeDuration) }
+        self.soundPlayers.forEach { $0.set(volume: volume, fadeDuration: fadeDuration) }
     }
     
     public var currentTime: TimeInterval {
         // TODO this isn't correct overall
-        if let currentSound = self.currentSound {
-            return currentSound.currentTime
+        if let currentSoundPlayer = self.currentSoundPlayer {
+            return currentSoundPlayer.currentTime
         }
         return 0
     }
     
     public var currentSoundDisplayName: String {
         
-        if let currentSound = self.currentSound {
-            return currentSound.displayName
+        if let currentSoundPlayer = self.currentSoundPlayer {
+            return currentSoundPlayer.displayName
         }
         
-        if self.sounds.count > 0 {
-            return self.sounds[0].displayName
-        }
+        
+//        if self.soundsPlayers.count > 0 {
+//            return self.soundsPlayers[0].displayName
+//        }
         
         return ""
     }
     
-    private func didStopCurrentSound() {
-        if let currentSound = self.currentSound {
-            currentSound.delegate = nil
-            self.currentSound = nil
-            
-            self.delegate?.soundDidUpdate(self)
-        }
-    }
-    
-    private func setNextSoundFromPlaylist() {
-        if let nextSound = self.playListIterator.step() {
-           self.currentSound = nextSound
+    private var nextSoundFromPlaylist: SoundPlayer? {
+        
+        self.playListIterator.next()
+        
+        if let nextSound = self.playListIterator.current {
+            return nextSound
         } else {
             self.playCount += 1
             if self.behavior.playCount > self.playCount {
-                if let nextSound = self.playListIterator.step() {
-                    self.currentSound = nextSound
+                self.playListIterator.start()
+                if let nextSound = self.playListIterator.current {
+                    return nextSound
                 }
             }
         }
+        
+        return nil
     }
     
-    private func playNextSound() {
-        if let currentSound = self.currentSound {
-            self.delegate?.soundDidUpdate(self)
+    private func playNextSound(_ soundPlayer: SoundPlayer) {
 
-            self.logger.log("Playing next sound: '\(currentSound.displayName)'")
-            
-            let behavior = SoundBehavior(playCount: 1,
-                                              timeBetweenPlays: self.behavior.timeBetweenPlays,
-                                              fadeInTime: 0)
-            
-            currentSound.delegate = self
-            currentSound.play(withBehavior: behavior)
-        } else {
-            self.didStop()
-        }
+        self.logger.log("Playing next sound: '\(soundPlayer.displayName)'")
+        
+        let behavior = SoundBehavior(playCount: 1,
+                                     timeBetweenPlays: self.behavior.timeBetweenPlays,
+                                     fadeInTime: 0)
+        
+        soundPlayer.delegate = self
+        soundPlayer.play(withBehavior: behavior)
     }
     
     public var duration: TimeInterval {
         var duration: TimeInterval = 0
-        self.sounds.forEach { duration += $0.duration + self.behavior.timeBetweenPlays }
+        self.soundPlayers.forEach { duration += $0.duration + self.behavior.timeBetweenPlays }
         return duration
     }
     
-    public func soundWillStartPlaying(_ sound: Sound) {
+    public func soundWillStartPlaying(_ sound: SoundPlayerProtocol) {
     
     }
     
-    public func soundDidStartPlaying(_ sound: Sound) {
+    public func soundDidStartPlaying(_ sound: SoundPlayerProtocol) {
         
     }
     
-    public func soundDidUpdate(_ sound: Sound) {
+    public func soundDidUpdate(_ sound: SoundPlayerProtocol) {
         self.delegate?.soundDidUpdate(self)
     }
 
-    public func soundDidStopPlaying(_ sound: Sound) {
+    public func soundDidStopPlaying(_ sound: SoundPlayerProtocol) {
         self.logger.log("Sound did stop: \(sound.displayName)")
-        self.didStopCurrentSound()
-        self.setNextSoundFromPlaylist()
-        self.playNextSound()
+        if let nextSound = self.nextSoundFromPlaylist {
+            self.currentSoundPlayer = nextSound
+            self.playNextSound(nextSound)
+            self.delegate?.soundDidUpdate(self)
+        } else {
+            self.didStop()
+        }
     }
     
     public func play(withBehavior behavior: SoundBehavior) {
         if !self.isPlaying {
-            self.logger.log("Playing sounds: \(self.displayName): \(self.currentSoundDisplayName)")
             self.behavior = behavior
-            
-            if self.currentSound == nil {
-                self.setNextSoundFromPlaylist()
-            }
-            
-            self.delegate?.soundWillStartPlaying(self)
             self.playCount = 0
-            self.playNextSound()
+            self.playListIterator.start()
             
-            self.delegate?.soundDidStartPlaying(self)
+            if let current = self.playListIterator.current {
+                self.delegate?.soundWillStartPlaying(self)
+                self.currentSoundPlayer = current
+        
+                self.logger.log("Playing sounds: \(self.displayName): \(self.currentSoundDisplayName)")
+                
+                self.playNextSound(current)
+                self.delegate?.soundDidStartPlaying(self)
+            
+            } else {
+                self.didStop()
+            }
         }
     }
     
     private func didStop() {
-        if let sound = self.currentSound {
-            sound.delegate = nil
-            sound.stop()
-            self.currentSound = nil
-        }
-        
         self.delegate?.soundDidStopPlaying(self)
         self.logger.log("All sounds stopped playing: \(self.displayName): \(self.currentSoundDisplayName)")
-        
-        self.setNextSoundFromPlaylist()
-        
-        self.delegate?.soundDidUpdate(self)
     }
     
     public func stop() {
-        if self.isPlaying {
-            self.didStop()
+        if let currentSoundPlayer = self.currentSoundPlayer {
+            if currentSoundPlayer.isPlaying {
+                currentSoundPlayer.delegate = nil
+                currentSoundPlayer.stop()
+                currentSoundPlayer.delegate = self
+            }
         }
+        self.didStop()
     }
     
     

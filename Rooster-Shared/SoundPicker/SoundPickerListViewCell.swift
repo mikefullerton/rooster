@@ -16,8 +16,8 @@ import UIKit
 class SoundPickerListViewCell : ListViewRowController<SoundFile>, PlaySoundButtonSoundProvider {
 
     private var soundFile: SoundFile?
-    private var soundPreferenceKey: SoundPreferences.SoundPreferenceKey = .sound1
-    private var sound: Sound?
+    private var soundPreferenceKey: SoundPreferences.PreferenceKey = .first
+    private var sound: SoundPlayerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class SoundPickerListViewCell : ListViewRowController<SoundFile>, PlaySoundButto
     
     override func viewWillAppear(withContent content: SoundFile) {
         self.soundFile = content
-        self.sound = SoundPlayer(withSoundFile: content, randomizer: PlayListRandomizer.never)
+        self.sound = SoundPlayer(withSoundFile: content, randomizer: SoundPlayerRandomizer.default)
         
         self.playButton.isEnabled = true
         
@@ -49,7 +49,7 @@ class SoundPickerListViewCell : ListViewRowController<SoundFile>, PlaySoundButto
         return 32.0
     }
     
-    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> Sound? {
+    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> SoundPlayerProtocol? {
         return self.sound
     }
     

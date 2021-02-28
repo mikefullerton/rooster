@@ -64,8 +64,9 @@ extension RCReminder {
     public func update(withSavedState savedState: SavedState) -> RCReminder {
 
         let alarm = RCAlarm(withSavedState: savedState.alarmState,
-                                  startDate: self.dueDate,
-                                  endDate: self.dueDate.addingTimeInterval(60 * 60 * 15))
+                            startDate: self.dueDate,
+                            endDate: self.dueDate.addingTimeInterval(60 * 30),
+                            canExpire: false)
 
         return RCReminder(withIdentifier: self.id,
                                 ekReminderID:self.ekReminderID,
@@ -90,8 +91,9 @@ extension RCReminder {
                 savedState: SavedState) {
         
         let alarm = RCAlarm(withSavedState: savedState.alarmState,
-                                 startDate: startDate,
-                                 endDate: endDate)
+                            startDate: startDate,
+                            endDate: endDate,
+                            canExpire: false)
         
         self.init(withIdentifier: EKReminder.uniqueID,
                   ekReminderID: EKReminder.calendarItemIdentifier,

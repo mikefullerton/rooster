@@ -11,10 +11,24 @@ class ModalWindowController: WindowController {
 
     static func presentModallyWithViewController(withContentViewController viewController: NSViewController,
                                                  fromWindow window: NSWindow? = nil) {
-        let windowController = WindowController()
+        let windowController = ModalWindowController()
         windowController.setContentViewController(viewController)
         self.presentWindowController(windowController,
                                      fromWindow: window)
+    }
+    
+    override func windowDidLoad() {
+        super.windowDidLoad()
+        
+        if let window = self.window,
+            let viewController = self.contentViewController {
+                
+            window.title = viewController.title ?? ""
+                
+            let preferredContentSize = viewController.preferredContentSize
+            self.logger.log("Updating \(type(of:self.contentViewController)) window size: \(NSStringFromSize(preferredContentSize))")
+            window.setContentSize(preferredContentSize)
+        }
     }
 
     override func showWindow(_ sender: Any?) {

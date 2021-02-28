@@ -13,23 +13,23 @@ import Cocoa
 import UIKit
 #endif
 
-class BottomBar : BlurView {
+public class BottomBar : BlurView {
     
-    let preferredHeight: CGFloat = 60
-    let insets = SDKEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-    let buttonSpacing: CGFloat = 10.0
-    let buttonSize = CGSize(width: 100, height: 60)
+    public let preferredHeight: CGFloat = 60
+    public let insets = SDKEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    public let buttonSpacing: CGFloat = 10.0
+    public let buttonSize = CGSize(width: 100, height: 60)
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.addDoneButton()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
-    func addLeftButton(title: String) -> SDKButton {
+    public func addLeftButton(title: String) -> SDKButton {
         
         let button = self.leftButton
         button.title = title
@@ -45,7 +45,7 @@ class BottomBar : BlurView {
         return button
     }
     
-    lazy var leftButton: SDKButton = {
+    public lazy var leftButton: SDKButton = {
         let view = SDKButton(frame: NSRect.zero)
         view.bezelStyle = .rounded
         view.setButtonType(.momentaryPushIn)
@@ -56,7 +56,7 @@ class BottomBar : BlurView {
         return view
     }()
 
-    func addCancelButton() -> SDKButton {
+    public func addCancelButton() -> SDKButton {
         let button = self.cancelButton
         self.addSubview(button)
 
@@ -69,7 +69,7 @@ class BottomBar : BlurView {
         return button
     }
     
-    lazy var cancelButton: SDKButton = {
+    public lazy var cancelButton: SDKButton = {
         let view = SDKButton()
         view.setButtonType(.momentaryPushIn)
         view.bezelStyle = .rounded
@@ -80,7 +80,7 @@ class BottomBar : BlurView {
         return view
     }()
 
-    lazy var doneButton: SDKButton = {
+    public lazy var doneButton: SDKButton = {
         let view = SDKButton()
         view.setButtonType(.momentaryPushIn)
         view.bezelStyle = .rounded
@@ -91,7 +91,7 @@ class BottomBar : BlurView {
         return view
     }()
     
-    func addDoneButton() {
+    private func addDoneButton() {
         let button = self.doneButton
         button.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(button)
@@ -101,7 +101,7 @@ class BottomBar : BlurView {
         ])
     }
    
-    func addToView(_ view: SDKView) {
+    public func addToView(_ view: SDKView) {
         
         view.addSubview(self)
 
@@ -121,8 +121,7 @@ class BottomBar : BlurView {
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
     
-    override var intrinsicContentSize: CGSize {
+    public override var intrinsicContentSize: CGSize {
         return CGSize(width: SDKView.noIntrinsicMetric, height: self.preferredHeight)
     }
-
 }

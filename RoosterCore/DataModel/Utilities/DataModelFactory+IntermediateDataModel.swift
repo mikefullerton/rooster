@@ -56,10 +56,11 @@ extension DataModelFactory {
                                                       savedState: savedState)
                     } else {
                         let alarm = RCAlarm(startDate: ekEvent.startDate,
-                                          endDate: ekEvent.endDate,
-                                          isEnabled: true,
-                                          mutedDate: nil,
-                                          snoozeInterval: 0)
+                                            endDate: ekEvent.endDate,
+                                            isEnabled: true,
+                                            mutedDate: nil,
+                                            snoozeInterval: 0,
+                                            canExpire: true)
                         
                         eventKitEvent = RCEvent(withEvent: ekEvent,
                                               calendar: calendar,
@@ -107,22 +108,23 @@ extension DataModelFactory {
                         continue
                     }
                     
-                    // TODO: hardcoded to 15 minutes
-                    let endDate = startDate!.addingTimeInterval(60 * 60 * 15)
+                    // TODO: hardcoded to 30 minutes
+                    let endDate = startDate!.addingTimeInterval(60 * 30)
                     
                     var reminder: RCReminder? = nil
                     if let savedState = self.dataModelStorage.reminderState(forKey: ekReminder.uniqueID) {
                         reminder = RCReminder(withReminder: ekReminder,
-                                            calendar: calendar,
-                                            startDate: startDate!,
-                                            endDate: endDate,
-                                            savedState: savedState)
+                                              calendar: calendar,
+                                              startDate: startDate!,
+                                              endDate: endDate,
+                                              savedState: savedState)
                     } else {
                         let alarm = RCAlarm(startDate: startDate!,
-                                          endDate: endDate,
-                                          isEnabled: true,
-                                          mutedDate: nil,
-                                          snoozeInterval: 0)
+                                            endDate: endDate,
+                                            isEnabled: true,
+                                            mutedDate: nil,
+                                            snoozeInterval: 0,
+                                            canExpire: false)
                         
                         reminder = RCReminder(withReminder: ekReminder,
                                             calendar: calendar,

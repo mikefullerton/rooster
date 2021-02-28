@@ -51,7 +51,7 @@ class SoundPreferencesView : SimpleStackView, SoundChoiceViewDelegate, SoundChoo
     
     lazy var firstSoundChoice: SingleSoundChoiceView = {
         let view = SingleSoundChoiceView(frame: CGRect.zero,
-                                         soundPreferenceIndex: .sound1,
+                                         soundPreferenceIndex: .first,
                                          delegate: self)
         
         return view
@@ -59,7 +59,7 @@ class SoundPreferencesView : SimpleStackView, SoundChoiceViewDelegate, SoundChoo
     
     lazy var secondSoundChoice: SingleSoundChoiceView = {
         let view = SingleSoundChoiceView(frame: CGRect.zero,
-                                         soundPreferenceIndex: .sound2,
+                                         soundPreferenceIndex: .second,
                                          delegate: self)
         
         return view
@@ -67,7 +67,7 @@ class SoundPreferencesView : SimpleStackView, SoundChoiceViewDelegate, SoundChoo
     
     lazy var thirdSoundChoice: SingleSoundChoiceView = {
         let view = SingleSoundChoiceView(frame: CGRect.zero,
-                                         soundPreferenceIndex: .sound3,
+                                         soundPreferenceIndex: .third,
                                          delegate: self)
 
         

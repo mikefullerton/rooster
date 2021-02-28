@@ -60,20 +60,23 @@ extension RCAlarm {
 
     public func update(withSavedState savedState: SavedState) -> RCAlarm {
         return RCAlarm(startDate: self.startDate,
-                     endDate: self.endDate,
-                     isEnabled: savedState.isEnabled,
-                     mutedDate: savedState.mutedDate,
-                     snoozeInterval: savedState.snoozeInterval)
+                       endDate: self.endDate,
+                       isEnabled: savedState.isEnabled,
+                       mutedDate: savedState.mutedDate,
+                       snoozeInterval: savedState.snoozeInterval,
+                       canExpire: self.canExpire)
     }
     
     public init(withSavedState state: SavedState,
                 startDate: Date,
-                endDate: Date) {
+                endDate: Date,
+                canExpire: Bool) {
         
         self.init(startDate: startDate,
                   endDate: endDate,
                   isEnabled: state.isEnabled,
                   mutedDate: state.mutedDate,
-                  snoozeInterval: state.snoozeInterval)
+                  snoozeInterval: state.snoozeInterval,
+                  canExpire: canExpire)
     }
 }

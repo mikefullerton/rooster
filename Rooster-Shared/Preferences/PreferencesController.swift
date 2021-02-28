@@ -15,10 +15,22 @@ class PreferencesController: ObservableObject, Loggable {
     static let NewPreferencesKey = "NewPreferencesKey"
     static let OldPreferencesKey = "OldPreferencesKey"
     
-    private var storage: ApplicationSupportFolderPreferencesStorage
+    private var storage: PreferencesStorage?
 
     init() {
-        self.storage = ApplicationSupportFolderPreferencesStorage()
+        self.storage = try? PreferencesStorage()
+    }
+    
+    var generalPreferences: GeneralPreferences {
+        get {
+            self.preferences.generalPreferences
+        }
+        
+        set(newPrefs) {
+            var prefs = self.preferences
+            prefs.generalPreferences = newPrefs
+            self.preferences = prefs
+        }
     }
     
     var soundPreferences: SoundPreferences {
@@ -59,28 +71,71 @@ class PreferencesController: ObservableObject, Loggable {
     
     var preferences: Preferences {
         get {
+            self.readOrCreatePreferences()
+        }
+        set(newPrefs) {
+            self.writePreferences(newPrefs)
+        }
+    }
+    
+    public func delete() {
+        
+        if let storage = self.storage {
             do {
-                if let prefs = try self.storage.read() {
-                    return prefs
+                try storage.delete()
+                self.logger.log("Deleted preferences");
+            } catch {
+                self.logger.error("Deleting preferences failed with error: \(error.localizedDescription)")
+            }
+        } else {
+            self.logger.error("No preferences storage")
+        }
+        
+    }
+
+    // TODO: support individual settings
+    func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
+        return ItemPreference(with: self.preferences.soundPreferences)
+    }
+}
+
+extension PreferencesController {
+    
+    fileprivate func readOrCreatePreferences() -> Preferences {
+        if let storage = self.storage {
+            do {
+                if storage.exists {
+                    return try storage.read()
                 }
             } catch {
                 self.logger.error("Reading old preferences failed with error: \(error.localizedDescription)")
             }
                 
-            let prefs = Preferences()
+            let prefs = Preferences.default
             do {
-                try self.storage.write(prefs)
+                try storage.write(prefs)
                 self.logger.log("Wrote new preferences: \(prefs.description)")
             } catch {
                 self.logger.error("Writing new preferences failed with error: \(error.localizedDescription)")
-                
             }
+            
+            // this is dumb
+            GlobalSoundVolume.volume = prefs.soundPreferences.volume
+            
             return prefs
+        } else {
+            self.logger.error("No preferences storage")
         }
-        set(newPrefs) {
-            let previousPrefs = self.preferences
+        
+        return Preferences.default
+    }
+    
+    fileprivate func writePreferences(_ preferences: Preferences) {
+        let previousPrefs = self.preferences
+        if let storage = self.storage {
+      
             do {
-                try self.storage.write(newPrefs)
+                try storage.write(preferences)
             } catch {
                 self.logger.error("Writing preferences failed with error: \(error.localizedDescription)")
             }
@@ -90,22 +145,20 @@ class PreferencesController: ObservableObject, Loggable {
                                                 object: self,
                                                 userInfo: [
                                                     Self.OldPreferencesKey: previousPrefs,
-                                                    Self.NewPreferencesKey: newPrefs
+                                                    Self.NewPreferencesKey: preferences
                                                 ])
-                
-                GlobalSoundVolume.volume = newPrefs.soundPreferences.volume
+            
+                // this is dumb
+                GlobalSoundVolume.volume = preferences.soundPreferences.volume
             }
             
             self.logger.log("Wrote preferences: \(self.preferences.description)")
+        } else {
+            self.logger.error("No preferences storage")
         }
     }
-
-    // TODO: support individual settings
-    func preferences(forItemIdentifier itemIdentifier: String) -> ItemPreference {
-        return ItemPreference(with: self.preferences.soundPreferences)
-    }
-    
 }
+
 
 extension Notification {
     var oldPreferences : Preferences? {

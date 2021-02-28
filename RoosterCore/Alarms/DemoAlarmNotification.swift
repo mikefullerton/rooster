@@ -33,24 +33,25 @@ public class DemoAlarmNotification : AlarmNotification {
         let endDate = startDate.addingTimeInterval(60 * 60)
         
         let alarm = RCAlarm(startDate: startDate,
-                          endDate: endDate,
-                          isEnabled: true,
-                          mutedDate: nil,
-                          snoozeInterval: 0)
+                            endDate: endDate,
+                            isEnabled: true,
+                            mutedDate: nil,
+                            snoozeInterval: 0,
+                            canExpire: true)
         
         return RCEvent(withIdentifier: self.itemIdentifier,
-                     ekEventID: "",
-                     externalIdentifier: "",
-                     calendar: self.demoCalendar,
-                     subscribed: true,
-                     alarm: alarm,
-                     startDate: startDate,
-                     endDate: endDate,
-                     title: "Demo RCEvent",
-                     location: "http://apple.com",
-                     url: nil,
-                     notes: nil,
-                     organizer: nil)
+                       ekEventID: "",
+                       externalIdentifier: "",
+                       calendar: self.demoCalendar,
+                       subscribed: true,
+                       alarm: alarm,
+                       startDate: startDate,
+                       endDate: endDate,
+                       title: "Demo RCEvent",
+                       location: "http://apple.com",
+                       url: nil,
+                       notes: nil,
+                       organizer: nil)
     }()
     
     #if os(macOS)

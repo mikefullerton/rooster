@@ -10,13 +10,13 @@ import RoosterCore
 import RoosterCore
 
 
-enum SubviewAlignment {
+public enum SubviewAlignment {
     case left
     case right
     case center
 }
 
-extension SDKView {
+public extension SDKView {
 
     func setPositionalContraints(forSubview view: NSView,
                                  alignment: SubviewAlignment) {

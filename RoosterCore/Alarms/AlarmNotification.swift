@@ -108,16 +108,16 @@ public class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConve
         return "\(type(of:self)): \(self.id), itemID: \(self.itemID), state: \(self.state.rawValue)"
     }
     
-    public func soundWillStartPlaying(_ sound: Sound) {
+    public func soundWillStartPlaying(_ sound: SoundPlayerProtocol) {
     }
     
-    public func soundDidStartPlaying(_ sound: Sound) {
+    public func soundDidStartPlaying(_ sound: SoundPlayerProtocol) {
     }
 
-    public func soundDidUpdate(_ sound: Sound) {
+    public func soundDidUpdate(_ sound: SoundPlayerProtocol) {
     }
 
-    public func soundDidStopPlaying(_ sound: Sound) {
+    public func soundDidStopPlaying(_ sound: SoundPlayerProtocol) {
         self.logger.log("alarm stopped playing sound: \(self.description)")
         self.state = .finished
         if let delegate = self.delegate {

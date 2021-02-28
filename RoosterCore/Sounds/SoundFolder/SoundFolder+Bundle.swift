@@ -16,7 +16,9 @@ extension SoundFolder {
             let soundPath = resourcePath.appendingPathComponent("Sounds")
             
             do {
-                let directory = try DirectoryIterator(withURL: soundPath)
+                let directory = DirectoryIterator(withURL: soundPath)
+                try directory.scan()
+                
                 let soundFolder = try SoundFolder(withDirectory: directory)
                 return soundFolder
             } catch {

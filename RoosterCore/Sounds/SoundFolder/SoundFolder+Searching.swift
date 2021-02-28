@@ -37,6 +37,13 @@ extension SoundFolder {
     }
     
     public func findSoundFile(forIdentifier id: String) -> SoundFile? {
+        
+//        if id == SoundFile.randomSoundID {
+//            let soundFile = SoundFile.random
+//            soundFile.setParent(self)
+//            return soundFile
+//        }
+        
         for sound in self.allSoundFiles {
             if sound.id == id {
                 return sound

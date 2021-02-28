@@ -7,17 +7,15 @@
 
 import Foundation
 
-public protocol DirectoryIteratorItem: AnyObject {
+public protocol DirectoryItem: AnyObject {
     var isDirectory: Bool { get }
+    var isFile: Bool { get }
     var url: URL { get }
     var name: String { get }
     var parent: DirectoryIterator? { get }
 }
 
-extension DirectoryIteratorItem {
-    public var isDirectory:Bool {
-        return false
-    }
+extension DirectoryItem {
     
     public var name: String {
         return self.url.lastPathComponent
@@ -37,19 +35,28 @@ extension DirectoryIteratorItem {
         
         return names.reversed().joined(separator: "/")
     }
+    
+    public func delete() throws {
+        try FileManager.default.removeItem(at: self.url)
+    }
+    
+    public var exists: Bool {
+        return FileManager.default.fileExists(atPath: self.url.path)
+    }
+
 }
 
-public class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringConvertible {
+public class DirectoryIterator: DirectoryItem, Equatable, CustomStringConvertible {
     
     private(set) public var directories:[DirectoryIterator]
-    private(set) public var files: [Item]
-    private(set) public var contents: [DirectoryIteratorItem]
+    private(set) public var files: [File]
+    private(set) public var contents: [DirectoryItem]
     
     public let url: URL
     public weak private(set) var parent: DirectoryIterator?
     
     public init(withURL url: URL,
-                parent: DirectoryIterator? = nil) throws {
+                parent: DirectoryIterator? = nil) {
         
         self.parent = parent
         self.url = url
@@ -57,13 +64,11 @@ public class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringCo
         self.directories = []
         self.files = []
         self.contents = []
-
-        try self.updateContents()
-    }
+  }
     
     public init() {
         self.parent = nil
-        self.url = URL.emptyRoosterURL
+        self.url = URL.empty
         self.directories = []
         self.files = []
         self.contents = []
@@ -73,13 +78,21 @@ public class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringCo
         return true
     }
     
-    private func updateContents() throws {
+    public var isFile:Bool {
+        return false
+    }
+    
+    public func scan() throws {
+        self.contents = []
+        self.files = []
+        self.directories = []
+
         let parentURL = self.url
-        if !parentURL.isRoosterURL {
+        if parentURL != URL.empty {
             
-            var files:[Item] = []
+            var files:[File] = []
             var directories:[DirectoryIterator] = []
-            var contents:[DirectoryIteratorItem] = []
+            var contents:[DirectoryItem] = []
 
             let contentPaths = try FileManager.default.contentsOfDirectory(atPath: parentURL.path)
             for itemPath in contentPaths {
@@ -92,12 +105,15 @@ public class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringCo
                 var isDir : ObjCBool = false
                 if FileManager.default.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
                     if isDir.boolValue {
-                        let item = try DirectoryIterator(withURL: itemURL,
-                                                         parent: self)
+                        let item = DirectoryIterator(withURL: itemURL,
+                                                     parent: self)
+                        
+                        try item.scan()
+                        
                         contents.append(item)
                         directories.append(item)
                     } else {
-                        let item = Item(withURL: itemURL, parent: self)
+                        let item = File(withURL: itemURL, parent: self)
                         contents.append(item)
                         files.append(item)
                     }
@@ -118,7 +134,7 @@ public class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringCo
         }
     }
     
-    public typealias Visitor = (_ item: DirectoryIteratorItem, _ depth: Int) -> Void
+    public typealias Visitor = (_ item: DirectoryItem, _ depth: Int) -> Void
     
     private func visitEach(depth: Int,
                            visitor: Visitor) {
@@ -158,7 +174,7 @@ public class DirectoryIterator: DirectoryIteratorItem, Equatable, CustomStringCo
 
 extension DirectoryIterator {
     
-    public class Item: DirectoryIteratorItem, Equatable, CustomStringConvertible {
+    public class File: DirectoryItem, Equatable, CustomStringConvertible {
         public let url: URL
         public weak private(set) var parent: DirectoryIterator?
 
@@ -168,12 +184,20 @@ extension DirectoryIterator {
             self.parent = parent
         }
         
-        public static func == (lhs: Item, rhs: Item) -> Bool {
+        public static func == (lhs: File, rhs: File) -> Bool {
             return  lhs.url == rhs.url
         }
        
         public var description: String {
             return "\(type(of:self)): url:\(self.url.absoluteString)"
+        }
+
+        public var isDirectory: Bool {
+            return false
+        }
+        
+        public var isFile: Bool {
+            return true
         }
     }
 }

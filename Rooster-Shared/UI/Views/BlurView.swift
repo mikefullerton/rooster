@@ -13,18 +13,18 @@ import Cocoa
 import UIKit
 #endif
 
-class BlurView : SDKView {
+public class BlurView : SDKView {
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.addBlurView()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
-    func addBlurView() {
+    public func addBlurView() {
         self.sdkBackgroundColor = SDKColor.clear
         
         let blurView = self.blurView
@@ -44,7 +44,7 @@ class BlurView : SDKView {
         ])
     }
     
-    lazy var blurView: SDKView = {
+    public lazy var blurView: SDKView = {
         #if os(macOS)
         let visualEffectView = NSVisualEffectView(frame: CGRect.zero)
         visualEffectView.material =  .underWindowBackground //.titlebar //.headerView

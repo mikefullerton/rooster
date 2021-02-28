@@ -17,9 +17,9 @@ class SoundPickerViewController : UIViewController {
     
     weak var delegate: SoundChooserViewControllerDelegate?
     
-    let soundPreferenceIndex: SoundPreferences.SoundPreferenceKey
+    let soundPreferenceIndex: SoundPreferences.PreferenceKey
     
-    init(withSoundPreferenceIndex index: SoundPreferences.SoundPreferenceKey) {
+    init(withSoundPreferenceIndex index: SoundPreferences.PreferenceKey) {
         self.soundPreferenceIndex = index
         super.init(nibName: nil, bundle: nil)
     }

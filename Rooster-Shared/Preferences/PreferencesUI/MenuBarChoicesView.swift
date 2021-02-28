@@ -13,7 +13,7 @@ import Cocoa
 import UIKit
 #endif
 
-class MenuBarChoicesView : SimpleStackView, PreferencesContentView {
+class MenuBarChoicesView : SimpleStackView {
     
     init(frame: CGRect) {
         super.init(frame: frame,

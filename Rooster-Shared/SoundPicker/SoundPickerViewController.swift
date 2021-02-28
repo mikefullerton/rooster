@@ -22,10 +22,10 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
     
     weak var delegate: SoundPickerViewControllerDelegate?
     
-    let soundPreferenceKey: SoundPreferences.SoundPreferenceKey
+    let soundPreferenceKey: SoundPreferences.PreferenceKey
     
     
-    init(withSoundPreferenceKey soundPreferenceKey: SoundPreferences.SoundPreferenceKey) {
+    init(withSoundPreferenceKey soundPreferenceKey: SoundPreferences.PreferenceKey) {
         self.soundPreferenceKey = soundPreferenceKey
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,13 +73,27 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
             soundPicker.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             soundPicker.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ])
-        
-        
     }
     
     @objc func doneButtonClicked(_ sender: SDKButton) {
-        if let newSound = self.soundPicker.chosenSound {
-            Controllers.preferencesController.soundPreferences.setSoundPreference(newSound, forKey: self.soundPreferenceKey)
+        if let newSounds = self.soundPicker.chosenSound {
+            
+            var soundFileCollection = SoundFileCollection()
+            
+            newSounds.forEach { soundFileCollection.addSound($0, randomizer: SoundPlayerRandomizer.default) }
+            
+            let soundSet = SoundSet(withID: String.guid,
+                                    url: nil,
+                                    displayName: "",
+                                    randomizer: PlayListRandomizer.default,
+                                    soundFileCollection: soundFileCollection,
+                                    soundFolder: SoundFolder.instance)
+            
+            let pref = SingleSoundPreference(withIdentifier: soundSet.id, soundSet: soundSet, enabled: true)
+
+            var soundPrefs = Controllers.preferencesController.soundPreferences
+            soundPrefs.setSoundPreference(pref, forKey: self.soundPreferenceKey)
+            Controllers.preferencesController.soundPreferences = soundPrefs
         }
         
         self.dismissWindow()
@@ -140,7 +154,7 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
 }
 
 extension ModalWindowController {
-    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreferences.SoundPreferenceKey) {
+    static func presentSoundPicker(withSoundPreference soundPreference: SoundPreferences.PreferenceKey) {
         SoundPickerViewController(withSoundPreferenceKey: soundPreference).presentInModalWindow()
     }
 }

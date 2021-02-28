@@ -61,7 +61,7 @@ public class DataModelStorage {
     }
 
     public func reminderState(forKey key: String) -> RCReminder.SavedState? {
-        if let dictionary = self.events.value(forKey: key) as? [AnyHashable: Any] {
+        if let dictionary = self.reminders.value(forKey: key) as? [AnyHashable: Any] {
             return RCReminder.SavedState(withDictionary: dictionary)
         }
         

@@ -25,7 +25,7 @@ extension URL {
 extension SoundFolder {
     
     public convenience init(withDirectory directory: DirectoryIterator) throws {
-        let descriptor = try SoundFolderItemDescriptor.read(fromURL: Self.descriptorFileURL(forURL: directory.url))
+        let descriptor = try SoundFolderDescriptor.read(fromURL: directory.url)
         self.init(withDescriptor: descriptor, atPath: directory.url)
         try self.addContents(inDirectory: directory)
     }
@@ -33,7 +33,7 @@ extension SoundFolder {
     private func addContents(inDirectory directory: DirectoryIterator) throws {
         for file in directory.files {
             if file.url.isSoundFile {
-                let fileDescriptor = try SoundFolderItemDescriptor.read(fromURL: SoundFile.descriptorFileURL(forURL: file.url))
+                let fileDescriptor = try SoundFileDescriptor.read(fromURL:file.url)
                 let soundFile = SoundFile(withDescriptor: fileDescriptor, atPath: file.url)
                 self.addSoundFile(soundFile)
             }

@@ -19,7 +19,7 @@ class CalendarItemTableViewCell : UITableViewCell {
 
     var dividerView: DividerView
     
-    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         self.dividerView = DividerView()
         
