@@ -25,6 +25,7 @@ public class SparkleController : NSObject, Loggable, SparkleTimerDelegate {
     func checkForUpdatesIfNeeded() {
         self.timer.stop()
         self.logger.log("Starting to check if check for new update is needed")
+        
         DispatchQueue.main.async {
             if let updater = self.updater {
                 if self.timer.isTimeForUpdate {
@@ -80,6 +81,8 @@ public class SparkleController : NSObject, Loggable, SparkleTimerDelegate {
     
     public func checkForUpdates() {
         self.logger.log("User requested update check");
+        CheckingForUpdatesWindow.show()
+
         self.timer.stop()
         if let updater = self.updater {
             updater.checkForUpdates()

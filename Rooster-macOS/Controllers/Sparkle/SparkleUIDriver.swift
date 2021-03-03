@@ -25,6 +25,8 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     
     func showUserInitiatedUpdateCheck(completion updateCheckStatusCompletion: @escaping (SPUUserInitiatedCheckStatus) -> Void) {
 
+        CheckingForUpdatesWindow.close()
+
         self.logger.log("showUserInitiatedUpdateCheck")
 
         DispatchQueue.main.async {
@@ -34,11 +36,15 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     
     func dismissUserInitiatedUpdateCheck() {
 
+        CheckingForUpdatesWindow.close()
+
         self.logger.log("dismissUserInitiatedUpdateCheck")
+        
     }
     
     func showUpdateFound(with appcastItem: SUAppcastItem, userInitiated: Bool, reply: @escaping (SPUUpdateAlertChoice) -> Void) {
-        
+        CheckingForUpdatesWindow.close()
+
         self.logger.log("showUpdateFound with appcastItem: \(appcastItem.description), user initiated: \(userInitiated)")
 
         DispatchQueue.main.async {
@@ -47,6 +53,7 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     }
     
     func showDownloadedUpdateFound(with appcastItem: SUAppcastItem, userInitiated: Bool, reply: @escaping (SPUUpdateAlertChoice) -> Void) {
+        CheckingForUpdatesWindow.close()
 
         self.logger.log("showDownloadedUpdateFound with appcastItem: \(appcastItem.description), user initiated: \(userInitiated)")
 
@@ -56,6 +63,7 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     }
     
     func showResumableUpdateFound(with appcastItem: SUAppcastItem, userInitiated: Bool, reply: @escaping (SPUInstallUpdateStatus) -> Void) {
+        CheckingForUpdatesWindow.close()
 
         self.logger.log("showResumableUpdateFound with appcastItem: \(appcastItem.description), user initiated: \(userInitiated)")
         
@@ -65,7 +73,8 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     }
     
     func showInformationalUpdateFound(with appcastItem: SUAppcastItem, userInitiated: Bool, reply: @escaping (SPUInformationalUpdateAlertChoice) -> Void) {
-        
+        CheckingForUpdatesWindow.close()
+
         self.logger.log("showInformationalUpdateFound with appcastItem: \(appcastItem.description), user initiated: \(userInitiated)")
         
         DispatchQueue.main.async {
@@ -74,15 +83,19 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     }
     
     func showUpdateReleaseNotes(with downloadData: SPUDownloadData) {
+        CheckingForUpdatesWindow.close()
         self.logger.log("showUpdateReleaseNotes")
     }
     
     func showUpdateReleaseNotesFailedToDownloadWithError(_ error: Error) {
+        CheckingForUpdatesWindow.close()
         self.logger.error("showUpdateReleaseNotesFailedToDownloadWithError: \(error.localizedDescription)")
     }
   
     func showUpdateNotFoundWithError(_ error: Error, acknowledgement: @escaping () -> Void) {
         
+        CheckingForUpdatesWindow.close()
+  
 //        You’re up-to-date! NSError:Error Domain=SUSparkleErrorDomain Code=1001 "You’re up-to-date!" UserInfo={NSLocalizedRecoveryOptions=(
 //        OK
 //        ), NSLocalizedDescription=You’re up-to-date!, NSLocalizedRecoverySuggestion=Rooster 1.0.43 is currently the newest version available.}
@@ -114,6 +127,9 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     }
     
     func showUpdaterError(_ error: Error, acknowledgement: @escaping () -> Void) {
+
+        CheckingForUpdatesWindow.close()
+
         self.logger.error("showUpdaterError: \(error.localizedDescription)")
         DispatchQueue.main.async {
             acknowledgement()
@@ -121,6 +137,9 @@ class SparkleUIDriver: NSObject, SPUUserDriver, Loggable {
     }
     
     func showDownloadInitiated(completion downloadUpdateStatusCompletion: @escaping (SPUDownloadUpdateStatus) -> Void) {
+
+        CheckingForUpdatesWindow.close()
+
         self.logger.log("showDownloadInitiated")
 
         DispatchQueue.main.async {
