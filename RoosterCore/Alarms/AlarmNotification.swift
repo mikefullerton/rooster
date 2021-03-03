@@ -38,6 +38,10 @@ public class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConve
     
     private var startActions: [AlarmNotificationStartAction] = []
     
+    deinit {
+        self.performStopActions()
+    }
+    
     public static var startActionsFactory: () -> [AlarmNotificationStartAction] = {
         return []
     }
@@ -86,10 +90,6 @@ public class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConve
         self.performStopActions()
     
         self.startActions = []
-        
-        if let item = self.item {
-            Controllers.userNotificationController.cancelNotifications(forItem: item)
-        }
         
         if let delegate = self.delegate {
             delegate.alarmNotificationDidFinish(self)

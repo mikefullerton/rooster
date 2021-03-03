@@ -104,6 +104,9 @@
 		B256BC10258028A800FA67DC /* DelegateCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */; };
 		B256BC16258028BD00FA67DC /* PersonalCalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC15258028BD00FA67DC /* PersonalCalendarListViewController.swift */; };
 		B256BC1C25802A0000FA67DC /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */; };
+		B2581B5025F01E8300D2BC0B /* SparkleUIDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2581B4F25F01E8300D2BC0B /* SparkleUIDriver.swift */; };
+		B2581B5325F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2581B5125F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.xib */; };
+		B2581B5425F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2581B5225F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.swift */; };
 		B259A33A25C8D68800CF4C95 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B2EB268C25C86C7300906E41 /* dsa_pub.pem */; };
 		B259A33E25C8D68900CF4C95 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B2EB268C25C86C7300906E41 /* dsa_pub.pem */; };
 		B259A34225C8D68900CF4C95 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B2EB268C25C86C7300906E41 /* dsa_pub.pem */; };
@@ -873,6 +876,9 @@
 		B256BC0F258028A800FA67DC /* DelegateCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC15258028BD00FA67DC /* PersonalCalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCalendarListViewController.swift; sourceTree = "<group>"; };
 		B256BC1B25802A0000FA67DC /* CalendarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewModel.swift; sourceTree = "<group>"; };
+		B2581B4F25F01E8300D2BC0B /* SparkleUIDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUIDriver.swift; sourceTree = "<group>"; };
+		B2581B5125F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SparkleCheckingForUpdatesWindow.xib; sourceTree = "<group>"; };
+		B2581B5225F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleCheckingForUpdatesWindow.swift; sourceTree = "<group>"; };
 		B259A34925C9B34100CF4C95 /* MenuBarChoicesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarChoicesView.swift; sourceTree = "<group>"; };
 		B259A34E25C9B3A900CF4C95 /* SinglePreferenceChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePreferenceChoiceView.swift; sourceTree = "<group>"; };
 		B259A35925C9B90300CF4C95 /* SingleNotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleNotificationPreferences.swift; sourceTree = "<group>"; };
@@ -1502,6 +1508,9 @@
 				B25C36B725E1914800D45251 /* SparkleTimer.swift */,
 				B25C369E25E18CCB00D45251 /* SparkleController_v2.x.swift */,
 				B25C36BA25E193B800D45251 /* SparkleUI.swift */,
+				B2581B4F25F01E8300D2BC0B /* SparkleUIDriver.swift */,
+				B2581B5125F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.xib */,
+				B2581B5225F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.swift */,
 			);
 			path = Sparkle;
 			sourceTree = "<group>";
@@ -2605,6 +2614,7 @@
 				B294932425B5F5D400FCCF9E /* Sounds in Resources */,
 				B2CEF19E25B8C5EA00CA01E2 /* Localizable.strings in Resources */,
 				B29492F225B5F4D100FCCF9E /* MainMenu.xib in Resources */,
+				B2581B5325F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.xib in Resources */,
 				B2E224D825B61E610052758C /* LoadingWindowController.xib in Resources */,
 				B294933625B5F62F00FCCF9E /* Assets.xcassets in Resources */,
 				B294932525B5F5D400FCCF9E /* About in Resources */,
@@ -3049,6 +3059,7 @@
 				B2E2252325B640BE0052758C /* ListViewModel.swift in Sources */,
 				B29F4AFF25D18D0B0078F8B5 /* PreferencesStorage.swift in Sources */,
 				B2AA0B7025E6CD8D0014F873 /* AbstractListViewRowController.swift in Sources */,
+				B2581B5025F01E8300D2BC0B /* SparkleUIDriver.swift in Sources */,
 				B259A34F25C9B3A900CF4C95 /* SinglePreferenceChoiceView.swift in Sources */,
 				B26D1A9E25E9723900B158C5 /* NSView+Extensions.swift in Sources */,
 				B2E224BB25B61B420052758C /* SavedState.swift in Sources */,
@@ -3129,6 +3140,7 @@
 				B22365B825D41F4500AC00DA /* MenuBarScrollView.swift in Sources */,
 				B2E2252225B640BE0052758C /* ListViewSectionDescriptor.swift in Sources */,
 				B2118DE225D3142E002AE939 /* MenuBarItemViewModel.swift in Sources */,
+				B2581B5425F036E400D2BC0B /* SparkleCheckingForUpdatesWindow.swift in Sources */,
 				B274EFF525BA27B000F9D473 /* SoundPickerListViewModel.swift in Sources */,
 				B2AA0B7225E6CDC40014F873 /* AbstractListViewRowController+RowView.swift in Sources */,
 				B26D1DA825EAC99200B158C5 /* AlarmStartActions.swift in Sources */,

@@ -15,30 +15,25 @@ import Sparkle
 protocol AppKitInstallationUpdater {}
 #endif
 
-public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, SparkleTimerDelegate {
+public class SparkleController : NSObject, Loggable, SparkleTimerDelegate {
     
     private var updater: SPUUpdater? = nil
     private var error: Error?
     private lazy var timer = SparkleTimer(withDelegate: self)
-    lazy var sparkleUI = SparkleUI()
+    lazy var sparkleUIDriver = SparkleUIDriver()
 
     func checkForUpdatesIfNeeded() {
         self.timer.stop()
         self.logger.log("Starting to check if check for new update is needed")
         DispatchQueue.main.async {
             if let updater = self.updater {
-//                if !updater.updateInProgress {
-                    if self.timer.isTimeForUpdate {
-                        self.logger.log("Starting check for updates in the backgound on feed: \(updater.feedURL)")
-                        updater.checkForUpdatesInBackground()
-                    } else {
-                        self.logger.log("Not checking for updates yet")
-                        self.timer.startNextCheckTimer()
-                    }
-//                } else {
-//                    self.logger.log("Update in progress, not checking")
-//                    self.startNextCheckTimer()
-//                }
+                if self.timer.isTimeForUpdate {
+                    self.logger.log("Starting check for updates in the backgound on feed: \(updater.feedURL)")
+                    updater.checkForUpdatesInBackground()
+                } else {
+                    self.logger.log("Not checking for updates yet")
+                    self.timer.startNextCheckTimer()
+                }
             }
         }
     }
@@ -46,7 +41,6 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
     @objc func appDidBecomeActiveNotification(_ sender: Notification) {
         self.checkForUpdatesIfNeeded()
     }
-    
     
     func sparkleTimerCheckForUpdates(_ timer: SparkleTimer) {
         self.checkForUpdatesIfNeeded()
@@ -56,7 +50,7 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
         
         let updater = SPUUpdater(hostBundle: appBundle,
                                  applicationBundle: appBundle,
-                                 userDriver: self.sparkleUI.userDriver(for: appBundle),
+                                 userDriver: self.sparkleUIDriver,
                                  delegate: self)
 
         updater.sendsSystemProfile = false
@@ -66,7 +60,7 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
         do {
             try updater.start()
         } catch let error {
-            self.logger.error("Sparkle failed to start with error: \(error.localizedDescription)")
+            self.logger.error("Failed to start with error: \(error.localizedDescription)")
 
             // TODO: put up alert.
             
@@ -75,7 +69,7 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
         
         self.updater = updater
         
-        self.logger.log("Sparkle updater configured. Last update check was: \(self.timer.lastUpdateCheckDate?.description ?? "None" )")
+        self.logger.log("Updater configured. Last update check was: \(self.timer.lastUpdateCheckDate?.description ?? "None" )")
         
         self.checkForUpdatesIfNeeded()
         
@@ -91,14 +85,18 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
             updater.checkForUpdates()
         }
     }
+}
+
+extension SparkleController : SPUUpdaterDelegate {
+
     
-    public func updaterDidNotFindUpdate(_ updater: SPUUpdater) {
-        self.logger.log("Sparkle did not find update")
+    public func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
+        self.logger.log("Found valid update for item: \(item.description) - (will automatically download)");
         self.timer.didSuccessfullyCheck()
     }
     
-    public func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
-        self.logger.log("Sparkle did find valid update (will automatically download)");
+    public func updaterDidNotFindUpdate(_ updater: SPUUpdater) {
+        self.logger.log("No updates found")
         self.timer.didSuccessfullyCheck()
     }
     
@@ -108,10 +106,10 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
 //    }
     
     public func updater(_ updater: SPUUpdater, didAbortWithError error: Error) {
-        self.logger.error("Sparkle did abort with error: \(error.localizedDescription)")
+        self.logger.error("Updater did abort with error: \(error.localizedDescription)")
         if let nsError = error as NSError? {
             if nsError.domain == SUSparkleErrorDomain && nsError.code == SUError.appcastError.rawValue {
-                self.sparkleUI.showErrorAlert()
+                self.sparkleUIDriver.showInternalNetworkErrorAlert()
             }
         }
         
@@ -119,24 +117,38 @@ public class SparkleController : NSObject, SPUUpdaterDelegate, Loggable, Sparkle
     }
     
     public func updater(_ updater: SPUUpdater, failedToDownloadUpdate item: SUAppcastItem, error: Error) {
-        self.logger.error("Sparkle failed to download update with error: \(error.localizedDescription)")
+        self.logger.error("failed to download item: \(item.description), update with error: \(error.localizedDescription)")
         self.timer.didFailCheck()
     }
 
-    
     public func updater(_ updater: SPUUpdater, willDownloadUpdate item: SUAppcastItem, with request: NSMutableURLRequest) {
-        self.logger.log("Sparkle will download update from \(request)")
+        self.logger.log("will download update for item: \(item.description), from: \(request)")
     }
 
     public func updater(_ updater: SPUUpdater, didDownloadUpdate item: SUAppcastItem) {
-        self.logger.log("Sparkle did download update. Next check: \(self.timer.nextCheckDate.description)")
+        self.logger.log("did download update for item: \(item.description).")
     }
 
+    public func updater(_ updater: SPUUpdater, willInstallUpdate item: SUAppcastItem) {
+        self.logger.log("will install update for item: \(item.description).")
+    }
+    
+    public func updater(_ updater: SPUUpdater, didFinishLoading appcast: SUAppcast) {
+        self.logger.log("did finish loading appcast: \(appcast.description)")
+    }
+
+    public func updater(_ updater: SPUUpdater, shouldAllowInstallerInteractionFor updateCheck: SPUUpdateCheck) -> Bool {
+        return true
+    }
     //    public func updaterMayCheck(forUpdates updater: SUUpdater) -> Bool {
 //        self.logger.log("Sparkle asked for permission to check");
 //        return true
 //    }
+
+}
+
+extension SUAppcastItem {
+    
     
     
 }
-

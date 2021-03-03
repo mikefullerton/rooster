@@ -66,26 +66,6 @@ public class SystemUtilities : NSObject, Loggable {
         }
     }
     
-    public func startBouncingAppIcon() {
-        self.stopBouncingAppIcon()
-        self.userAttentionRequest = NSApp.requestUserAttention(.criticalRequest)
-    }
-    
-    public func stopBouncingAppIcon() {
-        if self.userAttentionRequest != 0 {
-            NSApp.cancelUserAttentionRequest(self.userAttentionRequest)
-            self.userAttentionRequest = 0
-        }
-    }
-    
-    public func bounceAppIconOnce() {
-        self.stopBouncingAppIcon()
-        self.userAttentionRequest = NSApp.requestUserAttention(.informationalRequest)
-//        DispatchQueue.main.async {
-//            self.stopBouncingAppIcon()
-//        }
-    }
-    
     public func openNotificationSettings() {
 //        let urlString = "/System/Library/PreferencePanes/Notifications.prefPane"
 //        let url = URL(fileURLWithPath: urlString)

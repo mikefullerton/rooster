@@ -10,7 +10,7 @@ import UserNotifications
 
 public class UserNotificationCenterController : NSObject, UNUserNotificationCenterDelegate, Loggable {
     
-    private var identifiers:[String]
+    private var identifiers:Set<String>
     private let timer: SimpleTimer
     private var accessGranted: Bool
     
@@ -18,7 +18,7 @@ public class UserNotificationCenterController : NSObject, UNUserNotificationCent
     
     public override init() {
         self.accessGranted = false
-        self.identifiers = []
+        self.identifiers = Set<String>()
         self.timer = SimpleTimer(withName: "UserNotificationRescheduleTimer")
         
         super.init()
@@ -38,8 +38,10 @@ public class UserNotificationCenterController : NSObject, UNUserNotificationCent
         }
     }
     
-    public func scheduleNotification(forItem item: RCCalendarItem) {
+    public func scheduleNotification(forItem item: RCCalendarItem) -> String {
 
+        let notifID = item.id
+        
         let center = UNUserNotificationCenter.current()
         
         center.getNotificationSettings { settings in
@@ -65,14 +67,14 @@ public class UserNotificationCenterController : NSObject, UNUserNotificationCent
             
             content.userInfo = ["item-id": item.id]
         
-            self.identifiers.append(item.id)
+            self.identifiers.insert(notifID)
 
             // FIXME
             #if targetEnvironment(macCatalyst)
             UIApplication.shared.applicationIconBadgeNumber = self.identifiers.count
             #endif
             
-            let request = UNNotificationRequest(identifier: item.id,
+            let request = UNNotificationRequest(identifier: notifID,
                                                 content: content,
                                                 trigger: trigger)
 
@@ -81,20 +83,28 @@ public class UserNotificationCenterController : NSObject, UNUserNotificationCent
             notificationCenter.add(request) { (error) in
                 if error != nil {
                     self.logger.error("Error scheduling notification: \(error?.localizedDescription ?? "")")
-                } else {
+                } else if self.identifiers.contains(notifID) {
                     let delay = self.systemNotificationDelay
                     
                     self.logger.log("Scheduled notification ok, will fire again in \(delay) seconds")
                     
                     self.timer.start(withInterval: delay) { timer in
-                        self.logger.log("User notification rescheduler timer fired after delay of \(delay) seconds")
-                        if self.identifiers.count > 0 {
-                            self.scheduleNotification(forItem: item)
+                        if self.identifiers.contains(notifID) {
+                            self.logger.log("User notification rescheduler timer fired after delay of \(delay) seconds")
+                            if self.identifiers.count > 0 {
+                                _ = self.scheduleNotification(forItem: item)
+                            }
+                        } else {
+                            self.logger.log("\(notifID) was removed, stopping notifications.")
                         }
                     }
+                } else {
+                    self.logger.log("\(notifID) was removed, stopping notifications.")
                 }
             }
         }
+        
+        return notifID
     }
     
     public func cancelAllNotifications() {
@@ -113,13 +123,13 @@ public class UserNotificationCenterController : NSObject, UNUserNotificationCent
         self.logger.log("Cancelled all user notifications")
     }
     
-    public func cancelNotifications(forItem item: RCCalendarItem) {
+    public func cancelNotifications(forItemIdentifier itemID: String) {
         let center = UNUserNotificationCenter.current()
-        center.removeDeliveredNotifications(withIdentifiers: [item.id])
-        center.removePendingNotificationRequests(withIdentifiers: [item.id])
+        center.removeDeliveredNotifications(withIdentifiers: [itemID])
+        center.removePendingNotificationRequests(withIdentifiers: [itemID])
 
-        if let index = self.identifiers.firstIndex(of: item.id) {
-            self.identifiers.remove(at: index)
+        if self.identifiers.contains(itemID) {
+            self.identifiers.remove(itemID)
         }
         
         // FIXME
@@ -127,7 +137,7 @@ public class UserNotificationCenterController : NSObject, UNUserNotificationCent
         UIApplication.shared.applicationIconBadgeNumber = self.identifiers.count
         #endif
 
-        self.logger.log("Cancelled user notification for item: \(item.description)")
+        self.logger.log("Cancelled user notification for item: \(itemID)")
     }
     
     public func userNotificationCenter(_ center: UNUserNotificationCenter,

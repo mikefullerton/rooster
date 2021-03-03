@@ -8,7 +8,33 @@
 import Foundation
 import RoosterCore
 
-class StartNotificationAlarmAction: AlarmNotificationStartAction {
+class StartNotificationAlarmAction: AlarmNotificationStartAction, Loggable {
+    
+    deinit {
+        self.stopNotifications()
+    }
+    
+    var notificationID: String?
+    
+    #if os(macOS)
+    var userAttentionRequest:Int?
+    
+    public func startBouncingAppIcon() {
+        self.stopBouncingAppIcon()
+        let userAttentionRequest = NSApp.requestUserAttention(.criticalRequest)
+        self.userAttentionRequest = userAttentionRequest
+        self.logger.log("Started bouncing icon for userAttentionRequest: \(userAttentionRequest)")
+      
+    }
+    
+    public func stopBouncingAppIcon() {
+        if let userAttentionRequest = self.userAttentionRequest {
+            self.logger.log("Stopping bouncing icon for userAttentionRequest: \(userAttentionRequest)")
+            NSApp.cancelUserAttentionRequest(userAttentionRequest)
+            self.userAttentionRequest = nil
+        }
+    }
+    #endif
     
     func alarmNotificationStartAction(_ alarmNotification: AlarmNotification) {
         if let item = alarmNotification.item {
@@ -16,45 +42,45 @@ class StartNotificationAlarmAction: AlarmNotificationStartAction {
             
             let prefs = Controllers.preferencesController.notificationPreferences.notificationPreferencesForAppState
             
-            if prefs.options.contains(.autoOpenLocations) {
-                alarmNotification.logger.log("auto opening location URL (if available) for \(alarmNotification.description)")
+            if prefs.options.contains(.autoOpenLocations),
+                item.openLocationURL() {
+                self.logger.log("auto opening location URL (if available) for \(alarmNotification.description)")
                 
-                item.openLocationURL()
                 item.bringLocationAppsToFront()
             }
             
             if prefs.options.contains(.useSystemNotifications) {
-                alarmNotification.logger.log("posting system notifications for \(alarmNotification.description)")
-
-                Controllers.userNotificationController.scheduleNotification(forItem: item)
-            }
+            
+                let notifID = Controllers.userNotificationController.scheduleNotification(forItem: item)
+                self.notificationID = notifID
+                self.logger.log("posted system notifications for \(alarmNotification.description), notifID: \(notifID)")
+}
             
             #if os(macOS)
-            
-            if prefs.options.contains(.bounceAppIcon) {
-                alarmNotification.logger.log("bouncing app in dock for \(alarmNotification.description)")
-
-                Controllers.systemUtilities.startBouncingAppIcon()
-            }
-            
-            #endif
-            
-            #if targetEnvironment(macCatalyst)
-            if prefs.bounceIconInDock {
-                alarmNotification.logger.log("bouncing app in dock for \(alarmNotification.description)")
-
-                Controllers.appKitPlugin.utilities.startBouncingAppIcon()
-            }
+            self.startBouncingAppIcon()
             #endif
         }
     }
     
     func alarmNotificationStopAction(_ alarmNotification: AlarmNotification) {
+        self.logger.log("Stopping notifications for item: \(alarmNotification.description)")
+        self.stopNotifications()
+    }
+    
+    func stopNotifications() {
+        #if os(macOS)
+        self.stopBouncingAppIcon()
+        #endif
         
+        if let notifID = self.notificationID {
+            self.logger.log("Stopping notification for itemID: \(notifID)")
+            Controllers.userNotificationController.cancelNotifications(forItemIdentifier: notifID)
+            self.notificationID = nil
+        }
     }
 }
 
-class StartPlayingSoundAlarmAction: AlarmNotificationStartAction {
+class StartPlayingSoundAlarmAction: AlarmNotificationStartAction, Loggable {
 
     private let timer: SimpleTimer
     private var playList: PlayList?
@@ -79,14 +105,14 @@ class StartPlayingSoundAlarmAction: AlarmNotificationStartAction {
         let soundPrefs = Controllers.preferencesController.preferences(forItemIdentifier: alarmNotification.itemID).soundPreference
         
         guard soundPrefs.hasEnabledSoundPreferences else {
-            alarmNotification.logger.log("sounds disabled not playing sound")
+            self.logger.log("sounds disabled not playing sound")
             return
         }
         
         let playList = soundPrefs.enabledPlayList
        
         guard !playList.isEmpty else {
-            alarmNotification.logger.log("No sounds in iterators to play")
+            self.logger.log("No sounds in iterators to play")
             return
         }
         
@@ -100,17 +126,19 @@ class StartPlayingSoundAlarmAction: AlarmNotificationStartAction {
         
         let interval = TimeInterval(soundPrefs.startDelay)
         
-         alarmNotification.logger.log("starting alarm sound for \(alarmNotification.description), with interval: \(interval)")
+        self.logger.log("starting alarm sound for \(alarmNotification.description), with interval: \(interval)")
 
          self.timer.start(withInterval:interval) { (timer) in
             
-             alarmNotification.logger.log("playing alarm sounds playlist: \(playList.description) for \(alarmNotification.description)")
+             self.logger.log("playing alarm sounds playlist: \(playList.description) for \(alarmNotification.description)")
 
              playList.play(withBehavior: soundBehavior)
          }
     }
     
     func alarmNotificationStopAction(_ alarmNotification: AlarmNotification) {
+        
+        self.logger.log("Stopping sounds for alarm: \(alarmNotification.description)")
         self.timer.stop()
         self.playList?.stop()
         self.playList = nil

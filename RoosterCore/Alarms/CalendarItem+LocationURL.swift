@@ -9,7 +9,7 @@ import Foundation
 
 extension RCCalendarItem {
     
-    public func openLocationURL() {
+    public func openLocationURL() -> Bool {
         if let url = self.knownLocationURL {
             
             #if os(macOS)
@@ -23,9 +23,13 @@ extension RCCalendarItem {
                 self.logger.log("Opened URL: \(url). Success: \(success), error: \(error != nil ? error!.localizedDescription : "nil")")
             }
             #endif
+            
+            return true
         } else {
             self.logger.log("No location url found")
         }
+        
+        return false
     }
 
     public func bringLocationAppsToFront() {
