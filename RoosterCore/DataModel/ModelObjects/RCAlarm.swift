@@ -86,7 +86,7 @@ public struct RCAlarm: Equatable, CustomStringConvertible {
     private var state: State {
         let now = Date()
         
-        if self.endDate.isBeforeDate(now) && self.canExpire {
+        if self.endDate.isBeforeDate(now) {
             return .hasExpired
         }
         
