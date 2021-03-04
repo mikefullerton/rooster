@@ -8,13 +8,13 @@
 import Foundation
 import RoosterCore
 
-protocol SparkleTimerDelegate : AnyObject {
+public protocol SparkleTimerDelegate : AnyObject {
     func sparkleTimerCheckForUpdates(_ timer: SparkleTimer)
 }
 
-class SparkleTimer : Loggable {
+public class SparkleTimer : Loggable {
     
-    weak var delegate: SparkleTimerDelegate?
+    public weak var delegate: SparkleTimerDelegate?
     
     private var timer: SimpleTimer
     let nextUpdateCheckDateKey = "nextUpdateCheckDateKey"
@@ -22,12 +22,12 @@ class SparkleTimer : Loggable {
     let tryAgainInterval:TimeInterval = 60 * 60
     let updateCheckInterval: TimeInterval = 60 * 60 * 24
 
-    init(withDelegate delegate: SparkleTimerDelegate?) {
+    public init(withDelegate delegate: SparkleTimerDelegate?) {
         self.delegate = delegate
         self.timer = SimpleTimer(withName: "SparkleTimer")
     }
         
-    var nextCheckDate: Date {
+    public var nextCheckDate: Date {
         get {
             if let date = UserDefaults.standard.object(forKey: self.nextUpdateCheckDateKey) as? Date {
                 return date
@@ -40,7 +40,7 @@ class SparkleTimer : Loggable {
         }
     }
     
-    var lastUpdateCheckDate: Date? {
+    public var lastUpdateCheckDate: Date? {
         get {
             return UserDefaults.standard.object(forKey: self.lastUpdateCheckDateKey) as? Date
         }
@@ -53,15 +53,15 @@ class SparkleTimer : Loggable {
         }
     }
    
-    func removeNextCheckDate() {
+    public func removeNextCheckDate() {
         UserDefaults.standard.removeObject(forKey: self.nextUpdateCheckDateKey)
     }
 
-    var isTimeForUpdate: Bool {
+    public var isTimeForUpdate: Bool {
         return self.nextCheckDate.isEqualToOrBeforeDate(Date())
     }
 
-    func startNextCheckTimer() {
+    public func startNextCheckTimer() {
         self.logger.log("Starting next check timer at \(Date().shortDateAndTimeString), will check again at \(self.nextCheckDate.shortDateAndTimeString)")
         self.timer.start(withDate: self.nextCheckDate) { [weak self] timer in
             if let strongSelf = self {
@@ -71,20 +71,20 @@ class SparkleTimer : Loggable {
         }
     }
     
-    func didSuccessfullyCheck() {
+    public func didSuccessfullyCheck() {
         self.lastUpdateCheckDate = Date()
         self.nextCheckDate = Date().addingTimeInterval(self.updateCheckInterval)
         self.logger.log("Did succussfully check for updates.")
         self.startNextCheckTimer()
     }
     
-    func didFailCheck() {
+    public func didFailCheck() {
         self.nextCheckDate = Date().addingTimeInterval(self.tryAgainInterval)
         self.logger.log("Did fail check for updates, will try again in \( Int(self.tryAgainInterval / 60)) minutes")
         self.startNextCheckTimer()
     }
    
-    func stop() {
+    public func stop() {
         self.timer.stop()
     }
 }

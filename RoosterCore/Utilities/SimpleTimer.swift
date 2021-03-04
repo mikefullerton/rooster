@@ -111,6 +111,7 @@ public class SimpleTimer : CustomStringConvertible, CustomDebugStringConvertible
                 self?.timerFired(completion: completion)
             } else {
                 self?.logger.log("Ignoring timer: \(timer)")
+                timer.invalidate()
             }
         }
         

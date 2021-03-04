@@ -8,28 +8,28 @@
 import Cocoa
 import RoosterCore
 
-class WindowController: NSWindowController, Loggable {
+public class WindowController: NSWindowController, Loggable {
     
     private(set) static var visibleControllers: [NSWindowController] = []
     
     var autosaveKey: String?
     
-    init() {
+    public init() {
         super.init(window: nil)
         
         self.shouldCascadeWindows = false
     }
     
-    override var windowNibName: NSNib.Name? {
+    public override var windowNibName: NSNib.Name? {
         let name = String(describing: type(of: self))
         return name
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func windowDidLoad() {
+    public override func windowDidLoad() {
         super.windowDidLoad()
         
         if let window = self.window {
@@ -37,6 +37,7 @@ class WindowController: NSWindowController, Loggable {
             window.setFrameAutosaveName("")
         }
     }
+    
     
     func setContentViewController(_ viewController: NSViewController) {
         self.contentViewController = viewController
@@ -105,13 +106,14 @@ class WindowController: NSWindowController, Loggable {
         }
     }
     
-    override func showWindow(_ sender: Any?) {
+    public override func showWindow(_ sender: Any?) {
         super.showWindow(sender)
+        _ = self.window // make sure it's loaded
         
         WindowController.addWindowController(self)
     }
     
-    override func close() {
+    public override func close() {
         super.close()
         
         WindowController.removeWindowController(self)

@@ -22,7 +22,8 @@ class AppDelegate: NSObject,
                    NSApplicationDelegate,
                    Loggable,
                    NSWindowDelegate,
-                   FirstLaunchWindowControllerDelegate {
+                   FirstLaunchWindowControllerDelegate,
+                   NSUserInterfaceValidations {
 
     public static let ApplicationStateVersion = 2
     public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
@@ -171,6 +172,16 @@ class AppDelegate: NSObject,
         NSApp.activate(ignoringOtherApps: true)
     }
 
+    func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+        let action = item.action
+        
+        if action == #selector(checkForUpdates(_:)) {
+            return Controllers.sparkleController.canCheckForUpdates
+        }
+
+        return true
+    }
+    
     
     func hideLaunchWindow() {
         if let launchWindow = self.launchWindow {

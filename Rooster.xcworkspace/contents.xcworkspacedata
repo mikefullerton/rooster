@@ -4,4 +4,7 @@
    <FileRef
       location = "group:Rooster.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Sparkle/Sparkle.xcodeproj">
+   </FileRef>
 </Workspace>

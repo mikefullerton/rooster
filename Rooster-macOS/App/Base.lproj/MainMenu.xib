@@ -38,8 +38,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
-                            <menuItem title="Check For Updates…" id="JtG-0B-jyo">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Check For Updates…" keyEquivalent="U" id="JtG-0B-jyo">
                                 <connections>
                                     <action selector="checkForUpdates:" target="Voe-Tx-rLC" id="tlK-1E-obc"/>
                                 </connections>
