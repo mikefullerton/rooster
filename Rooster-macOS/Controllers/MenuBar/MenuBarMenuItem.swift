@@ -84,11 +84,11 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     
     func startFlashingTimer() {
         if Controllers.preferencesController.menuBarPreferences.options.contains(.blink) {
+            self.logger.log("starting flashing timer")
+            
             if self.timer == nil {
                 let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
-                    
-                    self.logger.log("flashing timer fired")
-                    
+//                    self.logger.log("flashing timer fired")
                     self.updateAlarmState()
                 }
                 self.timer = timer
@@ -103,6 +103,8 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
         if self.timer != nil {
             self.timer?.invalidate()
             self.timer = nil
+            
+            self.logger.log("stopped flashing timer")
         }
     }
     
@@ -119,8 +121,10 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     }
     
     func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
-        self.alarmState = .none
-        self.alarmStateDidChange()
+        DispatchQueue.main.async {
+            self.alarmState = .none
+            self.alarmStateDidChange()
+        }
     }
     
     @IBAction @objc func eventListWasClicked(_ sender: Any) {
