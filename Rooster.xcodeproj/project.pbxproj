@@ -1487,6 +1487,7 @@
 				B21E7B9925EC4CFB00FCA802 /* GeneralPreferenceCheckboxView.swift */,
 				B25F6AAA25BA70110067C096 /* PreferenceSlider.swift */,
 				B259A34E25C9B3A900CF4C95 /* SinglePreferenceChoiceView.swift */,
+				B259A34925C9B34100CF4C95 /* MenuBarChoicesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1805,7 +1806,6 @@
 				B259A38125C9C45500CF4C95 /* Views */,
 				B26F6B4325B7C47400EA2057 /* Sounds */,
 				B259A37D25C9C44200CF4C95 /* Notifications */,
-				B259A34925C9B34100CF4C95 /* MenuBarChoicesView.swift */,
 			);
 			path = PreferencesUI;
 			sourceTree = "<group>";

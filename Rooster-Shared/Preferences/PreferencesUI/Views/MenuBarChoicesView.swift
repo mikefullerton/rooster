@@ -29,7 +29,7 @@ class MenuBarChoicesView : SimpleStackView {
         notifs.setContainedViews([
             self.showInMenuBar,
             self.showCountdown,
-            self.shortCountdown,
+//            self.shortCountdown,
             self.blink
         ])
 

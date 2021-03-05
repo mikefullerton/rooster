@@ -120,6 +120,14 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
         self.alarmStateDidChange()
     }
     
+    @objc func preferencesDidChange(_ sender: Notification) {
+        self.isVisible = prefs.options.contains(.showIcon)
+        DispatchQueue.main.async {
+            self.alarmState = .none
+            self.alarmStateDidChange()
+        }
+    }
+
     func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
         DispatchQueue.main.async {
             self.alarmState = .none
@@ -131,10 +139,6 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
 
     }
     
-    @objc func preferencesDidChange(_ sender: Notification) {
-        self.isVisible = prefs.options.contains(.showIcon)
-    }
-
     func createStatusBarItem() -> NSStatusItem {
         let statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
         
@@ -344,9 +348,10 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     }
 
     func countdownDisplayFormatter(_ countDown: CountDownTimer) -> TimeDisplayFormatter {
-        return self.prefs.options.contains(.shortCountdownFormat) ?
-            DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 2.0):
-            VerboseTimeDisplayFormatter(showSecondsWithMinutes: 2.0)
+//        return self.prefs.options.contains(.shortCountdownFormat) ?
+//            DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 2.0):
+//            VerboseTimeDisplayFormatter(showSecondsWithMinutes: 2.0)
+        return DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 2.0)
     }
     
     func countdown(_ countDown: CountDownTimer, didFinish displayString: String) {
