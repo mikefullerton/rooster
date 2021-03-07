@@ -8,18 +8,18 @@
 import Foundation
 import RoosterCore
 
-struct SpacerAdornment :  ListViewSectionAdornmentProtocol {
-    let preferredHeight: CGFloat
+public struct SpacerAdornment :  ListViewSectionAdornmentProtocol {
+    public let preferredSize: CGSize
     
-    init(withHeight height: CGFloat) {
-        self.preferredHeight = height
+    public init(withHeight height: CGFloat) {
+        self.preferredSize = CGSize(width: NSView.noIntrinsicMetric, height: height)
     }
     
-    var title: String? {
+    public var title: String? {
         return nil
     }
 
-    var viewClass: AnyClass {
+    public var viewClass: AnyClass {
         return SpacerView.self
     }
     

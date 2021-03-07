@@ -8,10 +8,41 @@
 import Cocoa
 import RoosterCore
 
+class TitleBarAccessoryViewController : NSTitlebarAccessoryViewController {
+    
+    
+    override func viewDidLayout() {
+        super.viewDidLayout()
+
+        self.fixSize()
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        self.fixSize()
+    }
+    
+    func fixSize() {
+        let view = self.view
+        var frame = view.frame
+        
+        let frameInWindow = view.convert(frame, from: nil)
+        
+        let windowFrame = self.view.window!.frame
+        
+        frame.size.width = (windowFrame.size.width + frameInWindow.origin.x) // origin is negative
+        view.frame = frame
+    }
+}
+
+
 class MainWindowController: WindowController {
     
     let mainWindowViewController = MainWindowViewController()
 
+    @IBOutlet var titleBarAccessoryViewController:  NSViewController!
+    
     override func windowDidLoad() {
         super.windowDidLoad()
         
@@ -22,10 +53,14 @@ class MainWindowController: WindowController {
         self.autosaveKey = "MainWindow"
         self.setContentViewController(self.mainWindowViewController)
         
-//        self.mainWindowViewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
+        if let titleBarAccessoryViewController = self.titleBarAccessoryViewController as? TitleBarAccessoryViewController {
+            titleBarAccessoryViewController.layoutAttribute = .left
+            titleBarAccessoryViewController.automaticallyAdjustsSize = true
+            self.window?.addTitlebarAccessoryViewController(titleBarAccessoryViewController)
+        }
     }
-    
+
     @IBAction @objc func showSettings(_ sender: Any) {
         PreferencesWindow.show()
     }
@@ -37,16 +72,18 @@ class MainWindowController: WindowController {
     @IBAction @objc func getInvolved(_ sender: Any) {
         AppDelegate.instance.showCodeAlert()
     }
+    
+    @IBAction @objc func toggleSplitView(_ sender: Any) {
+        
+        self.mainWindowViewController.toggleSplitView()
+    }
 
     @objc func mainWindowDidUpdate(_ notification: Notification) {
         if let window = self.window {
-            let preferredContentSize = self.mainWindowViewController.preferredContentSize
+            let preferredContentSize = self.mainWindowViewController.calculatedContentSize
             self.logger.log("Updating main window size: \(NSStringFromSize(preferredContentSize))")
             window.setContentSize(preferredContentSize)
         }
-    }
-
-    func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {
     }
 
 }

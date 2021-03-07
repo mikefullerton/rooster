@@ -20,8 +20,8 @@ class VerticalButtonListTableCell : ListViewRowController<VerticalTabItem> {
   
 //    var eventHandler: EventHandler<VerticalTabItem, VerticalButtonListTableCell>?
   
-    class override var preferredHeight: CGFloat {
-        return 46.0
+    public class override var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 46.0)
     }
  
     override func viewWillAppear(withContent content: VerticalTabItem) {

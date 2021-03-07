@@ -8,19 +8,19 @@
 import Foundation
 import RoosterCore
 
-struct DividerAdornment :  ListViewSectionAdornmentProtocol {
+public struct DividerAdornment :  ListViewSectionAdornmentProtocol {
     
-    let preferredHeight: CGFloat
+    public let preferredSize: CGSize
     
-    init(withHeight height: CGFloat) {
-        self.preferredHeight = height
+    public init(withHeight height: CGFloat) {
+        self.preferredSize = CGSize(width: NSView.noIntrinsicMetric, height: height)
     }
     
-    var title: String? {
+    public var title: String? {
         return nil
     }
 
-    var viewClass: AnyClass {
+    public var viewClass: AnyClass {
         return DividerView.self
     }
 }

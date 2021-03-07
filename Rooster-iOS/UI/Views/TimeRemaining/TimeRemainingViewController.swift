@@ -75,13 +75,8 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
         self.startTimer()
     }
     
-    override var preferredContentSize: CGSize {
-        get {
-            return CGSize(width: self.view.frame.size.width, height: TimeRemainingViewController.preferredHeight)
-        }
-        set(size) {
-            
-        }
+    var calculatedContentSize: CGSize {
+        return CGSize(width: self.view.frame.size.width, height: TimeRemainingViewController.preferredHeight)
     }
 
     func addLabel(labelVerticalOffset: CGFloat) {

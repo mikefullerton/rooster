@@ -34,16 +34,4 @@ class CalendarItemTableViewController<ViewModel> : ListViewController<ViewModel>
     func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
         self.reloadData()
     }
-
-    override var preferredContentSize: CGSize {
-        get {
-            if let viewModel = self.viewModel {
-                return CGSize(width: self.view.frame.size.width, height: viewModel.height)
-            }
-            return super.preferredContentSize
-        }
-        set(size) {
-            
-        }
-    }
 }

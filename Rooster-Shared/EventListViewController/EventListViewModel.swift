@@ -13,17 +13,16 @@ import Cocoa
 import UIKit
 #endif
 
-struct NoMeetingsModelObject {
+public struct NoMeetingsModelObject {
     
 }
 
-
-struct EventListViewModel : ListViewModelProtocol {
+public struct EventListViewModel : ListViewModelProtocol {
     
-    let sections: [ListViewSectionDescriptor]
+    public let sections: [ListViewSectionDescriptor]
     
-    init(withEvents events: [RCEvent],
-         reminders: [RCReminder]) {
+    public init(withEvents events: [RCEvent],
+                reminders: [RCReminder]) {
         
         var sortedList:[RCCalendarItem] = events + reminders
         

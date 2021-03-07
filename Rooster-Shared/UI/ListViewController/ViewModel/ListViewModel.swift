@@ -8,17 +8,17 @@
 import Foundation
 import RoosterCore
 
-protocol ListViewModelProtocol {
+public protocol ListViewModelProtocol {
     var sections:[ListViewSectionDescriptor] { get }
 }
 
 extension ListViewModelProtocol {
 
-    var sectionCount: Int {
+    public var sectionCount: Int {
         return self.sections.count
     }
     
-    var rowCount: Int {
+    public var rowCount: Int {
         
         var rowCount: Int = 0
         
@@ -29,7 +29,7 @@ extension ListViewModelProtocol {
         return rowCount
     }
     
-    func section(forIndex index: Int) -> ListViewSectionDescriptor? {
+    public func section(forIndex index: Int) -> ListViewSectionDescriptor? {
         guard index >= 0, index < self.sections.count else {
             return nil
         }
@@ -37,15 +37,15 @@ extension ListViewModelProtocol {
         return self.sections[index]
     }
 
-    func header(forSection section: Int) -> ListViewSectionAdornmentProtocol? {
+    public func header(forSection section: Int) -> ListViewSectionAdornmentProtocol? {
         return self.section(forIndex: section)?.header
     }
 
-    func footer(forSection section: Int) -> ListViewSectionAdornmentProtocol? {
+    public func footer(forSection section: Int) -> ListViewSectionAdornmentProtocol? {
         return self.section(forIndex: section)?.footer
     }
     
-    func row(forSection section:Int, row: Int) -> AbstractListViewRowDescriptor? {
+    public func row(forSection section:Int, row: Int) -> AbstractListViewRowDescriptor? {
         if let section = self.section(forIndex: section) {
             return section.row(forIndex: row)
         }
@@ -53,29 +53,30 @@ extension ListViewModelProtocol {
         return nil
     }
     
-    func row(forIndexPath indexPath: IndexPath) -> AbstractListViewRowDescriptor? {
+    public func row(forIndexPath indexPath: IndexPath) -> AbstractListViewRowDescriptor? {
         if let section = self.section(forIndex: indexPath.section) {
             return section.row(forIndex: indexPath.item)
         }
         return nil
     }
-    
-    var height: CGFloat {
-        var height: CGFloat = 0
+
+    public var size: CGSize {
+        var size = CGSize.zero
         
         for section in sections {
-            height += section.height
+            size.height += section.size.height
+            size.width = max(section.size.width, size.width)
         }
         
-        return height
+        return size
     }
 }
 
-struct ListViewModel<ContentType, ViewType: AbstractListViewRowController> : ListViewModelProtocol {
+public struct ListViewModel<ContentType, ViewType: AbstractListViewRowController> : ListViewModelProtocol {
 
-    let sections: [ListViewSectionDescriptor]
+    public let sections: [ListViewSectionDescriptor]
 
-    init(withContent content: [ContentType]) {
+    public init(withContent content: [ContentType]) {
         let rows = content.map { ListViewRowDescriptor<ContentType, ViewType>(withContent: $0) }
         self.sections = [ ListViewSectionDescriptor(withRows: rows) ]
     }

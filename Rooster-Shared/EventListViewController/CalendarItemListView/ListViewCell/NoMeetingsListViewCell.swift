@@ -52,8 +52,8 @@ class NoMeetingsListViewCell : ListViewRowController<NoMeetingsModelObject> {
         ])
     }
 
-    override class var preferredHeight: CGFloat {
-        return 40
+    override class var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 40.0)
     }
 
     override func viewWillAppear(withContent content: NoMeetingsModelObject) {

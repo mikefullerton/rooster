@@ -27,8 +27,8 @@ class CountDownHeaderView : BlurView, ListViewAdornmentView, DataModelAware, Cou
         fatalError("init(coder:) has not been implemented")
     }
     
-    static var preferredHeight: CGFloat {
-        return 40
+    static var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 40)
     }
     
     lazy var titleView: CountDownTextField = {

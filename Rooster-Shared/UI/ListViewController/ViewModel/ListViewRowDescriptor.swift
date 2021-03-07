@@ -8,50 +8,50 @@
 import Foundation
 import RoosterCore
 
-protocol AbstractListViewRowDescriptor {
+public protocol AbstractListViewRowDescriptor {
     var viewClass: AbstractListViewRowController.Type { get }
     func willDisplayView(_ view: SDKCollectionViewItem)
 }
 
 extension AbstractListViewRowDescriptor {
-    var cellReuseIdentifer: String {
+    public var cellReuseIdentifer: String {
         return "\(type(of: self)).\(self.viewClass)"
     }
 
-    var height: CGFloat {
-        return self.viewClass.preferredHeight
+    public var size: CGSize {
+        return self.viewClass.preferredSize
     }
 }
 
-struct ListViewRowDescriptor<CONTENT_TYPE, VIEW_TYPE: AbstractListViewRowController>: AbstractListViewRowDescriptor {
-    let content: CONTENT_TYPE
+public struct ListViewRowDescriptor<CONTENT_TYPE, VIEW_TYPE: AbstractListViewRowController>: AbstractListViewRowDescriptor {
+    public let content: CONTENT_TYPE
     
-    let eventHandler: EventHandler?
+    public let eventHandler: EventHandler?
     
-    init(withContent content: CONTENT_TYPE,
+    public init(withContent content: CONTENT_TYPE,
          eventHandler: EventHandler? = nil) {
         self.content = content
         self.eventHandler = eventHandler
     }
     
-    func willDisplayView(_ view: SDKCollectionViewItem) {
+    public func willDisplayView(_ view: SDKCollectionViewItem) {
         if let cell = view as? ListViewRowController<CONTENT_TYPE> {
             cell.viewWillAppear(withContent: self.content)
         }
     }
     
-    var viewClass: AbstractListViewRowController.Type {
+    public var viewClass: AbstractListViewRowController.Type {
         return VIEW_TYPE.self
     }
 }
 
-struct ListViewModelContentFetcher<CONTENT_TYPE: Identifiable, VIEW_TYPE: AbstractListViewRowController> {
+public struct ListViewModelContentFetcher<CONTENT_TYPE: Identifiable, VIEW_TYPE: AbstractListViewRowController> {
     
-    let model:ListViewModelProtocol
+    public let model:ListViewModelProtocol
     
-    typealias RowType = ListViewRowDescriptor<CONTENT_TYPE, VIEW_TYPE>
+    public typealias RowType = ListViewRowDescriptor<CONTENT_TYPE, VIEW_TYPE>
     
-    init(model: ListViewModelProtocol) {
+    public init(model: ListViewModelProtocol) {
         self.model = model
     }
     
@@ -63,7 +63,7 @@ struct ListViewModelContentFetcher<CONTENT_TYPE: Identifiable, VIEW_TYPE: Abstra
         return nil
     }
     
-    func indexPath(forContent content: CONTENT_TYPE) -> IndexPath? {
+    public func indexPath(forContent content: CONTENT_TYPE) -> IndexPath? {
         for (sectionIndex, section) in self.model.sections.enumerated() {
             for(soundIndex, row) in section.rows.enumerated() {
                 let typedRow = row as! RowType

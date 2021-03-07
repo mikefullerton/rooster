@@ -13,7 +13,7 @@ import Cocoa
 import UIKit
 #endif
 
-class EventListViewController : CalendarItemListViewController<EventListViewModel> {
+public class EventListViewController : CalendarItemListViewController<EventListViewModel> {
    
     override func provideDataModel() -> EventListViewModel? {
         return EventListViewModel(withEvents: Controllers.dataModelController.dataModel.events,

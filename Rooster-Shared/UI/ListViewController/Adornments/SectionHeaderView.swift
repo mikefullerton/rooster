@@ -13,19 +13,19 @@ import Cocoa
 import UIKit
 #endif
 
-class SectionHeaderView : BlurView, ListViewAdornmentView {
+public class SectionHeaderView : BlurView, ListViewAdornmentView {
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.addTitleView()
     }
     
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var titleView: SDKTextField = {
+    public lazy var titleView: SDKTextField = {
         let titleView = SDKTextField()
         titleView.isEditable = false
         titleView.textColor = Theme(for: self).secondaryLabelColor
@@ -49,7 +49,7 @@ class SectionHeaderView : BlurView, ListViewAdornmentView {
         ])
     }
     
-    func viewWillAppear(withContent contents: ListViewSectionAdornmentProtocol) {
+    public func viewWillAppear(withContent contents: ListViewSectionAdornmentProtocol) {
         if contents.title != nil {
             self.titleView.stringValue = contents.title!
         } else {
@@ -57,8 +57,8 @@ class SectionHeaderView : BlurView, ListViewAdornmentView {
         }
     }
     
-    static var preferredHeight: CGFloat {
-        return 30.0
+    public static var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 30.0)
     }
     
 }

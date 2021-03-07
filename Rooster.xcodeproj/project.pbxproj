@@ -142,7 +142,6 @@
 		B25F6B0D25BC9AE50067C096 /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B0B25BC9AE50067C096 /* PreferencesWindow.swift */; };
 		B25F6B0E25BC9AE50067C096 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */; };
 		B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */; };
-		B25F6B1E25BCC9600067C096 /* ListViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */; };
 		B25F6B4225BD091E0067C096 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4025BD09180067C096 /* MenuBarController.swift */; };
 		B25F6B4C25BDE9990067C096 /* NSImage+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */; };
 		B25F6B7B25BDEE240067C096 /* TopBottomBarVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2250E25B640BE0052758C /* TopBottomBarVerticalLayout.swift */; };
@@ -158,7 +157,6 @@
 		B25F6BBB25BDF35F0067C096 /* SDKTypes_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6BBA25BDF35F0067C096 /* SDKTypes_iOS.swift */; };
 		B25F6BD825BDF9B40067C096 /* DividerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251925B640BE0052758C /* DividerAdornment.swift */; };
 		B25F6BD925BDF9B40067C096 /* SpacerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251A25B640BE0052758C /* SpacerAdornment.swift */; };
-		B25F6BDA25BDF9B40067C096 /* ListViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */; };
 		B25F6BDB25BDF9B40067C096 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */; };
 		B25F6BDC25BDF9B40067C096 /* ListViewSectionAdornmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251825B640BE0052758C /* ListViewSectionAdornmentProtocol.swift */; };
 		B25F6BDD25BDF9B40067C096 /* ListViewSectionAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251725B640BE0052758C /* ListViewSectionAdornment.swift */; };
@@ -182,7 +180,6 @@
 		B26D1ABB25E972E200B158C5 /* CountdownTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CEF19425B8BAE600CA01E2 /* CountdownTextField.swift */; };
 		B26D1ABC25E972E200B158C5 /* DividerAdornment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2251925B640BE0052758C /* DividerAdornment.swift */; };
 		B26D1ABE25E972E200B158C5 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B4225B7C47400EA2057 /* PreferencesViewController.swift */; };
-		B26D1AC125E972E200B158C5 /* ListViewAdornmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */; };
 		B26D1AC225E972E200B158C5 /* PreferenceSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F6AAA25BA70110067C096 /* PreferenceSlider.swift */; };
 		B26D1AC325E972E200B158C5 /* ItemPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E224B525B61B420052758C /* ItemPreference.swift */; };
 		B26D1AC425E972E200B158C5 /* CalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26F6B5125B7C47400EA2057 /* CalendarListViewModel.swift */; };
@@ -625,6 +622,8 @@
 		B2AA0B7025E6CD8D0014F873 /* AbstractListViewRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B6F25E6CD8D0014F873 /* AbstractListViewRowController.swift */; };
 		B2AA0B7225E6CDC40014F873 /* AbstractListViewRowController+RowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */; };
 		B2AA0B7425E6CDDE0014F873 /* ListViewRowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */; };
+		B2AE525925F5499A0066BBF0 /* MainWindowPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2AE525725F5499A0066BBF0 /* MainWindowPanel.xib */; };
+		B2AE525A25F5499A0066BBF0 /* MainWindowPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AE525825F5499A0066BBF0 /* MainWindowPanel.swift */; };
 		B2AFE67F2569E06F006B3C58 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */; };
 		B2AFE68D2569E4CF006B3C58 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */; };
 		B2AFE691256ACC05006B3C58 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AFE690256ACC05006B3C58 /* ListViewController.swift */; };
@@ -930,7 +929,6 @@
 		B25F6B0B25BC9AE50067C096 /* PreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindow.swift; sourceTree = "<group>"; };
 		B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		B25F6B1825BCC7100067C096 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
-		B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewAdornmentView.swift; sourceTree = "<group>"; };
 		B25F6B4025BD09180067C096 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
 		B25F6B4B25BDE9990067C096 /* NSImage+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Utilities.swift"; sourceTree = "<group>"; };
 		B25F6B8C25BDF04E0067C096 /* MacThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacThemes.swift; sourceTree = "<group>"; };
@@ -1089,6 +1087,8 @@
 		B2AA0B7325E6CDDE0014F873 /* ListViewRowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewRowViewController.swift; sourceTree = "<group>"; };
 		B2AA0BC425E823ED0014F873 /* SoundFolderItemDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFolderItemDescriptor.swift; sourceTree = "<group>"; };
 		B2AA0BC625E8246A0014F873 /* JsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonFile.swift; sourceTree = "<group>"; };
+		B2AE525725F5499A0066BBF0 /* MainWindowPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindowPanel.xib; sourceTree = "<group>"; };
+		B2AE525825F5499A0066BBF0 /* MainWindowPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowPanel.swift; sourceTree = "<group>"; };
 		B2AFE65425697957006B3C58 /* Dictionary+Utiities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utiities.swift"; sourceTree = "<group>"; };
 		B2AFE67E2569E06F006B3C58 /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		B2AFE68C2569E4CF006B3C58 /* CalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
@@ -1580,7 +1580,6 @@
 			isa = PBXGroup;
 			children = (
 				B255349825B22C9200E17EEF /* AppControllers.swift */,
-				B2E2250225B63B3C0052758C /* MainWindowViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1602,7 +1601,6 @@
 			isa = PBXGroup;
 			children = (
 				B26F6B5025B7C47400EA2057 /* CalendarChooser */,
-				B26F6B3525B7C47400EA2057 /* EventListViewController */,
 				B26D1DA625EAC98D00B158C5 /* AlarmStartActions.swift */,
 			);
 			path = Calendar;
@@ -1756,6 +1754,7 @@
 				B2EB268625C86C7300906E41 /* Other Files */,
 				B26D1A9A25E971AA00B158C5 /* Views */,
 				B25F6B8C25BDF04E0067C096 /* MacThemes.swift */,
+				B2AE525B25F54A130066BBF0 /* MainWindow */,
 				B274F03925BA3DCD00F9D473 /* App */,
 				B26D1A8E25E96C2900B158C5 /* Buttons */,
 				B26D1A9125E96DC300B158C5 /* Controllers */,
@@ -1898,8 +1897,6 @@
 				B2E224D725B61E610052758C /* LoadingWindowController.swift */,
 				B25F6B0B25BC9AE50067C096 /* PreferencesWindow.swift */,
 				B25F6B0C25BC9AE50067C096 /* PreferencesWindow.xib */,
-				B225CDA925C0763A00F3BA15 /* MainWindowController.xib */,
-				B2E224E825B62F550052758C /* MainWindowController.swift */,
 				B21E7BAD25ED5CD100FCA802 /* CalendarWindow.xib */,
 				B21E7BAE25ED5CD100FCA802 /* CalendarWindow.swift */,
 			);
@@ -1975,6 +1972,7 @@
 			children = (
 				B29493C225B5F8C100FCCF9E /* Resources */,
 				B25C374325E2C12C00D45251 /* SDKView+Constraints.swift */,
+				B26F6B3525B7C47400EA2057 /* EventListViewController */,
 				B26D1A8A25E968A200B158C5 /* Calendar */,
 				B20AACF7259530B400F9B50C /* Preferences */,
 				B26F6B4925B7C47400EA2057 /* SoundPicker */,
@@ -2084,6 +2082,18 @@
 				B2AA0B7125E6CDC40014F873 /* AbstractListViewRowController+RowView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B2AE525B25F54A130066BBF0 /* MainWindow */ = {
+			isa = PBXGroup;
+			children = (
+				B2E2250225B63B3C0052758C /* MainWindowViewController.swift */,
+				B225CDA925C0763A00F3BA15 /* MainWindowController.xib */,
+				B2E224E825B62F550052758C /* MainWindowController.swift */,
+				B2AE525725F5499A0066BBF0 /* MainWindowPanel.xib */,
+				B2AE525825F5499A0066BBF0 /* MainWindowPanel.swift */,
+			);
+			path = MainWindow;
 			sourceTree = "<group>";
 		};
 		B2AFE696256AD0C1006B3C58 /* CalendarListViewController */ = {
@@ -2273,7 +2283,6 @@
 				B2E2251825B640BE0052758C /* ListViewSectionAdornmentProtocol.swift */,
 				B2E2251925B640BE0052758C /* DividerAdornment.swift */,
 				B2E2251A25B640BE0052758C /* SpacerAdornment.swift */,
-				B25F6B1D25BCC9600067C096 /* ListViewAdornmentView.swift */,
 			);
 			path = Adornments;
 			sourceTree = "<group>";
@@ -2648,6 +2657,7 @@
 				B26D595B25F157D3009A853C /* DownloadAvailableWindow.xib in Resources */,
 				B294932525B5F5D400FCCF9E /* About in Resources */,
 				B25F6AC625BB3E9B0067C096 /* ModalWindowController.xib in Resources */,
+				B2AE525925F5499A0066BBF0 /* MainWindowPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2713,7 +2723,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B26D1AC125E972E200B158C5 /* ListViewAdornmentView.swift in Sources */,
 				B26D1B1325E972E200B158C5 /* Button.swift in Sources */,
 				B26D1B2825E972E200B158C5 /* ListViewModel.swift in Sources */,
 				B26D1B4025E972E200B158C5 /* VerticalColorBar.swift in Sources */,
@@ -3137,6 +3146,7 @@
 				B274EFED25BA26DD00F9D473 /* SoundPickerListViewCell.swift in Sources */,
 				B26F6B5825B7C47400EA2057 /* CalendarItemListViewController.swift in Sources */,
 				B274EFBD25BA1CE000F9D473 /* PreferencesViewController.swift in Sources */,
+				B2AE525A25F5499A0066BBF0 /* MainWindowPanel.swift in Sources */,
 				B2118DE325D3142E002AE939 /* MenuBarItemViewController.swift in Sources */,
 				B292439025EBFE6200F1D178 /* NotificationPreferences.swift in Sources */,
 				B29243A925EC12E400F1D178 /* PreferencePanel.swift in Sources */,
@@ -3190,7 +3200,6 @@
 				B26F6B5F25B7C47400EA2057 /* EventListViewController.swift in Sources */,
 				B2CEF1A925B8CD7200CA01E2 /* LinkButton.swift in Sources */,
 				B274F01125BA2DDC00F9D473 /* DelegateCalendarListViewController.swift in Sources */,
-				B25F6B1E25BCC9600067C096 /* ListViewAdornmentView.swift in Sources */,
 				B29F4AD525D0506D0078F8B5 /* SoundMetaDataUpdater.swift in Sources */,
 				B274EFE125BA25AA00F9D473 /* NotificationChoicesView.swift in Sources */,
 				B25F6B1925BCC7100067C096 /* SectionHeaderView.swift in Sources */,
@@ -3306,7 +3315,6 @@
 				B24C5F2525BE043200F51FE7 /* DelegateCalendarListViewController.swift in Sources */,
 				B26D1D7825EAA7C400B158C5 /* SDKView+Constraints.swift in Sources */,
 				B26D1B5125E972E300B158C5 /* SingleSoundChoiceView.swift in Sources */,
-				B25F6BDA25BDF9B40067C096 /* ListViewAdornmentView.swift in Sources */,
 				B26D1B7625E972E300B158C5 /* MenuBarPreferences.swift in Sources */,
 				B26D1B5725E972E300B158C5 /* SimpleStackView.swift in Sources */,
 				B24C5F3525BE064400F51FE7 /* MainWindowViewController.swift in Sources */,

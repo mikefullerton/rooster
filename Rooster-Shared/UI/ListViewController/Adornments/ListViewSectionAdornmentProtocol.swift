@@ -8,37 +8,37 @@
 import Foundation
 import RoosterCore
 
-protocol ListViewAdornmentView {
+public protocol ListViewAdornmentView {
     func viewWillAppear(withContent content: ListViewSectionAdornmentProtocol)
     
-    static var preferredHeight: CGFloat { get }
+    static var preferredSize: CGSize { get }
 }
 
-protocol ListViewSectionAdornmentProtocol {
+public protocol ListViewSectionAdornmentProtocol {
     var cellReuseIdentifer: String { get }
     
     var viewClass: AnyClass { get }
     
-    var preferredHeight: CGFloat { get }
+    var preferredSize: CGSize { get }
     
     var title: String? { get }
 }
 
 extension ListViewSectionAdornmentProtocol {
       
-    var cellReuseIdentifer: String {
+    public var cellReuseIdentifer: String {
         return "\(type(of: self)).\(self.viewClass)"
     }
     
-    var preferredHeight: CGFloat {
+    public var preferredSize: CGSize {
         if let adornmentViewClass = self.viewClass as? ListViewAdornmentView.Type {
-            return adornmentViewClass.preferredHeight
+            return adornmentViewClass.preferredSize
         }
         
-        return 24
+        return CGSize(width: NSView.noIntrinsicMetric, height:24)
     }
     
-    func willDisplayView(_ view: ListViewAdornmentView) {
+    public func willDisplayView(_ view: ListViewAdornmentView) {
         view.viewWillAppear(withContent: self)
     }
 }

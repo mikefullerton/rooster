@@ -18,8 +18,8 @@ class CalendarListRowController : ListViewRowController<RCCalendar> {
     private var calendar: RCCalendar?
     private let padding:CGFloat = 8
     
-    override class var preferredHeight: CGFloat {
-        return 28
+    override class var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 28)
     }
     
     private lazy var checkBox: SDKSwitch = {

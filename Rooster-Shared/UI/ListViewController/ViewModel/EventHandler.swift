@@ -8,11 +8,11 @@
 import Foundation
 import RoosterCore
 
-class EventHandler {
+public class EventHandler {
     
-    typealias Handler = (_ content: Any, _ view: SDKView, _ event: RCEvent?) -> Void
+    public typealias Handler = (_ content: Any, _ view: SDKView, _ event: RCEvent?) -> Void
     
-    var mouseDownHandler:Handler? = nil
-    var mouseUpHandler:Handler? = nil
-    var mouseOverHandler:Handler? = nil
+    public var mouseDownHandler:Handler? = nil
+    public var mouseUpHandler:Handler? = nil
+    public var mouseOverHandler:Handler? = nil
 }

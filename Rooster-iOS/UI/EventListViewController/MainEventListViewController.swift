@@ -84,18 +84,13 @@ class MainEventListViewController : UIViewController {
 
     }
     
-    override var preferredContentSize: CGSize {
-        get {
-            let timeRemainingSize = self.timeRemainingViewController.preferredContentSize
-            let eventListSize = self.eventListViewController.preferredContentSize
-            
-            let size = CGSize(width: self.view.frame.size.width,
-                              height: eventListSize.height + timeRemainingSize.height )
-            
-            return size
-        }
-        set(size) {
-            
-        }
+    var calculatedContentSize: CGSize {
+        let timeRemainingSize = self.timeRemainingViewController.calculatedContentSize
+        let eventListSize = self.eventListViewController.preferredContentSize
+        
+        let size = CGSize(width: self.view.frame.size.width,
+                          height: eventListSize.height + timeRemainingSize.height )
+        
+        return size
     }
 }

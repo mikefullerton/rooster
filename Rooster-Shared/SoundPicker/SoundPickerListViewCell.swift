@@ -45,8 +45,8 @@ class SoundPickerListViewCell : ListViewRowController<SoundFile>, PlaySoundButto
         self.sound = nil
     }
 
-    override class var preferredHeight: CGFloat {
-        return 32.0
+    override class var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 32.0)
     }
     
     func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> SoundPlayerProtocol? {

@@ -14,4 +14,9 @@ import UIKit
 #endif
 
 class ReminderListViewCell : CalendarItemListViewCell<RCReminder> {
+    
+    override var imageButtonIcon: SDKImage? {
+        return NSImage(systemSymbolName: "list.bullet", accessibilityDescription: "Reminder")
+    }
+    
 }

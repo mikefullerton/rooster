@@ -14,6 +14,10 @@ import UIKit
 #endif
 
 class CalendarItemListViewCell<ITEM_TYPE: RCCalendarItem> : ListViewRowController<ITEM_TYPE>, CountDownTextFieldDelegate {
+
+    class override var preferredSize:CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 80)
+    }
     
     let contentInsets = SDKEdgeInsets(top: 14, left: 10, bottom: 14, right: 10)
     
@@ -56,6 +60,7 @@ class CalendarItemListViewCell<ITEM_TYPE: RCCalendarItem> : ListViewRowControlle
         self.addStartCountDownLabel()
         self.addEndCountDownLabel()
 
+        self.addItemTypeButton()
         self.addEventTitleLabel()
 
         
@@ -74,9 +79,6 @@ class CalendarItemListViewCell<ITEM_TYPE: RCCalendarItem> : ListViewRowControlle
         self.timePassingView.stopTimer()
     }
     
-    class override var preferredHeight:CGFloat {
-        return 80
-    }
     
     /// MARK: Views
 
@@ -163,6 +165,16 @@ class CalendarItemListViewCell<ITEM_TYPE: RCCalendarItem> : ListViewRowControlle
         return label
     }()
 
+    var imageButtonIcon: SDKImage? {
+        return nil
+    }
+    
+    lazy var itemTypeButton: ImageButton = {
+        let button = ImageButton(withImage: self.imageButtonIcon!)
+        
+        return button
+    }()
+    
     /// MARK: Adding views
     
     func addTimePassingView() {
@@ -273,8 +285,22 @@ class CalendarItemListViewCell<ITEM_TYPE: RCCalendarItem> : ListViewRowControlle
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: 34.0),
+            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0),
+        ])
+    }
+    
+    func addItemTypeButton() {
+        let view = self.itemTypeButton
+        
+        self.view.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.contentInsets.left),
             view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0),
+            view.widthAnchor.constraint(equalToConstant: view.intrinsicContentSize.width)
         ])
     }
     

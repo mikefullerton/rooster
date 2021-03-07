@@ -8,13 +8,13 @@
 import Foundation
 import RoosterCore
 
-class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
+open class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
     
-    class var preferredHeight:CGFloat {
-        return 0
+    public class var preferredSize: CGSize {
+        return CGSize.zero
     }
     
-    override var highlightState: NSCollectionViewItem.HighlightState {
+    public override var highlightState: NSCollectionViewItem.HighlightState {
         get { return super.highlightState }
         set(state) {
             if !self.isHighlightable {
@@ -47,7 +47,7 @@ class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
         }
     }
     
-    var isHighlightable: Bool = false {
+    public var isHighlightable: Bool = false {
         didSet {
             if self.isHighlightable && self.highlightBackgroundView == nil {
                 self.addHighlightBackgroundView()
@@ -55,9 +55,9 @@ class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
         }
     }
     
-    var highlightBackgroundView: NSVisualEffectView? = nil
+    public var highlightBackgroundView: NSVisualEffectView? = nil
     
-    func addHighlightBackgroundView() {
+    public func addHighlightBackgroundView() {
         let view = NSVisualEffectView()
         view.state = .active
         view.material = .selection
@@ -78,7 +78,7 @@ class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
         self.setConstraintsForHighlightBackgroundView()
     }
     
-    func setConstraintsForHighlightBackgroundView() {
+    public func setConstraintsForHighlightBackgroundView() {
         if let view = self.highlightBackgroundView {
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -89,29 +89,29 @@ class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
         }
     }
     
-    override var isSelected: Bool {
+    public override var isSelected: Bool {
         get { return super.isSelected }
         set(selected) {
             super.isSelected = selected
         }
     }
     
-    var rowView: RowView {
+    public var rowView: RowView {
         return self.view as! RowView
     }
     
-    override func loadView() {
+    public override func loadView() {
         let view = RowView()
         self.view = view
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.preferredContentSize = CGSize(width: NSView.noIntrinsicMetric, height: Self.preferredHeight)
+        self.preferredContentSize = Self.preferredSize
     }
     
-    override var preferredContentSize: NSSize {
+    public override var preferredContentSize: NSSize {
         get {
             let size = super.preferredContentSize
             return size
@@ -122,7 +122,7 @@ class AbstractListViewRowController: SDKCollectionViewItem, Loggable {
         }
     }
     
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: NSCollectionViewLayoutAttributes) -> NSCollectionViewLayoutAttributes {
+    public override func preferredLayoutAttributesFitting(_ layoutAttributes: NSCollectionViewLayoutAttributes) -> NSCollectionViewLayoutAttributes {
         if let collectionView = self.collectionView {
             
             var frame = layoutAttributes.frame

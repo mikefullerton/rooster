@@ -8,20 +8,20 @@
 import Foundation
 import RoosterCore
 
-struct ListViewSectionLayout {
-    let rowSpacing: CGFloat
-    let insets: SDKEdgeInsets
+public struct ListViewSectionLayout {
+    public let rowSpacing: CGFloat
+    public let insets: SDKEdgeInsets
     
-    static let zero = ListViewSectionLayout(rowSpacing: 0, insets: SDKEdgeInsets.zero)
+    public static let zero = ListViewSectionLayout(rowSpacing: 0, insets: SDKEdgeInsets.zero)
 }
 
-struct ListViewSectionDescriptor {
-    let rows: [AbstractListViewRowDescriptor]
-    let header: ListViewSectionAdornmentProtocol?
-    let footer: ListViewSectionAdornmentProtocol?
-    let layout: ListViewSectionLayout
+public struct ListViewSectionDescriptor {
+    public let rows: [AbstractListViewRowDescriptor]
+    public let header: ListViewSectionAdornmentProtocol?
+    public let footer: ListViewSectionAdornmentProtocol?
+    public let layout: ListViewSectionLayout
     
-    init(withRows rows:[AbstractListViewRowDescriptor],
+    public init(withRows rows:[AbstractListViewRowDescriptor],
          layout: ListViewSectionLayout = ListViewSectionLayout.zero,
          header: ListViewSectionAdornmentProtocol? = nil,
          footer: ListViewSectionAdornmentProtocol? = nil) {
@@ -33,7 +33,7 @@ struct ListViewSectionDescriptor {
         self.footer = footer
     }
 
-    func row(forIndex index: Int) -> AbstractListViewRowDescriptor? {
+    public func row(forIndex index: Int) -> AbstractListViewRowDescriptor? {
         guard index >= 0 && index < self.rows.count else {
             return nil
         }
@@ -41,32 +41,32 @@ struct ListViewSectionDescriptor {
         return self.rows[index]
     }
     
-    var rowCount: Int {
+    public var rowCount: Int {
         return self.rows.count
     }
         
-    var height: CGFloat {
+    public var size: CGSize {
         
         if self.rowCount == 0 {
-            return 0.0
+            return CGSize.zero
         }
         
-        var height: CGFloat = 0
+        var size = CGSize.zero
         
         if let header = self.header {
-            height += header.preferredHeight
+            size.height += header.preferredSize.height
         }
         
         if let footer = self.footer {
-            height += footer.preferredHeight
+            size.height += footer.preferredSize.height
         }
         
         for row in self.rows {
-            height += row.height
+            size.height += row.size.height
         }
         
-        height += self.layout.rowSpacing * (CGFloat(self.rowCount) - 1)
+        size.height += self.layout.rowSpacing * (CGFloat(self.rowCount) - 1)
         
-        return height
+        return size
     }
 }

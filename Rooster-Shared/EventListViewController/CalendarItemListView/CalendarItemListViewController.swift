@@ -13,46 +13,41 @@ import Cocoa
 import UIKit
 #endif
 
-class CalendarItemListViewController<ViewModel> : ListViewController<ViewModel>, DataModelAware where ViewModel: ListViewModelProtocol {
+public class CalendarItemListViewController<ViewModel:ListViewModelProtocol> : ListViewController<ViewModel>, DataModelAware {
     
     private var reloader: DataModelReloader? = nil
 
-    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
+    public override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        self.minimumContentSize = CGSize(width: 400, height: NoMeetingsListViewCell.preferredHeight)
+        self.minimumContentSize = CGSize(width: 400, height: NoMeetingsListViewCell.preferredSize.height)
+        self.preferredContentSize = self.minimumContentSize
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
-
-    override func viewWillAppear() {
+    public override func viewWillAppear() {
         super.viewWillAppear()
         self.reloader = DataModelReloader(for: self)
         self.preferredContentSize = self.viewModelContentSize
     }
     
-    override func viewWillDisappear() {
+    public override func viewWillDisappear() {
         super.viewWillDisappear()
         self.reloader = nil
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.view.sdkBackgroundColor = Theme(for: self.view).windowBackgroundColor
-    
         self.view.sdkLayer.backgroundColor = NSColor.clear.cgColor
         self.collectionView.backgroundColors = [ .clear ]
         self.scrollView.drawsBackground = false
         self.scrollView.contentView.drawsBackground = false
-
-        //        self.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
 
-    func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
+    public func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
         self.reloadData()
         self.preferredContentSize = self.viewModelContentSize
     }

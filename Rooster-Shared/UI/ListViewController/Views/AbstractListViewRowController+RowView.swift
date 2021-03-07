@@ -10,15 +10,15 @@ import RoosterCore
 
 extension AbstractListViewRowController {
 
-    class RowView : NSView {
+    open class RowView : NSView {
         
-        var preferredSize: CGSize? {
+        public var preferredSize: CGSize? {
             didSet {
                 self.invalidateIntrinsicContentSize()
             }
         }
         
-        override var intrinsicContentSize: CGSize {
+        public override var intrinsicContentSize: CGSize {
             if let preferredSize = self.preferredSize {
                 return preferredSize
             }

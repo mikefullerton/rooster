@@ -9,7 +9,7 @@ import Foundation
 import RoosterCore
 import Cocoa
 
-protocol MouseTrackingCollectionViewDelegate: AnyObject {
+public protocol MouseTrackingCollectionViewDelegate: AnyObject {
     func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,
                                      mouseEnteredCellAtIndexPath indexPath: IndexPath,
                                      forItem item: NSCollectionViewItem,
@@ -41,24 +41,22 @@ protocol MouseTrackingCollectionViewDelegate: AnyObject {
                                      withEvent event: NSEvent)
 }
 
+public class MouseTrackingCollectionView: NSCollectionView {
 
-
-class MouseTrackingCollectionView: NSCollectionView {
-
-    lazy var mouseTracker = MouseTracker(withView: self)
+    private lazy var mouseTracker = MouseTracker(withView: self)
     
-    var debugging: Bool {
+    public var debugging: Bool {
         return false
     }
     
-    weak var mouseTrackingDelegate: MouseTrackingCollectionViewDelegate?
+    public weak var mouseTrackingDelegate: MouseTrackingCollectionViewDelegate?
     
     private var collectionViewTrackingAreas: [NSTrackingArea]?
     
     private var mouseInIndexPath: IndexPath?
     private var mouseInItem: NSCollectionViewItem?
 
-    var isMouseTrackingEnabled: Bool {
+    public var isMouseTrackingEnabled: Bool {
         get { return self.mouseTracker.isTrackingEnabled }
         set(value) {
             self.mouseTracker.isTrackingEnabled = value
@@ -81,7 +79,7 @@ class MouseTrackingCollectionView: NSCollectionView {
         }
     }
     
-    func updateSelectedCell(with event: NSEvent) {
+    private func updateSelectedCell(with event: NSEvent) {
 
         let location = self.convert(event.locationInWindow, from: nil)
         
@@ -124,56 +122,56 @@ class MouseTrackingCollectionView: NSCollectionView {
         }
     }
     
-    override var acceptsFirstResponder: Bool {
-        let accepts = super.acceptsFirstResponder
-        if self.debugging {
-            print("tracking: accepts firstresponder: \(accepts)")
-        }
-        
-        return true
-    }
-    
-    override func becomeFirstResponder() -> Bool {
-        
-        let becameFirstResponder = super.becomeFirstResponder()
-        if self.debugging {
-            print("tracking: becameFirstResponder: \(becameFirstResponder)")
-        }
-        
-        return becameFirstResponder
-    }
+//    public override var acceptsFirstResponder: Bool {
+//        let accepts = super.acceptsFirstResponder
+//        if self.debugging {
+//            print("tracking: accepts firstresponder: \(accepts)")
+//        }
+//
+//        return true
+//    }
+//
+//    public override func becomeFirstResponder() -> Bool {
+//
+//        let becameFirstResponder = super.becomeFirstResponder()
+//        if self.debugging {
+//            print("tracking: becameFirstResponder: \(becameFirstResponder)")
+//        }
+//
+//        return becameFirstResponder
+//    }
+//
+//    public override func resignFirstResponder() -> Bool {
+//
+//        let resignedFirstResponder = super.becomeFirstResponder()
+//        print("tracking: resignedFirstResponder: \(resignedFirstResponder)")
+//
+//        return resignedFirstResponder
+//    }
 
-    override func resignFirstResponder() -> Bool {
-        
-        let resignedFirstResponder = super.becomeFirstResponder()
-        print("tracking: resignedFirstResponder: \(resignedFirstResponder)")
-        
-        return resignedFirstResponder
-    }
 
-
-    override func mouseEntered(with event: NSEvent) {
+    public override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         self.updateSelectedCell(with: event)
     }
     
-    override func mouseExited(with event: NSEvent) {
+    public override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         self.mouseDidExit()
     }
 
-    override func mouseMoved(with event: NSEvent) {
+    public override func mouseMoved(with event: NSEvent) {
 //        print ("tracking: actual mouse moved: \(Date().shortDateAndLongTimeString)", Date())
         super.mouseMoved(with: event)
         self.updateSelectedCell(with: event)
     }
     
-    override func mouseDragged(with event: NSEvent) {
+    public override func mouseDragged(with event: NSEvent) {
         super.mouseDragged(with: event)
         self.updateSelectedCell(with: event)
     }
     
-    override func mouseDown(with event: NSEvent) {
+    public override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         
         let location = self.convert(event.locationInWindow, from: nil)
@@ -201,7 +199,7 @@ class MouseTrackingCollectionView: NSCollectionView {
         }
     }
 
-    override func mouseUp(with event: NSEvent) {
+    public override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
 
         

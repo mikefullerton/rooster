@@ -14,4 +14,9 @@ import UIKit
 #endif
 
 class EventListListViewCell : CalendarItemListViewCell<RCEvent> {
+    override var imageButtonIcon: SDKImage? {
+        let config = NSImage.SymbolConfiguration(scale: .small)
+        return NSImage(systemSymbolName: "person.2", accessibilityDescription: "Reminder")?.withSymbolConfiguration(config)
+    }
+
 }

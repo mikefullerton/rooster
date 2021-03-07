@@ -8,10 +8,10 @@
 import Foundation
 import RoosterCore
 
-class ListViewRowController<CONTENT_TYPE> : AbstractListViewRowController {
-    typealias contentType = CONTENT_TYPE
+open class ListViewRowController<CONTENT_TYPE> : AbstractListViewRowController {
+    public typealias contentType = CONTENT_TYPE
     
-    func viewWillAppear(withContent content: CONTENT_TYPE) {
+    public func viewWillAppear(withContent content: CONTENT_TYPE) {
         
     }
 }

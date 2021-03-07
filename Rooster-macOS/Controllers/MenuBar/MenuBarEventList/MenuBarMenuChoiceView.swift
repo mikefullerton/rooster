@@ -78,8 +78,8 @@ class MenuBarMenuChoiceView : ListViewRowController<MenuBarMenuChoice>, MenuBarI
         ])
     }
 
-    override class var preferredHeight: CGFloat {
-        return 40
+    override class var preferredSize: CGSize {
+        return CGSize(width: NSView.noIntrinsicMetric, height: 40)
     }
 
     var choice: MenuBarMenuChoice? = nil

@@ -8,23 +8,23 @@
 import Foundation
 import RoosterCore
 
-struct ListViewSectionAdornment: ListViewSectionAdornmentProtocol {
-    var viewClass: AnyClass
-    let title: String?
+public struct ListViewSectionAdornment: ListViewSectionAdornmentProtocol {
+    public var viewClass: AnyClass
+    public let title: String?
     
-    init(withViewClass viewClass: AnyClass) {
+    public init(withViewClass viewClass: AnyClass) {
         self.viewClass = viewClass
         self.title = nil
     }
 
-    init(withViewClass viewClass: AnyClass,
+    public init(withViewClass viewClass: AnyClass,
          title: String) {
         
         self.viewClass = viewClass
         self.title = title
     }
 
-    init(withTitle title: String) {
+    public init(withTitle title: String) {
         self.viewClass = SectionHeaderView.self
         self.title = title
     }

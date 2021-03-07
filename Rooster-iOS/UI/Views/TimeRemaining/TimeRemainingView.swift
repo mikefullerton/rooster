@@ -29,7 +29,7 @@ class TimeRemainingView : ContentAwareView {
     }()
     
     convenience init() {
-        self.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {

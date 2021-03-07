@@ -44,8 +44,11 @@ public class WindowController: NSWindowController, Loggable {
         
         if let window = self.window {
             window.title = viewController.title ?? ""
-            self.restoreWindowPositionOrSetInitialSize(viewController.preferredContentSize)
-            self.registerForEvents()
+            
+            if self.autosaveKey != nil {
+                self.restoreWindowPositionOrSetInitialSize(viewController.preferredContentSize)
+                self.registerForEvents()
+            }
         }
     }
     
