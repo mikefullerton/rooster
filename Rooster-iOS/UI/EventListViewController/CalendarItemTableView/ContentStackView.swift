@@ -8,21 +8,18 @@
 import Foundation
 import UIKit
 
-class ContentViewStack : UIView {
-    
-    
+class ContentViewStack: UIView {
     override var intrinsicContentSize: CGSize {
         var outSize = CGSize.zero
 
         for view in self.subviews {
             let size = view.intrinsicContentSize
             outSize.height += size.height
-            
+
             if size.width > outSize.width {
                 outSize.width = size.width
             }
         }
         return outSize
     }
-
 }

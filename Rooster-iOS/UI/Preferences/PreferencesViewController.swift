@@ -6,51 +6,49 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
-class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
-
+class PreferencesViewController: UIViewController, SoundChoicesViewDelegate {
     lazy var rootView = PreferencesView()
-    
+
     let tabViewController: VerticalTabViewController
-    
+
     init() {
-        
         let soundPreferencesView = SoundPreferencesView(frame: CGRect.zero)
         let notificationPreferencesViw = NotificationChoicesView(frame: CGRect.zero)
-        
+
         let items = [
             VerticalTabItem(title: "SOUNDS".localized, icon: nil, view: soundPreferencesView),
             VerticalTabItem(title: "NOTIFICATIONS".localized, icon: nil, view: notificationPreferencesViw)
         ]
-        
+
         self.tabViewController = VerticalTabViewController(with: items)
-        
+
         super.init(nibName: nil, bundle: nil)
-        
+
         soundPreferencesView.delegate = self
-        
+
         self.preferredContentSize = CGSize(width: 800, height: 600)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         self.view = self.rootView
-        
+
         self.view.backgroundColor = Theme(for: self.view).preferencesViewColor
-            
+
         self.addChild(self.tabViewController)
-        
+
         self.rootView.addContentView(self.tabViewController.view)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+
         self.rootView.bottomBar.doneButton.addTarget(self, action: #selector(doneButtonPressed(_:)), for: .touchUpInside)
         self.rootView.bottomBar.leftButton.addTarget(self, action: #selector(resetButtonPressed(_:)), for: .touchUpInside)
     }
@@ -60,20 +58,16 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
     }
 
     @objc func resetButtonPressed(_ sender: UIButton) {
-        Controllers.preferencesController.preferences = Preferences()
+        AppControllers.shared.preferences.preferences = Preferences()
     }
 
     func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController {
-        return self
+        self
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
 //        self.preferredContentSize = self.rootView.intrinsicContentSize
     }
-    
-    
 }
-
-

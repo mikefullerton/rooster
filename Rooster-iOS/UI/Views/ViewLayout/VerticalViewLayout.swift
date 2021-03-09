@@ -8,16 +8,15 @@
 import Foundation
 import UIKit
 
-
-class VerticalViewLayout : ViewLayout {
+class VerticalViewLayout: ViewLayout {
     let hostView: UIView
-    let insets:UIEdgeInsets
-    let spacing:UIOffset
+    let insets: UIEdgeInsets
+    let spacing: UIOffset
 
 //    private(set) var didSetConstraints: Bool = false;
-    
-    private(set) var views:[UIView]
-    
+
+    private(set) var views: [UIView]
+
     init(hostView view: UIView,
          insets: UIEdgeInsets,
          spacing: UIOffset) {
@@ -33,41 +32,37 @@ class VerticalViewLayout : ViewLayout {
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left),
             view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right),
-            view.topAnchor.constraint(equalTo: self.hostView.topAnchor, constant: self.insets.top),
+            view.topAnchor.constraint(equalTo: self.hostView.topAnchor, constant: self.insets.top)
         ])
     }
-    
+
     private func addSubview(_ view: UIView, belowView: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left),
             view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right),
-            view.topAnchor.constraint(equalTo: belowView.bottomAnchor, constant: self.spacing.vertical),
+            view.topAnchor.constraint(equalTo: belowView.bottomAnchor, constant: self.spacing.vertical)
         ])
     }
-        
+
     func setViews(_ views: [UIView]) {
-        
         self.views = views
 
         for (index, view) in views.enumerated() {
-            
             view.translatesAutoresizingMaskIntoConstraints = false
-            
+
             if index == 0 {
                 self.addTopSubview(view)
             } else {
                 self.addSubview(view, belowView: views[ index - 1])
             }
         }
-        
+
         self.hostView.invalidateIntrinsicContentSize()
     }
-    
+
     var intrinsicContentSize: CGSize {
-        return self.verticalLayoutIntrinsicContentSize
+        self.verticalLayoutIntrinsicContentSize
     }
 }
-
-

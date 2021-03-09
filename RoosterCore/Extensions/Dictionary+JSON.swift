@@ -7,29 +7,32 @@
 
 import Foundation
 
-public extension Dictionary {
-    func toJSON() throws -> String?  {
+extension Dictionary {
+    public func toJSON() throws -> String? {
         let jsonData = try JSONSerialization.data(withJSONObject: self,
                                                   options: [.prettyPrinted, .sortedKeys])
-        
+
         return String(bytes: jsonData, encoding: String.Encoding.utf8)
     }
-    
-    func writeJSON(toURL url: URL) throws {
+
+    public func writeJSON(toURL url: URL) throws {
         if let jsonString = try self.toJSON() {
             try jsonString.write(to: url, atomically: true, encoding: .utf8)
         }
     }
-    
-    static func readJSON(fromURL url: URL) throws -> [AnyHashable: Any]? {
+
+    public static func readJSON(fromURL url: URL) throws -> [AnyHashable: Any]? {
         guard FileManager.default.fileExists(atPath: url.path) else {
             return nil
         }
-        
+
+        let options = JSONSerialization.ReadingOptions.mutableContainers
         let jsonData = try Data(contentsOf: url)
-        let json = try JSONSerialization.jsonObject(with: jsonData as Data,
-                                                    options: JSONSerialization.ReadingOptions.mutableContainers) as! [AnyHashable: Any]
-        
-        return json
+        if let json = try JSONSerialization.jsonObject(with: jsonData as Data,
+                                                       options: options) as? [AnyHashable: Any] {
+            return json
+        }
+
+        return nil
     }
 }

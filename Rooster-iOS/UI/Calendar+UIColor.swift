@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-extension RCCalendar {
+extension EventKitCalendar {
     var color: UIColor? {
-        return self.cgColor != nil ? UIColor(cgColor: self.cgColor!) : nil
+        self.cgColor != nil ? UIColor(cgColor: self.cgColor!) : nil
     }
 }

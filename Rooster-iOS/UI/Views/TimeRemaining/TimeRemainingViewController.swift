@@ -8,50 +8,48 @@
 import Foundation
 import UIKit
 
-class TimeRemainingViewController : UIViewController, DataModelAware {
-    
+class TimeRemainingViewController: UIViewController {
     private weak var timer: Timer?
 
     private lazy var dividerView = DividerView()
 
-    private var reloader: DataModelReloader? = nil
-    
+    private var scheduleUpdateHandler = ScheduleEventListener()
+
     static let preferredHeight: CGFloat = 100
-    
+
     func addDividerView() {
         let dividerView = self.dividerView
         self.view.addSubview(dividerView)
-        
+
         dividerView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             dividerView.heightAnchor.constraint(equalToConstant: 1),
             dividerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1),
+            dividerView.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1)
         ])
     }
-    
-    
+
     override func loadView() {
         self.view = TimeRemainingView()
     }
 
     var timeRemainingLabel: TimeRemainingView {
-        return self.view as! TimeRemainingView
+        self.view as! TimeRemainingView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Theme(for: self.view).timeRemainingBackgroundColor
-        
+
         self.addDividerView()
-    
+
         self.timeRemainingLabel.prefixString = "Your next alarm will fire in "
         self.timeRemainingLabel.showSecondsWithMinutes = true
         self.timeRemainingLabel.outOfRangeString = "No more meetings today! 🎉"
     }
-    
+
     func startTimer() {
         self.timeRemainingLabel.startTimer(fireDate: Controllers.dataModelController.dataModel.nextAlarmDate) { () -> Date? in
             return Controllers.dataModelController.dataModel.nextAlarmDate
@@ -60,36 +58,34 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
+
         self.startTimer()
-        self.reloader = DataModelReloader(for: self)
+
+        self.scheduleUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else { return }
+            self.startTimer()
+        }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.timeRemainingLabel.stopTimer()
-        self.reloader = nil
+        self.scheduleUpdateHandler = nil
     }
-    
-    func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
-        self.startTimer()
-    }
-    
+
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: self.view.frame.size.width, height: TimeRemainingViewController.preferredHeight)
+            CGSize(width: self.view.frame.size.width, height: TimeRemainingViewController.preferredHeight)
         }
         set(size) {
-            
         }
     }
 
     func addLabel(labelVerticalOffset: CGFloat) {
         self.timeRemainingLabel.addLabel(labelVerticalOffset: labelVerticalOffset)
     }
-    
+
     func addBlurView() {
         self.timeRemainingLabel.addBlurView()
     }
 }
-

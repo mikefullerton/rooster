@@ -7,11 +7,11 @@
 
 import Foundation
 
-public extension URL {
-    var fileName: String {
-        return self.deletingPathExtension().lastPathComponent
+extension URL {
+    public var fileName: String {
+        self.deletingPathExtension().lastPathComponent
     }
-    
+
 //    static var emptyRoosterURL: URL {
 //        return self.roosterURL("empty")
 //    }
@@ -25,26 +25,25 @@ public extension URL {
 //    var isRoosterURL: Bool {
 //        return self.absoluteString.contains("rooster")
 //    }
-    
-    func relativePath(fromURL url: URL) -> URL? {
-        
-        let path = self.path;
-        let parentPath = url.path;
-        
+
+    public func relativePath(fromURL url: URL) -> URL? {
+        let path = self.path
+        let parentPath = url.path
+
         let finalPath = path.replacingOccurrences(of: parentPath, with: "")
-        
+
         return URL(withRelativePath: finalPath)
     }
-    
-    func fullURL(relativeTo url: URL) -> URL? {
-        return URL(fileURLWithPath: self.path, relativeTo: url)
+
+    public func fullURL(relativeTo url: URL) -> URL? {
+        URL(fileURLWithPath: self.path, relativeTo: url)
     }
-    
-    init(withRelativePath relativePath: String) {
+
+    public init(withRelativePath relativePath: String) {
         self.init(fileURLWithPath: "/\(relativePath)")
     }
-    
-    static var empty: URL {
-        return URL(withRelativePath: "")
+
+    public static var empty: URL {
+        URL(withRelativePath: "")
     }
 }

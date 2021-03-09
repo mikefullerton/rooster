@@ -8,24 +8,26 @@
 import Foundation
 import UIKit
 
-class SingleNotificationChoiceView : UIView {
-    
+class SingleNotificationChoiceView: UIView {
     let title: String
-    
+    let preferencesUpdateHandler = PreferencesEventListener()
+
     init(frame: CGRect,
          title: String) {
-        
         self.title = title
         super.init(frame: frame)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
 
         self.addSubview(self.checkbox)
-        
+
         self.setNeedsUpdateConstraints()
         self.refresh()
+
+        self.preferencesUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else { return }
+            self.refresh()
+        }
     }
-    
+
     override func updateConstraints() {
         self.addViewsToLayout()
         super.updateConstraints()
@@ -34,57 +36,49 @@ class SingleNotificationChoiceView : UIView {
     func addViewsToLayout() {
         self.layout.setViews([ self.checkbox ])
     }
-    
-    @objc func preferencesDidChange(_ sender: Notification) {
-        self.refresh()
-    }
 
     func refresh() {
-        
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func checkboxChanged(_ sender: UISwitch) {
     }
-    
-    lazy var checkbox : UISwitch = {
+
+    lazy var checkbox: UISwitch = {
         let view = UISwitch(frame: self.bounds)
         view.title = title
-        
+
         #if targetEnvironment(macCatalyst)
         view.preferredStyle = .checkbox
         #endif
 
         view.isOn = self.value
-        
+
         view.addTarget(self, action: #selector(checkboxChanged(_:)), for: .valueChanged)
         return view
     }()
-    
+
     lazy var layout: VerticalViewLayout = {
         return VerticalViewLayout(hostView: self,
                                   insets: UIEdgeInsets.zero,
                                   spacing: UIOffset.zero)
-        
     }()
-    
-    var value: Bool { return false }
+
+    var value: Bool { false }
 
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
+        CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
 }
 
-class AutomaticallyOpenLocationURLsChoiceView : SingleNotificationChoiceView {
-    
-    
+class AutomaticallyOpenLocationURLsChoiceView: SingleNotificationChoiceView {
     init(frame: CGRect) {
         super.init(frame: frame,
                    title: "AUTO_OPEN_LOCATIONS".localized)
-        
+
         self.addSubview(self.locationTipView)
     }
 
@@ -96,36 +90,33 @@ class AutomaticallyOpenLocationURLsChoiceView : SingleNotificationChoiceView {
         self.layout.setViews([ self.checkbox,
                                self.locationTipView])
     }
-    
+
     @objc override func checkboxChanged(_ sender: UISwitch) {
-
-        var prefs = Controllers.preferencesController.preferences
+        var prefs = AppControllers.shared.preferences.preferences
         prefs.autoOpenLocations = sender.isOn
-        Controllers.preferencesController.preferences = prefs
-    }
-    
-    override var value: Bool {
-        return Controllers.preferencesController.preferences.autoOpenLocations
+        AppControllers.shared.preferences.preferences = prefs
     }
 
-    lazy var locationTipView : TipView = {
-        
+    override var value: Bool {
+        AppControllers.shared.preferences.preferences.autoOpenLocations
+    }
+
+    lazy var locationTipView: TipView = {
         var locationTip = Tip(image: UIImage(systemName: "info.circle.fill"),
                               imageTintColor: UIColor.systemBlue,
                               title: "SAFARI_TIP".localized,
                               action: nil)
-        
+
         let view = TipView(frame: CGRect.zero, tip: locationTip)
         return view
     }()
-    
+
     override func refresh() {
-        self.checkbox.isOn = Controllers.preferencesController.preferences.autoOpenLocations
+        self.checkbox.isOn = AppControllers.shared.preferences.preferences.autoOpenLocations
     }
 }
 
-
-class BounceInDockChoiceView : SingleNotificationChoiceView {
+class BounceInDockChoiceView: SingleNotificationChoiceView {
     init(frame: CGRect) {
         super.init(frame: frame,
                    title: "BOUNCE_ICON".localized)
@@ -136,48 +127,41 @@ class BounceInDockChoiceView : SingleNotificationChoiceView {
     }
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
-        
-        var prefs = Controllers.preferencesController.preferences
+        var prefs = AppControllers.shared.preferences.preferences
         prefs.bounceIconInDock = sender.isOn
-        Controllers.preferencesController.preferences = prefs
-    }
-    
-    override var value: Bool {
-        return Controllers.preferencesController.preferences.bounceIconInDock
-    }
-    
-    override func refresh() {
-        self.checkbox.isOn = Controllers.preferencesController.preferences.bounceIconInDock
+        AppControllers.shared.preferences.preferences = prefs
     }
 
+    override var value: Bool {
+        AppControllers.shared.preferences.preferences.bounceIconInDock
+    }
+
+    override func refresh() {
+        self.checkbox.isOn = AppControllers.shared.preferences.preferences.bounceIconInDock
+    }
 }
 
-
-class UseSystemNotificationsChoiceView : SingleNotificationChoiceView {
-
+class UseSystemNotificationsChoiceView: SingleNotificationChoiceView {
     init(frame: CGRect) {
         super.init(frame: frame,
                    title: "USE_SYSTEM_NOTIFICATIONS".localized)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     @objc override func checkboxChanged(_ sender: UISwitch) {
-        
-        var prefs = Controllers.preferencesController.preferences
+        var prefs = AppControllers.shared.preferences.preferences
         prefs.useSystemNotifications = sender.isOn
-        Controllers.preferencesController.preferences = prefs
+        AppControllers.shared.preferences.preferences = prefs
     }
 
     override var value: Bool {
-        return Controllers.preferencesController.preferences.useSystemNotifications
+        AppControllers.shared.preferences.preferences.useSystemNotifications
     }
-    
+
     override func refresh() {
-        self.checkbox.isOn = Controllers.preferencesController.preferences.useSystemNotifications
+        self.checkbox.isOn = AppControllers.shared.preferences.preferences.useSystemNotifications
     }
-
-
 }

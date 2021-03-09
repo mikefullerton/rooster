@@ -14,19 +14,19 @@ public struct TerseTimeDisplayFormatter: TimeDisplayFormatter {
         self.showSecondsWithMinutes = showSecondsWithMinutes
     }
 
-    public var seconds: String { return "s" }
-    
-    public var minutes: String { return "m" }
-    
-    public var hours: String { return "h" }
-    
-    public var minute: String { return "m" }
-    
-    public var second: String { return "s" }
-    
-    public var hour: String { return "h" }
-    
-    public var delimeter: String { return "" }
-    
-    public var componentDelimeter: String { return ", " }
+    public var seconds: String { "s" }
+
+    public var minutes: String { "m" }
+
+    public var hours: String { "h" }
+
+    public var minute: String { "m" }
+
+    public var second: String { "s" }
+
+    public var hour: String { "h" }
+
+    public var delimeter: String { "" }
+
+    public var componentDelimeter: String { ", " }
 }

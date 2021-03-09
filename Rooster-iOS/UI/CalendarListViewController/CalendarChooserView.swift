@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class CalendarChooserView : ContentAwareView {
-  
+class CalendarChooserView: ContentAwareView {
     lazy var bottomBar = BottomBar(frame: CGRect.zero)
     lazy var topBar = CalendarToolbarView()
 
@@ -18,20 +17,20 @@ class CalendarChooserView : ContentAwareView {
 
         self.addTopBar()
         self.bottomBar.addToView(self)
-        
+
         self.invalidateIntrinsicContentSize()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func addTopBar() {
         let view = self.topBar
         self.addSubview(view)
-        
+
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: view.preferredHeight),
             view.topAnchor.constraint(equalTo: self.topAnchor),
@@ -42,19 +41,15 @@ class CalendarChooserView : ContentAwareView {
 
     override func addSubview(_ view: UIView) {
         super.addSubview(view)
-        
+
         if view != self.topBar {
             self.bringSubviewToFront(self.topBar)
         }
-        
+
         if view != self.bottomBar {
             self.bringSubviewToFront(self.bottomBar)
         }
-        
+
         self.invalidateIntrinsicContentSize()
     }
 }
-
-
-
-

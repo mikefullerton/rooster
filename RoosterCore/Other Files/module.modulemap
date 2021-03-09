@@ -2,4 +2,8 @@
 framework module RoosterCore {
     umbrella header "RoosterCore.h"
     export *
+    
+    explicit module Private {
+        header "EKEvent+NullableOccurenceDate.h"
+    }
 }

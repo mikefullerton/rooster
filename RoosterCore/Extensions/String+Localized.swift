@@ -7,8 +7,9 @@
 
 import Foundation
 
-public extension String {
-    var localized: String {
-        return NSLocalizedString(self, comment: "")
+extension String {
+    public var localized: String {
+        // swiftlint:disable nslocalizedstring_require_bundle nslocalizedstring_key
+        NSLocalizedString(self, comment: "")
     }
 }

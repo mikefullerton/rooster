@@ -8,31 +8,29 @@
 import Foundation
 import UIKit
 
-class CalendarItemTableViewController<ViewModel> : ListViewController<ViewModel>, DataModelAware where ViewModel: TableViewModelProtocol {
-    
-    private var reloader: DataModelReloader? = nil
+class CalendarItemTableViewController<ViewModel>: ListViewController<ViewModel> where ViewModel: TableViewModelProtocol {
+    private var scheduleUpdateHandler = ScheduleEventListener()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.reloader = DataModelReloader(for: self)
+        self.scheduleUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else { return }
+            self.reloadData()
+        }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.reloader = nil
+        self.scheduleUpdateHandler = nil
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.view.backgroundColor = Theme(for: self).windowBackgroundColor
         self.tableView.allowsSelection = false
         self.tableView.separatorStyle = .none
         self.tableView.contentInsetAdjustmentBehavior = .never
-    }
-    
-    func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
-        self.reloadData()
     }
 
     override var preferredContentSize: CGSize {
@@ -43,7 +41,6 @@ class CalendarItemTableViewController<ViewModel> : ListViewController<ViewModel>
             return super.preferredContentSize
         }
         set(size) {
-            
         }
     }
 }

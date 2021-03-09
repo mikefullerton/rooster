@@ -9,14 +9,12 @@ import Foundation
 import UIKit
 
 class HorizontallyOpposedLayout: ViewLayout {
-    
-    
     let hostView: UIView
-    let insets:UIEdgeInsets
-    let spacing:UIOffset
-    
+    let insets: UIEdgeInsets
+    let spacing: UIOffset
+
     private(set) var views: [UIView]
-    
+
     init(hostView view: UIView,
          insets: UIEdgeInsets,
          spacing: UIOffset) {
@@ -27,13 +25,13 @@ class HorizontallyOpposedLayout: ViewLayout {
     }
 
     private func setSubviewConstraints() {
-        var lastView: UIView? = nil
-        
+        var lastView: UIView?
+
         for (index, view) in self.views.reversed().enumerated() {
             view.translatesAutoresizingMaskIntoConstraints = false
-            
+
             NSLayoutConstraint.activate([
-                view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
+                view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor)
             ])
 
             if index == 0 {
@@ -52,11 +50,11 @@ class HorizontallyOpposedLayout: ViewLayout {
                     ])
                 }
             }
-            
+
             lastView = view
         }
     }
-    
+
     func setViews(_ views: [UIView]) {
         self.views = views
         self.setSubviewConstraints()
@@ -64,7 +62,6 @@ class HorizontallyOpposedLayout: ViewLayout {
     }
 
     var intrinsicContentSize: CGSize {
-        return self.horizontalLayoutIntrinsicContentSize
+        self.horizontalLayoutIntrinsicContentSize
     }
 }
-

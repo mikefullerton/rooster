@@ -6,11 +6,9 @@
 //
 
 import Foundation
-
 import UIKit
 
-class DelegateCalendarListViewController : CalendarItemTableViewController<CalenderListViewModel> {
-    
+class DelegateCalendarListViewController: CalendarItemTableViewController<CalenderListViewModel> {
     override func provideDataModel() -> CalenderListViewModel? {
         let dataModel = Controllers.dataModelController.dataModel
         return CalenderListViewModel(withCalendars: dataModel.delegateCalendars)

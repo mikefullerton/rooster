@@ -9,6 +9,6 @@ import Foundation
 
 extension Bundle {
     public static var shortVersionString: String? {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
 }

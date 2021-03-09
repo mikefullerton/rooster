@@ -8,30 +8,28 @@
 import Foundation
 import UIKit
 
-class GroupBoxView : UIView {
- 
+class GroupBoxView: UIView {
     let layoutInsets: UIEdgeInsets
     let insets = UIEdgeInsets.zero
     let spacing: CGFloat = 0
-    
+
     static let defaultInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-    
+
     init(frame: CGRect,
          title: String,
          insets: UIEdgeInsets = GroupBoxView.defaultInsets) {
-        
         self.layoutInsets = insets
-        
+
         super.init(frame: frame)
-        
+
         self.backgroundColor = UIColor.clear
         let titleView = self.titleView
         titleView.text = title
-        
+
         self.addSubview(self.titleView)
         NSLayoutConstraint.activate([
             self.titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6 - 10),
-            self.titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: self.insets.top),
+            self.titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: self.insets.top)
         ])
 
         self.addSubview(self.outlineView)
@@ -44,46 +42,44 @@ class GroupBoxView : UIView {
 
         self.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
-
     }
-    
+
     override convenience init(frame: CGRect) {
         self.init(frame: frame, title: "")
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    lazy private var outlineView = OutlineView(frame:CGRect.zero, insets: self.layoutInsets)
-    
-    lazy private var titleView: UILabel = {
+    private lazy var outlineView = OutlineView(frame: CGRect.zero, insets: self.layoutInsets)
+
+    private lazy var titleView: UILabel = {
         let titleView = UILabel()
         titleView.isUserInteractionEnabled = false
         titleView.textColor = Theme(for: self).secondaryLabelColor
         titleView.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         titleView.textAlignment = .right
         titleView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         titleView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         titleView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return titleView
     }()
 
     override var intrinsicContentSize: CGSize {
-        
         var outSize = CGSize(width: UIView.noIntrinsicMetric, height: 0)
-        
+
         let textSize = self.titleView.intrinsicContentSize
         let outlineSize = self.outlineView.intrinsicContentSize
-        
+
         outSize.height += textSize.height + self.insets.top
         outSize.height += self.spacing
         outSize.height += outlineSize.height + self.insets.bottom
 
         return outSize
     }
-   
+
     func setContainedViews(_ views: [UIView]) {
         for view in views {
             self.outlineView.addSubview(view)
@@ -92,32 +88,31 @@ class GroupBoxView : UIView {
     }
 }
 
-class OutlineView : UIView {
-
+class OutlineView: UIView {
     let insets: UIEdgeInsets
-    
+
     init(frame: CGRect, insets: UIEdgeInsets) {
         self.insets = insets
         super.init(frame: frame)
-        
+
         self.layer.cornerRadius = 0
         self.layer.borderWidth = 1.0
         self.layer.borderColor = Theme(for: self).borderColor.cgColor
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = Theme(for: self).groupBackgroundColor
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
+        CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
 
     lazy var layout: VerticalViewLayout = {
         return VerticalViewLayout(hostView: self,
-                                  insets:  self.insets,
+                                  insets: self.insets,
                                   spacing: UIOffset(horizontal: 10, vertical: 10))
     }()
 }

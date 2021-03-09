@@ -8,32 +8,30 @@
 import Foundation
 import UIKit
 
-class DividerView : UIView {
-    
+class DividerView: UIView {
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
 
         let view = UIView()
         view.backgroundColor = Theme(for: view).borderColor
-        
+
         self.addSubview(view)
-        
+
         view.translatesAutoresizingMaskIntoConstraints = false
-        
-        let indent:CGFloat = 0
-        
+
+        let indent: CGFloat = 0
+
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(indent * 2)),
             view.heightAnchor.constraint(equalToConstant: 1),
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: indent),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: indent),
-            view.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            view.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
- 
+

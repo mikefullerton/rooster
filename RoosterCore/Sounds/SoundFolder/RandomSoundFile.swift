@@ -8,91 +8,90 @@
 import Foundation
 
 public class RandomSoundFile: SoundFile {
-    
     private(set) var actualSoundFile: SoundFile
-    
+
     override public var underlyingSoundFile: SoundFile {
-        return self.actualSoundFile
+        self.actualSoundFile
     }
-    
-    public override var isRandom: Bool {
-        return true
+
+    override public var isRandom: Bool {
+        true
     }
-    
-    //private(set) 
-    public override var relativePath: URL {
-        get { return self.actualSoundFile.relativePath }
+
+    // swiftlint:disable unused_setter_value
+
+    // private(set) 
+    override public var relativePath: URL {
+        get { self.actualSoundFile.relativePath }
         set(path) {
-            
         }
     }
-    
-    public override var absolutePath: URL? {
+
+    override public var absolutePath: URL? {
         get {
-            return self.actualSoundFile.absolutePath
+            self.actualSoundFile.absolutePath
         }
         set(path) {
-            
         }
     }
-    
-    public override weak var parent: SoundFolder? {
-        get { return super.parent }
+    // swiftlint:enable unused_setter_value
+
+    override public weak var parent: SoundFolder? {
+        get { super.parent }
         set(parent) {
             super.parent = parent
             self.updateActualSoundFile()
         }
     }
-  
+
     public init() {
         self.actualSoundFile = SoundFile.empty
         super.init(withID: Self.randomSoundID, fileName: "Random", displayName: "Random")
     }
-    
+
+    @available(*, unavailable)
     public required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
-    
+
     var randomSound: SoundFile {
         if let parent = self.parent {
             return parent.allSoundFiles.randomElement()!
         }
-        
+
         return SoundFile.empty
     }
-    
+
     func updateActualSoundFile() {
         self.actualSoundFile = self.randomSound
     }
-    
-    public override func copy(with zone: NSZone? = nil) -> Any {
+
+    override public func copy(with zone: NSZone? = nil) -> Any {
         let randomSoundFile = RandomSoundFile()
         randomSoundFile.setParent(self.parent)
         return randomSoundFile
     }
 
-    public override var description: String {
-        return """
+    override public var description: String {
+        """
         \(super.description): \
         Actual Sound File: \(self.actualSoundFile.description)
         """
     }
-    
+
     override func nativeSoundDidStop() {
         self.updateActualSoundFile()
     }
-    
-    public override var displayNameWithParentsExcludingRoot: String {
-        return self.actualSoundFile.displayNameWithParentsExcludingRoot
-    }
-    
-    public override var displayNameWithParents: String {
-        return self.actualSoundFile.displayNameWithParents
-    }
-    
-    public override var pathComponents: [SoundFolderItem] {
-        return self.actualSoundFile.pathComponents
+
+    override public var displayNameWithParentsExcludingRoot: String {
+        self.actualSoundFile.displayNameWithParentsExcludingRoot
     }
 
+    override public var displayNameWithParents: String {
+        self.actualSoundFile.displayNameWithParents
+    }
+
+    override public var pathComponents: [SoundFolderItem] {
+        self.actualSoundFile.pathComponents
+    }
 }
-

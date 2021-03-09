@@ -7,51 +7,49 @@
 
 import Foundation
 
-class SoundFolderLoader: Loggable {
-
+public class SoundFolderLoader: Loggable {
     private var loadedFolder: SoundFolder?
     private var path: URL?
-    
+
     private var folderLoadingSemaphore: DispatchSemaphore?
-    
-    init(withPath path: URL? ) {
+
+    private let schedulingQueue: DispatchQueue
+
+    init(withPath path: URL?, schedulingQueue: DispatchQueue) {
+        self.schedulingQueue = schedulingQueue
         self.loadedFolder = nil
         self.path = path
-        
+
         if path == nil {
             self.loadedFolder = SoundFolder.empty
         }
-    }
-    
-    public func startLoading() {
 
+        self.folderLoadingSemaphore = DispatchSemaphore(value: 1)
+    }
+
+    public func startLoading() {
         let url = self.path!
-        
-        let semaphore = DispatchSemaphore(value: 1)
-        self.folderLoadingSemaphore = semaphore
-        
+
         self.logger.log("Starting to load sound folder for url: \(url.path)")
 
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        DispatchQueue.concurrent.async { [weak self] in
             if let strongSelf = self {
                 do {
                     let directory = DirectoryIterator(withURL: url)
                     try directory.scan()
-                    
+
                     let soundFolder = try SoundFolder(withDirectory: directory)
                     strongSelf.loadedFolder = soundFolder
                     strongSelf.logger.log("Creating SoundFolder ok: \(soundFolder.description)")
-                    
                 } catch {
-                    strongSelf.logger.error("Creating SoundFolder failed with error: \(error.localizedDescription)")
+                    strongSelf.logger.error("Creating SoundFolder failed with error: \(String(describing: error))")
                     strongSelf.loadedFolder = SoundFolder.empty
-                    
                 }
-                semaphore.signal()
+                strongSelf.folderLoadingSemaphore?.signal()
             }
         }
     }
-    
+
     public var soundFolder: SoundFolder {
         if let semaphore = self.folderLoadingSemaphore {
             self.logger.log("Waiting for folder to load...")
@@ -59,7 +57,7 @@ class SoundFolderLoader: Loggable {
             self.folderLoadingSemaphore = nil
             self.logger.log("Done loading...")
         }
-        
+
         return self.loadedFolder!
     }
 }

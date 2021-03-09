@@ -10,6 +10,6 @@ import UIKit
 
 extension Calendar {
     var color: UIColor? {
-        return self.cgColor != nil ? UIColor(cgColor: self.cgColor!) : nil
+        self.cgColor != nil ? UIColor(cgColor: self.cgColor!) : nil
     }
 }

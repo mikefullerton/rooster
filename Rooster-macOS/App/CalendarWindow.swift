@@ -6,28 +6,20 @@
 //
 
 import Cocoa
+import RoosterCore
 
-class CalendarWindow: WindowController {
+public class CalendarWindow: WindowController {
+    private static weak var instance: CalendarWindow?
 
-    static private weak var instance: CalendarWindow?
-    
-    @IBOutlet var viewController: CalendarChooserViewController?
-    
-    override func windowDidLoad() {
+    @IBOutlet private var viewController: CalendarChooserViewController?
+
+    override public func windowDidLoad() {
         super.windowDidLoad()
-        self.autosaveKey = "Calendars"
-        
-        if let viewController = self.viewController {
-            self.setContentViewController(viewController)
-            
-//            if let window = self.window {
-//                let preferredContentSize = viewController.preferredContentSize
-//                self.logger.log("Updating prefs window size: \(NSStringFromSize(preferredContentSize))")
-//                window.setContentSize(preferredContentSize)
-//            }
-        }
+        self.autoSaveKey = AutoSaveKey("Calendars", alwaysShow: true)
+
+        self.contentViewController = viewController
     }
-        
+
     static func show() {
         if let windowController = CalendarWindow.instance,
            let window = windowController.window {
@@ -35,9 +27,8 @@ class CalendarWindow: WindowController {
         } else {
             let windowController = CalendarWindow()
             self.instance = windowController
-            
+
             windowController.showWindow(self)
-            
         }
     }
 }

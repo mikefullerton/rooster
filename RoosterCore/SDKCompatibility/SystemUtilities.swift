@@ -1,102 +1,26 @@
 //
-//  AppKitPlugin.swift
-//  RoosterAppKitPlugin
+//  AppLauncher.swift
+//  RoosterAutoLauncher
 //
-//  Created by Mike Fullerton on 11/19/20.
+//  Created by Mike Fullerton on 4/15/21.
 //
 
-import Foundation
 import AppKit
+import Foundation
 
-public class SystemUtilities : NSObject, Loggable {
-    private var userAttentionRequest: Int = 0
-    
-    let webexBundleID = "com.cisco.webexmeetingsapp"
-  
-    //            <?xml version="1.0" encoding="UTF-8"?>
-    //            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    //            <plist version="1.0">
-    //            <array>
-    //                <dict>
-    //                    <key>CFBundleTypeRole</key>
-    //                    <string>Editor</string>
-    //                    <key>CFBundleURLName</key>
-    //                    <string>cisco.webex.meetingsapp</string>
-    //                    <key>CFBundleURLSchemes</key>
-    //                    <array>
-    //                        <string>wbxappmac</string>
-    //                    </array>
-    //                </dict>
-    //            </array>
-    //            </plist>
-
-
-    func openURLDirectly(inAppIfPossible url: URL, completion:((_ success: Bool, _ error: Error?) -> Void)?) {
-
-        // this doesn't work. I'm not sure it's even possible.
-
-        if url.absoluteString.contains("webex") {
-
-           // NSWorkspace.shared.open(url)
-            https://appleinc.webex.com/meet/mfullerton
-            
-            if let webexURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: webexBundleID) {
-
-                let webexURLString = url.absoluteString.replacingOccurrences(of: "https:", with: "wbxappmac:")
-
-                if let newURL = URL(string: webexURLString) {
-
-                    let config = NSWorkspace.OpenConfiguration()
-                    config.promptsUserIfNeeded = false
-                    
-                    NSWorkspace.shared.open([newURL],
-                                            withApplicationAt:webexURL,
-                                            configuration: config) { (runningApplication, error) in
-                        if completion != nil {
-
-                            let success = runningApplication != nil ? true : false
-
-                            completion!(success, error)
-                        }
-                    }
-                }
-
-            }
-            
-        }
-    }
-    
-    public func openNotificationSettings() {
-//        let urlString = "/System/Library/PreferencePanes/Notifications.prefPane"
-//        let url = URL(fileURLWithPath: urlString)
-//
-//        let config = NSWorkspace.OpenConfiguration()
-//        config.promptsUserIfNeeded = false
-//
-//        NSWorkspace.shared.openApplication(at: url, configuration: config) { (results, error) in
-//
-//            print("\(results) : \(error)")
-//        }
-//
-        let task = Process()
-        task.launchPath = "/bin/bash"
-        task.arguments = ["-c", "open", "/System/Library/PreferencePanes/Notifications.prefPane"]
-        task.launch()
-        task.waitUntilExit()
-    }
-    
-    public func bringAppToFront() {
+public enum SystemUtilities: Loggable {
+    public static func bringAppToFront() {
         let result = NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
-        
+
         self.logger.log("Attempted to bring app to front. Success: \(result)")
     }
-    
-    public func findRunningApplication(for bundleIdentifier: String) -> [NSRunningApplication] {
+
+    public static func findRunningApplication(for bundleIdentifier: String) -> [NSRunningApplication] {
         let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier)
-        if apps.count > 0 {
+        if !apps.isEmpty {
             return apps
         }
-        
+
         for app in NSWorkspace.shared.runningApplications {
             let name = app.localizedName ?? ""
             if let bundleID = app.bundleIdentifier {
@@ -106,79 +30,59 @@ public class SystemUtilities : NSObject, Loggable {
                 }
             }
         }
-        
+
         return []
     }
-    
-    
-    public func bringAnotherApp(toFront bundleIdentifier: String,
-                         completion:((_ success: Bool, _ error: Error?) -> Void)?) {
-        
+
+    public static func bringAnotherApp(toFront bundleIdentifier: String,
+                                       completion:((_ success: Bool, _ error: Error?) -> Void)?) {
         self.logger.log("bringing app to front: \(bundleIdentifier)")
-        
+
         let apps = self.findRunningApplication(for: bundleIdentifier)
-        
-        guard apps.count > 0 else {
+
+        guard !apps.isEmpty else {
             self.logger.error("did not find any apps for bundleIdentifier: \(bundleIdentifier)")
-            
-            if completion != nil {
-                completion!(false, nil)
-            }
-            
+            completion?(false, nil)
             return
         }
-        
+
         for bundle in apps {
             bundle.unhide()
-            
+
             let result = bundle.activate(options: .activateIgnoringOtherApps)
-            
             self.logger.log("attempted to foreground: \(bundle): success: \(result)")
         }
-        
-        if completion != nil {
-            completion!(true, nil)
-        }
-    }
-    
-    public func bringLocationAppsToFront(for url: URL) {
-        self.bringAnotherApp(toFront: "com.apple.Safari", completion: nil)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3)) {
-            if url.absoluteString.contains("webex") {
-                self.bringAnotherApp(toFront: "com.webex.meetingmanager", completion: nil)
-            }
-        }
-    }
-    
-    func didOpenURL(for url: URL, completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        if completion != nil {
-            completion!(true, nil)
-        }
+
+        completion?(true, nil)
     }
 
-    public func openLocationURL(_ url: URL, completion: ((Bool, Error?) -> Void)? = nil) {
-        let config = NSWorkspace.OpenConfiguration()
-        config.promptsUserIfNeeded = false
-        
-        self.logger.log("opening location URL: \(url)")
+    public static func launchApp(withBundleIdentifer bundleID: String,
+                                 completion: ((_ success: Bool, _ runningApplication: NSRunningApplication?, _ error: Error?) -> Void)? = nil) {
+        let runningApps = NSWorkspace.shared.runningApplications
+        let isRunning = runningApps.contains {
+            $0.bundleIdentifier == bundleID
+        }
 
-        self.bringLocationAppsToFront(for: url)
-        
-        NSWorkspace.shared.open(url,
-                                configuration: config) { [weak self] (runningApplication, error) in
-            
-            guard error != nil else {
-                self?.logger.error("opening location URL: \(url), failed with error: \(error != nil ? error!.localizedDescription : "nil")")
-
-                if let completionBlock = completion {
-                    completionBlock(false, error)
-                }
+        if !isRunning {
+            guard let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID) else {
+                self.logger.error("Unable to find app URL for \(bundleID)")
                 return
             }
-            self?.logger.log("opening location URL: \(url) succeed")
 
-            self?.didOpenURL(for: url, completion: completion)
+            let config = NSWorkspace.OpenConfiguration()
+            config.promptsUserIfNeeded = false
+
+            NSWorkspace.shared.openApplication(at: appURL,
+                                               configuration: config) { runningApplication, error in
+                guard runningApplication != nil, error == nil else {
+                    self.logger.error("Unable to launch app at \(appURL.path) for bundleIdentifier: \(bundleID)")
+                    completion?(false, nil, error)
+                    return
+                }
+
+                self.logger.error("Launched \(appURL.path) for bundleIdentifier: \(bundleID) ok")
+                completion?(true, runningApplication, error)
+            }
         }
     }
 }

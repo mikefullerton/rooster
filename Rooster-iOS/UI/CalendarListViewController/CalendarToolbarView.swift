@@ -8,33 +8,32 @@
 import Foundation
 import UIKit
 
-protocol CalendarToolbarViewDelegate : AnyObject {
+protocol CalendarToolbarViewDelegate: AnyObject {
     func calendarToolbarView(_ toolbarView: CalendarToolbarView, didChangeSelectedIndex index: Int)
 }
 
-class CalendarToolbarView : TopBar {
-    
+class CalendarToolbarView: TopBar {
     weak var delegate: CalendarToolbarViewDelegate?
 
-    override var preferredHeight:CGFloat {
-        return 60.0
+    override var preferredHeight: CGFloat {
+        60.0
     }
-    
+
     init() {
         super.init(frame: CGRect.zero)
         self.addToolbar()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func segmentedControllerDidChange(_ sender: UISegmentedControl) {
         if let delegate = self.delegate {
             delegate.calendarToolbarView(self, didChangeSelectedIndex: sender.selectedSegmentIndex)
         }
     }
-    
+
     lazy var toolbar: UISegmentedControl = {
         var view = UISegmentedControl(items: [ "Calendars", "Delegate Calendars" ])
         view.selectedSegmentIndex = 0
@@ -43,7 +42,6 @@ class CalendarToolbarView : TopBar {
     }()
 
     private func addToolbar() {
-
         let toolbar = self.toolbar
 
         self.addSubview(toolbar)
@@ -53,7 +51,7 @@ class CalendarToolbarView : TopBar {
         NSLayoutConstraint.activate([
             toolbar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             toolbar.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-            
+
 //            toolbar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
 //            toolbar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
 //            toolbar.topAnchor.constraint(equalTo: self.topAnchor),
@@ -62,7 +60,4 @@ class CalendarToolbarView : TopBar {
 
 //        self.invalidateIntrinsicContentSize()
     }
-    
-    
-    
 }

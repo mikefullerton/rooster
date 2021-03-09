@@ -5,8 +5,8 @@
 //  Created by Mike Fullerton on 1/24/21.
 //
 
-import Foundation
 import Cocoa
+import Foundation
 
 // geometry
 public typealias SDKEdgeInsets = NSEdgeInsets
@@ -19,7 +19,7 @@ public struct SDKOffset {
         self.horizontal = horizontal
         self.vertical = vertical
     }
-    
+
     public static let zero = SDKOffset(horizontal: 0, vertical: 0)
 }
 
@@ -28,4 +28,6 @@ public struct SDKOffset {
 public typealias SDKColor = NSColor
 public typealias SDKFont = NSFont
 
-
+// this is just here to shut the linter up about the file_name
+private enum CoreSDKTypes_macOS {
+}

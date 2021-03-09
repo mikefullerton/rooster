@@ -1,5 +1,5 @@
 
-Rooster started off as an iOS Catalyst app but that became a non-started when I couldn't get Sparkle to work with it, so I converted it to use the macOS Cocoa APIs (that was super fun).
+Rooster started off as an iOS Catalyst app but that became a non-starter when I couldn't get Sparkle to work with it, so I converted it to use the macOS Cocoa APIs (that was super fun).
 
 I've taken some steps to make the code cross platform, but I've got a long way to go before making an iOS version.
 

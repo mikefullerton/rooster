@@ -6,43 +6,15 @@
 //
 
 import Cocoa
+import RoosterCore
 
-class PreferencesWindow: WindowController {
-    
-    static private weak var instance: PreferencesWindow?
-    
-    @IBOutlet var viewController: PreferencesViewController?
-    
-    override func windowDidLoad() {
+public class PreferencesWindow: WindowController {
+    @IBOutlet private var viewController: PreferencesViewController?
+
+    override public func windowDidLoad() {
         super.windowDidLoad()
-        self.autosaveKey = "Preferences"
-        
-        if let viewController = self.viewController {
-            self.setContentViewController(viewController)
-            
-//            if let window = self.window {
-//                let preferredContentSize = viewController.preferredContentSize
-//                self.logger.log("Updating prefs window size: \(NSStringFromSize(preferredContentSize))")
-//                window.setContentSize(preferredContentSize)
-//            }
-        }
+        self.autoSaveKey = AutoSaveKey("Preferences", alwaysShow: true)
+
+        self.contentViewController = self.viewController
     }
-        
-    static func show() {
-        if let windowController = PreferencesWindow.instance,
-           let window = windowController.window {
-            window.makeKeyAndOrderFront(self)
-        } else {
-            let windowController = PreferencesWindow()
-            self.instance = windowController
-            
-            windowController.showWindow(self)
-            
-        }
-    }
-    
-//    @IBAction @objc close(_ sender: Any?) {
-//        
-//        self.cl
-//    }
 }

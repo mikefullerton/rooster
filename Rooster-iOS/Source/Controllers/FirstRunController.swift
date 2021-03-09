@@ -8,11 +8,6 @@
 import Foundation
 
 struct FirstRunController {
-    
     func handleFirstRunIfNeeded() {
-        
-        
-        
     }
-    
 }

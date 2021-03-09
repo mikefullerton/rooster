@@ -8,11 +8,9 @@
 import Foundation
 import UIKit
 
-class EventListViewController : CalendarItemTableViewController<EventListViewModel> {
-    
+class EventListViewController: CalendarItemTableViewController<EventListViewModel> {
     override func provideDataModel() -> EventListViewModel? {
-        return EventListViewModel(withEvents: Controllers.dataModelController.dataModel.events,
+        EventListViewModel(withEvents: Controllers.dataModelController.dataModel.events,
                                   reminders: Controllers.dataModelController.dataModel.reminders)
     }
-    
 }

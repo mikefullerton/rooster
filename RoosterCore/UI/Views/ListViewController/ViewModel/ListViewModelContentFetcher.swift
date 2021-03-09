@@ -1,0 +1,40 @@
+//
+//  ListViewModelContentFetcher.swift
+//  Rooster
+//
+//  Created by Mike Fullerton on 3/28/21.
+//
+
+import Foundation
+
+// public struct ListViewModelContentFetcher<CONTENT_TYPE: Identifiable, VIEW_TYPE: AbstractListViewRowController> {
+//
+//    public let model:ListViewModel
+//
+//    public typealias RowType = ListViewRowDescriptor<CONTENT_TYPE, VIEW_TYPE>
+//
+//    public init(model: ListViewModelProtocol) {
+//        self.model = model
+//    }
+//
+//    public func contentForIndexPath(_ indexPath: IndexPath) -> CONTENT_TYPE? {
+//        if let row = self.model.row(forIndexPath: indexPath) as? ListViewRowDescriptor<CONTENT_TYPE, VIEW_TYPE> {
+//            return row.content
+//        }
+//
+//        return nil
+//    }
+//
+//    public func indexPath(forContent content: CONTENT_TYPE) -> IndexPath? {
+//        for (sectionIndex, section) in self.model.sections.enumerated() {
+//            for(soundIndex, row) in section.rows.enumerated() {
+//                let typedRow = row as! RowType
+//                if typedRow.content.id == content.id {
+//                    return IndexPath(item: soundIndex, section: sectionIndex)
+//                }
+//            }
+//        }
+//
+//        return nil
+//    }
+// }

@@ -7,25 +7,21 @@
 
 import Foundation
 
-
-public protocol SoundFolderItemDescriptor : Loggable, CustomStringConvertible {
-    
+public protocol SoundFolderItemDescriptor: Loggable, CustomStringConvertible {
     associatedtype FileType: Codable, SoundFolderItemDescriptor
-    
+
     var metadata: SoundFolderItemMetaData { get set }
-    
+
     init(withID id: String, displayName: String)
 
     static func metadataFileURL(fromURL url: URL) -> URL
 }
-//static func urlFromAssociatedItem(atURL associatedItemURL: URL) -> URL
+// static func urlFromAssociatedItem(atURL associatedItemURL: URL) -> URL
 
 extension SoundFolderItemDescriptor {
-
     public static func read(fromURL url: URL) throws -> FileType {
         let fileURL = FileType.metadataFileURL(fromURL: url)
         let jsonFile = JsonFile<FileType>(withURL: fileURL)
-        return try jsonFile.read()
+        return try jsonFile.readSynchronously()
     }
 }
-

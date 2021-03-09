@@ -8,36 +8,36 @@
 import Foundation
 
 public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
-    
     public let fileName: String
-    
+
     public static let empty = SoundFile()
-    
-    lazy var soundPlayer = NativeSoundPlayer(withSoundFile: self)
-    
+
+    public lazy var soundPlayer: SoundPlayerProtocol = NativeSoundPlayer(withSoundFile: self)
+
     public var underlyingSoundFile: SoundFile {
-        return self
+        self
     }
-     
-    public override func didSetRelativePath() {
+
+    override public func didSetRelativePath() {
         print("New SoundFile relative path: \(self.relativePath.path)")
     }
-    
-    public override var absolutePath: URL? {
+
+    // swiftlint:disable unused_setter_value
+    override public var absolutePath: URL? {
         get {
             if let rootFolderPath = self.rootFolder?.absolutePath {
                 let outPath = rootFolderPath.deletingLastPathComponent().appendingPathComponent(self.relativePath.path)
                 self.logger.log("sound file path: \(outPath)")
                 return outPath
             }
-            
+
             return nil
         }
-        set(path) {
-            
+        set {
         }
     }
-    
+    // swiftlint:enable unused_setter_value
+
     public convenience init() {
         self.init(withID: "",
                   fileName: "",
@@ -47,29 +47,27 @@ public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
     public init(withID id: String,
                 fileName: String,
                 displayName: String) {
-        
         self.fileName = fileName
         super.init(withID: id, displayName: displayName)
         self.relativePath = URL(withRelativePath: fileName)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case fileName = "fileName"
-        case displayName = "displayName"
-        case relativePath = "relativePath"
+        case id
+        case fileName
+        case displayName
+        case relativePath
     }
-    
+
     public required init(from decoder: Decoder) throws {
-        
         let values = try decoder.container(keyedBy: CodingKeys.self)
         try self.fileName = values.decode(String.self, forKey: .fileName)
-        
+
         super.init(withID: "", displayName: "")
-        
-        try self.id = values.decode(String.self, forKey: .id)
-        try self.displayName = values.decode(String.self, forKey: .displayName)
-        try self.relativePath = values.decode(URL.self, forKey: .relativePath)
+
+        self.id = try values.decodeIfPresent(String.self, forKey: .id) ?? ""
+        self.displayName = try values.decodeIfPresent(String.self, forKey: .displayName) ?? ""
+        self.relativePath = try values.decodeIfPresent(URL.self, forKey: .relativePath) ?? URL.empty
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -79,14 +77,14 @@ public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
         try container.encode(self.fileName, forKey: .fileName)
         try container.encode(self.relativePath.path, forKey: .relativePath)
     }
-    
+
     public func copy(with zone: NSZone? = nil) -> Any {
-        return SoundFile(withID: self.id, fileName: self.fileName, displayName: self.displayName)
+        SoundFile(withID: self.id, fileName: self.fileName, displayName: self.displayName)
     }
 
-    public override var description: String {
-        return """
-        \(type(of:self)): \
+    override public var description: String {
+        """
+        \(type(of: self)): \
         id: \(self.id), \
         displayName: \(self.displayName), \
         fileName: \(self.fileName), \
@@ -96,25 +94,25 @@ public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
     }
 
     public static func == (lhs: SoundFile, rhs: SoundFile) -> Bool {
-        return  lhs.id == rhs.id &&
+        lhs.id == rhs.id &&
                 lhs.displayName == rhs.displayName &&
                 lhs.fileName == rhs.fileName &&
                 lhs.relativePath == rhs.relativePath &&
                 lhs.absolutePath == rhs.absolutePath
     }
-    
-    public override func updateRelativePath() {
+
+    override public func updateRelativePath() {
         self.relativePath = self.relativePathFromRootFolder
-        
-        self.logger.log("New url for \(self.description)")
+
+        self.logger.debug("New url for \(self.description)")
     }
-    
+
     public convenience init(withDescriptor descriptor: SoundFileDescriptor, atPath url: URL) {
         self.init(withID: descriptor.metadata.id,
-                  fileName:url.lastPathComponent,
+                  fileName: url.lastPathComponent,
                   displayName: descriptor.metadata.displayName)
     }
-    
+
 //    public static let randomSoundID = "0d67e781-826a-4c4f-807c-0dbe6514da3e"
 // 
 //    public static let random = SoundFile(withID: SoundFile.randomSoundID, fileName: "", displayName: "")

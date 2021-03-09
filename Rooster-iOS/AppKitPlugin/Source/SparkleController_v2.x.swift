@@ -6,7 +6,7 @@
 //
 
 import Foundation
-//import Sparkle
+// import Sparkle
 
 #if targetEnvironment(macCatalyst)
 
@@ -14,39 +14,38 @@ import Foundation
 protocol AppKitInstallationUpdater {}
 #endif
 
-@objc public class SparkleController : NSObject, AppKitInstallationUpdater, SPUUpdaterDelegate, Loggable {
-    
+@objc public class SparkleController: NSObject, AppKitInstallationUpdater, SPUUpdaterDelegate, Loggable {
 //    public weak var delegate: AppKitInstallationUpdaterDelegate?
-    
-    private var updater: SPUUpdater? = nil
+
+    private var updater: SPUUpdater?
     private var error: Error?
     private var timer: SimpleTimer
-    
-    public override init() {
+
+    override public init() {
         self.timer = SimpleTimer(withName: "SparkleUpdateTimer")
     }
-    
+
     let nextUpdateCheckDateKey = "nextUpdateCheckDateKey"
     let lastUpdateCheckDateKey = "lastUpdateCheckDateKey"
-    let tryAgainInterval:TimeInterval = 60 * 60
+    let tryAgainInterval: TimeInterval = 60 * 60
     let updateCheckInterval: TimeInterval = 60 * 60 * 24
-    
+
     var nextCheckDate: Date {
         get {
             if let date = UserDefaults.standard.object(forKey: self.nextUpdateCheckDateKey) as? Date {
                 return date
             }
-            
+
             return Date()
         }
         set(newDate) {
             UserDefaults.standard.setValue(newDate, forKey: self.nextUpdateCheckDateKey)
         }
     }
-    
+
     var lastUpdateCheckDate: Date? {
         get {
-            return UserDefaults.standard.object(forKey: self.lastUpdateCheckDateKey) as? Date
+            UserDefaults.standard.object(forKey: self.lastUpdateCheckDateKey) as? Date
         }
         set(newDate) {
             if newDate == nil {
@@ -56,31 +55,30 @@ protocol AppKitInstallationUpdater {}
             }
         }
     }
-   
+
     func removeNextCheckDate() {
         UserDefaults.standard.removeObject(forKey: self.nextUpdateCheckDateKey)
     }
 
     var isTimeForUpdate: Bool {
-        return self.nextCheckDate.isEqualToOrBeforeDate(Date())
+        self.nextCheckDate.isEqualToOrBeforeDate(Date())
     }
-    
 
     func startNextCheckTimer() {
         self.logger.log("Starting next check timer at \(Date()), will check again at \(self.nextCheckDate)")
-        self.timer.start(withDate: self.nextCheckDate) { [weak self] timer in
+        self.timer.start(withDate: self.nextCheckDate) { [weak self] _ in
             self?.logger.log("Timer expired, will check for updates if needed")
             self?.checkForUpdatesIfNeeded()
         }
     }
-    
+
     func didSuccessfullyCheck() {
         self.lastUpdateCheckDate = Date()
         self.nextCheckDate = Date().addingTimeInterval(self.updateCheckInterval)
         self.logger.log("Did succussfully check for updates.")
         self.startNextCheckTimer()
     }
-    
+
     func didFailCheck() {
         self.nextCheckDate = Date().addingTimeInterval(self.tryAgainInterval)
         self.logger.log("Did fail check for updates, will try again in \( Int(self.tryAgainInterval / 60)) minutes")
@@ -107,15 +105,14 @@ protocol AppKitInstallationUpdater {}
             }
         }
     }
-    
+
     @objc func appDidBecomeActiveNotification(_ sender: Notification) {
         self.checkForUpdatesIfNeeded()
     }
-    
+
     lazy var sparkleUI = SparkleUI()
-    
+
     public func configure(withAppBundle appBundle: Bundle) {
-        
         let updater = SPUUpdater(hostBundle: appBundle,
                                  applicationBundle: appBundle,
                                  userDriver: self.sparkleUI.userDriver(for: appBundle),
@@ -124,66 +121,65 @@ protocol AppKitInstallationUpdater {}
         updater.sendsSystemProfile = false
         updater.automaticallyChecksForUpdates = false // this updates its check date if it fails. Dumb.
         updater.automaticallyDownloadsUpdates = true
-        
+
         do {
             try updater.start()
-        } catch let error {
-            self.logger.error("Sparkle failed to start with error: \(error.localizedDescription)")
+        } catch {
+            self.logger.error("Sparkle failed to start with error: \(String(describing: error))")
 
             // TODO: put up alert.
-            
+
             return
         }
-        
+
         self.updater = updater
-        
+
         self.logger.log("Sparkle updater configured. Last update check was: \(self.lastUpdateCheckDate?.description ?? "None" )")
-        
+
         self.checkForUpdatesIfNeeded()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveNotification(_:)), name: NSApplication.didBecomeActiveNotification, object: nil)
     }
-    
+
     public func checkForUpdates() {
-        self.logger.log("User requested update check");
+        self.logger.log("User requested update check")
         self.timer.stop()
         if let updater = self.updater {
             updater.checkForUpdates()
         }
     }
-    
+
     public func updaterDidNotFindUpdate(_ updater: SPUUpdater) {
         self.logger.log("Sparkle did not find update")
         self.didSuccessfullyCheck()
     }
-    
+
     public func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
-        self.logger.log("Sparkle did find valid update (will automatically download)");
+        self.logger.log("Sparkle did find valid update (will automatically download)")
         self.didSuccessfullyCheck()
     }
-    
+
 //    public func updaterShouldPromptForPermissionToCheck(forUpdates updater: SUUpdater) -> Bool {
 //        self.logger.log("Sparkle asked for permission to check")
 //        return true
 //    }
-    
+
     public func updater(_ updater: SPUUpdater, didAbortWithError error: Error) {
-        self.logger.error("Sparkle did abort with error: \(error.localizedDescription)")
+        self.logger.error("Sparkle did abort with error: \(String(describing: error))")
         if let nsError = error as NSError? {
             if nsError.domain == SUSparkleErrorDomain && nsError.code == SUError.appcastError.rawValue {
                 self.sparkleUI.showErrorAlert()
             }
         }
-        
-        self.didFailCheck()
-    }
-    
-    public func updater(_ updater: SPUUpdater, failedToDownloadUpdate item: SUAppcastItem, error: Error) {
-        self.logger.error("Sparkle failed to download update with error: \(error.localizedDescription)")
+
         self.didFailCheck()
     }
 
-    
+    public func updater(_ updater: SPUUpdater, failedToDownloadUpdate item: SUAppcastItem, error: Error) {
+        self.logger.error("Sparkle failed to download update with error: \(String(describing: error))")
+        self.didFailCheck()
+    }
+
     public func updater(_ updater: SPUUpdater, willDownloadUpdate item: SUAppcastItem, with request: NSMutableURLRequest) {
         self.logger.log("Sparkle will download update from \(request)")
     }
@@ -196,47 +192,41 @@ protocol AppKitInstallationUpdater {}
 //        self.logger.log("Sparkle asked for permission to check");
 //        return true
 //    }
-    
-    
+
 }
 
-class SparkleUI : NSObject, SPUStandardUserDriverDelegate, Loggable {
-    
-    private var userDriver: SPUUserDriver? = nil
+class SparkleUI: NSObject, SPUStandardUserDriverDelegate, Loggable {
+    private var userDriver: SPUUserDriver?
     private var showErrorDialog = false
-    
+
     override init() {
     }
-    
+
     func standardUserDriverWillShowModalAlert() {
         self.showErrorDialog = true
-        self.logger.log("Sparkle will show modal alert");
+        self.logger.log("Sparkle will show modal alert")
     }
-    
+
     func standardUserDriverDidShowModalAlert() {
-        
     }
 
     public func showErrorAlert() {
         if self.showErrorDialog {
             self.showErrorDialog = false
-        
-            let alert: NSAlert = NSAlert()
+
+            let alert = NSAlert()
             alert.messageText = NSLocalizedString("UPDATING_FAILED", bundle: Bundle(for: type(of: self)), comment: "")
             alert.informativeText = NSLocalizedString("CONFIRM_INTERNAL_NETWORK", bundle: Bundle(for: type(of: self)), comment: "")
             alert.alertStyle = NSAlert.Style.informational
             alert.addButton(withTitle: NSLocalizedString("OK", bundle: Bundle(for: type(of: self)), comment: ""))
-            let _ = alert.runModal()
+            _ = alert.runModal()
         }
     }
-    
+
     func userDriver(for hostBundle: Bundle) -> SPUUserDriver {
         let driver = SPUStandardUserDriver(hostBundle: hostBundle, delegate: self)
         self.userDriver = driver
-        
+
         return driver
-        
     }
-    
-    
 }

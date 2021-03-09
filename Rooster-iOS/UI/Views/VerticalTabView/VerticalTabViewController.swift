@@ -14,34 +14,34 @@ struct VerticalTabItem {
     let view: UIView
 }
 
-class VerticalTabViewController : UIViewController, VerticalButtonListViewControllerDelegate {
+class VerticalTabViewController: UIViewController, VerticalButtonListViewControllerDelegate {
     let items: [VerticalTabItem]
-    
-    lazy var verticalButtonBarController : VerticalButtonListViewController = {
+
+    lazy var verticalButtonBarController: VerticalButtonListViewController = {
         let controller = VerticalButtonListViewController(with: self.items)
         controller.delegate = self
         return controller
     }()
-    
+
     init(with items: [VerticalTabItem]) {
         self.items = items
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     var verticalTabView: VerticalTabView {
-        return self.view as! VerticalTabView
+        self.view as! VerticalTabView
     }
-    
+
     override func loadView() {
         let view = VerticalTabView()
-        
+
         self.addChild(self.verticalButtonBarController)
         view.addButtonBarView(self.verticalButtonBarController.view)
-        
+
 //        view.buttonBar.delegate = self;
         self.view = view
     }
@@ -53,10 +53,9 @@ class VerticalTabViewController : UIViewController, VerticalButtonListViewContro
 
     override var calculatedContentSize: CGSize {
         get {
-            return self.view.intrinsicContentSize
+            self.view.intrinsicContentSize
         }
         set (size) {
-            
         }
     }
 }

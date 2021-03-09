@@ -7,30 +7,29 @@
 
 import Foundation
 
-//public enum PlayListIteratorState {
+// public enum PlayListIteratorState {
 //    case idle, iterating, done
-//}
+// }
 
 public protocol PlayListIteratorProtocol: CustomStringConvertible {
-    
     var isRandom: Bool { get }
 
     var isEmpty: Bool { get }
-    
+
     var current: SoundPlayer? { get }
-    
+
     func start()
-  
+
     func next()
-    
+
     func stop()
-    
+
     var isDone: Bool { get }
-    
+
     var soundPlayers: [SoundPlayer] { get }
 }
 
-//extension PlayListIteratorProtocol {
+// extension PlayListIteratorProtocol {
 //    
 //    public func soundPlayer(forIdentifier identifier: String) -> SoundPlayer? {
 //        for sound in self.sounds {
@@ -43,4 +42,4 @@ public protocol PlayListIteratorProtocol: CustomStringConvertible {
 //    }
 //    
 //    
-//}
+// }

@@ -9,8 +9,8 @@ import Foundation
 
 protocol TableViewRowCell {
     associatedtype ContentType
-    
+
     static var viewHeight: CGFloat { get }
- 
+
     func viewWillAppear(withData data: ContentType)
 }

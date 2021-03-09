@@ -13,68 +13,67 @@ import Cocoa
 import UIKit
 #endif
 
-class MainEventListViewController: EventListViewController {
-
-
-
-
+public class MainEventListViewController: EventListViewController {
 }
 
-class MainWindowViewController : EventListViewController {
+public class MainWindowViewController: SDKViewController {
     static let DidChangeEvent = Notification.Name("MainWindowViewControllerDidChange")
 
     let listViewController = MainEventListViewController()
 
+    private let preferencesUpdateHandler = PreferencesUpdateHandler()
+
     lazy var visualEffectView: NSVisualEffectView = {
         let visualEffectView = NSVisualEffectView(frame: CGRect.zero)
-        visualEffectView.material =  .underWindowBackground //.titlebar //.headerView
+        visualEffectView.material =  .underWindowBackground // .titlebar //.headerView
         visualEffectView.blendingMode = .behindWindow
         visualEffectView.state = .active
         return visualEffectView
     }()
-    
-    override func loadView() {
+
+    override public func loadView() {
         self.view = self.visualEffectView
-        
+
         let view = self.listViewController.view
-        
+
         self.addChild(self.listViewController)
         self.view.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            view.topAnchor.constraint(equalTo: self.view.topAnchor),
-//            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            view.topAnchor.constraint(equalTo: self.view.topAnchor)
         ])
 
         self.title = "Rooster"
+//        self.dataModelEventListener = EventKitDataModelUpdateHandler(for: self)
+
+        self.preferencesUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else {
+                return
+            }
+
+            self.listViewController.reloadData()
+        }
+
+        self.listViewController.reloadData()
+        self.preferredContentSize = self.listViewController.preferredContentSize
     }
 
-    override func preferredContentSizeDidChange(for viewController: NSViewController) {
+    override public func preferredContentSizeDidChange(for viewController: NSViewController) {
         if viewController == self.listViewController {
             self.preferredContentSize = viewController.preferredContentSize
         }
     }
-    
+
     func sendSizeChangedEvent() {
         if self.preferredContentSize.width != 0 && self.preferredContentSize.height != 0 {
             NotificationCenter.default.post(name: Self.DidChangeEvent, object: self)
         }
     }
-    
-    override var preferredContentSize: NSSize {
-        get {
-            return super.preferredContentSize
-        }
-        set(size) {
-            super.preferredContentSize = size
-            
-            var frame = self.view.frame
-            frame.size = self.preferredContentSize
-            self.view.frame = frame
 
+    override public var preferredContentSize: NSSize {
+        didSet {
             self.sendSizeChangedEvent()
         }
     }

@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-class StartDelayView : LabeledSliderView {
-    
+class StartDelayView: LabeledSliderView {
+    let preferencesUpdateHandler = PreferencesEventListener()
+
     init(fixedLabelWidth: CGFloat,
          sliderRightInset: CGFloat) {
-        
         super.init(frame: CGRect.zero, title: "PLAY_DELAY".localized,
                    fixedLabelWidth: fixedLabelWidth,
                    sliderRightInset: sliderRightInset)
-    
+
         let button = FancyButton()
         button.contentHorizontalAlignment = .leading
         button.contentViews = [
@@ -30,24 +30,29 @@ class StartDelayView : LabeledSliderView {
             self.label(withTitle: "7 seconds"),
             self.label(withTitle: "8 seconds"),
             self.label(withTitle: "9 seconds"),
-            self.label(withTitle: "10 seconds"),
+            self.label(withTitle: "10 seconds")
         ]
-        
+
         self.slider.minimumValue = 0 // 1 play count
         self.slider.maximumValue = 10
         self.slider.maximumValueView = button
         self.slider.addTarget(self, action: #selector(repeatCountDidChange(_:)), for: .valueChanged)
-        self.slider.value = min(self.slider.maximumValue, Float(Controllers.preferencesController.soundPreferences.startDelay))
-        
+        self.slider.value = min(self.slider.maximumValue, Float(AppControllers.shared.preferences.soundPreferences.startDelay))
+
         self.updateVolumeSliderImage(withSliderView: self.slider)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
+
+        self.preferencesUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else { return }
+
+            self.slider.value = min(self.slider.maximumValue, Float(AppControllers.shared.preferences.soundPreferences.startDelay))
+            self.updateVolumeSliderImage(withSliderView: self.slider)
+        }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func label(withTitle title: String) -> UILabel {
         let label = UILabel()
         label.text = title
@@ -57,33 +62,27 @@ class StartDelayView : LabeledSliderView {
 
     private func updateVolumeSliderImage(withSliderView sliderView: SliderView) {
         if let button = sliderView.maximumValueView as? FancyButton {
-            let startDelay = Controllers.preferencesController.soundPreferences.startDelay
-            
+            let startDelay = AppControllers.shared.preferences.soundPreferences.startDelay
+
             var index = startDelay
             if index >= button.contentViewCount {
                 index = button.contentViewCount
             }
             button.contentViewIndex = index
-            
+
             print("start delay: \(startDelay), index: \(index)")
         }
     }
-    
+
     @objc func repeatCountDidChange(_ sender: UISlider) {
-        var prefs = Controllers.preferencesController.preferences
+        var prefs = AppControllers.shared.preferences.preferences
         var soundPrefs = prefs.sounds
-        
+
         let value = sender.value
         soundPrefs.startDelay = Int(value)
-        
-        prefs.sounds = soundPrefs
-        Controllers.preferencesController.preferences = prefs
-        self.updateVolumeSliderImage(withSliderView: self.slider)
-    }
-    
-    @objc func preferencesDidChange(_ sender: Notification) {
-        self.slider.value = min(self.slider.maximumValue, Float(Controllers.preferencesController.soundPreferences.startDelay))
-        self.updateVolumeSliderImage(withSliderView: self.slider)
-    }
 
+        prefs.sounds = soundPrefs
+        AppControllers.shared.preferences.preferences = prefs
+        self.updateVolumeSliderImage(withSliderView: self.slider)
+    }
 }

@@ -7,10 +7,8 @@
 
 import Foundation
 
-public protocol DictionaryCodable {
-
-    init?(withDictionary dictionary: [AnyHashable: Any]?)
-    
-    var dictionaryRepresentation:[AnyHashable: Any] { get }
-
-}
+// public protocol DictionaryCodable {
+//    init?(withDictionary dictionary: [AnyHashable: Any]?)
+//
+//    var dictionaryRepresentation: [AnyHashable: Any] { get }
+// }
