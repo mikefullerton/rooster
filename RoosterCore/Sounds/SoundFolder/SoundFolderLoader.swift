@@ -21,14 +21,14 @@ class SoundFolderLoader: Loggable {
         if path == nil {
             self.loadedFolder = SoundFolder.empty
         }
+       
+        self.folderLoadingSemaphore = DispatchSemaphore(value: 1)
     }
     
     public func startLoading() {
 
         let url = self.path!
         
-        let semaphore = DispatchSemaphore(value: 1)
-        self.folderLoadingSemaphore = semaphore
         
         self.logger.log("Starting to load sound folder for url: \(url.path)")
 
@@ -47,7 +47,7 @@ class SoundFolderLoader: Loggable {
                     strongSelf.loadedFolder = SoundFolder.empty
                     
                 }
-                semaphore.signal()
+                strongSelf.folderLoadingSemaphore?.signal()
             }
         }
     }

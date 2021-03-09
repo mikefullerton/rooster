@@ -16,18 +16,10 @@ extension RCReminder {
          alarm: RCAlarm) {
         
         self.init(withIdentifier: EKReminder.uniqueID,
-                  ekReminderID: EKReminder.calendarItemIdentifier,
-                  externalIdentifier: EKReminder.calendarItemExternalIdentifier,
+                  ekReminder: EKReminder,
                   calendar: calendar,
                   subscribed: subscribed,
-                  completed: EKReminder.isCompleted,
-                  alarm: alarm,
-                  startDate: EKReminder.startDateComponents?.date ?? Date.distantFuture,
-                  dueDate: EKReminder.dueDateComponents?.date ?? Date.distantFuture,
-                  title: EKReminder.title,
-                  location: EKReminder.location,
-                  url: EKReminder.url,
-                  notes: EKReminder.notes)
+                  alarm: alarm)
 
     }
     

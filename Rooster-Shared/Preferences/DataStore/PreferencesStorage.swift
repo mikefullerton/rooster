@@ -9,7 +9,7 @@ import Foundation
 import RoosterCore
 import Cocoa
 
-public class PreferencesStorage {
+public class PreferencesStorage: Loggable {
     
     public enum Errors: Error {
         case failedToLoadApplicationSupportDirectory
@@ -60,7 +60,11 @@ public class PreferencesStorage {
     }
 
     func delete() throws {
-        try self.prefsFile.delete()
+        if self.prefsFile.exists {
+            try self.prefsFile.delete()
+            self.logger.log("deleted pref file: \(self.prefsFile.url.path)")
+        }
+    
     }
     
     public var exists: Bool {

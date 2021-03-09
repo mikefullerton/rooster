@@ -14,10 +14,6 @@ import UIKit
 #endif
 
 class MainEventListViewController: EventListViewController {
-
-
-
-
 }
 
 class MainWindowViewController : EventListViewController {
@@ -44,9 +40,7 @@ class MainWindowViewController : EventListViewController {
         
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             view.topAnchor.constraint(equalTo: self.view.topAnchor),
-//            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
 
         self.title = "Rooster"

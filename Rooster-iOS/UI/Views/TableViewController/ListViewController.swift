@@ -10,9 +10,9 @@ import UIKit
 
 class ListViewController<ViewModel> : UITableViewController, Reloadable where ViewModel: TableViewModelProtocol {
     
-    private(set) var viewModel: ViewModel?
+    public private(set) var viewModel: ViewModel?
     
-    func provideDataModel() -> ViewModel? {
+    open func provideDataModel() -> ViewModel? {
         return nil
     }
     

@@ -6,52 +6,87 @@
 //
 
 import Foundation
+import EventKit
 
-public struct RCReminder: Identifiable, Hashable, RCCalendarItem {
-    
+public struct RCReminder: Identifiable, Hashable, RCCalendarItem, Equatable {
+
     public let calendar: RCCalendar
     public let id: String
-    public let ekReminderID: String
-    public let isCompleted: Bool
-    public let title: String
-    public let location: String?
-    public let notes: String?
-    public let url: URL?
-    public let dueDate: Date
-    public let startDate: Date
-    public let externalIdentifier: String
-    
+    public let ekReminder: EKReminder
+
     // modifiable
     public var isSubscribed: Bool
     public var alarm: RCAlarm
+    
+    public let startDate: Date
+    
+    public let endDate: Date
+    
+    /// MARK - EKEvent wrappers
+    
+    public var dueDate: Date {
+        return self.startDate
+    }
+    
+    public var isCompleted: Bool {
+        return self.ekReminder.isCompleted
+    }
 
+    public var title: String {
+        return self.ekReminder.title
+    }
+    
+    public var ekReminderID: String {
+        return self.ekReminder.calendarItemIdentifier
+    }
+    
+    public var location: String? {
+        return self.ekReminder.location
+    }
+    
+    public var url: URL? {
+        return self.ekReminder.url
+    }
+    
+    public var notes: String? {
+        return self.ekReminder.notes
+    }
+    
+    public var externalIdentifier: String {
+        return self.ekReminder.calendarItemExternalIdentifier
+    }
+    
+    public var priority: Priority {
+        return Priority(rawValue: self.ekReminder.priority) ?? .none
+    }
+    
+    public var isRecurring: Bool {
+        return false
+    }
+    
     public init(withIdentifier identifier: String,
-                ekReminderID: String,
-                externalIdentifier: String,
+                ekReminder: EKReminder,
                 calendar: RCCalendar,
                 subscribed: Bool,
-                completed: Bool,
-                alarm: RCAlarm,
-                startDate: Date,
-                dueDate: Date,
-                title: String,
-                location: String?,
-                url: URL?,
-                notes: String?) {
+                alarm: RCAlarm) {
 
-        self.externalIdentifier = externalIdentifier
+        let startDate = ekReminder.dueDateComponents!.date!
+        let endDate = startDate.addingTimeInterval(60 * 30)
+        
+        self.startDate = startDate
+        self.endDate = endDate
+        
+        self.ekReminder = ekReminder
         self.calendar = calendar
         self.id = identifier
-        self.ekReminderID = ekReminderID
         self.isSubscribed = subscribed
-        self.alarm = alarm
-        self.isCompleted = completed
-        self.title = title
-        self.startDate = startDate
-        self.dueDate = dueDate
-        self.location = location
-        self.url = url
-        self.notes = notes
+        self.alarm = RCAlarm(startDate: startDate,
+                             endDate: endDate,
+                             enabled: alarm.isEnabled,
+                             canExpire: false,
+                             behavior:  .fireOnce,
+                             isFinished: alarm.isFinished,
+                             finishedDate: alarm.finishedDate)
     }
 
     public var description: String {
@@ -68,7 +103,7 @@ public struct RCReminder: Identifiable, Hashable, RCCalendarItem {
                 lhs.url == rhs.url &&
                 lhs.notes == rhs.notes &&
                 lhs.isCompleted == rhs.isCompleted &&
-                lhs.dueDate == rhs.dueDate &&
+                lhs.endDate == rhs.endDate &&
                 lhs.startDate == rhs.startDate  &&
                 lhs.externalIdentifier == rhs.externalIdentifier
     }
@@ -77,20 +112,66 @@ public struct RCReminder: Identifiable, Hashable, RCCalendarItem {
         hasher.combine(self.id)
     }
     
-    public func isEqualTo(_ item: RCCalendarItem) -> Bool {
-        if let comparingTo = item as? RCReminder {
-            return self == comparingTo
-        }
-        return false
+//    public func isEqualTo(_ item: RCCalendarItem) -> Bool {
+//        if let comparingTo = item as? RCReminder {
+//            return self == comparingTo
+//        }
+//        return false
+//    }
+}
+
+extension RCReminder {
+    public var timeLabelDisplayString: String {
+        return "RCReminder Due at: \(self.alarm.startDate))"
     }
 }
 
 extension RCReminder {
-    public func stopAlarmButtonClicked() {
-        self.setAlarmMuted(!self.alarm.isMuted)
-    }
+    public func update(withSavedState savedState: CalendarItemStorageRecord) -> RCReminder {
 
-    public var timeLabelDisplayString: String {
-        return "RCReminder Due at: \(self.alarm.startDate))"
+        return RCReminder(withIdentifier: self.id,
+                          ekReminder:self.ekReminder,
+                          calendar: self.calendar,
+                          subscribed: savedState.isSubscribed,
+                          alarm: savedState.alarm)
+
+    }
+    
+    public init(withReminder ekReminder: EKReminder,
+                calendar: RCCalendar,
+                startDate: Date,
+                endDate: Date,
+                savedState: CalendarItemStorageRecord) {
+
+        self.init(withIdentifier: ekReminder.uniqueID,
+                  ekReminder: ekReminder,
+                  calendar: calendar,
+                  subscribed: savedState.isSubscribed,
+                  alarm: savedState.alarm)
+
+    }
+}
+
+extension RCReminder {
+    
+    public enum Priority : Int, CustomStringConvertible, Codable {
+        case none               = 0
+        case high               = 1
+        case medium             = 5
+        case low                = 9
+        
+        public var description: String {
+            switch self  {
+            case .none:
+                return "none"
+            case .high:
+                return "high"
+            case .medium:
+                return "medium"
+            case .low:
+                return "low"
+            }
+        }
+
     }
 }

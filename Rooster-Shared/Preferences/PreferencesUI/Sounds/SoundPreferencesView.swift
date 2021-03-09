@@ -29,8 +29,7 @@ class SoundPreferencesView : SimpleStackView, SingleSoundChoiceViewDelegate {
     
     init(frame: CGRect) {
         
-        super.init(frame: frame,
-                   direction: .vertical,
+        super.init(direction: .vertical,
                    insets: SDKEdgeInsets.ten,
                    spacing: SDKOffset.zero)
     

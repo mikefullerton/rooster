@@ -19,7 +19,7 @@ public class SparkleController : NSObject, Loggable, SparkleTimerDelegate {
     
     public var state = State([]) {
         didSet {
-            self.didUpdateState(oldValue, self.state)
+            self.optionSetDidUpdate(oldValue, self.state)
         }
     }
     
@@ -67,7 +67,6 @@ public class SparkleController : NSObject, Loggable, SparkleTimerDelegate {
 
     override public init() {
         super.init()
-        self.state.controller = ControllerReference(withSparkleController: self)
         self.state = .initializing
     }
     
@@ -165,7 +164,8 @@ public class SparkleController : NSObject, Loggable, SparkleTimerDelegate {
         }
     }
     
-    func didUpdateState(_ oldState: State, _ newState: State) {
+    func optionSetDidUpdate(_ oldState: State, _ newState: State) {
+
         self.logger.log("State changed from: \(oldState.description), to: \(newState.description)")
 
 //        if oldState.contains(.checking) && !newState.contains(.checking) {

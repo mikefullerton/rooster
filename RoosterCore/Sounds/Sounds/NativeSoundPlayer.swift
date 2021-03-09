@@ -19,7 +19,7 @@ class NativeSoundPlayer : NSObject, SoundPlayerProtocol, NSSoundDelegate, Loggab
         self.soundFile = soundFile
     }
     
-    var delegate: SoundDelegate?
+    weak var delegate: SoundDelegate?
     
     var url: URL {
         return self.soundFile?.absolutePath ?? URL.empty
@@ -90,6 +90,7 @@ class NativeSoundPlayer : NSObject, SoundPlayerProtocol, NSSoundDelegate, Loggab
         self.createPlayerIfNeeded()
         
         if let sound = self.sound {
+            self.logger.log("playing sound: \(self.soundFile?.description ?? "nil")")
             self.delegate?.soundWillStartPlaying(self)
             sound.loops = false
             sound.play()
@@ -100,6 +101,11 @@ class NativeSoundPlayer : NSObject, SoundPlayerProtocol, NSSoundDelegate, Loggab
     private func didStop() {
         self.sound?.stop()
         self.sound = nil
+        self.logger.log("sound did stop: \(self.soundFile?.description ?? "nil")")
+        
+        if self.delegate == nil {
+            self.logger.log("delegate is nil")
+        }
         self.delegate?.soundDidStopPlaying(self)
     }
     

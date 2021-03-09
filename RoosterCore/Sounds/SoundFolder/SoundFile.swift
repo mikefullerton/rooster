@@ -13,7 +13,7 @@ public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
     
     public static let empty = SoundFile()
     
-    lazy var soundPlayer = NativeSoundPlayer(withSoundFile: self)
+    public lazy var soundPlayer: SoundPlayerProtocol = NativeSoundPlayer(withSoundFile: self)
     
     public var underlyingSoundFile: SoundFile {
         return self
@@ -106,7 +106,7 @@ public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
     public override func updateRelativePath() {
         self.relativePath = self.relativePathFromRootFolder
         
-        self.logger.log("New url for \(self.description)")
+        self.logger.debug("New url for \(self.description)")
     }
     
     public convenience init(withDescriptor descriptor: SoundFileDescriptor, atPath url: URL) {

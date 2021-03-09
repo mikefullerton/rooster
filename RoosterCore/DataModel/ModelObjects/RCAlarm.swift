@@ -8,120 +8,126 @@
 import Foundation
 
 
-public struct RCAlarm: Equatable, CustomStringConvertible {
+public struct RCAlarm: Equatable, CustomStringConvertible, Codable, Loggable {
     
-    enum State: String {
-        case none = "none"
-        case willFire = "willFire"
-        case firing = "firing"
-        case hasExpired = "hasExpired"
-    }
-
-    public let originalStartDate: Date
-    public let originalEndDate: Date
-    
-    public let snoozedStartDate: Date
-    public let snoozedEndDate: Date
-
     public let startDate: Date
     public let endDate: Date
-    
+    public let isEnabled: Bool
     public let canExpire: Bool
+    public let behavior: Behavior
     
-    private(set) var lastState: State
+    public private(set) var finishedDate: Date?
     
-    // modifiable
-    public var isEnabled: Bool
-    public var mutedDate: Date?
-    public var snoozeInterval: TimeInterval
+    public var isFinished: Bool {
+        didSet {
+            if self.isFinished {
+                self.finishedDate = Date()
+            } else {
+                self.finishedDate = nil
+            }
+        }
+    }
     
-    public init(startDate originalStartDate: Date,
-                endDate originalEndDate: Date,
-                isEnabled: Bool,
-                mutedDate: Date?,
-                snoozeInterval: TimeInterval,
-                canExpire: Bool) {
+    public init(startDate: Date,
+                endDate: Date,
+                enabled: Bool,
+                canExpire: Bool,
+                behavior: Behavior,
+                isFinished: Bool,
+                finishedDate: Date?) {
 
-        let snoozedStartDate = snoozeInterval > 0 ? originalStartDate.addingTimeInterval(snoozeInterval) : originalStartDate
-        let snoozedEndDate = snoozeInterval > 0 ? originalEndDate.addingTimeInterval(snoozeInterval) : originalEndDate
-
-        self.isEnabled = isEnabled
-        self.originalStartDate = originalStartDate
-        self.originalEndDate = originalEndDate
-        self.snoozeInterval = snoozeInterval
-        self.snoozedStartDate = snoozedStartDate
-        self.snoozedEndDate = snoozedEndDate
-        self.startDate = snoozedStartDate
-        self.endDate = snoozedEndDate
-        self.mutedDate = mutedDate
-        self.lastState = .none
+        self.startDate = startDate
+        self.endDate = endDate
+        self.isEnabled = enabled
         self.canExpire = canExpire
+        self.behavior = behavior
+        self.isFinished = isFinished
+        self.finishedDate = finishedDate
     }
 
     public static func == (lhs: RCAlarm, rhs: RCAlarm) -> Bool {
-        return  lhs.state == rhs.state &&
-                lhs.originalStartDate == rhs.originalStartDate &&
-                lhs.originalEndDate == rhs.originalEndDate &&
-                lhs.snoozeInterval == rhs.snoozeInterval &&
-                lhs.isEnabled == rhs.isEnabled &&
-                lhs.mutedDate == rhs.mutedDate &&
-                lhs.canExpire == rhs.canExpire
+        return  lhs.isEnabled == rhs.isEnabled &&
+                lhs.canExpire == rhs.canExpire &&
+                lhs.startDate == rhs.startDate &&
+                lhs.isFinished == rhs.isFinished &&
+                lhs.endDate == rhs.endDate &&
+                lhs.finishedDate == rhs.finishedDate &&
+                lhs.behavior == rhs.behavior
     }
     
     public var description: String {
-        var formatter = StringFormatter(withTitle: "RCAlarm")
-        formatter.append("State", self.state)
-        formatter.append("Start Date", self.startDate.shortTimeString)
-        formatter.append("End Date", self.endDate.shortTimeString)
-        formatter.append("Original Start Date", self.originalStartDate.shortTimeString)
-        formatter.append("Original End Date", self.originalEndDate.shortTimeString)
-        formatter.append("Snoozed Start Date", self.snoozedStartDate.shortTimeString)
-        formatter.append("Snoozed End Date", self.snoozedEndDate.shortTimeString)
-        formatter.append("Muted Date", self.mutedDate?.shortTimeString ?? "nil")
-        formatter.append("isEnabled", self.isEnabled)
-        formatter.append("canExpired", self.canExpire)
-        return formatter.string
+        return """
+        type(of: self): \
+        enabled: \(self.isEnabled), \
+        canExpire: \(self.canExpire), \
+        Fire Behavior: \(self.behavior.description), \
+        Start Date: \(self.startDate.shortTimeString), \
+        End Date: \(self.endDate.shortTimeString), \
+        isFinished: \(self.isFinished), \
+        Finished Dates \(self.finishedDate?.description ?? "nil")
+        """
     }
     
-    private var state: State {
+    public var isHappeningNow: Bool {
         let now = Date()
-        
-        if self.endDate.isBeforeDate(now) {
-            return .hasExpired
-        }
-        
-        if self.startDate.isEqualToOrBeforeDate(now) {
-            return .firing
-        }
-        
-        return .willFire
+        return self.startDate.isEqualToOrBeforeDate(now) && self.endDate.isEqualToOrAfterDate(now)
     }
-    
-    public mutating func updateState() -> Bool {
-        let newState = self.state
-        if newState != self.lastState {
-            self.lastState = newState
-            return true
-        }
-        
-        return false
-    }
-    
-    public var isMuted: Bool {
-        return self.mutedDate != nil
+
+    public var isInThePast: Bool {
+        return self.endDate.isBeforeDate(Date())
     }
     
     public var isFiring: Bool {
-        return self.state == .firing && self.isEnabled && !self.isMuted
+        return self.isEnabled && !self.isFinished && self.isHappeningNow
     }
     
     public var willFire: Bool {
-        return self.state == .willFire && self.isEnabled && !self.isMuted
+        return self.isEnabled && !self.isFinished
     }
 
     public var hasExpired: Bool {
-        return self.state == .hasExpired
+        return self.isInThePast && self.canExpire
     }
+    
+    public var needsStarting: Bool {
+        return self.isEnabled && self.isHappeningNow && !self.isFinished
+    }
+    
+    public var needsFinishing: Bool {
+        return self.isEnabled && !self.isFinished && self.isInThePast
+    }
+    
+    public var needsFinishReset: Bool {
+        if self.behavior == .fireRepeatedly {
+            let midnightYesterday = Date.midnightYesterday
+            if  self.isFinished,
+                let finishedDate = self.finishedDate,
+                finishedDate.isEqualToOrBeforeDate(midnightYesterday),
+                self.startDate.isAfterDate(midnightYesterday) {
+                return true
+            }
+        }
+
+        return false
+    }
+
 }
 
-
+extension RCAlarm {
+    
+    public enum Behavior: Int, CustomStringConvertible, Codable {
+        
+        case fireOnce               = 0
+        case fireRepeatedly         = 1
+        
+        public var description: String {
+            switch self {
+            case .fireOnce:
+                return "fireOnce"
+            case .fireRepeatedly:
+                return "fireRepeatedly"
+            }
+        }
+    }
+    
+}

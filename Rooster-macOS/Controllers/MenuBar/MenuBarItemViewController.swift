@@ -16,8 +16,8 @@ import UIKit
 class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemViewModel>, MenuBarScrollViewDelegate, NSMenuDelegate {
     
     override func provideDataModel() -> MenuBarItemViewModel? {
-        return MenuBarItemViewModel(withEvents: Controllers.dataModelController.dataModel.events,
-                                    reminders: Controllers.dataModelController.dataModel.reminders)
+        return MenuBarItemViewModel(withEvents: Controllers.dataModelController.dataModel?.events ?? [],
+                                    reminders: Controllers.dataModelController.dataModel?.reminders ?? [])
     }
     
     override func viewDidLoad() {

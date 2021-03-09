@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol CalendarItemBehavior {
-    func stopAlarmButtonClicked()
     var timeLabelDisplayString: String { get }
 }
 
@@ -25,7 +24,7 @@ public protocol RCCalendarItem: CustomStringConvertible, Loggable, CalendarItemB
     var url: URL? { get }
     var isSubscribed: Bool { get set }
     
-    func isEqualTo(_ item: RCCalendarItem) -> Bool
+    var isRecurring: Bool { get }
     
     var startDate: Date { get }
     var endDate: Date { get }

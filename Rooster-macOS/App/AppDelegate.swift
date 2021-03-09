@@ -23,9 +23,12 @@ class AppDelegate: NSObject,
                    Loggable,
                    NSWindowDelegate,
                    FirstLaunchWindowControllerDelegate,
-                   NSUserInterfaceValidations {
+                   NSUserInterfaceValidations,
+                    DataModelAware {
+    
 
-    public static let ApplicationStateVersion = 2
+    public static let ApplicationStateVersion = 8
+    
     public static let CalendarDidAuthenticateEvent = NSNotification.Name("AlarmControllerDidAuthenticateEvent")
     public static let ResetApplicationState = Notification.Name("ResetApplicationState")
     
@@ -36,18 +39,18 @@ class AppDelegate: NSObject,
     private(set) var mainWindowController: MainWindowController?
     private var launchWindow: NSWindowController?
     
+    private var dataModelReloader = DataModelReloader()
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
-        
         
         self.showLoadingWindow()
 
+        self.dataModelReloader.target = self
+        
         var resetAppState = false
         
-        var savedState = SavedState()
-        if savedState.int(forKey: .applicationStateVersion) != Self.ApplicationStateVersion {
+        if SavedState().int(forKey: .applicationStateVersion) != Self.ApplicationStateVersion {
             resetAppState = true
-            savedState.setInt(Self.ApplicationStateVersion, forKey: .applicationStateVersion)
         }
         
         if NSEvent.modifierFlags.intersection(.deviceIndependentFlagsMask) == .option {
@@ -58,8 +61,22 @@ class AppDelegate: NSObject,
         
         Controllers.userNotificationController.requestAccess()
         
-        Controllers.dataModelController.authenticate { (success) in
-            DispatchQueue.main.async {
+        Controllers.dataModelController.readFromStorage() { success, error in
+        
+            if !success {
+                var savedState = SavedState()
+                savedState.setBool(false, forKey: .lookedForCalendarOnFirstRun)
+                    
+                self.showDataModelErrorAlert(error)
+            }
+            
+            
+            Controllers.dataModelController.requestAccessToCalendars { (success, error) in
+                
+                if !success {
+                    self.showUnableToAuthenticateError(error)
+                }
+                
                 self.didAuthenticate(resetAppState: resetAppState)
             }
         }
@@ -74,6 +91,39 @@ class AppDelegate: NSObject,
 //            print("global event: \(event)")
 //        }
 
+    }
+    
+    func showDataModelErrorAlert(_ error: Error?) {
+        let alert: NSAlert = NSAlert()
+        alert.messageText = "Rooster encountered an error reading saved data."
+        var moreInfo = error?.localizedDescription
+        if moreInfo != nil && moreInfo!.count > 0 {
+            moreInfo = "\n\nMore Info:\n\(moreInfo!)"
+        }
+
+        alert.informativeText = "Calendar subscriptions were reset.\(moreInfo ?? "")"
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        if alert.runModal() == .alertFirstButtonReturn {
+        }
+    }
+
+    func showUnableToAuthenticateError(_ error: Error?) {
+        let alert: NSAlert = NSAlert()
+        alert.messageText = "Rooster was unable to gain access to your Calendars and Reminders."
+        
+        var moreInfo = error?.localizedDescription
+        if moreInfo != nil && moreInfo!.count > 0 {
+            moreInfo = "\n\nMore Info:\n\(moreInfo!)"
+        }
+        
+        alert.informativeText = "You can fix this by allowing Rooster access to your Calendars and Reminders in the Security and Privacy System Preference Panel. The settings are in the Calendars and Reminders sections.\(moreInfo ?? "")"
+        
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Quit")
+        if alert.runModal() == .alertFirstButtonReturn {
+            self.quitRooster(self)
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -245,24 +295,48 @@ class AppDelegate: NSObject,
         
         NotificationCenter.default.post(name: AppDelegate.CalendarDidAuthenticateEvent, object: self)
         
-        var savedState = SavedState()
-        if savedState.bool(forKey: .firstRunWasPresented) {
-            self.showMainWindow()
-        } else {
-            savedState.setBool(true, forKey: .firstRunWasPresented)
-            Controllers.dataModelController.enableAllPersonalCalendars()
-            self.showFirstRunWindow()
-        }
+        self.showMainWindow()
+
+// TODO: This is buggy, so work out something beter in the future
+//        var savedState = SavedState()
+//        if savedState.bool(forKey: .firstRunWasPresented) {
+//            self.showMainWindow()
+//        } else {
+//            savedState.setBool(true, forKey: .firstRunWasPresented)
+//            self.showFirstRunWindow()
+//        }
     }
     
     func resetAppLaunchState() {
         Controllers.preferencesController.delete()
+        Controllers.dataModelController.dataModelStorage.deleteStoredDataModel()
         
-        UserDefaults.resetStandardUserDefaults()
+        let dictionaryRepresentation = UserDefaults.standard.dictionaryRepresentation()
+        
+        for key in dictionaryRepresentation.keys {
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+        
+        UserDefaults.standard.synchronize()
+        
+        var savedState = SavedState()
+        savedState.setInt(Self.ApplicationStateVersion, forKey: .applicationStateVersion)
         
         NotificationCenter.default.post(name: AppDelegate.ResetApplicationState, object: self)
         
         self.logger.log("Reset application state")
     }
+    
+    
+    func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
+        var savedState = SavedState()
+        if !savedState.bool(forKey: .lookedForCalendarOnFirstRun) {
+            savedState.setBool(true, forKey: .lookedForCalendarOnFirstRun)
+            
+            Controllers.dataModelController.enableAllPersonalCalendars()
+            self.logger.log("enabled all personal calendars")
+        }
+    }
+    
 }
 

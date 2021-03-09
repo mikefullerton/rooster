@@ -42,20 +42,17 @@ public extension Date {
         return DateFormatter.localizedString(from: self, dateStyle: .short, timeStyle: .long)
     }
 
-    var tomorrow: Date? {
+    func byAddingDays(_ days: Int) -> Date {
         let currentCalendar = NSCalendar.current
         
-        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
+        let dateComponents = currentCalendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
         
-        if let today = currentCalendar.date(from: dateComponents),
-           let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) {
+        let components = currentCalendar.date(from: dateComponents)!
+        let newDate: Date = currentCalendar.date(byAdding: .day, value: days, to: components)!
             
-            return tomorrow
-        }
-        
-        return nil
+        return newDate
     }
-    
+        
     var dateWithoutSeconds: Date {
         let calendar = NSCalendar.current
         let dateComponents = calendar.dateComponents([.era , .year , .month , .day , .hour , .minute], from: self)
@@ -63,6 +60,18 @@ public extension Date {
             return date
         }
         return self
+    }
+    
+    
+    static var midnightToday: Date {
+        let calendar = NSCalendar.current
+        let dateComponents = calendar.dateComponents([.era , .year , .month , .day], from: Date())
+        let date = calendar.date(from: dateComponents)!
+        return date
+    }
+    
+    static var midnightYesterday: Date {
+        return self.midnightToday.byAddingDays(-1)
     }
 }
 

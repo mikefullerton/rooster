@@ -18,7 +18,7 @@ extension CalendarItemListViewCell {
     }
     
     func menuItemWasSelected() {
-        if let calendarItem = self.calendarItem,
+        if var calendarItem = self.calendarItem,
            calendarItem.alarm.isFiring {
             calendarItem.stopAlarmButtonClicked()
         } else {

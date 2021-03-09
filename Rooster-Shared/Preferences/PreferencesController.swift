@@ -19,6 +19,11 @@ class PreferencesController: ObservableObject, Loggable {
 
     init() {
         self.storage = try? PreferencesStorage()
+        
+        if UserDefaults.standard.object(forKey: "preferences") != nil {
+            UserDefaults.standard.removeObject(forKey: "preferences")
+            UserDefaults.standard.synchronize()
+        }
     }
     
     var generalPreferences: GeneralPreferences {

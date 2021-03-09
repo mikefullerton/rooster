@@ -279,7 +279,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
             
             self.firingTime = Date().addingTimeInterval(1)
             
-        } else if let nextDate = Controllers.dataModelController.dataModel.nextAlarmDate,
+        } else if let nextDate = Controllers.dataModelController.dataModel?.nextAlarmDate,
                   nextDate.isEqualToOrBeforeDate(Date().addingTimeInterval(60 * 2)) {
             newState = .warning
         } else {
@@ -344,7 +344,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     }
     
     func countdownFireDate(_ countDown: CountDownTimer) -> Date? {
-        return Controllers.dataModelController.dataModel.nextAlarmDate
+        return Controllers.dataModelController.dataModel?.nextAlarmDate
     }
 
     func countdownDisplayFormatter(_ countDown: CountDownTimer) -> TimeDisplayFormatter {

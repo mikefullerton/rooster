@@ -57,7 +57,7 @@ public class SoundFolderItem: Identifiable, Loggable, CustomStringConvertible {
 //    private(set)
     public var absolutePath: URL? {
         didSet {
-            self.logger.log("New url (absolute): \(self.absolutePath?.path ?? "nil"), for folder: \(self.description)")
+            self.logger.debug("New url (absolute): \(self.absolutePath?.path ?? "nil"), for folder: \(self.description)")
             self.didSetAbsolutePath()
         }
     }
@@ -65,7 +65,7 @@ public class SoundFolderItem: Identifiable, Loggable, CustomStringConvertible {
 //    private(set)
     public var relativePath: URL {
         didSet {
-            self.logger.log("New url (relative): \(self.relativePath.path), old: \(oldValue)")
+            self.logger.debug("New url (relative): \(self.relativePath.path), old: \(oldValue)")
             self.didSetRelativePath()
         }
     }
@@ -148,7 +148,7 @@ public class SoundFolderItem: Identifiable, Loggable, CustomStringConvertible {
 
     
     public var searchableStrings: [String] {
-        let list = self.parents.map { $0.displayName } + [ self.displayName ]
+        let list = [ self.displayNameWithParents ]
         return list
     }
     

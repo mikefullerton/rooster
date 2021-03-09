@@ -75,6 +75,7 @@ extension SoundFolder {
         for sound in self.soundFiles {
             if sound.searchMatches(searchString) {
                 sounds.append(sound.copy() as! SoundFile)
+                self.logger.log("Found matching sound: \(sound.description) in folder: \(self.description)")
             }
         }
 
@@ -82,18 +83,23 @@ extension SoundFolder {
         for subFolder in self.subFolders {
             if subFolder.searchMatches(searchString) {
                 subFolders.append(subFolder.copy() as! SoundFolder)
+                
+                self.logger.log("Found matching subfolder: \(subFolder.description) in folder: \(self.description)")
+                
             } else if let foundFolder = subFolder.findSubFolder(containing: searchString, parent: self) {
                 subFolders.append(foundFolder.copy() as! SoundFolder)
+
+                self.logger.log("Found subfolder with matching contents: \(foundFolder.description) in folder: \(self.description)")
             }
         }
 
         if sounds.count > 0 || subFolders.count > 0 {
             let outFolder = SoundFolder(withID: self.id,
-                                        directoryName: self.directoryName,
-                                        displayName: self.displayName,
-                                        sounds: sounds,
-                                        subFolders: subFolders)
-
+                                        directoryPath: self.absolutePath ?? URL.empty,
+                                        displayName: self.displayName)
+            
+            outFolder.addSoundFiles(sounds)
+            outFolder.addSubFolders(subFolders)
             return outFolder
         }
 

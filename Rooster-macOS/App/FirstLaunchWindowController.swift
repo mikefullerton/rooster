@@ -6,6 +6,8 @@
 //
 
 import Cocoa
+import RoosterCore
+
 
 protocol FirstLaunchWindowControllerDelegate : AnyObject {
     func firstLaunchWindowControllerShouldDismiss(_ firstLaunchWindowController: FirstLaunchWindowController)

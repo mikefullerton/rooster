@@ -9,15 +9,11 @@ import Foundation
 import EventKit
 
 extension RCCalendar {
-    init(withCalendar EKCalendar: EKCalendar,
+    init(withCalendar ekCalendar: EKCalendar,
          subscribed: Bool) {
         
-        self.init(withIdentifier: EKCalendar.uniqueID,
-                  ekCalendarID: EKCalendar.calendarIdentifier,
-                  title: EKCalendar.title,
-                  sourceTitle: EKCalendar.source.title,
-                  sourceIdentifier: EKCalendar.source.sourceIdentifier,
-                  isSubscribed: subscribed,
-                  color:EKCalendar.cgColor)
+        self.init(withIdentifier: ekCalendar.uniqueID,
+                  ekCalendar: ekCalendar,
+                  isSubscribed: subscribed)
     }
 }

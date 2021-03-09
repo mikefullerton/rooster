@@ -69,14 +69,8 @@ public class PlayList : SoundPlayerProtocol, SoundDelegate, Identifiable, Custom
         return self.playListIterator.soundPlayers
     }
    
-    public var isPlaying: Bool {
-        if let currentSoundPlayer = self.currentSoundPlayer {
-            return currentSoundPlayer.isPlaying
-        }
+    public private(set) var isPlaying: Bool = false
         
-        return false
-    }
-    
     public var isEmpty: Bool {
         return self.soundPlayers.count == 0
     }
@@ -177,6 +171,7 @@ public class PlayList : SoundPlayerProtocol, SoundDelegate, Identifiable, Custom
     
     public func play(withBehavior behavior: SoundBehavior) {
         if !self.isPlaying {
+            self.isPlaying = true
             self.behavior = behavior
             self.playCount = 0
             self.playListIterator.start()
@@ -197,8 +192,11 @@ public class PlayList : SoundPlayerProtocol, SoundDelegate, Identifiable, Custom
     }
     
     private func didStop() {
-        self.delegate?.soundDidStopPlaying(self)
-        self.logger.log("All sounds stopped playing: \(self.displayName): \(self.currentSoundDisplayName)")
+        if self.isPlaying {
+            self.isPlaying = false
+            self.delegate?.soundDidStopPlaying(self)
+            self.logger.log("All sounds stopped playing: \(self.displayName): \(self.currentSoundDisplayName)")
+        }
     }
     
     public func stop() {

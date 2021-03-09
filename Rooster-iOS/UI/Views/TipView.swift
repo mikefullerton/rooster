@@ -8,18 +8,18 @@
 import Foundation
 import UIKit
 
-struct Tip {
-    let image: UIImage?
-    let imageTintColor: UIColor?
-    let title: String
-    let action: (() -> Void)?
+public struct Tip {
+    public let image: UIImage?
+    public let imageTintColor: UIColor?
+    public let title: String
+    public let action: (() -> Void)?
 }
 
-class TipView : UIView {
+open class TipView : UIView {
     
     let tip: Tip
     
-    init(frame: CGRect,
+    public init(frame: CGRect,
          tip: Tip) {
         self.tip = tip
         super.init(frame: frame)
@@ -31,13 +31,13 @@ class TipView : UIView {
             self.tipImage,
             self.textField
         ])
- }
+    }
     
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var textField: UITextField = {
+    public lazy var textField: UITextField = {
         let titleView = UITextField(frame: self.bounds)
         titleView.text = self.tip.title
         titleView.isUserInteractionEnabled = false
@@ -47,9 +47,9 @@ class TipView : UIView {
         return titleView
     }()
     
-    let imageSize: CGFloat = 14.0
+    open let imageSize: CGFloat = 14.0
     
-    lazy var tipImage: UIImageView = {
+    public lazy var tipImage: UIImageView = {
         let view = UIImageView(image: self.tip.image)
         if self.tip.imageTintColor != nil {
             view.tintColor = self.tip.imageTintColor! // UIColor.systemBlue
@@ -58,11 +58,11 @@ class TipView : UIView {
         return view
     }()
         
-    override var intrinsicContentSize: CGSize {
+    open override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
     }
     
-    lazy var layout: HorizontalViewLayout = {
+    open lazy var layout: HorizontalViewLayout = {
         return HorizontalViewLayout(hostView: self,
                                     insets: UIEdgeInsets(top: 2, left: 20, bottom: 10, right: 0),
                                     spacing: UIOffset(horizontal: 20, vertical: 20))

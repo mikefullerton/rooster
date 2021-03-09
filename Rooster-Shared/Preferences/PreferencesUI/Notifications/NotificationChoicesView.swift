@@ -20,8 +20,7 @@ class NotificationChoicesView : SimpleStackView {
     init(withPreferencesKey prefKey: NotificationPreferences.PreferenceKey) {
         self.notificationPreferencesKey = prefKey
         
-        super.init(frame: CGRect.zero,
-                   direction: .vertical,
+        super.init(direction: .vertical,
                    insets: SDKEdgeInsets.ten,
                    spacing: SDKOffset.zero)
         

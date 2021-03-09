@@ -374,3 +374,40 @@ extension SoundFolder: CustomDebugStringConvertible {
     }
 }
 
+extension SoundFolder {
+    
+    public static func load(soundFolderAtPath pathOrNil: URL?, completion: @escaping (_ soundFolder: SoundFolder?, _ error: Error?) -> Void) {
+
+        guard let path = pathOrNil else {
+            Self.logger.log("Can't load sound folder from nil path");
+            completion(nil, nil)
+            return
+        }
+        
+        Self.logger.log("Starting to load sound folder for url: \(path.path)")
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let directory = DirectoryIterator(withURL: path)
+                try directory.scan()
+                
+                let soundFolder = try SoundFolder(withDirectory: directory)
+
+                Self.logger.log("Creating SoundFolder ok: \(soundFolder.description)")
+                
+                DispatchQueue.main.async {
+                    completion(soundFolder, nil)
+                }
+                
+                
+            } catch {
+                Self.logger.error("Creating SoundFolder failed with error: \(error.localizedDescription)")
+                
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+            }
+        }
+    }
+
+}

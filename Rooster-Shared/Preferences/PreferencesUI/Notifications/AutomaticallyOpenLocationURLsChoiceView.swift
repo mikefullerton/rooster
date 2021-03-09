@@ -29,7 +29,9 @@ class AutomaticallyOpenLocationURLsChoiceView : NotificationChoiceCheckboxView {
 
     lazy var locationTipView : TipView = {
         
-        var locationTip = Tip(image: SDKImage(systemSymbolName: "info.circle.fill", accessibilityDescription: "info.circle.fill"),
+        let image = SDKImage(systemSymbolName: "info.circle.fill", accessibilityDescription: "info.circle.fill")
+        
+        var locationTip = Tip(withImage: image,
                               imageTintColor: SDKColor.systemBlue,
                               title: "SAFARI_TIP".localized,
                               action: nil)

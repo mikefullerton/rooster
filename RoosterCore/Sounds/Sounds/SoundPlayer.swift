@@ -102,6 +102,10 @@ public class SoundPlayer : NSObject, SoundPlayerProtocol, SoundDelegate, Loggabl
         self.fadeOutAndStop()
         self.stopTimer.stop()
         
+        if self.delegate == nil {
+            self.logger.log("delegate is nil")
+        }
+        
         self.delegate?.soundDidStopPlaying(self)
     }
     

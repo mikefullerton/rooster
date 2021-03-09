@@ -15,8 +15,7 @@ class GeneralPreferencePanel : SDKViewController, PreferencePanel {
 
     }
     
-    lazy var stackView = SimpleStackView(frame: CGRect.zero,
-                                         direction: .vertical,
+    lazy var stackView = SimpleStackView(direction: .vertical,
                                          insets: SDKEdgeInsets.ten,
                                          spacing: SDKOffset.zero)
     

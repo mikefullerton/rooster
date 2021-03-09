@@ -6,6 +6,8 @@
 //
 
 import Cocoa
+import RoosterCore
+
 
 class PreferencesWindow: WindowController {
     

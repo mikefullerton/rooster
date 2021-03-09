@@ -18,12 +18,14 @@ protocol SoundPickerViewControllerDelegate : AnyObject {
     func soundPickerViewControllerWasDismissed(_ controller: SoundPickerViewController)
 }
 
-class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Loggable {
+class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Loggable, KeyViewProviding, PlaySoundButtonSoundProvider, SoundPickerListViewControllerDelegate {
+    
     
     weak var delegate: SoundPickerViewControllerDelegate?
     
     let soundPreferenceKey: SoundPreferences.PreferenceKey
-    
+    private var selectedSound: SoundFile?
+    private var providedSound: SoundFile?
     
     init(withSoundPreferenceKey soundPreferenceKey: SoundPreferences.PreferenceKey) {
         self.soundPreferenceKey = soundPreferenceKey
@@ -43,7 +45,14 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
 
         self.title = "Sound Picker"
         
-        self.preferredContentSize = CGSize(width: 500, height: 600)
+        self.preferredContentSize = CGSize(width: 400, height: 600)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.soundPicker.collectionView.nextKeyView = self.searchField.searchField
+        self.searchField.searchField.nextKeyView = self.soundPicker.collectionView
     }
     
     lazy var bottomBar = BottomBar()
@@ -51,6 +60,8 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
     lazy var soundPicker: SoundPickerListViewController = {
         
         let soundPicker = SoundPickerListViewController(withSoundIndex: self.soundPreferenceKey)
+        
+        soundPicker.soundPickerDelegate = self
         
         soundPicker.scrollView.contentInsets = SDKEdgeInsets(top: self.searchField.preferredHeight,
                                                             left: 0,
@@ -76,7 +87,8 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
     }
     
     @objc func doneButtonClicked(_ sender: SDKButton) {
-        if let newSounds = self.soundPicker.chosenSound {
+        let newSounds = self.soundPicker.selectedSoundFiles
+        if newSounds.count > 0 {
             
             var soundFileCollection = SoundFileCollection()
             
@@ -96,17 +108,76 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
             Controllers.preferencesController.soundPreferences = soundPrefs
         }
         
+        self.searchField.playSoundButton.stopPlaying()
         self.dismissWindow()
     }
     
     @objc func cancelButtonClicked(_ sender: SDKButton) {
+        self.searchField.playSoundButton.stopPlaying()
         self.dismissWindow()
     }
     
+    @IBAction @objc public func playRandomSound(_ sender: SDKButton) {
+        self.soundPicker.selectRandomSoundFile()
+        self.playSound(self)
+    }
+    
+    @IBAction @objc public func playSound(_ sender: Any) {
+        
+        let wasPlaying = self.searchField.playSoundButton.isPlaying
+        if wasPlaying {
+            self.searchField.playSoundButton.stopPlaying()
+        }
+        
+        if let selectedSound = self.selectedSound {
+            
+            if !wasPlaying ||
+                (self.providedSound == nil || self.providedSound != selectedSound) {
+                    self.searchField.playSoundButton.startPlaying()
+            }
+        }
+    }
+    
+    @IBAction @objc public func stopSound(_ sender: Any) {
+        self.searchField.playSoundButton.stopPlaying()
+    }
+    
+    @objc func performFindPanelAction(_ sender: Any) {
+        self.searchField.becomeFirstResponder()
+    }
+    
+    func playSoundButtonProvideSound(_ playSoundButton: PlaySoundButton) -> SoundPlayerProtocol? {
+        self.providedSound = self.selectedSound
+        return self.providedSound?.soundPlayer
+    }
+    
+    func playSoundButtonProvideSoundBehavior(_ playSoundButton: PlaySoundButton) -> SoundBehavior {
+        return SoundBehavior()
+    }
+
+    func soundPickerListViewControllerDidChangeSelection(_ controller: SoundPickerListViewController) {
+        let sounds = self.soundPicker.selectedSoundFiles;
+        self.selectedSound = sounds.count > 0 ? sounds[0] : nil
+        self.searchField.playSoundButton.isEnabled = self.selectedSound != nil
+        
+        self.bottomBar.doneButton.isEnabled = self.selectedSound != nil
+    }
+
     func addBottomBar() {
         let bottomBar = self.bottomBar
+        bottomBar.doneButton.title = "Choose Sound"
         bottomBar.doneButton.target = self
         bottomBar.doneButton.action = #selector(doneButtonClicked(_:))
+        bottomBar.doneButton.isEnabled = false
+        
+        let button = self.searchField.shuffleButton
+        button.target = self
+        button.action = #selector(playRandomSound(_:))
+        
+        let playSound = self.searchField.playSoundButton
+        playSound.soundProvider = self
+        playSound.isEnabled = false
+        playSound.setTarget(self, action: #selector(playSound(_:)))
         
         let cancelButton = bottomBar.addCancelButton()
         cancelButton.target = self
@@ -145,12 +216,19 @@ class SoundPickerViewController : SDKViewController, QuickSearchViewDelegate, Lo
             self.soundPicker.updateSoundFolder(SoundFolder.instance)
         }
     }
-
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        
-        self.searchField.becomeFirstResponder()
+    
+    var initialKeyViewForWindow: NSView? {
+        return self.searchField.searchField
     }
+    
+    func quickSearchViewDownArrowPressed(_ quickSearchView: QuickSearchView) {
+        self.soundPicker.selectNextRow()
+    }
+    
+    func quickSearchViewUpArrowPressed(_ quickSearchView: QuickSearchView) {
+        self.soundPicker.selectPreviousRow()
+    }
+
 }
 
 extension ModalWindowController {
