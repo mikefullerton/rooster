@@ -1,0 +1,21 @@
+
+/* Class = "NSToolbarItem"; label = "Radar"; ObjectID = "4mA-kh-tNz"; */
+"4mA-kh-tNz.label" = "Radar";
+
+/* Class = "NSToolbarItem"; paletteLabel = "Radar"; ObjectID = "4mA-kh-tNz"; */
+"4mA-kh-tNz.paletteLabel" = "Radar";
+
+/* Class = "NSToolbarItem"; label = "Settings"; ObjectID = "9D9-Lw-HmW"; */
+"9D9-Lw-HmW.label" = "Settings";
+
+/* Class = "NSToolbarItem"; paletteLabel = "Settings"; ObjectID = "9D9-Lw-HmW"; */
+"9D9-Lw-HmW.paletteLabel" = "Settings";
+
+/* Class = "NSWindow"; title = "Rooster"; ObjectID = "F0z-JX-Cv5"; */
+"F0z-JX-Cv5.title" = "Rooster";
+
+/* Class = "NSToolbarItem"; label = "Share"; ObjectID = "mAX-lm-qU0"; */
+"mAX-lm-qU0.label" = "Share";
+
+/* Class = "NSToolbarItem"; paletteLabel = "Share"; ObjectID = "mAX-lm-qU0"; */
+"mAX-lm-qU0.paletteLabel" = "Share";

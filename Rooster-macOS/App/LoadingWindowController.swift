@@ -6,14 +6,13 @@
 //
 
 import Cocoa
+import RoosterCore
 
-class LoadingWindowController: WindowController {
+public class LoadingWindowController: WindowController {
+    @IBOutlet private var spinner: NSProgressIndicator?
 
-    @IBOutlet var spinner: NSProgressIndicator?
-    
-    override func windowDidLoad() {
+    override public func windowDidLoad() {
         super.windowDidLoad()
         self.spinner?.startAnimation(self)
     }
-    
 }

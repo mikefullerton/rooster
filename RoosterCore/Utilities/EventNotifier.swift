@@ -9,7 +9,7 @@ import Foundation
 
 open class EventNotifier {
     private let name: Notification.Name
-  
+
     public init(withName name: Notification.Name, object: AnyObject?) {
         self.name = name
         NotificationCenter.default.addObserver(self,
@@ -17,8 +17,7 @@ open class EventNotifier {
                                                name: name,
                                                object: object)
     }
-    
+
     @objc func notificationReceived(_ notif: Notification) {
     }
 }
-

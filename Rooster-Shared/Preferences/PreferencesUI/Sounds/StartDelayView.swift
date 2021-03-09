@@ -13,19 +13,19 @@ import Cocoa
 import UIKit
 #endif
 
-class StartDelayView : PreferenceSlider {
-    
+public class StartDelayView: PreferenceSlider {
+    private let preferencesUpdateHandler = PreferencesUpdateHandler()
+
     override init() {
-        
         super.init()
-    
+
         self.minimumValue = 0 // 1 play count
         self.maximumValue = 10
-        
-        self.value = min(self.maximumValue, Double(Controllers.preferencesController.soundPreferences.startDelay))
-        
+
+        self.value = min(self.maximumValue, Double(AppControllers.shared.preferences.soundPreferences.startDelay))
+
         self.label.title = "PLAY_DELAY".localized
-        
+
         self.setViews(minValueView: self.label,
                       maxValueView: self.rhsButton,
                       insets: SDKEdgeInsets.ten,
@@ -33,22 +33,29 @@ class StartDelayView : PreferenceSlider {
                       maxValueViewFixedWidth: self.fixedWidth)
 
         self.updateVolumeSliderImage()
-        
+
         self.tickMarkCount = 11
         self.tickMarkPosition = .trailing
         self.allowsTickMarkValuesOnly = true
-       
+
+        self.preferencesUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else {
+                return
+            }
+
+            self.value = min(self.maximumValue, Double(AppControllers.shared.preferences.soundPreferences.startDelay))
+            self.updateVolumeSliderImage()
+        }
     }
-    
+
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
-    
-    
+
     lazy var rhsButton: FancyButton = {
         let button = FancyButton()
         button.contentViewAlignment = .left
-        button.contentViews = [
+        button.animateableContent.contentViews = [
             self.label(withTitle: "None"),
             self.label(withTitle: "1 second"),
             self.label(withTitle: "2 seconds"),
@@ -59,16 +66,15 @@ class StartDelayView : PreferenceSlider {
             self.label(withTitle: "7 seconds"),
             self.label(withTitle: "8 seconds"),
             self.label(withTitle: "9 seconds"),
-            self.label(withTitle: "10 seconds"),
+            self.label(withTitle: "10 seconds")
         ]
-        
+
         button.setTarget(self, action: #selector(setMaxValue(_:)))
         return button
-    } ()
-    
-    
+    }()
+
     private func label(withTitle title: String) -> SDKTextField {
-        let label = SDKTextField()
+        let label = HighlightableTextField()
         label.isEditable = false
         label.stringValue = title
         label.textColor = Theme(for: self).labelColor
@@ -78,30 +84,24 @@ class StartDelayView : PreferenceSlider {
     }
 
     private func updateVolumeSliderImage() {
-        let startDelay = Controllers.preferencesController.soundPreferences.startDelay
-        
+        let startDelay = AppControllers.shared.preferences.soundPreferences.startDelay
+
         var index = startDelay
-        if index >= self.rhsButton.contentViewCount {
-            index = self.rhsButton.contentViewCount
+        if index >= self.rhsButton.animateableContent.viewCount {
+            index = self.rhsButton.animateableContent.viewCount
         }
-        self.rhsButton.contentViewIndex = index
-            
+        self.rhsButton.animateableContent.viewIndex = index
+
         print("start delay: \(startDelay), index: \(index)")
     }
-    
-    @objc override func sliderDidChange(_ sender: SDKSlider) {
-        var soundPrefs = Controllers.preferencesController.soundPreferences
-        
+
+    @objc override public func sliderDidChange(_ sender: SDKSlider) {
+        var soundPrefs = AppControllers.shared.preferences.soundPreferences
+
         let value = sender.doubleValue
         soundPrefs.startDelay = Int(value)
-        
-        Controllers.preferencesController.soundPreferences = soundPrefs
-        self.updateVolumeSliderImage()
-    }
-    
-    @objc override func preferencesDidChange(_ sender: Notification) {
-        self.value = min(self.maximumValue, Double(Controllers.preferencesController.soundPreferences.startDelay))
-        self.updateVolumeSliderImage()
-    }
 
+        AppControllers.shared.preferences.soundPreferences = soundPrefs
+        self.updateVolumeSliderImage()
+    }
 }

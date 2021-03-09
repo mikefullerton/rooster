@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class RCCalendarItem;
+@class EventKitCalendarItem;
 @protocol AppKitMenuBarControllerDelegate;
 
 typedef NS_OPTIONS(NSInteger, AppKitPluginMenuBarOptions) {

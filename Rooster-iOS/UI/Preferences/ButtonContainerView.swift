@@ -8,16 +8,15 @@
 import Foundation
 import UIKit
 
-class ButtonsContainerView : UIView {
-    static let buttonSize:CGFloat = 60.0
-   
+class ButtonsContainerView: UIView {
+    static let buttonSize: CGFloat = 60.0
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
+
         let lhs = UIView()
         let rhs = UIView()
-        
+
         self.addSubview(lhs)
         self.addSubview(rhs)
         lhs.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +38,7 @@ class ButtonsContainerView : UIView {
 
         let lhsButton = self.resetPrefsButton
         let rhsButton = self.playButton
-        
+
         lhs.addSubview(lhsButton)
         rhs.addSubview(rhsButton)
         lhsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -51,46 +50,40 @@ class ButtonsContainerView : UIView {
             lhsButton.widthAnchor.constraint(equalToConstant: ButtonsContainerView.buttonSize),
             lhsButton.heightAnchor.constraint(equalToConstant: ButtonsContainerView.buttonSize),
             lhsButton.centerXAnchor.constraint(equalTo: lhs.centerXAnchor),
-            lhsButton.centerYAnchor.constraint(equalTo: lhs.centerYAnchor),
+            lhsButton.centerYAnchor.constraint(equalTo: lhs.centerYAnchor)
         ])
 
         NSLayoutConstraint.activate([
             rhsButton.widthAnchor.constraint(equalToConstant: ButtonsContainerView.buttonSize),
             rhsButton.heightAnchor.constraint(equalToConstant: ButtonsContainerView.buttonSize),
             rhsButton.centerXAnchor.constraint(equalTo: rhs.centerXAnchor),
-            rhsButton.centerYAnchor.constraint(equalTo: rhs.centerYAnchor),
+            rhsButton.centerYAnchor.constraint(equalTo: rhs.centerYAnchor)
         ])
-
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func resetButtonPressed(_ sender: UIButton) {
-        Controllers.preferencesController.preferences = Preferences()
+        AppControllers.shared.preferences.preferences = Preferences()
     }
 
     @objc func tryItButtonPressed(_ sender: UIButton) {
-        
     }
 
     lazy var resetPrefsButton: UIButton = {
-        
         // "arrow.triangle.2.circlepath"
-        
+
         let image = UIImage(systemName: "return")
-        
-        
+
         let view = UIButton.createImageButton(withImage: image)
-        
+
         view.addTarget(self, action: #selector(resetButtonPressed(_:)), for: .touchUpInside)
 
-        
         return view
-        
     }()
-    
+
     var redIcon: UIImage? {
         if let image = UIImage(named: "RedRoosterIcon") {
             return image
@@ -109,11 +102,9 @@ class ButtonsContainerView : UIView {
         let view = UIButton.createImageButton(withImage: self.defaultIcon)
 
         return view
-        
-    } ()
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: ButtonsContainerView.buttonSize)
-    }
+    }()
 
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: UIView.noIntrinsicMetric, height: ButtonsContainerView.buttonSize)
+    }
 }

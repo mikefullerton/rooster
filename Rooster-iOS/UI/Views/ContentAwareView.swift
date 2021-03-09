@@ -8,27 +8,25 @@
 import Foundation
 import UIKit
 
-class ContentAwareView : UIView {
-
+class ContentAwareView: UIView {
     override var intrinsicContentSize: CGSize {
         var maxSize = CGSize.zero
-        
+
         for subview in self.subviews {
             let size = subview.intrinsicContentSize
-            
+
             if size.width > maxSize.width {
                 maxSize.width = size.width
             }
-            
+
             if size.height > maxSize.height {
                 maxSize.height = size.height
             }
         }
-    
+
         let outSize = CGSize(width: maxSize.width,
                              height: maxSize.height)
-        
+
         return outSize
     }
-   
 }

@@ -13,46 +13,34 @@ import Cocoa
 import UIKit
 #endif
 
-struct SoundPickerListViewModel : ListViewModelProtocol {
-    
-    typealias SoundFileRowType = ListViewRowDescriptor<SoundFile, SoundPickerListViewCell>
-    
-    let sections: [ListViewSectionDescriptor]
-    
-    let soundFolder: SoundFolder
-    
-    init(with soundFolder: SoundFolder) {
-        
+public class SoundPickerListViewModel: ListViewModel {
+    public let soundFolder: SoundFolder
+
+    public init(with soundFolder: SoundFolder) {
         self.soundFolder = soundFolder
-        
-        var sections: [ListViewSectionDescriptor] = []
-        
+
+        var sections: [Section] = []
+
         soundFolder.visitEach { item in
             if let soundFolder = item as? SoundFolder {
-                let rows = soundFolder.soundFiles.map { SoundFileRowType(withContent: $0) }
-                if rows.count > 0 {
-                    var elements = soundFolder.pathComponents
-                    elements.remove(at: 0)
-                    
-                    let section = ListViewSectionDescriptor(withRows: rows,
-                                                            layout: ListViewSectionLayout.zero,
-                                                            header: ListViewSectionAdornment(withTitle: elements.map { $0.displayName }.joined(separator:"/" )),
-                                                            footer: nil)
-                    
-                    sections.append(section)
+                let rows = soundFolder.soundFiles.map {
+                    Row(withContent: $0, rowControllerClass: SoundPickerListViewCell.self)
                 }
 
+                if !rows.isEmpty {
+                    var elements = soundFolder.pathComponents
+                    elements.remove(at: 0)
+
+                    let section = Section(withRows: rows,
+                                          layout: SectionLayout.zero,
+                                          header: Adornment(withTitle: elements.map { $0.displayName }.joined(separator: "/" )),
+                                          footer: nil)
+
+                    sections.append(section)
+                }
             }
         }
-        
-        self.sections = sections
-    }
-    
-    func soundFile(forIndexPath indexPath: IndexPath) -> SoundFile? {
-        return ListViewModelContentFetcher<SoundFile, SoundPickerListViewCell>(model: self).contentForIndexPath(indexPath)
-    }
-    
-    func indexPath(forSoundFile soundFileToFind: SoundFile) -> IndexPath? {
-        return ListViewModelContentFetcher<SoundFile, SoundPickerListViewCell>(model: self).indexPath(forContent: soundFileToFind)
+
+        super.init(withSections: sections)
     }
 }

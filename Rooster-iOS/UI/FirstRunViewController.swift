@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol FirstRunViewControllerDelegate : AnyObject {
+protocol FirstRunViewControllerDelegate: AnyObject {
     func firstRunViewControllerShouldDismiss(_ firstRunViewController: FirstRunViewController)
     func firstRunViewControllerShowHelp(_ firstRunViewController: FirstRunViewController)
     func firstRunViewControllerShowSettings(_ firstRunViewController: FirstRunViewController)
@@ -16,47 +16,43 @@ protocol FirstRunViewControllerDelegate : AnyObject {
 }
 
 class FirstRunViewController: UIViewController {
-    
     weak var delegate: FirstRunViewControllerDelegate?
-    
+
     init() {
         super.init(nibName: "FirstRunViewController", bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.preferredContentSize = CGSize(width: 500, height: 500)
     }
-    
-    @IBAction @objc func dismissSelf(_ sender: Any) {
+
+    @IBAction private func dismissSelf(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShouldDismiss(self)
         }
     }
 
-    @IBAction @objc func showMoreInfo(_ sender: Any) {
+    @IBAction private func showMoreInfo(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShowHelp(self)
         }
     }
 
-    @IBAction @objc func showSettings(_ sender: Any) {
+    @IBAction private func showSettings(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShowSettings(self)
         }
     }
 
-    @IBAction @objc func showCalendars(_ sender: Any) {
+    @IBAction private func showCalendars(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShowCalendars(self)
         }
     }
-
-    
-    
 }

@@ -5,60 +5,190 @@
 //  Created by Mike Fullerton on 12/18/20.
 //
 
+import AppKit
 import Foundation
 import RoosterCore
-import AppKit
 
- 
-class MenuBarController: Loggable, DataModelAware {
-        
-    private var reloader: DataModelReloader? = nil
-    
-    lazy var primaryMenuItem = MenuBarMenuItem()
-    
-    init() {
-        self.reloader = DataModelReloader(for: self)
-        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
-    }
-    
+public class MenuBarController: Loggable {
+    private var scheduleUpdateHandler = ScheduleUpdateHandler()
+
+    private let preferencesUpdateHandler = PreferencesUpdateHandler()
+
+    private let deferred = DeferredCallback()
+
+    let button = MenuBarButton()
+
     var prefs: MenuBarPreferences {
-        return Controllers.preferencesController.menuBarPreferences
+        AppControllers.shared.preferences.menuBar
     }
-    
-    func updateMenuBarItemsVisibility() {
-        
-        let prefs = self.prefs
-        
-        if prefs.options.contains(.showIcon) {
-            self.primaryMenuItem.isVisible = true
 
-            if !prefs.options.contains(.countDown) {
-                self.primaryMenuItem.stopCountdown()
+    private var alarmState: AlarmState = .none
+
+    private lazy var countDown = CountDownTimer(withDelegate: self)
+
+    private lazy var flashingTimer = SimpleTimer(withName: "flashing timer")
+
+    var isAlarmFiring: Bool {
+        CoreControllers.shared.alarmNotificationController.alarmsAreFiring
+    }
+
+    public init() {
+        self.scheduleUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else { return }
+            self.deferred.schedule { [weak self] in
+                self?.updateAlarmState()
             }
-            
-        } else {
-            self.primaryMenuItem.isVisible = false
+        }
+
+        self.preferencesUpdateHandler.handler = { [weak self] _, _ in
+            guard let self = self else { return }
+            self.deferred.schedule { [weak self] in
+                guard let self = self else { return }
+
+                self.button.isVisible = self.prefs.options.contains(.showIcon)
+                self.updateAlarmState()
+            }
         }
     }
-    
+
+    deinit {
+        self.flashingTimer.stop()
+        self.countDown.stop()
+    }
+
+    // MARK: - methods
+
     func showInMenuBar() {
-        self.updateMenuBarItemsVisibility()
+        self.button.isVisible = self.prefs.options.contains(.showIcon)
+        self.updateAlarmState()
     }
 
-    func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
-        
-        let prefs = self.prefs
-        
-        if prefs.options.contains(.showIcon) {
-            self.primaryMenuItem.alarmStateDidChange()
-            
+    func showFinishedMessage() {
+        if self.prefs.options.contains(.countDown) {
+            self.button.buttonTitle = "00:00:00"
         } else {
-            self.primaryMenuItem.stopCountdown()
+            self.button.buttonTitle = ""
         }
     }
-    
-    @objc func preferencesDidChange(_ sender: Notification) {
-        self.updateMenuBarItemsVisibility()
+}
+
+extension MenuBarController {
+    func startFlashingTimer() {
+        if self.prefs.options.contains(.blink) {
+            self.logger.log("starting flashing timer")
+
+            self.showFinishedMessage()
+            self.flashingTimer.start(withInterval: 0.5,
+                                     fireCount: SimpleTimer.RepeatEndlessly) { [weak self] _ in
+                guard let self = self else { return }
+
+                if self.alarmState == .firing1 {
+                    self.alarmState = .firing2
+                } else {
+                    self.alarmState = .firing1
+                }
+
+                self.button.contentTintColor = self.colorForState(self.alarmState)
+            }
+        } else {
+            self.flashingTimer.stop()
+            self.updateAlarmState()
+        }
+    }
+}
+
+extension MenuBarController: CountDownDelegate {
+    func startCountdown() {
+        if self.prefs.options.contains(.countDown),
+           let nextFireDate = CoreControllers.shared.scheduleController.schedule.nextAlarmDate {
+            self.countDown.start(withFireDate: nextFireDate)
+        } else {
+            self.stopCountdown()
+        }
     }
 
+    func stopCountdown() {
+        self.countDown.stop()
+        self.button.buttonTitle = ""
+    }
+
+    public func countdown(_ countDown: CountDownTimer, didUpdate displayString: String) {
+        self.button.buttonTitle = displayString
+    }
+
+    public func countdownDisplayFormatter(_ countDown: CountDownTimer) -> TimeDisplayFormatter {
+        //        return self.prefs.options.contains(.shortCountdownFormat) ?
+        //            DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 2.0):
+        //            VerboseTimeDisplayFormatter(showSecondsWithMinutes: 2.0)
+        return DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 2.0)
+    }
+
+    public func countdown(_ countDown: CountDownTimer, didFinish displayString: String) {
+        self.button.buttonTitle = displayString
+    }
+
+    public func countdown(_ countDown: CountDownTimer, willStart: Bool) {
+        self.button.buttonTitle = ""
+    }
+}
+
+extension MenuBarController {
+    enum AlarmState: String {
+        case none
+        case normal
+        case warning
+        case firing1
+        case firing2
+    }
+
+    func colorForState(_ state: AlarmState) -> NSColor {
+        switch state {
+        case .none:
+            return NSColor.white
+
+        case .normal:
+            return NSColor.white
+
+        case .warning:
+            return NSColor.systemYellow
+
+        case .firing1:
+            return NSColor.systemRed
+
+        case .firing2:
+            return NSColor.systemYellow
+        }
+    }
+
+    func updateAlarmState() {
+        guard self.prefs.options.contains(.showIcon) else {
+            self.stopCountdown()
+            self.flashingTimer.stop()
+            self.alarmState = .none
+            return
+        }
+
+        if self.isAlarmFiring {
+            self.alarmState = .firing1
+        } else if let nextDate = CoreControllers.shared.scheduleController.schedule.nextAlarmDate,
+                  nextDate.isEqualToOrBeforeDate(Date().addMinutes(2)) {
+            self.alarmState = .warning
+        } else {
+            self.alarmState = .normal
+        }
+
+        self.logger.log("updating to \(self.alarmState.rawValue)")
+
+        switch self.alarmState {
+        case .normal, .warning, .none:
+            self.flashingTimer.stop()
+            self.startCountdown()
+
+        case .firing1, .firing2:
+            self.stopCountdown()
+            self.startFlashingTimer()
+        }
+
+        self.button.contentTintColor = self.colorForState(self.alarmState)
+    }
 }

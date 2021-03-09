@@ -8,49 +8,30 @@
 import Foundation
 import RoosterCore
 
-class GeneralPreferencePanel : SDKViewController, PreferencePanel {
-    
-    func resetButtonPressed() {
-        Controllers.preferencesController.preferences = Preferences.default
-
-    }
-    
-    lazy var stackView = SimpleStackView(frame: CGRect.zero,
-                                         direction: .vertical,
+public class GeneralPreferencePanel: PreferencePanel {
+    lazy var stackView = SimpleStackView(direction: .vertical,
                                          insets: SDKEdgeInsets.ten,
                                          spacing: SDKOffset.zero)
-    
-    override func loadView() {
+
+    override public func loadView() {
         self.view = self.stackView
-        
-        let box =  GroupBoxView(frame: CGRect.zero,
-                                title: "General App Preferences",
-                                groupBoxInsets: GroupBoxView.defaultGroupBoxInsets,
-                                groupBoxSpacing: SDKOffset(horizontal: 0, vertical: 14))
-        
+
+        let box = GroupBoxView(title: "General App Preferences")
+
+        let generalPrefs = AppControllers.shared.preferences.general
+
         box.setContainedViews([
-            GeneralPreferenceCheckboxView(withTitle: "Automatically launch Rooster", options: .automaticallyLaunch)
+            SinglePreferenceChoiceView(withTitle: "Automatically launch Rooster",
+                                       refresh: { generalPrefs.options.contains( .automaticallyLaunch ) },
+                                       update: { AppControllers.shared.preferences.general.options.set(.automaticallyLaunch, to: $0) })
         ])
 
         self.stackView.setContainedViews( [
             box
         ])
     }
-    
-    
-    convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
-    
-    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    var toolbarButtonIdentifier: NSToolbarItem.Identifier {
-        return NSToolbarItem.Identifier(rawValue: "general")
+
+    override public var toolbarButtonIdentifier: String {
+        "general"
     }
 }

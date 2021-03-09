@@ -13,44 +13,29 @@ import Cocoa
 import UIKit
 #endif
 
-class PreferenceSlider : SliderView {
-    
-    let fixedWidth: CGFloat = 100
-    
-    init() {
+open class PreferenceSlider: SliderView {
+    public let fixedWidth: CGFloat = 100
+
+    public init() {
         super.init(frame: CGRect.zero)
-        
+
         self.setTarget(self, action: #selector(sliderDidChange(_:)))
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
-    
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
-    
-    @objc func sliderDidChange(_ sender: SDKSlider) {
-        
-        
+
+    @objc open func sliderDidChange(_ sender: SDKSlider) {
     }
-   
-    @objc func preferencesDidChange(_ sender: Notification) {
-        
-    }
-    
-    lazy var label : SDKCustomButton = {
-        let button = SDKCustomButton(title: "",
-                                    target: self,
-                                    action: #selector(setMinValue(_:)),
-                                    toolTip: "")
-        button.alignment = .right
+
+    public lazy var label: Button = {
+        let button = Button( title: "",
+                             target: self,
+                             action: #selector(setMinValue(_:)))
+        //        button.alignment = .right
         button.contentTintColor = Theme(for: self).labelColor
         button.isEnabled = true
         return button
     }()
-    
-    
-    
 }
-

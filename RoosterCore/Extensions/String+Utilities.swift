@@ -7,8 +7,8 @@
 
 import Foundation
 
-public extension String {
-    func leftPadding(toLength: Int, withPad character: Character) -> String {
+extension String {
+    public func leftPadding(toLength: Int, withPad character: Character) -> String {
         let stringLength = self.count
         if stringLength < toLength {
             return String(repeatElement(character, count: toLength - stringLength)) + self
@@ -17,11 +17,27 @@ public extension String {
         }
     }
 
-    func prepend(with character: Character, count: Int) -> String {
-        return String(repeatElement(character, count: count)) + self
+    public func prepend(with character: Character, count: Int) -> String {
+        String(repeatElement(character, count: count)) + self
     }
-    
-    static var guid: String {
-        return UUID().uuidString
+
+    public static var guid: String {
+        UUID().uuidString
+    }
+}
+
+extension Array where Element: CustomStringConvertible {
+    public var joinedDescription: String {
+        self.map { $0.description }.joined(separator: ", ")
+    }
+}
+
+public protocol ShortCustomStringConvertable {
+    var shortDescription: String { get }
+}
+
+extension Array where Element: ShortCustomStringConvertable {
+    public var joinedDescription: String {
+        self.map { $0.shortDescription }.joined(separator: ", ")
     }
 }

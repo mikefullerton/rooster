@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-
-protocol TableViewRowProtocol  {
+protocol TableViewRowProtocol {
     var cellReuseIdentifer: String { get }
 
     var height: CGFloat { get }
@@ -19,41 +18,35 @@ protocol TableViewRowProtocol  {
     func willDisplay(cell: UITableViewCell, atIndexPath indexPath: IndexPath)
 }
 
-struct TableViewRow<ContentType, ViewType> : TableViewRowProtocol
+struct TableViewRow<ContentType, ViewType>: TableViewRowProtocol
             where ViewType: UITableViewCell, ViewType: TableViewRowCell {
-    
     let data: ContentType
-    
+
     init(withData data: ContentType) {
         self.data = data
     }
-    
+
     func willDisplay(cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        
         if let typedCell = cell as? ViewType,
            let data = self.data as? ViewType.ContentType {
-            
             typedCell.viewWillAppear(withData: data, indexPath: indexPath, isSelected: isSelected)
         }
     }
 
     var cellClass: UITableViewCell.Type {
-        return ViewType.self
+        ViewType.self
     }
 
     var cellReuseIdentifer: String {
-        return "\(type(of: self)).\(self.cellClass)"
+        "\(type(of: self)).\(self.cellClass)"
     }
 
     var height: CGFloat {
         if let rowCell = self.cellClass as? ViewType.Type {
             return rowCell.viewHeight
         }
-        
+
         return 24
     }
-
 }
 
-
- 

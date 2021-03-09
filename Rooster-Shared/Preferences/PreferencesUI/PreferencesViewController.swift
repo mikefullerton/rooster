@@ -13,30 +13,34 @@ import Cocoa
 import UIKit
 #endif
 
-class PreferencesViewController : SDKViewController {
-
+public class PreferencesViewController: SDKViewController {
 //    private let tabViewController: VerticalTabViewController
     private lazy var bottomBar = BottomBar(frame: CGRect.zero)
-    
+
     private static let windowSize = CGSize(width: 800, height: 600)
-    
-    @IBOutlet var toolbar: NSToolbar?
-    @IBOutlet var customToolbarSpacer: NSToolbarItem?
-    
+
+    @IBOutlet private var toolbar: NSToolbar?
+    @IBOutlet private var customToolbarSpacer: NSToolbarItem?
+
     private let preferencePanels: [PreferencePanel]
-    private var currentPreferencePanel: PreferencePanel? = nil
-    
-    enum panelKey : Int, CaseIterable {
+    private var currentPreferencePanel: PreferencePanel?
+
+    enum PanelKey: String, CaseIterable {
         case general
+        case calendars
+        case events
+        case reminders
         case sounds
         case notifications
         case menubar
     }
-    
+
     init() {
-        
         self.preferencePanels = [
             GeneralPreferencePanel(),
+            CalendarPreferencePanel(),
+            EventsPreferencePanel(),
+            RemindersPreferencePanel(),
             SoundsPreferencePanel(),
             NotificationsPreferencePanel(),
             MenuBarPreferencesPanel()
@@ -46,87 +50,100 @@ class PreferencesViewController : SDKViewController {
         self.preferredContentSize = Self.windowSize
         self.title = "Preferences"
     }
-    
-    convenience required init?(coder: NSCoder) {
+
+    required convenience init?(coder: NSCoder) {
         self.init()
     }
-    
-    private var currentViewController: SDKViewController? {
-        return self.currentPreferencePanel as? SDKViewController
+
+    func panelForKey(_ panelKey: PanelKey) -> PreferencePanel? {
+        if let index = self.preferencePanels.firstIndex(where: { $0.toolbarButtonIdentifier == panelKey.rawValue }) {
+            return self.preferencePanels[index]
+        }
+
+        return nil
     }
-    
-    func setCurrentPanel(_ panelKey: panelKey) {
-        if let currentViewController = self.currentViewController {
-            currentViewController.view.removeFromSuperview()
-            self.currentPreferencePanel = nil
-        }
-        
-        let newCurrentPanel = self.preferencePanels[panelKey.rawValue]
-        self.currentPreferencePanel = newCurrentPanel
-        
-        if let currentViewController = self.currentViewController {
-            self.setCurrentView(currentViewController.view)
-        }
-        
+
+    func toolbarItemForKey(_ panelKey: PanelKey) -> NSToolbarItem? {
         if let items = self.toolbar?.items {
-            
-            for item in items {
-                if item.itemIdentifier == newCurrentPanel.toolbarButtonIdentifier {
-                    
-                    let selectedItem = toolbar!.selectedItemIdentifier
-                    if selectedItem != item.itemIdentifier {
-                        self.toolbar!.selectedItemIdentifier = item.itemIdentifier
-                    }
-                    
-                    self.setTitle(item.label)
-                }
+            for item in items where item.itemIdentifier.rawValue == panelKey.rawValue {
+                return item
             }
         }
+
+        return nil
     }
-    
+
+    func setCurrentPanel(_ panelKey: PanelKey) {
+        if  let newCurrentPanel = self.panelForKey(panelKey),
+            let toolbarItem = self.toolbarItemForKey(panelKey) {
+            if let currentViewController = self.currentPreferencePanel {
+                currentViewController.view.removeFromSuperview()
+                self.currentPreferencePanel = nil
+            }
+
+            self.currentPreferencePanel = newCurrentPanel
+
+            if let currentViewController = self.currentPreferencePanel {
+                self.setCurrentView(currentViewController.view)
+            }
+
+            self.toolbar!.selectedItemIdentifier = toolbarItem.itemIdentifier
+            self.setTitle(toolbarItem.label)
+        }
+    }
+
     private func setTitle(_ titleOrNil: String?) {
         if let title = titleOrNil {
             self.title = "Rooster Settings - \(title)"
         } else {
             self.title = "Rooster Settings"
         }
-        
+
         self.view.window?.title = self.title!
     }
-    
-    @IBAction @objc func generalToolbarItemChosen(_ sender: NSToolbarItem?) {
+
+    @IBAction private func generalToolbarItemChosen(_ sender: NSToolbarItem?) {
         self.setCurrentPanel(.general)
     }
 
-    @IBAction @objc func soundsToolbarItemChosen(_ sender: NSToolbarItem?) {
+    @IBAction private func soundsToolbarItemChosen(_ sender: NSToolbarItem?) {
         self.setCurrentPanel(.sounds)
     }
 
-    @IBAction @objc func notificationsToolbarItemChosen(_ sender: NSToolbarItem?) {
+    @IBAction private func notificationsToolbarItemChosen(_ sender: NSToolbarItem?) {
         self.setCurrentPanel(.notifications)
     }
 
-    @IBAction @objc func menuBarToolbarItemChosen(_ sender: NSToolbarItem?) {
+    @IBAction private func menuBarToolbarItemChosen(_ sender: NSToolbarItem?) {
         self.setCurrentPanel(.menubar)
     }
 
-    override func loadView() {
-        
+    @IBAction private func calendarToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.calendars)
+    }
+
+    @IBAction private func eventsToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.events)
+    }
+
+    @IBAction private func reminderToolbarItemChosen(_ sender: NSToolbarItem?) {
+        self.setCurrentPanel(.reminders)
+    }
+
+    override public func loadView() {
         let view = SDKView()
         view.sdkBackgroundColor = SDKColor.clear
-        
+
         self.view = view
 
         for prefPanel in self.preferencePanels {
-            if let viewController = prefPanel as? SDKViewController {
-                self.addChild(viewController)
-            }
+            self.addChild(prefPanel)
         }
-        
+
         self.addBottomBar()
         self.setCurrentPanel(.general)
     }
-    
+
     @objc func doneButtonPressed(_ sender: SDKButton) {
         self.dismissWindow()
     }
@@ -136,7 +153,7 @@ class PreferencesViewController : SDKViewController {
             currentPanel.resetButtonPressed()
         }
     }
-    
+
     private func addBottomBar() {
         self.bottomBar.addToView(self.view)
 
@@ -148,22 +165,27 @@ class PreferencesViewController : SDKViewController {
         leftButton.action = #selector(resetButtonPressed(_:))
     }
 
+    let insets = SDKEdgeInsets.ten
+
     private func setCurrentView(_ view: SDKView) {
-        
-        self.view.addSubview(view, positioned: .below, relativeTo: self.bottomBar)
-        
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
+        self.view.addSubview(view, positioned: .below, relativeTo: self.bottomBar)
+
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10),
-            view.bottomAnchor.constraint(equalTo: self.bottomBar.topAnchor),
-            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
+            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.insets.top),
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.insets.left),
+
+//            view.bottomAnchor.constraint(equalTo: self.bottomBar.topAnchor),
+//            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
+
+            view.widthAnchor.constraint(equalToConstant: Self.windowSize.width - self.insets.left - self.insets.right),
+            view.heightAnchor.constraint(equalToConstant: Self.windowSize.height - self.insets.top - self.insets.bottom)
         ])
-        
-        view.setContentHuggingPriority(.windowSizeStayPut, for: .horizontal)
-        view.setContentHuggingPriority(.windowSizeStayPut, for: .vertical)
+
+        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        view.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
 }
-
-

@@ -9,18 +9,17 @@ import Foundation
 import UIKit
 
 class HorizontalViewLayout: ViewLayout {
-    
     enum Alignment {
         case left
         case right
     }
-    
-    let hostView: UIView
-    let insets:UIEdgeInsets
-    let spacing:UIOffset
-    let alignment:Alignment
 
-    private(set) var views:[UIView]
+    let hostView: UIView
+    let insets: UIEdgeInsets
+    let spacing: UIOffset
+    let alignment: Alignment
+
+    private(set) var views: [UIView]
 
     init(hostView view: UIView,
          insets: UIEdgeInsets,
@@ -32,58 +31,57 @@ class HorizontalViewLayout: ViewLayout {
         self.alignment = alignment
         self.views = []
     }
-    
+
     private func updateLeadingSubview(_ view: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
-            view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
+            view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor)
         ])
-        
-        switch(self.alignment) {
+
+        switch self.alignment {
         case .left:
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: self.hostView.leadingAnchor, constant: self.insets.left)
             ])
-        
+
         case .right:
             NSLayoutConstraint.activate([
                 view.trailingAnchor.constraint(equalTo: self.hostView.trailingAnchor, constant: -self.insets.right)
             ])
         }
     }
-    
+
     private func updateSubview(_ view: UIView, nextTo: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+
 //        let size = view.sizeThatFits(self.hostView.frame.size)
-        
+
         NSLayoutConstraint.activate([
-            view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor),
+            view.centerYAnchor.constraint(equalTo: self.hostView.centerYAnchor)
 //            view.heightAnchor.constraint(equalToConstant: size.height),
 //            view.widthAnchor.constraint(equalToConstant: size.width),
         ])
-        
-        switch(self.alignment) {
+
+        switch self.alignment {
         case .left:
             NSLayoutConstraint.activate([
                 view.leadingAnchor.constraint(equalTo: nextTo.leadingAnchor, constant: self.spacing.horizontal)
             ])
-        
+
         case .right:
             NSLayoutConstraint.activate([
                 view.trailingAnchor.constraint(equalTo: nextTo.leadingAnchor, constant: -self.spacing.horizontal)
             ])
         }
     }
-    
+
     func setViews(_ views: [UIView]) {
-        
         self.views = views
 
         for (index, view) in views.enumerated() {
             view.translatesAutoresizingMaskIntoConstraints = false
-            
+
             if index == 0 {
                 self.updateLeadingSubview(view)
             } else {
@@ -93,9 +91,8 @@ class HorizontalViewLayout: ViewLayout {
 
         self.hostView.invalidateIntrinsicContentSize()
     }
-    
+
     var intrinsicContentSize: CGSize {
-        return self.horizontalLayoutIntrinsicContentSize
+        self.horizontalLayoutIntrinsicContentSize
     }
 }
-

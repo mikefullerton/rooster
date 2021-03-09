@@ -13,6 +13,8 @@ protocol TableViewSectionAdornmentProtocol {
     
     var preferredHeight: CGFloat { get }
     
+    class func preferredSize(forContent content: Any?) -> Size
+
     var title: String? { get }
 }
 

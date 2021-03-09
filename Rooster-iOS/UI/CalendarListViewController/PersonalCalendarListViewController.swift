@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class PersonalCalendarListViewController : CalendarItemTableViewController<CalenderListViewModel> {
-
+class PersonalCalendarListViewController: CalendarItemTableViewController<CalenderListViewModel> {
     override func reloadViewModel() -> CalenderListViewModel? {
         let dataModel = Controllers.dataModelController.dataModel
         return CalenderListViewModel(withCalendars: dataModel.calendars)

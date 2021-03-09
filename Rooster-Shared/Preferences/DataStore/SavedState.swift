@@ -8,16 +8,15 @@
 import Foundation
 import RoosterCore
 
-struct SavedState {
-    
+public struct SavedState {
     enum SavedStateKey: String, CodingKey {
-        case lookedForCalendarOnFirstRun = "lookedForCalendarOnFirstRun"
-        case firstRunWasPresented = "firstRunWasPresented"
-        case applicationStateVersion = "applicationStateVersion"
+        case lookedForCalendarOnFirstRun
+        case firstRunWasPresented
+        case applicationStateVersion
     }
-    
+
     private var storage: UserDefaults.IdentifierDictionary
-    
+
     init() {
         self.storage = UserDefaults.IdentifierDictionary(withPreferencesKey: "SavedState")
     }
@@ -28,19 +27,19 @@ struct SavedState {
         }
         return 0
     }
-    
+
     mutating func setInt(_ value: Int, forKey key: SavedStateKey) {
         self.storage.set(value: value, forKey: key.rawValue)
     }
-    
+
     func bool(forKey key: SavedStateKey) -> Bool {
         if let value = self.storage.value(forKey: key.rawValue) as? Bool {
             return value
         }
-        
+
         return false
     }
-    
+
     mutating func setBool(_ value: Bool, forKey key: SavedStateKey) {
         self.storage.set(value: value, forKey: key.rawValue)
     }

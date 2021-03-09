@@ -9,34 +9,15 @@ import Foundation
 import RoosterCore
 import Sparkle
 
-
-extension SparkleController  {
-    
-    public class ControllerReference {
-        public weak var sparkleController: SparkleController?
-        
-        public init(withSparkleController controller: SparkleController) {
-            self.sparkleController = controller
-        }
-        
-        fileprivate func stateDidUpdate(_ state: State) {
-            self.sparkleController?.state = state
-        }
-    }
-    
-    
-    public struct State: DescribeableOptionSet, CustomStringConvertible, Equatable, AdditiveArithmetic {
-        
-        public static var zero = State([])
-        
-        var controller: ControllerReference?
-        
+extension SparkleController {
+    public struct State: DescribeableOptionSet {
         public typealias RawValue = Int
 
         public private(set) var rawValue: Int
-        
-        public static let initializing                 = State(rawValue: 1 << 0)
-        
+
+        public static var zero                          = State([])
+        public static let initializing                  = State(rawValue: 1 << 0)
+
         public static let checking                      = State(rawValue: 1 << 1)
         public static let userInitiated                 = State(rawValue: 1 << 2)
         public static let foundNewVersion               = State(rawValue: 1 << 3)
@@ -57,74 +38,27 @@ extension SparkleController  {
 
         public init(rawValue: Int) {
             self.rawValue = rawValue
-            
-            self.controller?.stateDidUpdate(self)
         }
-        
+
         public static var descriptions: [(Self, String)] = [
-            (.initializing,                             "initializing"),
-            (.checking,                                 "checking"),
-            (.userInitiated,                            "userInitiated"),
-            (.foundNewVersion,                          "foundNewVersion"),
-            (.updatePermissions,                        "updatePermissions"),
-            (.updateDownloaded,                         "updateDownloaded"),
-            (.resumeableUpdateFound,                    "resumeableUpdateFound"),
-            (.informatationalUpdateFound,               "informatationalUpdateFound"),
-            (.showingReleaseNotes,                      "showingReleaseNotes"),
-            (.downloadInititiated,                      "downloadInititiated"),
-            (.downloading,                              "downloading"),
-            (.extracting,                               "extracting"),
-            (.readyToInstall,                           "readyToInstall"),
-            (.installing,                               "installing"),
-            (.terminating,                              "terminating"),
+            (.initializing, "initializing"),
+            (.checking, "checking"),
+            (.userInitiated, "userInitiated"),
+            (.foundNewVersion, "foundNewVersion"),
+            (.updatePermissions, "updatePermissions"),
+            (.updateDownloaded, "updateDownloaded"),
+            (.resumeableUpdateFound, "resumeableUpdateFound"),
+            (.informatationalUpdateFound, "informatationalUpdateFound"),
+            (.showingReleaseNotes, "showingReleaseNotes"),
+            (.downloadInititiated, "downloadInititiated"),
+            (.downloading, "downloading"),
+            (.extracting, "extracting"),
+            (.readyToInstall, "readyToInstall"),
+            (.installing, "installing"),
+            (.terminating, "terminating"),
 
-            (.finished,                                 "finished"),
-            (.failed,                                   "failed")
+            (.finished, "finished"),
+            (.failed, "failed")
         ]
-        
-        public static func == (lhs: Self, rhs: Self) -> Bool {
-            return lhs.rawValue == rhs.rawValue
-        }
-        
-        public static func + (lhs: Self, rhs: Self) -> Self {
-            var state = lhs
-            state.insert(rhs)
-            return state
-        }
-
-        public static func += (lhs: inout Self, rhs: Self) {
-            lhs.insert(rhs)
-        }
-
-        public static func - (lhs: Self, rhs: Self) -> Self {
-            var state = lhs
-            state.remove(rhs)
-            return state
-        }
-
-        public static func -= (lhs: inout Self, rhs: Self) {
-            lhs.remove(rhs)
-        }
-        
     }
-
 }
-
-public protocol DescribeableOptionSet: OptionSet, CustomStringConvertible {
-    
-    static var descriptions: [(Self.Element, String)] { get }
-}
-
-extension DescribeableOptionSet {
-    public var description: String {
-        let result: [String] = Self.descriptions.filter {
-            self.contains($0.0)
-        }.map {
-            ".\($0.1)"
-        }
-        
-        return "[\(result.joined(separator:", "))] (\(rawValue)) "
-    }
-    
-}
-

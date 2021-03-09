@@ -9,35 +9,33 @@ import Foundation
 
 import UIKit
 
-
-class TopBar : UIView {
-    
-    var preferredHeight:CGFloat {
-        return 40.0
+class TopBar: UIView {
+    var preferredHeight: CGFloat {
+        40.0
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         self.backgroundColor = UIColor.clear
         self.addBlurView()
-        
+
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
 //        self.setContentHuggingPriority(., for: .vertical)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func addBlurView() {
         self.backgroundColor = UIColor.clear
         let visualEffect = Theme(for: self).blurEffect
 
         let visualEffectView = UIVisualEffectView(effect: visualEffect)
-        
+
         self.insertSubview(visualEffectView, at: 0)
-        
+
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -47,7 +45,7 @@ class TopBar : UIView {
             visualEffectView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
-    
+
     lazy var titleView: UITextField = {
         let titleView = UITextField()
         titleView.isUserInteractionEnabled = false
@@ -55,21 +53,19 @@ class TopBar : UIView {
         titleView.textAlignment = .center
         return titleView
     }()
-        
+
     func addTitleView(withText text: String) {
         let titleView = self.titleView
         titleView.text = text
-        
+
         self.addSubview(titleView)
-        
+
         titleView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             titleView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            titleView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            
-            
-            
+            titleView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+
 //            titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
 //            titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
 //
@@ -79,11 +75,10 @@ class TopBar : UIView {
     }
 
     func addToView(_ view: UIView) {
-        
         view.addSubview(self)
 
         self.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: self.preferredHeight),
             self.topAnchor.constraint(equalTo: view.topAnchor),
@@ -91,8 +86,8 @@ class TopBar : UIView {
             self.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-    
+
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: self.preferredHeight)
+        CGSize(width: UIView.noIntrinsicMetric, height: self.preferredHeight)
     }
 }

@@ -8,29 +8,28 @@
 import Foundation
 import UIKit
 
-protocol VerticalButtonListViewControllerDelegate : AnyObject {
+protocol VerticalButtonListViewControllerDelegate: AnyObject {
     func verticalButtonBarViewController(_ verticalButtonBarViewController: VerticalButtonListViewController, didChooseItem item: VerticalTabItem)
 }
 
 typealias VerticalButtonBarViewModel = TableViewModel<VerticalTabItem, VerticalButtonListTableCell>
 
-class VerticalButtonListViewController : ListViewController<VerticalButtonBarViewModel> {
+class VerticalButtonListViewController: ListViewController<VerticalButtonBarViewModel> {
+    weak var delegate: VerticalButtonListViewControllerDelegate?
 
-    weak var delegate : VerticalButtonListViewControllerDelegate?
-    
     private let tabItems: [VerticalTabItem]
-     
+
     init(with items: [VerticalTabItem]) {
         self.tabItems = items
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func provideDataModel() -> VerticalButtonBarViewModel? {
-        return VerticalButtonBarViewModel(withData: self.tabItems)
+        VerticalButtonBarViewModel(withData: self.tabItems)
     }
 
     private var selectedIndex: Int {
@@ -38,17 +37,17 @@ class VerticalButtonListViewController : ListViewController<VerticalButtonBarVie
             if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
                 return selectedIndexPath.item
             }
-            
+
             return NSNotFound
         }
         set(selectedIndex) {
             self.tableView.selectRow(at: IndexPath(item: selectedIndex, section: 0), animated: true, scrollPosition: .top)
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.view.layer.borderWidth = 1.0
         self.view.layer.borderColor = Theme(for: self.view).borderColor.cgColor
     }
@@ -58,17 +57,16 @@ class VerticalButtonListViewController : ListViewController<VerticalButtonBarVie
             delegate.verticalButtonBarViewController(self, didChooseItem: self.tabItems[indexPath.item])
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         self.selectedIndex = 0
         if let delegate = self.delegate {
             delegate.verticalButtonBarViewController(self, didChooseItem: self.tabItems[0])
         }
     }
-    
-    
+
 //    var selectedButton: VerticalButton? {
 //        let index = self.selectedIndex
 //
@@ -90,21 +88,20 @@ class VerticalButtonListViewController : ListViewController<VerticalButtonBarVie
 //            delegate.verticalButtonBarView(self, didChooseItem: clickedButton.item)
 //        }
 //    }
-    
+
 //    lazy var layout = VerticalViewLayout(hostView: self,
 //                                         insets:UIEdgeInsets.zero,
 //                                         spacing: UIOffset.zero)
 
-    
 //    override var intrinsicContentSize: CGSize {
 //        let size = self.layout.intrinsicContentSize
 //        return size
 //    }
-    
+
 }
 
 //
-//class OldVerticalButtonBarView : UIView, VerticalButtonDelegate {
+// class OldVerticalButtonBarView : UIView, VerticalButtonDelegate {
 //
 //    weak var delegate : VerticalButtonBarViewDelegate?
 //
@@ -181,4 +178,4 @@ class VerticalButtonListViewController : ListViewController<VerticalButtonBarVie
 //        return size
 //    }
 //
-//}
+// }

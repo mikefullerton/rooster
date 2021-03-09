@@ -8,10 +8,9 @@
 import Foundation
 
 extension UserDefaults {
-    
     public struct IdentifierList {
         private let preferencesKey: String
-        
+
         public init(withPreferencesKey key: String) {
             self.preferencesKey = key
         }
@@ -20,10 +19,10 @@ extension UserDefaults {
             UserDefaults.standard.set(list, forKey: self.preferencesKey)
             UserDefaults.standard.synchronize()
         }
-        
+
         public func add(identifier: String) {
             var list = self.identifiers
-            
+
             if !list.contains(identifier) {
                 list.append(identifier)
                 self.save(list)
@@ -32,7 +31,7 @@ extension UserDefaults {
 
         public func remove(identifier: String) {
             var list = self.identifiers
-            
+
             if let index = list.firstIndex(of: identifier) {
                 list.remove(at: index)
                 self.save(list)
@@ -46,22 +45,22 @@ extension UserDefaults {
                 self.remove(identifier: key)
             }
         }
-        
+
         public func removeAll() {
             self.save([])
         }
-        
+
         public func replaceAll(withIdentifiers newIdentifiers: [String]) {
             self.save(newIdentifiers)
         }
-        
+
         public func contains(_ id: String) -> Bool {
-            return self.identifiers.contains(id)
+            self.identifiers.contains(id)
         }
-        
-        public var identifiers:[String] {
+
+        public var identifiers: [String] {
             get {
-                return UserDefaults.standard.stringArray(forKey: preferencesKey) ?? []
+                UserDefaults.standard.stringArray(forKey: preferencesKey) ?? []
             }
             set(newList) {
                 self.replaceAll(withIdentifiers: newList)

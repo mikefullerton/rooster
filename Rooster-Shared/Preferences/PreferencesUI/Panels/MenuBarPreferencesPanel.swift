@@ -8,20 +8,35 @@
 import Foundation
 import RoosterCore
 
-class MenuBarPreferencesPanel : SDKViewController, PreferencePanel {
-    
-    func resetButtonPressed() {
-        Controllers.preferencesController.preferences = Preferences.default
-    }
-    
-    override func loadView() {
-        self.view = MenuBarChoicesView(frame: CGRect.zero)
-    }
-    
-    var toolbarButtonIdentifier: NSToolbarItem.Identifier {
-        return NSToolbarItem.Identifier(rawValue: "menubar")
+public class MenuBarPreferencesPanel: PreferencePanel {
+    override public var toolbarButtonIdentifier: String {
+        "menubar"
     }
 
+    override public func loadView() {
+        let stackView = SimpleStackView(direction: .vertical,
+                                        insets: SDKEdgeInsets.ten,
+                                        spacing: SDKOffset.zero)
+        self.view = stackView
 
+        let notifs = GroupBoxView(title: "Rooster's behavior in the Menu Bar")
+
+        notifs.setContainedViews([
+            SinglePreferenceChoiceView(withTitle: "Show Rooster in Menu Bar",
+                                       refresh: { AppControllers.shared.preferences.menuBar.options.contains( .showIcon ) },
+                                       update: { AppControllers.shared.preferences.menuBar.options.set(.showIcon, to: $0) }),
+
+            SinglePreferenceChoiceView(withTitle: "Show count down to next meeting",
+                                       refresh: { AppControllers.shared.preferences.menuBar.options.contains( .countDown ) },
+                                       update: { AppControllers.shared.preferences.menuBar.options.set(.countDown, to: $0) }),
+
+            SinglePreferenceChoiceView(withTitle: "Blink Rooster when alarm is firing",
+                                       refresh: { AppControllers.shared.preferences.menuBar.options.contains( .blink ) },
+                                       update: { AppControllers.shared.preferences.menuBar.options.set(.blink, to: $0) })
+        ])
+
+        stackView.setContainedViews([
+            notifs
+        ])
+    }
 }
-

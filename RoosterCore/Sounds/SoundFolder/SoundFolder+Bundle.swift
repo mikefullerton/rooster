@@ -8,25 +8,22 @@
 import Foundation
 
 extension SoundFolder {
-    
+//    public static func loadFromBundle() -> SoundFolder {
+//        if  let resourcePath = Bundle.main.resourceURL {
+//            let soundPath = resourcePath.appendingPathComponent("Sounds")
+//            
+//            do {
+//                let directory = DirectoryIterator(withURL: soundPath)
+//                try directory.scan()
+//                
+//                let soundFolder = try SoundFolder(withDirectory: directory)
+//                return soundFolder
+//            } catch {
+//                self.logger.error("Creating SoundFolder failed with error: \(String(describing: error))")
+//            }
+//        }
+//        
+//        return SoundFolder.empty
+//    }
 
-    
-    public static func loadFromBundle() -> SoundFolder {
-        if  let resourcePath = Bundle.main.resourceURL {
-            let soundPath = resourcePath.appendingPathComponent("Sounds")
-            
-            do {
-                let directory = DirectoryIterator(withURL: soundPath)
-                try directory.scan()
-                
-                let soundFolder = try SoundFolder(withDirectory: directory)
-                return soundFolder
-            } catch {
-                self.logger.error("Creating SoundFolder failed with error: \(error.localizedDescription)")
-            }
-        }
-        
-        return SoundFolder.empty
-    }
-    
 }

@@ -7,53 +7,70 @@
 
 import Foundation
 
-public struct SoundFileCollection: Codable, CustomStringConvertible, Equatable {
-
+public struct SoundFileCollection: CustomStringConvertible, Equatable {
     public private(set) var randomizerMap: [String: SoundPlayerRandomizer]
     public private(set) var relativePathMap: [String: URL]
-    
-    private let timestamp: Date
-    
+
+    public static let `default` = SoundFileCollection()
+
     public var description: String {
-        return """
-        type(of:self): \
+        """
+        \(type(of: self)): \
         relativePaths: \(self.relativePathMap)
         """
     }
-    
+
     public var count: Int {
-        return self.relativePathMap.count
+        self.relativePathMap.count
     }
-    
+
     public init() {
-        self.timestamp = Date()
         self.randomizerMap = [:]
         self.relativePathMap = [:]
     }
-    
+
     public var allSoundIDs: [String] {
-        return self.relativePathMap.keys.map { $0 as String }
+        self.relativePathMap.keys.map { $0 as String }
     }
-    
+
     public func randomizer(forID id: String) -> SoundPlayerRandomizer? {
-        return self.randomizerMap[id]
+        self.randomizerMap[id]
     }
-    
+
     public func relativePath(forID id: String) -> URL? {
-        return self.relativePathMap[id]
+        self.relativePathMap[id]
     }
-    
+
     public mutating func addSound(_ soundFile: SoundFile, randomizer: SoundPlayerRandomizer) {
         self.randomizerMap[soundFile.id] = randomizer
         self.relativePathMap[soundFile.id] = soundFile.relativePath
     }
 
     public static func == (lhs: SoundFileCollection, rhs: SoundFileCollection) -> Bool {
-        return  lhs.randomizerMap == rhs.randomizerMap &&
+        lhs.randomizerMap == rhs.randomizerMap &&
                 lhs.relativePathMap == rhs.relativePathMap
     }
-    
+
     var randomSoundID: String? {
-        return self.relativePathMap.keys.randomElement()
+        self.relativePathMap.keys.randomElement()
+    }
+}
+
+extension SoundFileCollection: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case randomizerMap
+        case relativePathMap
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.randomizerMap = try values.decodeIfPresent([String: SoundPlayerRandomizer].self, forKey: .randomizerMap) ?? Self.default.randomizerMap
+        self.relativePathMap = try values.decodeIfPresent([String: URL].self, forKey: .relativePathMap) ?? Self.default.relativePathMap
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.randomizerMap, forKey: .randomizerMap)
+        try container.encode(self.relativePathMap, forKey: .relativePathMap)
     }
 }

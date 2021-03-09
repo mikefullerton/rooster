@@ -8,45 +8,42 @@
 import Cocoa
 import RoosterCore
 
-class MainWindowController: WindowController {
-    
+public class MainWindowController: WindowController {
     let mainWindowViewController = MainWindowViewController()
 
-    override func windowDidLoad() {
+    override public func windowDidLoad() {
         super.windowDidLoad()
-        
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(mainWindowDidUpdate(_:)),
-                                               name: MainWindowViewController.DidChangeEvent, object: self.mainWindowViewController)
-    
+                                               name: MainWindowViewController.DidChangeEvent,
+                                               object: self.mainWindowViewController)
+
         self.autosaveKey = "MainWindow"
-        self.setContentViewController(self.mainWindowViewController)
-        
-//        self.mainWindowViewController.view.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        
-    }
-    
-    @IBAction @objc func showSettings(_ sender: Any) {
-        PreferencesWindow.show()
-    }
-    
-    @IBAction @objc func fileRadar(_ sender: Any) {
-        AppDelegate.instance.showRadarAlert()
+        self.contentViewController = self.mainWindowViewController
     }
 
-    @IBAction @objc func getInvolved(_ sender: Any) {
-        AppDelegate.instance.showCodeAlert()
+    @IBAction private func showSettings(_ sender: Any) {
+        AppControllers.shared.showPreferencesWindow()
+    }
+
+    @IBAction private func fileRadar(_ sender: Any) {
+        AppControllers.shared.showRadarAlert()
+    }
+
+    @IBAction private func getInvolved(_ sender: Any) {
+        AppControllers.shared.showCodeAlert()
     }
 
     @objc func mainWindowDidUpdate(_ notification: Notification) {
         if let window = self.window {
             let preferredContentSize = self.mainWindowViewController.preferredContentSize
-            self.logger.log("Updating main window size: \(NSStringFromSize(preferredContentSize))")
+            self.logger.debug("Updating main window size: \(String(describing: preferredContentSize))")
             window.setContentSize(preferredContentSize)
         }
     }
 
-    func mainWindowViewController(_ viewController: MainWindowViewController, preferredContentSizeDidChange size: CGSize) {
+    func mainWindowViewController(_ viewController: MainWindowViewController,
+                                  preferredContentSizeDidChange size: CGSize) {
     }
-
 }

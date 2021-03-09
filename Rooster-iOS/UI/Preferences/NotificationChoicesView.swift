@@ -8,12 +8,11 @@
 import Foundation
 import UIKit
 
-class NotificationChoicesView : SimpleStackView {
-    
+class NotificationChoicesView: SimpleStackView {
     init(frame: CGRect) {
         super.init(frame: frame )
-        
-        let notifs =  GroupBoxView(frame: CGRect.zero, title: "NOTIFICATION_EXPLANATION".localized)
+
+        let notifs = GroupBoxView(frame: CGRect.zero, title: "NOTIFICATION_EXPLANATION".localized)
         notifs.setContainedViews([
             self.automaticallyOpenLocationURLs,
             self.bounceIconInDock,
@@ -24,23 +23,20 @@ class NotificationChoicesView : SimpleStackView {
             notifs
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    lazy var automaticallyOpenLocationURLs : SingleNotificationChoiceView = {
+
+    lazy var automaticallyOpenLocationURLs: SingleNotificationChoiceView = {
         return AutomaticallyOpenLocationURLsChoiceView(frame: self.bounds)
     }()
 
-    lazy var bounceIconInDock : SingleNotificationChoiceView = {
+    lazy var bounceIconInDock: SingleNotificationChoiceView = {
         return BounceInDockChoiceView(frame: self.bounds)
     }()
 
-    lazy var useSystemNotifications : SingleNotificationChoiceView = {
+    lazy var useSystemNotifications: SingleNotificationChoiceView = {
         return UseSystemNotificationsChoiceView(frame: self.bounds)
     }()
-    
-    
 }
-

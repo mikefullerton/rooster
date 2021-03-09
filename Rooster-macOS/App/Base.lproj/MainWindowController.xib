@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19052" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19052"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,7 +14,8 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Rooster" separatorStyle="line" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" toolbarStyle="compact" id="F0z-JX-Cv5">
-            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowCollectionBehavior key="collectionBehavior" canJoinAllSpaces="YES" participatesInCycle="YES" fullScreenNone="YES" fullScreenDisallowsTiling="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="270"/>
             <rect key="screenRect" x="0.0" y="0.0" width="3360" height="1865"/>
             <view key="contentView" id="se5-gp-TjO">
@@ -26,7 +27,7 @@
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="HUv-62-BK3"/>
                     <toolbarItem implicitItemIdentifier="E70D67C6-9AD7-4E4C-826E-AFBDCE31FC78" label="Share" paletteLabel="Share" tag="-1" image="square.and.arrow.up" catalog="system" sizingBehavior="auto" id="mAX-lm-qU0"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="cJJ-eR-Xa4"/>
-                    <toolbarItem implicitItemIdentifier="847B92C3-B78B-4B8B-8930-08D401858DE7" label="" paletteLabel="" tag="-1" bordered="YES" id="zw2-AY-1O1">
+                    <toolbarItem implicitItemIdentifier="847B92C3-B78B-4B8B-8930-08D401858DE7" label="" paletteLabel="" tag="-1" id="zw2-AY-1O1">
                         <size key="minSize" width="5" height="25"/>
                         <size key="maxSize" width="5" height="25"/>
                     </toolbarItem>
