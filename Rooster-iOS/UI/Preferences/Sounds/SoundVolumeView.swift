@@ -30,7 +30,7 @@ class SoundVolumeView : LabeledSliderView {
         
         self.slider.maximumValueView = imageButton
         self.slider.addTarget(self, action: #selector(volumeDidChange(_:)), for: .valueChanged)
-        self.slider.value = Controllers.preferencesController.soundPreferences.volume
+        self.slider.value = Controllers.preferences.soundPreferences.volume
         
         self.updateVolumeSliderImage(withSliderView: self.slider)
         
@@ -51,7 +51,7 @@ class SoundVolumeView : LabeledSliderView {
     }
 
     private func updateVolumeSliderImage(withSliderView sliderView: SliderView) {
-        let soundPrefs = Controllers.preferencesController.soundPreferences
+        let soundPrefs = Controllers.preferences.soundPreferences
 
         if let button = sliderView.maximumValueView as? FancyButton {
             if soundPrefs.volume == 0 {
@@ -69,16 +69,16 @@ class SoundVolumeView : LabeledSliderView {
     }
     
     @objc func volumeDidChange(_ sender: UISlider) {
-        var prefs = Controllers.preferencesController.preferences
+        var prefs = Controllers.preferences.preferences
         var soundPrefs = prefs.sounds
         soundPrefs.volume = sender.value
         prefs.sounds = soundPrefs
-        Controllers.preferencesController.preferences = prefs
+        Controllers.preferences.preferences = prefs
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
     
     @objc func preferencesDidChange(_ sender: Notification) {
-        self.slider.value = Controllers.preferencesController.soundPreferences.volume
+        self.slider.value = Controllers.preferences.soundPreferences.volume
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
 

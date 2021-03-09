@@ -11,11 +11,23 @@ import Foundation
 public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
     
     public static let DidChangeEvent = Notification.Name("DataModelDidChangeEvent")
+    
 
+    private var disableSaving: Bool = false
+    
     // public properties
-    private(set) public var dataModel: RCCalendarDataModel {
+    private(set) public var dataModel: RCCalendarDataModel? {
         didSet {
-            self.dataModelWasReloaded()
+            if oldValue != nil {
+                if oldValue != self.dataModel {
+                    self.saveDataModel()
+                } else {
+                    self.logger.log("no change in data model")
+                }
+            }
+            else if self.dataModel != nil {
+                self.notify()
+            }
         }
     }
 
@@ -25,22 +37,56 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
     // private stuff
     private let eventKitController: EKController
     private var needsNotify = false
-    private let nextAlarmTimer: SimpleTimer
     
-    public let dataModelStorage: DataModelStorage
+    public var dataModelStorage: DataModelStorage {
+        return self.eventKitController.dataModelStorage
+    }
     
-    public init(withDataModelStorage dataModelStorage: DataModelStorage) {
-        self.eventKitController = EKController(withDataModelStorage: dataModelStorage)
-        self.dataModel = RCCalendarDataModel()
+    public init(withEventKitController eventKitController: EKController) {
+        self.eventKitController = eventKitController
         self.isAuthenticating = false
         self.isAuthenticated = false
-        self.nextAlarmTimer = SimpleTimer(withName: "NextAlarmTimer")
-        self.dataModelStorage = dataModelStorage
-    
         self.eventKitController.delegate = self
     }
     
+    public var allItems: [RCCalendarItem] {
+        return self.dataModel?.allItems ?? []
+    }
+
+    public var events: [RCEvent] {
+        return self.dataModel?.events ?? []
+    }
+
+    public var reminders: [RCReminder] {
+        return self.dataModel?.reminders ?? []
+    }
+    
+    public var calendars: [CalendarSource: [RCCalendar]] {
+        return self.dataModel?.calendars ?? [:]
+    }
+
+    public var delegateCalendars: [CalendarSource: [RCCalendar]] {
+        return self.dataModel?.delegateCalendars ?? [:]
+    }
+
     // MARK: Methods
+    
+    private func saveDataModel() {
+        self.logger.log("Saving data model")
+        if let dataModel = self.dataModel {
+            self.dataModelStorage.writeDateModel(dataModel) { success, error in
+                
+                // TODO: handle failure
+                
+                self.notify()
+                self.reloadData()
+            }
+        }
+    }
+    
+    public func readFromStorage(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        self.dataModelStorage.read(completion: completion)
+    }
     
     public func reloadData() {
         self.eventKitController.reloadDataModel()
@@ -50,32 +96,30 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
         
         var newCalendarLookup: [CalendarID: RCCalendar] = [:]
         
-        let dataModel = self.dataModel
+        if let dataModel = self.dataModel {
         
-        let newCalendarList = self.newCalendars(for: newCalendar,
-                                                calendarMap: dataModel.calendars,
-                                                newCalendarLookup: &newCalendarLookup)
+            let newCalendarList = self.newCalendars(for: newCalendar,
+                                                    calendarMap: dataModel.calendars,
+                                                    newCalendarLookup: &newCalendarLookup)
 
-        let newDelegateCalendarList = self.newCalendars(for: newCalendar,
-                                                calendarMap: dataModel.delegateCalendars,
-                                                newCalendarLookup: &newCalendarLookup)
-
-        if newCalendarList != nil || newDelegateCalendarList != nil {
-
-            let updatedCalendarList = newCalendarList == nil ? self.dataModel.calendars : newCalendarList!
-            let updatedDelegateList = newDelegateCalendarList == nil ? self.dataModel.delegateCalendars : newDelegateCalendarList!
-
-            self.dataModel = RCCalendarDataModel(calendars: updatedCalendarList,
-                                               delegateCalendars: updatedDelegateList,
-                                               events: dataModel.events,
-                                               reminders: dataModel.reminders)
-            self.dataModelStorage.update(calendar: newCalendar)
+            let newDelegateCalendarList = self.newCalendars(for: newCalendar,
+                                                            calendarMap: dataModel.delegateCalendars,
+                                                            newCalendarLookup: &newCalendarLookup)
             
-            self.logger.log("RCCalendarDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
+            if newCalendarList != nil || newDelegateCalendarList != nil {
+                
+                let updatedCalendarList = newCalendarList == nil ? dataModel.calendars : newCalendarList!
+                let updatedDelegateList = newDelegateCalendarList == nil ? dataModel.delegateCalendars : newDelegateCalendarList!
+                
+                self.dataModel = RCCalendarDataModel(calendars: updatedCalendarList,
+                                                     delegateCalendars: updatedDelegateList,
+                                                     events: dataModel.events,
+                                                     reminders: dataModel.reminders)
+                
+                self.logger.log("RCCalendarDataModel: updated calendar: \(newCalendar.sourceTitle): \(newCalendar.title)")
+            }
+        }
             
-            self.notify()
-
-            self.reloadData()        }
     }
 
     public func update(event: RCEvent) {
@@ -84,19 +128,14 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
     
     public func update(someEvents: [RCEvent]) {
 
-        if let updatedEvents = self.update(someItems: someEvents,
-                                           inItems: self.dataModel.events) {
-            
-            updatedEvents.forEach {
-                self.dataModelStorage.update(event: $0)
-            }
+        if let dataModel = self.dataModel,
+            let updatedEvents = self.merge(someItems: someEvents,
+                                           inItems: dataModel.events) {
             
             self.dataModel = RCCalendarDataModel(calendars: dataModel.calendars,
-                                               delegateCalendars: dataModel.delegateCalendars,
-                                               events: updatedEvents,
-                                               reminders: dataModel.reminders)
-
-            self.notify()
+                                                  delegateCalendars: dataModel.delegateCalendars,
+                                                  events: updatedEvents,
+                                                  reminders: dataModel.reminders)
         }
     }
     
@@ -105,23 +144,26 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
     }
     
     public func update(someReminders: [RCReminder]) {
-        if let updatedReminders = self.update(someItems: someReminders,
-                                              inItems: self.dataModel.reminders) {
-            
-            updatedReminders.forEach {
-                self.dataModelStorage.update(reminder: $0)
-            }
-            
+        if  let dataModel = self.dataModel,
+            let updatedReminders = self.merge(someItems: someReminders,
+                                              inItems: dataModel.reminders) {
+        
             self.dataModel = RCCalendarDataModel(calendars: dataModel.calendars,
-                                               delegateCalendars: dataModel.delegateCalendars,
-                                               events: dataModel.events,
-                                               reminders: updatedReminders)
-
-            self.notify()
+                                                 delegateCalendars: dataModel.delegateCalendars,
+                                                 events: dataModel.events,
+                                                 reminders: updatedReminders)
         }
     }
     
-    public func authenticate(_ completion: ((_ success: Bool) -> Void)? ) {
+    public func update(calendarItem: RCCalendarItem) {
+        if let event = calendarItem as? RCEvent {
+            self.update(event: event)
+        } else if let reminder = calendarItem as? RCReminder {
+            self.update(reminder: reminder)
+        }
+    }
+    
+    public func requestAccessToCalendars(_ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         self.isAuthenticating = true
         self.eventKitController.requestAccess { (success, error) in
             DispatchQueue.main.async {
@@ -130,16 +172,14 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
                     self.isAuthenticated = true
                 }
                 
-                if completion != nil {
-                    completion!(success)
-                }
+                completion(success, error)
             }
         }
     }
     
     // MARK: private implementation
     
-    private func update<T>(someItems: [T], inItems: [T]) -> [T]? where T: RCCalendarItem {
+    private func merge<T>(someItems: [T], inItems: [T]) -> [T]? where T: RCCalendarItem, T: Equatable {
         
         var newItemList: [T] = []
 
@@ -151,7 +191,7 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
             someItems.forEach { (someItem) in
                 if someItem.id == item.id {
                     
-                    if someItem.isEqualTo(item) {
+                    if someItem == item {
                         self.logger.log("event not changed, ignoring update: \(someItem)")
                     } else {
                         foundDifferentItem = true
@@ -190,8 +230,10 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
                         foundChange = true
                         newCalendarList.append(newCalendar)
                         newCalendarLookup[source] = newCalendar
+                        self.logger.log("Calendar \(calendar.sourceTitle):\(calendar.title) changed, updating")
+                        
                     } else {
-                        self.logger.log("Calendar unchanged, ignoring update")
+                        self.logger.log("Calendar \(calendar.sourceTitle):\(calendar.title) unchanged, ignoring update")
                         newCalendarList.append(calendar)
                         newCalendarLookup[source] = calendar
                     }
@@ -221,149 +263,184 @@ public class RCCalendarDataModelController : EKControllerDelegate, Loggable {
     
     // MARK: EKController delegate method
     
-    func eventKitController(_ controller: EKController,
-                            didReloadDataModel dataModel: RCCalendarDataModel) {
+    public func eventKitController(_ controller: EKController,
+                                   didReloadDataModel dataModel: RCCalendarDataModel) {
      
         self.dataModel = dataModel
-        
-        self.notify()
     }
     
     // MARK: Alarms
-    
-    public func stopAllAlarms() {
-        if let updatedEvents = self.muteAlarms(forItems: Controllers.dataModelController.dataModel.events)  {
-            self.update(someEvents: updatedEvents)
-        }
-
-        if let updatedReminders = self.muteAlarms(forItems: Controllers.dataModelController.dataModel.reminders) {
-            self.update(someReminders: updatedReminders)
-        }
-    }
-    
-    private func muteAlarms<T>(forItems items: [T]) -> [T]? where T: RCCalendarItem {
-        var outList:[T] = []
-        var madeChange = false
-        
-        for item in items {
-            
-            var alarm = item.alarm
-            
-            if  alarm.isFiring {
-                alarm.mutedDate = Date()
-                
-                var updatedItem = item
-                updatedItem.alarm = alarm
-                outList.append(updatedItem)
-                
-                madeChange = true
-            } else {
-                outList.append(item)
-            }
-        }
-        
-        return madeChange ? outList : nil
-    }
-    
-    private func updateAlarms<T>(forItems items: [T]) -> [T]? where T: RCCalendarItem {
-        var outList:[T] = []
-        var madeChange = false
-        
-        for item in items {
-            var alarm = item.alarm
-            if alarm.updateState() {
-                var updatedItem = item
-                updatedItem.alarm = alarm
-                outList.append(updatedItem)
-                madeChange = true
-            } else {
-                outList.append(item)
-            }
-        }
-        
-        return madeChange ? outList : nil
-    }
-    
-    private func updateAlarmsIfNeeded() {
-        if let updatedEvents = self.updateAlarms(forItems: self.dataModel.events)  {
-            self.update(someEvents: updatedEvents)
-            self.logger.log("Updated alarms for \(updatedEvents.count) events")
-        }
-    
-        if let updatedReminders = self.updateAlarms(forItems: self.dataModel.reminders) {
-            self.update(someReminders: updatedReminders)
-            self.logger.log("Updated alarms for \(updatedReminders.count) events")
-        }
-    }
-    
     public func enableAllPersonalCalendars() {
-        for (_, calendars) in self.dataModel.calendars {
-            for calendar in calendars {
-                var newCalendar = calendar
-                newCalendar.isSubscribed = true
-                self.update(calendar: newCalendar)
-                self.logger.log("Enabled default calendar: \(calendar)")
+        if let dataModel = self.dataModel {
+            var newCalendars: [CalendarSource: [RCCalendar]] = [:]
+            
+            for (source, calendars) in dataModel.calendars {
+                
+                newCalendars[source] = calendars.map {
+                    var calendar = $0
+                    calendar.isSubscribed = true
+                    
+                    return calendar
+                }
+                
             }
-        }
-    }
-    
-    private func dataModelWasReloaded() {
-        self.updateAlarmsIfNeeded()
-        self.startTimerForNextEventTime()
-    }
-    
-    private func startTimerForNextEventTime() {
-        self.nextAlarmTimer.stop()
         
-        if let nextAlarmTime = Controllers.dataModelController.dataModel.nextAlarmDateForSchedulingTimer {
-            self.logger.log("scheduling next alarm update for: \(nextAlarmTime.shortDateAndTimeString)")
-            self.nextAlarmTimer.start(withDate: nextAlarmTime) { [weak self] (timer) in
-                self?.logger.log("next alarm date timer did fire after: \(timer.timeInterval), scheduled for: \(nextAlarmTime.shortDateAndTimeString)")
-                self?.reloadData()
-            }
+            self.logger.log("Enabled default calendars")
+            
+            self.dataModel = RCCalendarDataModel(calendars: newCalendars,
+                                                 delegateCalendars: dataModel.delegateCalendars,
+                                                 events: dataModel.events,
+                                                 reminders: dataModel.reminders)
         }
     }
 
-}
-
-extension RCEvent {
-    public func setAlarmMuted(_ isMuted: Bool) {
-        var newAlarm = self.alarm
-        newAlarm.mutedDate = isMuted ? Date() : nil
-        
-        var newEvent = self
-        newEvent.alarm = newAlarm
-        
-        Controllers.dataModelController.update(event: newEvent)
-    }
-}
-
-extension RCReminder {
-    public func setAlarmMuted(_ isMuted: Bool) {
-        var newAlarm = self.alarm
-        newAlarm.mutedDate = isMuted ? Date() : nil
-
-        var newReminder = self
-        newReminder.alarm = newAlarm
-        
-        Controllers.dataModelController.update(reminder: newReminder)
-    }
-    
-    public func snoozeAlarm() {
-        var updatedAlarm = self.alarm
-        updatedAlarm.snoozeInterval += 60 * 60 * 2
-        
-        var newReminder = self
-        newReminder.alarm = updatedAlarm
-        
-        Controllers.dataModelController.update(reminder: newReminder)
-    }
 }
 
 extension RCCalendar {
     public func set(subscribed: Bool) {
         var updatedCalendar = self
         updatedCalendar.isSubscribed = subscribed
-        Controllers.dataModelController.update(calendar: updatedCalendar)
+        Controllers.dataModel.update(calendar: updatedCalendar)
     }
+}
+
+extension RCCalendarDataModelController {
+    
+    public func nextAlarmDate(forItems items: [RCCalendarItem]) -> Date? {
+        var nextDate:Date?
+        
+        for item in items {
+            let alarm = item.alarm
+            
+            if alarm.willFire &&
+                (nextDate == nil || alarm.startDate?.isBeforeDate(nextDate!) ?? false) {
+                nextDate = alarm.startDate
+            }
+        }
+
+        return nextDate
+    }
+    
+    public var nextAlarmDate: Date? {
+        return self.nextAlarmDate(forItems: self.allItems)
+    }
+}
+
+extension RCCalendarDataModelController {
+    
+    public struct SchedulingGap: CustomStringConvertible {
+        public let startDate: Date
+        public let endDate: Date
+        public let length: TimeInterval
+        
+        init?(startDate: Date, endDate: Date) {
+            
+            let length = endDate.difference(fromDate: startDate)
+            
+            guard length > 0.0 else {
+                return nil
+            }
+            
+            self.length = length
+            self.startDate = startDate
+            self.endDate = endDate
+        }
+        
+        public var description: String {
+            return """
+            type(of: self): \
+            startDate: \(self.startDate.shortDateAndLongTimeString), \
+            endDate: \(self.endDate.shortDateAndLongTimeString), \
+            length: \(DigitalClockTimeDisplayFormatter.formattedInterval(self.length))
+            """
+        }
+    }
+    
+    public enum GapAlignment {
+        case hour
+        case halfHour
+        case quarterHour
+        
+        
+        public static func alignment(withInterval interval: TimeInterval) -> GapAlignment {
+            
+            let minutes = Date.minutes(fromInterval: interval)
+            
+            if minutes > 30 {
+                return .hour
+            }
+            
+            if minutes > 15 {
+                return .halfHour
+            }
+            
+            return .quarterHour
+        }
+        
+    }
+    
+    public func schedulingGaps(withStartTime earliestStartTime: Date,
+                               gapAlignment: GapAlignment,
+                               excludingItems excludedItems:[RCCalendarItem] = []) -> [SchedulingGap] {
+        
+        var gaps:[SchedulingGap] = []
+        
+        var lastItemEndDate = earliestStartTime
+        
+        for item in self.allItems {
+            
+            if excludedItems.contains(where: { $0.id == item.id } ) {
+                continue
+            }
+            
+            if let startDate = item.alarm.startDate,
+                let endDate = item.alarm.endDate,
+                startDate.isAfterDate(lastItemEndDate) {
+            
+                if let gap = SchedulingGap(startDate:lastItemEndDate, endDate:startDate) {
+                    gaps.append(gap)
+                }
+                
+                lastItemEndDate = endDate
+            }
+        }
+        
+        return gaps
+    }
+    
+    public func findEmptyTimeSlot(withEarliestTime earliestTime: Date,
+                                  withLength slotLength: TimeInterval,
+                                  withinRange range: ClosedRange<Int>) -> SchedulingGap? {
+
+        let minTime = earliestTime.removeMinutesAndSeconds.addHours(range.lowerBound)
+        let maxTime = minTime.addHours(range.upperBound)
+        
+        let alignment = GapAlignment.alignment(withInterval:slotLength)
+    
+        let allGaps = self.schedulingGaps(withStartTime: minTime,
+                                          gapAlignment: alignment,
+                                          excludingItems: [])
+        
+        for gap in allGaps {
+            if gap.startDate.isEqualToOrBeforeDate(maxTime) && gap.length >= slotLength {
+                return gap
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    public func findEmptyTimeSlot(forCalendarItem calendarItem: RCCalendarItem,
+                                  withinRange range: ClosedRange<Int>) -> SchedulingGap? {
+        
+        if let startTime = calendarItem.alarm.startDate  {
+            return self.findEmptyTimeSlot(withEarliestTime:Date.later(Date(), startTime),
+                                          withLength:calendarItem.length,
+                                          withinRange:range)
+        }
+        
+        return nil
+    }
+    
 }

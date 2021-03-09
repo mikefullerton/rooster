@@ -68,7 +68,7 @@ class ButtonsContainerView : UIView {
     }
     
     @objc func resetButtonPressed(_ sender: UIButton) {
-        Controllers.preferencesController.preferences = Preferences()
+        Controllers.preferences.preferences = Preferences()
     }
 
     @objc func tryItButtonPressed(_ sender: UIButton) {
@@ -110,7 +110,7 @@ class ButtonsContainerView : UIView {
 
         return view
         
-    } ()
+    }()
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: ButtonsContainerView.buttonSize)

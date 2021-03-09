@@ -11,29 +11,29 @@ import Sparkle
 
 class SparkleUI : NSObject, SPUStandardUserDriverDelegate, Loggable {
     
-    private var userDriver: SPUUserDriver? = nil
+    private var userDriver: SPUUserDriver?
     private var showErrorDialog = false
     
     func standardUserDriverWillShowModalAlert() {
         self.showErrorDialog = true
-        self.logger.log("Sparkle will show modal alert");
+        self.logger.log("Sparkle will show modal alert")
     }
     
     func standardUserDriverDidShowModalAlert() {
-        self.logger.log("Sparkle did show modal alert");
+        self.logger.log("Sparkle did show modal alert")
     }
 
     public func showErrorAlert() {
         if self.showErrorDialog {
             self.showErrorDialog = false
-            self.logger.log("Showing custom error alert");
+            self.logger.log("Showing custom error alert")
             
             let alert: NSAlert = NSAlert()
             alert.messageText = NSLocalizedString("UPDATING_FAILED", bundle: Bundle(for: type(of: self)), comment: "")
             alert.informativeText = NSLocalizedString("CONFIRM_INTERNAL_NETWORK", bundle: Bundle(for: type(of: self)), comment: "")
             alert.alertStyle = NSAlert.Style.informational
             alert.addButton(withTitle: NSLocalizedString("OK", bundle: Bundle(for: type(of: self)), comment: ""))
-            let _ = alert.runModal()
+            _ = alert.runModal()
         }
     }
     

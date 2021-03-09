@@ -17,10 +17,16 @@ extension SoundFolder {
         return nil
     }
             
-    private static let soundFolderLoader = SoundFolderLoader(withPath: SoundFolder.resourceSoundFolderPath)
+    private static var _instance: SoundFolder?
     
     public static var instance: SoundFolder {
-        return self.soundFolderLoader.soundFolder
+        
+        guard let instance = _instance else {
+            self.logger.warning("Accessing SoundFolder.instance before it's loaded")
+            return SoundFolder.empty
+        }
+        
+        return instance
     }
     
     public static var defaultSoundFolderID = "de94d3de-5a26-4fda-9db8-384744844b69"
@@ -29,8 +35,20 @@ extension SoundFolder {
         return self.id == Self.defaultSoundFolderID
     }
     
-    public static func startLoadingDefaultSoundFolder() {
-        self.soundFolderLoader.startLoading()
+    public static func startLoadingDefaultSoundFolder(completion: @escaping (_ success: Bool, _ soundFolder: SoundFolder?, _ error: Error?) -> Void) {
+        
+        SoundFolder.load(soundFolderAtPath: SoundFolder.resourceSoundFolderPath) { (soundFolderOrNil, error) in
+            if let soundFolder = soundFolderOrNil {
+                Self._instance = soundFolder
+                Self.logger.log("Set default sound folder: \(soundFolder.description)")
+                
+                completion(true, soundFolder, nil)
+            } else {
+                Self.logger.error("Setting default sound folder failed with error: \(error?.localizedDescription ?? "nil")")
+                
+                completion(false, nil, error)
+            }
+        }
     }
 }
 

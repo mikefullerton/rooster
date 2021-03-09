@@ -31,7 +31,7 @@ class SoundRepeatView : LabeledSliderView {
         self.slider.maximumValue = Float(button.contentViews.count - 1)
         self.slider.maximumValueView = button
         self.slider.addTarget(self, action: #selector(repeatCountDidChange(_:)), for: .valueChanged)
-        self.slider.value = min(self.slider.maximumValue, Float(Controllers.preferencesController.soundPreferences.playCount))
+        self.slider.value = min(self.slider.maximumValue, Float(Controllers.preferences.soundPreferences.playCount))
         
         self.updateVolumeSliderImage(withSliderView: self.slider)
         
@@ -51,7 +51,7 @@ class SoundRepeatView : LabeledSliderView {
 
     private func updateVolumeSliderImage(withSliderView sliderView: SliderView) {
         if let button = sliderView.maximumValueView as? FancyButton {
-            let playCount = Controllers.preferencesController.soundPreferences.playCount
+            let playCount = Controllers.preferences.soundPreferences.playCount
             
             var index = playCount
             if index >= button.contentViewCount {
@@ -62,7 +62,7 @@ class SoundRepeatView : LabeledSliderView {
     }
     
     @objc func repeatCountDidChange(_ sender: UISlider) {
-        var prefs = Controllers.preferencesController.preferences
+        var prefs = Controllers.preferences.preferences
         var soundPrefs = prefs.sounds
         
         let value = sender.value
@@ -73,12 +73,12 @@ class SoundRepeatView : LabeledSliderView {
         }
         
         prefs.sounds = soundPrefs
-        Controllers.preferencesController.preferences = prefs
+        Controllers.preferences.preferences = prefs
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
     
     @objc func preferencesDidChange(_ sender: Notification) {
-        self.slider.value = min(self.slider.maximumValue, Float(Controllers.preferencesController.soundPreferences.playCount))
+        self.slider.value = min(self.slider.maximumValue, Float(Controllers.preferences.soundPreferences.playCount))
         self.updateVolumeSliderImage(withSliderView: self.slider)
     }
 

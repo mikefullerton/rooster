@@ -91,6 +91,7 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
         } else {
             self.activateViewController(self.delegateCalendarsViewController)
         }
+        
     }
     
     private func addTopBar() {
@@ -121,7 +122,7 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
     }
     
     @objc func resetButtonPressed(_ sender: SDKButton) {
-        Controllers.dataModelController.enableAllPersonalCalendars()
+        Controllers.dataModel.enableAllPersonalCalendars()
     }
     
     @objc func doneButtonPressed(_ sender: SDKButton) {
@@ -138,7 +139,6 @@ class CalendarChooserViewController : SDKViewController, CalendarToolbarViewDele
         leftButton.target = self
         leftButton.action = #selector(resetButtonPressed(_:))
     }
-
 }
 
 

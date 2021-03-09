@@ -18,7 +18,7 @@ protocol AppKitInstallationUpdater {}
     
 //    public weak var delegate: AppKitInstallationUpdaterDelegate?
     
-    private var updater: SPUUpdater? = nil
+    private var updater: SPUUpdater?
     private var error: Error?
     private var timer: SimpleTimer
     
@@ -202,7 +202,7 @@ protocol AppKitInstallationUpdater {}
 
 class SparkleUI : NSObject, SPUStandardUserDriverDelegate, Loggable {
     
-    private var userDriver: SPUUserDriver? = nil
+    private var userDriver: SPUUserDriver?
     private var showErrorDialog = false
     
     override init() {

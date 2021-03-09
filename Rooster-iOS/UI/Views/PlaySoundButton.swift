@@ -10,8 +10,8 @@ import UIKit
 
 class PlaySoundButton : FancyButton, SoundDelegate {
     
-    private(set) var sound: AVAlarmSound? = nil
-    private var _url: URL? = nil
+    private(set) var sound: AVAlarmSound?
+    private var _url: URL?
     private let timer = SimpleTimer(withName: "PlayButtonAnimationTimer")
     
     var url: URL? {

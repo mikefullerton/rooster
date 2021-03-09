@@ -13,8 +13,8 @@ extension Controllers {
 
     public static func setupControllers() {
         Controllers.setupRoosterCore()
-        Controllers.menuBarController.showInMenuBar()
+        Controllers.menuBar.showInMenuBar()
 
-        Controllers.sparkleController.configure(withAppBundle: Bundle.init(for: type(of:AppDelegate.instance)))
+        Controllers.sparkleController.configure(withAppBundle: Bundle.init(for: type(of: AppDelegate.instance)))
     }
 }

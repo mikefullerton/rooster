@@ -15,11 +15,7 @@ struct EventListViewModel : TableViewModelProtocol {
     init(withEvents events: [RCEvent],
          reminders: [RCReminder]) {
         
-        var sortedList:[RCCalendarItem] = events + reminders
-        
-        sortedList.sort { lhs, rhs in
-            return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
-        }
+        let sortedList = RCCalendarDataModel.sortCalendarItems(events + reminders)
         
         var sections: [TableViewSectionProtocol] = []
         for item in sortedList {

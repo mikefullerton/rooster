@@ -27,7 +27,7 @@ class HorizontallyOpposedLayout: ViewLayout {
     }
 
     private func setSubviewConstraints() {
-        var lastView: UIView? = nil
+        var lastView: UIView?
         
         for (index, view) in self.views.reversed().enumerated() {
             view.translatesAutoresizingMaskIntoConstraints = false

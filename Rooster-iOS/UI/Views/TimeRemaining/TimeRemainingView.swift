@@ -146,7 +146,7 @@ class TimeRemainingView : ContentAwareView {
 
 class TimeRemainingView_iOS : TimeRemainingView, DataModelAware {
     
-    private var reloader: DataModelReloader? = nil
+    private var reloader: DataModelReloader?
 
     func startTimer() {
     

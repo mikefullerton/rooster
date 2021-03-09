@@ -11,7 +11,7 @@ import UIKit
 class EventListTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     typealias ContentType = RCEvent
     
-    private var event: RCEvent? = nil
+    private var event: RCEvent?
  
     static var viewHeight: CGFloat {
         return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20

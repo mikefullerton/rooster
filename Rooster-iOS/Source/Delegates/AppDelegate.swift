@@ -222,7 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MacAppDelegateProtocols, 
 //
 //        let windows = UIApplication.shared.windows
 //
-//        var session: UISceneSession? = nil
+//        var session: UISceneSession?
 //
 //        for window in windows {
 //            if let scene = window.windowScene,

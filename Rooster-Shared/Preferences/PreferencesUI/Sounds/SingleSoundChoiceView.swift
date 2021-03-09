@@ -30,7 +30,7 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
          delegate: SingleSoundChoiceViewDelegate) {
         self.delegate = delegate
         self.soundPreferenceKey = soundPreferenceKey
-        self.soundPreference = Controllers.preferencesController.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
+        self.soundPreference = Controllers.preferences.soundPreferences.soundPreference(forKey: self.soundPreferenceKey)
         self.playList = PlayList()
         
         super.init(frame: frame)
@@ -72,10 +72,10 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
 
     private var soundPreference: SingleSoundPreference {
         didSet {
-            var soundPrefs = Controllers.preferencesController.soundPreferences
+            var soundPrefs = Controllers.preferences.soundPreferences
             soundPrefs.setSoundPreference(self.soundPreference, forKey: self.soundPreferenceKey)
             
-            Controllers.preferencesController.soundPreferences = soundPrefs
+            Controllers.preferences.soundPreferences = soundPrefs
         }
     }
     
@@ -107,7 +107,8 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     }
     
     private lazy var checkbox : SDKSwitch = {
-        let view = SDKSwitch(title: "", target: self, action: #selector(checkboxChanged(_:)), toolTip: "Sound Title")
+        let view = SDKSwitch(title: "", target: self, action: #selector(checkboxChanged(_:)))
+        view.toolTip = "Sound Title"
         return view
     }()
     
@@ -194,24 +195,29 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
         return button
     }()
 
-    private lazy var soundPickerButton: SDKCustomButton = {
-        let button = SDKCustomButton(systemImageName: "square.and.pencil",
-                                     target: self,
-                                     action: #selector(editSound(_:)),
-                                     toolTip: "Choose Sound")
+    private lazy var shuffleButtonConfig = NSImage.SymbolConfiguration(scale: .large)
+
+
+    private lazy var soundPickerButton: SDKButton = {
+        
+        let button = SDKButton(systemSymbolName: "square.and.pencil",
+                               accessibilityDescription: "Choose Sound",
+                               symbolConfiguration: self.shuffleButtonConfig,
+                               target: self,
+                               action: #selector(editSound(_:)))
+        button.toolTip = "Choose Sound"
 //        button.symbolConfiguration = SDKImage.SymbolConfiguration(pointSize: 18, weight: .medium)
         return button
     }()
+    
+    private lazy var shuffleButton: SDKButton = {
+        let button = SDKButton(systemSymbolName: "shuffle.circle",
+                               accessibilityDescription: "Choose Sound",
+                               symbolConfiguration: self.shuffleButtonConfig,
+                               target: self,
+                               action: #selector(shuffleSounds(_:)))
 
-    private lazy var shuffleButton: SDKCustomButton = {
-        
-        let button = SDKCustomButton(systemImageName: "shuffle.circle",
-                                     target: self,
-                                     action: #selector(shuffleSounds(_:)),
-                                     toolTip: "Randomize which sound is played")
-        button.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 22, weight: .medium)
-        
-//        button.symbolConfiguration = NSImage.SymbolConfiguration(pointSize: 16, weight: .medium)
+        button.toolTip = "Randomize which sound is played"
         return button
     }()
 
@@ -224,32 +230,35 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
     func setShuffleButtonImage() {
         
         let playList = self.playList
-        
+
         if playList.isRandom {
-            let image = NSImage(systemSymbolName: "shuffle.circle.fill", accessibilityDescription: "play")
+            let image = NSImage.image(withSystemSymbolName:"shuffle.circle.fill",
+                                      accessibilityDescription: "play",
+                                      symbolConfiguration: self.shuffleButtonConfig)
             self.shuffleButton.image = image
             self.shuffleButton.toolTip = "Stop Shuffling Sounds"
         } else {
-            let image = NSImage(systemSymbolName: "shuffle.circle", accessibilityDescription: "play")
+            let image = NSImage.image(withSystemSymbolName: "shuffle.circle",
+                                      accessibilityDescription: "play",
+                                      symbolConfiguration: self.shuffleButtonConfig)
             
             self.shuffleButton.image = image
             self.shuffleButton.toolTip = "Shuffle Sounds"
         }
         
-        self.shuffleButton.symbolConfiguration = NSImage.SymbolConfiguration(textStyle: .largeTitle)
     }
     
     private func refresh() {
         let soundPref = self.soundPreference
         
-        self.checkbox.intValue = soundPref.isEnabled ? 1 : 0
+        self.checkbox.isOn = soundPref.isEnabled
         
         if !self.playList.isEmpty {
             
             let soundName = self.playList.currentSoundDisplayName
             let playListName = self.playList.displayName
             
-            if playListName.count > 0 {
+            if !playListName.isEmpty {
                 self.checkbox.title = "\(playListName): \(soundName)"
             } else {
                 if self.playList.isRandom {
@@ -285,12 +294,18 @@ class SingleSoundChoiceView : SDKView, PlaySoundButtonDelegate, PlaySoundButtonS
             self.shuffleButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             self.playButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.soundPickerButton.trailingAnchor.constraint(equalTo: self.playButton.leadingAnchor, constant: -10),
-            self.shuffleButton.trailingAnchor.constraint(equalTo: self.soundPickerButton.leadingAnchor, constant: -10),
+            self.soundPickerButton.trailingAnchor.constraint(equalTo: self.playButton.leadingAnchor, constant: -20),
+            self.shuffleButton.trailingAnchor.constraint(equalTo: self.soundPickerButton.leadingAnchor, constant: -20),
             
             self.checkbox.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.checkbox.trailingAnchor.constraint(equalTo: self.shuffleButton.leadingAnchor, constant: -10)
         ])
+        
+        self.checkbox.setContentHuggingPriority(.defaultLow, for: .vertical)
+        self.checkbox.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        
+        self.checkbox.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        self.checkbox.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
  
     

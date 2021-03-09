@@ -12,7 +12,7 @@ import AppKit
  
 class MenuBarController: Loggable, DataModelAware {
         
-    private var reloader: DataModelReloader? = nil
+    private var reloader: DataModelReloader?
     
     lazy var primaryMenuItem = MenuBarMenuItem()
     
@@ -22,7 +22,7 @@ class MenuBarController: Loggable, DataModelAware {
     }
     
     var prefs: MenuBarPreferences {
-        return Controllers.preferencesController.menuBarPreferences
+        return Controllers.preferences.menuBar
     }
     
     func updateMenuBarItemsVisibility() {

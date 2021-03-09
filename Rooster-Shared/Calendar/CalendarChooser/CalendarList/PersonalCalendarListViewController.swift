@@ -16,7 +16,7 @@ import UIKit
 class PersonalCalendarListViewController : CalendarItemListViewController<CalenderListViewModel> {
 
     override func provideDataModel() -> CalenderListViewModel? {
-        let dataModel = Controllers.dataModelController.dataModel
-        return CalenderListViewModel(withCalendars: dataModel.calendars)
+        let dataModel = Controllers.dataModel.dataModel
+        return CalenderListViewModel(withCalendars: dataModel?.calendars ?? [:])
     }
 }

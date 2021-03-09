@@ -30,7 +30,7 @@ extension NSImage {
         
     public weak var delegate: AppKitMenuBarControllerDelegate?
     
-    private var statusBarItem: NSStatusItem? = nil
+    private var statusBarItem: NSStatusItem?
     private let countDownTimer = SimpleTimer(withName: "MenuBarCountDownTimer")
     
     private weak var timer: Timer?

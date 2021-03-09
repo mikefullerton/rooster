@@ -8,30 +8,60 @@
 import Foundation
 import RoosterCore
 
-class SoundsPreferencePanel : SDKViewController, PreferencePanel, SoundPreferencesViewDelegate {
+class SoundsPreferencePanel : PreferencePanel, SingleSoundChoiceViewDelegate {
     
-    func resetButtonPressed() {
-        Controllers.preferencesController.preferences = Preferences.default
-
+    open override var toolbarButtonIdentifier: String {
+        return "sounds"
     }
- 
-    lazy var soundPreferencesView = SoundPreferencesView()
-    
-    override func loadView() {
-        self.view = self.soundPreferencesView
+
+    public override func loadView() {
         
-        self.soundPreferencesView.delegate = self
-    }
-    
-    func soundPreferencesView(_ view: SoundPreferencesView,
-                              presentSoundPickerForSoundIndex soundPreferenceKey: SoundPreferences.PreferenceKey) {
+        let stackView = SimpleStackView(direction: .vertical,
+                                        insets: SDKEdgeInsets.ten,
+                                        spacing: SDKOffset.zero)
+        self.view = stackView
         
-        SoundPickerViewController(withSoundPreferenceKey: soundPreferenceKey).presentInModalWindow(fromWindow: self.view.window)
+        let sounds = GroupBoxView(title: "SOUND_CHOICE_EXPLANATION".localized)
+        
+        sounds.setContainedViews([
+            SingleSoundChoiceView(frame: CGRect.zero,
+                                  soundPreferenceKey: .first,
+                                  delegate: self),
+            SingleSoundChoiceView(frame: CGRect.zero,
+                                  soundPreferenceKey: .second,
+                                  delegate: self),
+            SingleSoundChoiceView(frame: CGRect.zero,
+                                  soundPreferenceKey: .third,
+                                  delegate: self)
+        ])
+        
+        stackView.setContainedViews([
+            sounds,
+            
+            self.groupBoxView(forTitle: "SOUND_PLAYCOUNT_EXPLANATION".localized,
+                              view: SoundRepeatView()),
+            
+            self.groupBoxView(forTitle: "SOUND_DELAY_EXPLANATION".localized,
+                              view: StartDelayView()),
+            
+            self.groupBoxView(forTitle: "SOUND_VOLUME_EXPLANATION".localized,
+                              view: SoundVolumeView())
+        ])
+        
     }
-
-    var toolbarButtonIdentifier: NSToolbarItem.Identifier {
-        return NSToolbarItem.Identifier(rawValue: "sounds")
-    }
-
     
+    func groupBoxView(forTitle title: String,
+                      view containedView: SDKView) -> GroupBoxView {
+        
+        let view = GroupBoxView(title: title)
+        
+        view.setContainedViews([ containedView ])
+        
+        return view
+    }
+    
+
+    func soundChoiceViewChooserEditSoundsButtonPressed(_ soundChoiceView: SingleSoundChoiceView) {
+        SoundPickerViewController(withSoundPreferenceKey: soundChoiceView.soundPreferenceKey).presentInModalWindow(fromWindow: self.view.window)
+    }
 }

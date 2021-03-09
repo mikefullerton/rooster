@@ -60,7 +60,7 @@ class PreferencesViewController : UIViewController, SoundChoicesViewDelegate {
     }
 
     @objc func resetButtonPressed(_ sender: UIButton) {
-        Controllers.preferencesController.preferences = Preferences()
+        Controllers.preferences.preferences = Preferences()
     }
 
     func soundChoicesViewPresentingViewController(_ view: SoundPreferencesView) -> UIViewController {

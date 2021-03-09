@@ -14,17 +14,15 @@ import UIKit
 #endif
 
 class MainEventListViewController: EventListViewController {
-
-
-
-
 }
 
-class MainWindowViewController : EventListViewController {
+class MainWindowViewController : SDKViewController, DataModelAware {
     static let DidChangeEvent = Notification.Name("MainWindowViewControllerDidChange")
 
     let listViewController = MainEventListViewController()
-
+    
+//    var dataModelReloader: DataModelReloader?
+    
     lazy var visualEffectView: NSVisualEffectView = {
         let visualEffectView = NSVisualEffectView(frame: CGRect.zero)
         visualEffectView.material =  .underWindowBackground //.titlebar //.headerView
@@ -44,12 +42,24 @@ class MainWindowViewController : EventListViewController {
         
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            view.topAnchor.constraint(equalTo: self.view.topAnchor),
-//            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            view.topAnchor.constraint(equalTo: self.view.topAnchor)
         ])
 
         self.title = "Rooster"
+//        self.dataModelReloader = DataModelReloader(for: self)
+    
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
+    }
+    
+    func dataModelDidReload(_ dataModel: RCCalendarDataModel) {
+//        self.preferredContentSize = self.listViewController.preferredWindowSize
+    }
+
+    @objc func preferencesDidChange(_ sender: Notification) {
+//        Controllers.dataModel.reloadData()
+        
+        self.listViewController.reloadData()
+        self.listViewController.preferredContentSize = self.listViewController.preferredWindowSize
     }
 
     override func preferredContentSizeDidChange(for viewController: NSViewController) {

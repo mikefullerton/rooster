@@ -12,7 +12,7 @@ import RoosterCore
 extension SparkleController: SPUUpdaterDelegate {
     
     public func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
-        self.logger.log("Found valid update for item: \(item.description) - (will automatically download)");
+        self.logger.log("Found valid update for item: \(item.description) - (will automatically download)")
         self.timer.didSuccessfullyCheck()
     }
     

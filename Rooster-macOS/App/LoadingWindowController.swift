@@ -6,6 +6,8 @@
 //
 
 import Cocoa
+import RoosterCore
+
 
 class LoadingWindowController: WindowController {
 

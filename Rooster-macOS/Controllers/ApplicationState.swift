@@ -25,7 +25,7 @@ public struct ApplicationState: OptionSet, CustomStringConvertible {
         (.microphoneOn, "microphoneOn"),
         (.cameraOn, "cameraOn"),
         (.sleeping, "sleeping"),
-        (.locked, "locked"),
+        (.locked, "locked")
     ]
 
     public var description: String {
@@ -39,6 +39,5 @@ public extension ApplicationState {
 //    init() {
 //        
 //    }
-    
     
 }

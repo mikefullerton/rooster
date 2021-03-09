@@ -99,7 +99,7 @@ class AVAlarmSound : NSObject, AlarmSound, AVAudioPlayerDelegate {
     
     private func updateVolume() {
         if let player = self.player {
-            player.setVolume(Controllers.preferencesController.soundPreferences.volume, fadeDuration: 0)
+            player.setVolume(Controllers.preferences.soundPreferences.volume, fadeDuration: 0)
         }
     }
     

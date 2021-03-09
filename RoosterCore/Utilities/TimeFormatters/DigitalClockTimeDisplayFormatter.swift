@@ -43,4 +43,10 @@ public struct DigitalClockTimeDisplayFormatter: TimeDisplayFormatter {
             return "\(self.paddedComponent(times.hours)):\(self.paddedComponent(times.minutes))"
         }
     }
+    
+    public static var instance = DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 0)
+    
+    public static func formattedInterval(_ interval: TimeInterval) -> String {
+        return Self.instance.displayString(withIntervalUntilFire: interval)
+    }
 }

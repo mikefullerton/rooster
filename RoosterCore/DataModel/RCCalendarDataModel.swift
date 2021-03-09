@@ -10,15 +10,26 @@ import Foundation
 public typealias CalendarSource = String
 public typealias CalendarID = String
 
-public struct RCCalendarDataModel : CustomStringConvertible {
-
-    public let calendars: [CalendarSource: [RCCalendar]]
-    public let delegateCalendars: [CalendarSource: [RCCalendar]]
-    public let events: [RCEvent]
-    public let reminders: [RCReminder]
-    public let calendarLookup: [CalendarID: RCCalendar]
+public struct RCCalendarDataModel : CustomStringConvertible, Equatable, Loggable {
     
-    public let allItems: [RCCalendarItem]
+
+    public private(set) var calendars: [CalendarSource: [RCCalendar]]
+    public private(set) var delegateCalendars: [CalendarSource: [RCCalendar]]
+    public private(set) var events: [RCEvent] {
+        didSet {
+            self.logger.log("events did update")
+        }
+    }
+    
+    public private(set) var reminders: [RCReminder] {
+        didSet {
+            self.logger.log("reminders did update")
+        }
+    }
+    
+    public private(set) var calendarLookup: [CalendarID: RCCalendar]
+    
+    public private(set) var allItems: [RCCalendarItem]
         
     init(calendars: [CalendarSource: [RCCalendar]],
          delegateCalendars: [CalendarSource: [RCCalendar]],
@@ -29,11 +40,9 @@ public struct RCCalendarDataModel : CustomStringConvertible {
         self.events = events
         self.reminders = reminders
         self.calendarLookup = RCCalendarDataModel.createCalendarLookup(calendars: calendars,
-                                                                     delegateCalendars: delegateCalendars)
+                                                                       delegateCalendars: delegateCalendars)
     
-        self.allItems = (self.events + self.reminders).sorted(by: { lhs, rhs in
-            return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
-        })
+        self.allItems = Self.sortCalendarItems(self.events + self.reminders)
     }
     
     init() {
@@ -107,5 +116,32 @@ public struct RCCalendarDataModel : CustomStringConvertible {
         }
         return nil
     }
+
+    public static func == (lhs: RCCalendarDataModel, rhs: RCCalendarDataModel) -> Bool {
+        return  lhs.calendars == rhs.calendars &&
+                lhs.delegateCalendars == rhs.delegateCalendars &&
+                lhs.events == rhs.events &&
+                lhs.reminders == rhs.reminders
+    }
+    
+    public static func sortCalendarItems(_ calendarItems: [RCCalendarItem]) -> [RCCalendarItem] {
+        
+        var sortedList = calendarItems
+        sortedList.sort { lhs, rhs in
+            
+            guard let lhsStart = lhs.alarm.startDate else {
+                return true
+            }
+
+            guard let rhsStart = rhs.alarm.startDate else {
+                return false
+            }
+
+            return lhsStart.isBeforeDate(rhsStart)
+        }
+        
+        return sortedList
+    }
+
 }
 

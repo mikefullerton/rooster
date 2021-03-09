@@ -84,7 +84,7 @@ class AppKitPluginController : NSObject, RoosterAppKitPlugin, Loggable, AppKitMe
     }
 
     func appKitMenuBarControllerNextFireDate(_ controller: AppKitMenuBarController) -> Date? {
-        return Controllers.dataModelController.dataModel.nextAlarmDate
+        return Controllers.dataModel.dataModel.nextAlarmDate
     }
 }
 

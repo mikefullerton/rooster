@@ -16,8 +16,8 @@ import UIKit
 class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemViewModel>, MenuBarScrollViewDelegate, NSMenuDelegate {
     
     override func provideDataModel() -> MenuBarItemViewModel? {
-        return MenuBarItemViewModel(withEvents: Controllers.dataModelController.dataModel.events,
-                                    reminders: Controllers.dataModelController.dataModel.reminders)
+        return MenuBarItemViewModel(withEvents: Controllers.dataModel.dataModel?.events ?? [],
+                                    reminders: Controllers.dataModel.dataModel?.reminders ?? [])
     }
     
     override func viewDidLoad() {
@@ -65,11 +65,11 @@ class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemView
         return scrollView
     }
 
-    func blink(item: SDKCollectionViewItem, count: Int) {
+    func blink(item: SDKCollectionViewItem, countdown: Int) {
         
         let delay = 75
         
-        if count == 0 {
+        if countdown == 0 {
             if let menu = self.scrollView.enclosingMenuItem?.menu {
                 menu.cancelTrackingWithoutAnimation()
             }
@@ -84,7 +84,7 @@ class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemView
             item.view.needsDisplay = true
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(delay)) {
-                self.blink(item: item, count: count - 1)
+                self.blink(item: item, countdown: countdown - 1)
             }
         }
     }
@@ -94,7 +94,7 @@ class MenuBarItemViewController : CalendarItemListViewController<MenuBarItemView
 //            menuItem.menuItemWasSelected()
 //        }
         
-        self.blink(item: item, count: 4)
+        self.blink(item: item, countdown: 4)
     }
     
     override func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,

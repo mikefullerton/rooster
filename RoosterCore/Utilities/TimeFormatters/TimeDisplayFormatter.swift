@@ -34,7 +34,7 @@ struct CalculatedTimes {
         
         let minutesInterval = interval / (60.0)
         
-        let showSeconds = showSecondsWithMinutesInterval > 0 && showSecondsWithMinutesInterval >= minutesInterval
+        let showSeconds = showSecondsWithMinutesInterval == 0 || showSecondsWithMinutesInterval >= minutesInterval
         
         let hours = floor(interval / (60.0 * 60.0))
         
@@ -109,4 +109,7 @@ extension TimeDisplayFormatter {
     
         return text
     }
+    
+    
+    
 }

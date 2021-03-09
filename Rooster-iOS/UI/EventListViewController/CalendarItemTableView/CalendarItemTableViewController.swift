@@ -10,7 +10,7 @@ import UIKit
 
 class CalendarItemTableViewController<ViewModel> : ListViewController<ViewModel>, DataModelAware where ViewModel: TableViewModelProtocol {
     
-    private var reloader: DataModelReloader? = nil
+    private var reloader: DataModelReloader?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

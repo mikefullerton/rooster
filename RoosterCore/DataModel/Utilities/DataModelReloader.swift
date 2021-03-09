@@ -12,10 +12,12 @@ public protocol DataModelAware : AnyObject {
 }
 
 public class DataModelReloader {
-    private weak var target: DataModelAware?
+    
+    public weak var target: DataModelAware?
     
     public init(for target: DataModelAware? = nil) {
         self.target = target
+    
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(notificationReceived(_:)),
                                                name: RCCalendarDataModelController.DidChangeEvent,
@@ -23,10 +25,8 @@ public class DataModelReloader {
     }
     
     @objc private func notificationReceived(_ notif: Notification) {
-        if let target = self.target {
-            target.dataModelDidReload(Controllers.dataModelController.dataModel)
-        } else {
-            NotificationCenter.default.removeObserver(self)
+        if let dataModel = Controllers.dataModel.dataModel {
+            self.target?.dataModelDidReload(dataModel)
         }
     }
 }

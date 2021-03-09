@@ -39,12 +39,11 @@ class PreferenceSlider : SliderView {
         
     }
     
-    lazy var label : SDKCustomButton = {
-        let button = SDKCustomButton(title: "",
-                                    target: self,
-                                    action: #selector(setMinValue(_:)),
-                                    toolTip: "")
-        button.alignment = .right
+    lazy var label : SDKButton = {
+        let button = SDKButton( title: "",
+                                target: self,
+                                action: #selector(setMinValue(_:)))
+        //        button.alignment = .right
         button.contentTintColor = Theme(for: self).labelColor
         button.isEnabled = true
         return button

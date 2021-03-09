@@ -13,20 +13,18 @@ extension CalendarItemListViewCell {
     func updateForMenuBar() {
         self.view.sdkLayer.cornerRadius = 0.0
         self.view.sdkLayer.backgroundColor = NSColor.clear.cgColor
-        
+
         self.isHighlightable = true
     }
-    
+
     func menuItemWasSelected() {
-        if let calendarItem = self.calendarItem,
+        if var calendarItem = self.rowItem?.calendarItem,
            calendarItem.alarm.isFiring {
             calendarItem.stopAlarmButtonClicked()
         } else {
             NSApp.activate(ignoringOtherApps: true)
-            
+
             AppDelegate.instance.mainWindowController?.showWindow(self)
-            
         }
     }
-    
 }

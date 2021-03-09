@@ -80,7 +80,7 @@ class SparkleProgressWindowController: WindowController {
         self.startIndeterminateProgress()
     }
     
-    public func showUserInitiatedUpdateCheck(completion updateCheckStatusCompletion: @escaping (SPUUserInitiatedCheckStatus) -> Void)  {
+    public func showUserInitiatedUpdateCheck(completion updateCheckStatusCompletion: @escaping (SPUUserInitiatedCheckStatus) -> Void) {
         
         if self.cancelled {
             self.cancelled = false

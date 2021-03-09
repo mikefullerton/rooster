@@ -116,7 +116,7 @@ extension SparkleController: SPUUserDriver {
         }
     
         alert.addButton(withTitle: NSLocalizedString("OK", bundle: Bundle(for: type(of: self)), comment: ""))
-        let _ = alert.runModal()
+        _ = alert.runModal()
         
     }
     

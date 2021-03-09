@@ -8,20 +8,23 @@
 import Foundation
 import RoosterCore
 
-class NotificationsPreferencePanel : VerticalTabViewController, VerticalTabViewControllerDelegate, PreferencePanel {
+class NotificationsPreferencePanel : PreferencePanel {
     
-    func resetButtonPressed() {
-        Controllers.preferencesController.preferences = Preferences.default
-    }
-
-    func verticalTabViewController(_ verticalTabViewController: VerticalTabViewController, didChangeTab tab: VerticalTabItem) {
-//        self.bottomBar.leftButton.isEnabled = tab.identifier != "calendars"
-    }
+    
+    private lazy var tabViewController: VerticalTabViewController = {
+        let controller = VerticalTabViewController()
+        return controller
+    }()
  
-    
     override func loadView() {
-        super.loadView()
 
+        self.view = SDKView()
+        
+        self.addChild(self.tabViewController)
+        self.view.addSubview(self.tabViewController.view)
+        
+        self.view.setFillInParentConstraints(forSubview: self.tabViewController.view)
+        
         #if false
         let items = [
             VerticalTabItem(identifier: NotificationPreferences.PreferenceKey.normal.description,
@@ -37,7 +40,7 @@ class NotificationsPreferencePanel : VerticalTabViewController, VerticalTabViewC
             VerticalTabItem(identifier: NotificationPreferences.PreferenceKey.machineLockedOrAsleep.description,
                             title: NotificationPreferences.PreferenceKey.machineLockedOrAsleep.description,
                             icon: SDKImage(systemSymbolName: "lock", accessibilityDescription: "lock"),
-                            view: NotificationChoicesView(withPreferencesKey: .machineLockedOrAsleep)),
+                            view: NotificationChoicesView(withPreferencesKey: .machineLockedOrAsleep))
         ]
         #else
         let items = [
@@ -49,15 +52,14 @@ class NotificationsPreferencePanel : VerticalTabViewController, VerticalTabViewC
             VerticalTabItem(identifier: NotificationPreferences.PreferenceKey.machineLockedOrAsleep.description,
                             title: NotificationPreferences.PreferenceKey.machineLockedOrAsleep.description,
                             icon: SDKImage(systemSymbolName: "lock", accessibilityDescription: "lock"),
-                            view: NotificationChoicesView(withPreferencesKey: .machineLockedOrAsleep)),
+                            view: NotificationChoicesView(withPreferencesKey: .machineLockedOrAsleep))
         ]
         #endif
-        self.setItems(items, buttonListWidth: 240.0)
-
-    }
+        self.tabViewController.setItems(items, buttonListWidth: 240.0)
+}
     
-    var toolbarButtonIdentifier: NSToolbarItem.Identifier {
-        return NSToolbarItem.Identifier(rawValue: "notifications")
+    open override var toolbarButtonIdentifier: String {
+        return "notifications"
     }
 
 }

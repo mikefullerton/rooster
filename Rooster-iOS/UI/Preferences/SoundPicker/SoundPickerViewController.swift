@@ -50,7 +50,7 @@ class SoundPickerViewController : UIViewController {
     
     @objc func doneButtonClicked(_ sender: UIButton) {
         if let newSound = self.soundPicker.chosenSound {
-            Controllers.preferencesController.soundPreferences[self.soundPreferenceIndex] = newSound
+            Controllers.preferences.soundPreferences[self.soundPreferenceIndex] = newSound
         }
         self.dismiss(animated: true, completion: nil)
     }

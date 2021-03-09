@@ -9,12 +9,12 @@ import Foundation
 import RoosterCore
 import AppKit
 
-class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
+class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware {
 
     private lazy var countDown = CountDownTimer(withDelegate: self)
     
     static let defaultImageSize = CGSize(width: 26, height: 26)
-    private var reloader: DataModelReloader? = nil
+    private var reloader: DataModelReloader?
 
     private weak var timer: Timer?
     
@@ -64,7 +64,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     }
     
     var prefs: MenuBarPreferences {
-        return Controllers.preferencesController.menuBarPreferences
+        return Controllers.preferences.menuBar
     }
     
     var contentTintColor: NSColor? {
@@ -83,11 +83,11 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     }
     
     func startFlashingTimer() {
-        if Controllers.preferencesController.menuBarPreferences.options.contains(.blink) {
+        if self.prefs.options.contains(.blink) {
             self.logger.log("starting flashing timer")
             
             if self.timer == nil {
-                let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
+                let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (_) in
 //                    self.logger.log("flashing timer fired")
                     self.updateAlarmState()
                 }
@@ -135,7 +135,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
         }
     }
     
-    @IBAction @objc func eventListWasClicked(_ sender: Any) {
+    @IBAction func eventListWasClicked(_ sender: Any) {
 
     }
     
@@ -203,7 +203,7 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     func updateCountDownTitle() {
         if let button = self.button {
             let text = button.attributedTitle
-            button.attributedTitle = NSAttributedString(string: text.string, attributes: self.currentTitleAttributes);
+            button.attributedTitle = NSAttributedString(string: text.string, attributes: self.currentTitleAttributes)
         }
     }
     
@@ -279,8 +279,8 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
             
             self.firingTime = Date().addingTimeInterval(1)
             
-        } else if let nextDate = Controllers.dataModelController.dataModel.nextAlarmDate,
-                  nextDate.isEqualToOrBeforeDate(Date().addingTimeInterval(60 * 2)) {
+        } else if let nextDate = Controllers.dataModel.nextAlarmDate,
+                  nextDate.isEqualToOrBeforeDate(Date().addMinutes(2)) {
             newState = .warning
         } else {
             newState = .normal
@@ -326,8 +326,9 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
     }
     
     func startCountdown() {
-        if self.prefs.options.contains(.countDown) {
-            self.countDown.start()
+        if self.prefs.options.contains(.countDown),
+            let nextFireDate = Controllers.dataModel.nextAlarmDate {
+            self.countDown.start(withFireDate: nextFireDate)
         } else {
             self.stopCountdown()
         }
@@ -343,10 +344,6 @@ class MenuBarMenuItem: CountDownDelegate, Loggable, DataModelAware  {
         self.buttonTitle = displayString
     }
     
-    func countdownFireDate(_ countDown: CountDownTimer) -> Date? {
-        return Controllers.dataModelController.dataModel.nextAlarmDate
-    }
-
     func countdownDisplayFormatter(_ countDown: CountDownTimer) -> TimeDisplayFormatter {
 //        return self.prefs.options.contains(.shortCountdownFormat) ?
 //            DigitalClockTimeDisplayFormatter(showSecondsWithMinutes: 2.0):

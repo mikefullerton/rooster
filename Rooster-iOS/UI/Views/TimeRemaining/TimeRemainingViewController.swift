@@ -14,7 +14,7 @@ class TimeRemainingViewController : UIViewController, DataModelAware {
 
     private lazy var dividerView = DividerView()
 
-    private var reloader: DataModelReloader? = nil
+    private var reloader: DataModelReloader?
     
     static let preferredHeight: CGFloat = 100
     

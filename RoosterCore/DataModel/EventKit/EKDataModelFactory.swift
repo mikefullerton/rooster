@@ -12,26 +12,26 @@ import EventKit
 /// All the fetched data is later used to Create our EventKitCalendars, EventKitEvents, and EventKitReminders.
 struct EKDataModelFactory: Loggable {
 
-    private let store: EKEventStore?
+    private let store: EKEventStore
     let dataModelStorage: DataModelStorage
-    
-    init(store: EKEventStore?,
+    let settings: EKDataModelSettings
+    init(store: EKEventStore,
+         settings: EKDataModelSettings,
          dataModelStorage: DataModelStorage) {
         self.dataModelStorage = dataModelStorage
         self.store = store
+        self.settings = settings
     }
     
     func fetchCalendars() -> [EKCalendar] {
         
         var calendars:[EKCalendar] = []
         
-        if let store = self.store {
-            let eventCalendars = store.calendars(for: .event)
-            let remindersCalendars = store.calendars(for: .reminder)
-            
-            calendars += eventCalendars
-            calendars += remindersCalendars
-        }
+        let eventCalendars = self.store.calendars(for: .event)
+        let remindersCalendars = self.store.calendars(for: .reminder)
+        
+        calendars += eventCalendars
+        calendars += remindersCalendars
         
         return calendars
     }
@@ -39,15 +39,11 @@ struct EKDataModelFactory: Loggable {
     func fetchDataModel(withCalendars calendars: [EKCalendar],
                         completion: @escaping (_ dataModel: EKDataModel) -> Void) {
         
-        guard self.store != nil else {
-            completion(EKDataModel(calendars: [], events: [], reminders: []))
-            return
-        }
-        
         let events = self.fetchEvents(withCalendars: calendars)
         
         self.fetchReminders(withCalendars: calendars) { (reminders) in
-            completion(EKDataModel(calendars:calendars,
+            completion(EKDataModel(eventStore: self.store,
+                                   calendars:calendars,
                                    events: events,
                                    reminders: reminders))
         }
@@ -68,22 +64,6 @@ struct EKDataModelFactory: Loggable {
         return subscribedCalendars
     }
     
-    private var predicateDates : (today: Date, tomorrow: Date)? {
-        let currentCalendar = NSCalendar.current
-
-        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: Date())
-
-        guard let today = currentCalendar.date(from: dateComponents) else {
-            return nil
-        }
-
-        guard let tomorrow: Date = currentCalendar.date(byAdding: .day, value: 1, to: today) else {
-            return nil
-        }
-        
-        return (today: today, tomorrow: tomorrow)
-    }
-    
     private func calendarNames(forCalendars calendars: [EKCalendar]) -> [String] {
         var list:[String] = []
         calendars.forEach {
@@ -92,11 +72,23 @@ struct EKDataModelFactory: Loggable {
         return list
     }
     
-    private func fetchEvents(withCalendars calendars: [EKCalendar]) -> [EKEvent] {
-        
-        guard let store = self.store else {
-            return []
+    private var predicateDates : (startDate: Date, endDate: Date)? {
+        let currentCalendar = NSCalendar.current
+
+        let dateComponents = currentCalendar.dateComponents([.year, .month, .day], from: self.settings.startingDay ?? Date())
+
+        guard let startDate = currentCalendar.date(from: dateComponents) else {
+            return nil
         }
+
+        guard let endDate: Date = currentCalendar.date(byAdding: .day, value: self.settings.dayCount, to: startDate) else {
+            return nil
+        }
+        
+        return (startDate: startDate, endDate: endDate)
+    }
+    
+    private func fetchEvents(withCalendars calendars: [EKCalendar]) -> [EKEvent] {
         
         let subscribedCalendars = self.subscribedCalendars(calendars)
         
@@ -110,27 +102,24 @@ struct EKDataModelFactory: Loggable {
         
         var events:[EKEvent] = []
 
-        let predicate = store.predicateForEvents(withStart: dates.today,
-                                                 end: dates.tomorrow,
+        let predicate = store.predicateForEvents(withStart: dates.startDate,
+                                                 end: dates.endDate,
                                                  calendars: subscribedCalendars)
 
         let now = Date()
 
+        let fetchAllDayEvents = self.settings.allDayEvents
+        let fetchDeclinedEvents = self.settings.declinedEvents
+        
         for event in store.events(matching: predicate) {
-
-            if event.isAllDay {
-                continue
-            }
-
+            
             guard let endDate = event.endDate else {
                 continue
             }
 
-            if event.status == .canceled {
-                continue
-            }
-
-            if let participants = event.attendees {
+            if  !fetchDeclinedEvents,
+                let participants = event.attendees {
+                    
                 var iDeclined = false
                 for participant in participants {
 //                        self.logger.log("\(String(describing: participant.name)): \(participant.participantStatus): \(participant.isCurrentUser)")
@@ -146,6 +135,19 @@ struct EKDataModelFactory: Loggable {
                     continue
                 }
             }
+            
+            if !event.isAllDay,
+                !fetchAllDayEvents  {
+                continue
+            }
+
+            
+            if event.isMultiDay && event.occursWithinRange(start: dates.startDate, end: dates.endDate) {
+                
+                
+            }
+                
+            
                 
 //            guard let title = event.title else {
 //                continue
@@ -164,11 +166,6 @@ struct EKDataModelFactory: Loggable {
     private func fetchReminders(withCalendars calendars: [EKCalendar],
                                 completion: @escaping ([EKReminder])-> Void) {
         
-        guard let store = self.store else {
-            completion([])
-            return
-        }
-        
         let subscribedCalendars = self.subscribedCalendars(calendars)
         
         if subscribedCalendars.count == 0 {
@@ -181,13 +178,15 @@ struct EKDataModelFactory: Loggable {
             return
         }
         
+        let endDateForSearch = self.settings.remindersWithNoDates ? nil : dates.endDate
+        
         let predicate = store.predicateForIncompleteReminders(withDueDateStarting: nil,
-                                                              ending: dates.tomorrow,
+                                                              ending: endDateForSearch,
                                                               calendars: subscribedCalendars)
         
         store.fetchReminders(matching: predicate) { (fetchedReminders) in
             
-            self.logger.log("Loaded \(fetchedReminders?.count ?? 0) events for calendars: \(self.calendarNames(forCalendars: calendars).joined(separator: ", "))")
+            self.logger.log("Loaded \(fetchedReminders?.count ?? 0) reminders for calendars: \(self.calendarNames(forCalendars: calendars).joined(separator: ", "))")
 
             if let reminders = fetchedReminders {
                 completion(reminders)
@@ -198,3 +197,16 @@ struct EKDataModelFactory: Loggable {
     }
 }
 
+extension EKEvent {
+    public var isMultiDay: Bool {
+        if let days = Date.daysBetween(lhs: self.startDate, rhs: self.endDate) {
+            return days > 1
+        }
+        
+        return false
+    }
+    
+    public func occursWithinRange(start: Date, end: Date) -> Bool {
+        return Date.range(self.startDate...self.endDate, intersectsRange: start...end)
+    }
+}

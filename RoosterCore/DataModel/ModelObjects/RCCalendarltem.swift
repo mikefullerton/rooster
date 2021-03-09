@@ -8,53 +8,64 @@
 import Foundation
 
 public protocol CalendarItemBehavior {
-    func stopAlarmButtonClicked()
     var timeLabelDisplayString: String { get }
 }
 
-public protocol RCCalendarItem: CustomStringConvertible, Loggable, CalendarItemBehavior {
+public protocol RCCalendarItem: CalendarItemBehavior, RCAbstractCalendarItem {
+    
     var id: String { get }
 
     var externalIdentifier: String { get }
     
     var alarm: RCAlarm { get set }
+    
     var title: String { get }
+    
     var calendar: RCCalendar { get }
+    
     var location: String? { get }
+    
     var notes: String? { get }
+    
     var url: URL? { get }
+    
     var isSubscribed: Bool { get set }
     
-    func isEqualTo(_ item: RCCalendarItem) -> Bool
+    var isRecurring: Bool { get }
     
-    var startDate: Date { get }
-    var endDate: Date { get }
+    var creationDate: Date? { get }
+    
+    var hasChanges: Bool { get }
+    
+    var hasParticipants: Bool { get }
+    
+    var participants: [RCParticipant] { get }
+    
+    var length: TimeInterval { get }
+
+    var isAllDay: Bool { get }
 }
 
 extension RCCalendarItem {
 
-    public var isHappeningNow: Bool {
-        let now = Date()
-        return now.isEqualToOrAfterDate(self.startDate) && now.isEqualToOrBeforeDate(self.endDate)
+    public var hasDates: Bool {
+        return self.alarm.startDate != nil && self.alarm.endDate != nil
     }
-
-    public var willHappen: Bool {
-        let now = Date()
-        return now.isBeforeDate(self.startDate)
-    }
-    
-    public var didHappen: Bool {
-        let now = Date()
-        return now.isAfterDate(self.endDate)
-    }
-    
-    public var startDate: Date {
-        return self.alarm.startDate
+        
+    public var currentUser: RCParticipant? {
+        if self.hasParticipants {
+            for participant in self.participants {
+                if participant.isCurrentUser {
+                    return participant
+                }
+            }
+        }
+        
+        return nil
     }
     
-    public var endDate: Date {
-        return self.alarm.endDate
+    public var settings: EKDataModelSettings {
+        return self.calendar.settings
     }
-
 }
 

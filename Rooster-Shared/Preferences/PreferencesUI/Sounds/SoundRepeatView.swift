@@ -19,8 +19,8 @@ class SoundRepeatView : PreferenceSlider {
         super.init()
         
         self.minimumValue = 1 // 1 play count
-        self.maximumValue = Double(button.contentViews.count)
-        self.value = min(self.maximumValue, Double(Controllers.preferencesController.soundPreferences.playCount))
+        self.maximumValue = Double(self.button.animateableContent.viewCount)
+        self.value = min(self.maximumValue, Double(Controllers.preferences.soundPreferences.playCount))
         
         self.label.title = "PLAY_COUNT".localized
         
@@ -45,45 +45,40 @@ class SoundRepeatView : PreferenceSlider {
     lazy var button: FancyButton = {
         let button = FancyButton()
         button.contentViewAlignment = .left
-        button.contentViews = [
-            button.defaultLabel(withTitle: "Once"),
-            button.defaultLabel(withTitle: "Twice"),
-            button.defaultLabel(withTitle: "Three Times"),
-            button.defaultLabel(withTitle: "Four Times"),
-            button.defaultLabel(withTitle: "Five Times"),
-            button.defaultLabel(withTitle: "Infinite"),
+        button.animateableContent.contentViews = [
+            SDKTextField.buttonTextField(withTitle: "Once"),
+            SDKTextField.buttonTextField(withTitle: "Twice"),
+            SDKTextField.buttonTextField(withTitle: "Three Times"),
+            SDKTextField.buttonTextField(withTitle: "Four Times"),
+            SDKTextField.buttonTextField(withTitle: "Five Times"),
+            SDKTextField.buttonTextField(withTitle: "Infinite")
         ]
         
         button.setTarget(self, action: #selector(setMaxValue(_:)))
         
         return button
-    } ()
+    }()
     
     private func updateVolumeSliderImage() {
-        let playCount = Controllers.preferencesController.soundPreferences.playCount
+        let playCount = Controllers.preferences.soundPreferences.playCount
         
-        var index = playCount
-        if index >= button.contentViewCount {
-            index = button.contentViewCount
-        }
-        self.button.contentViewIndex = index - 1
-        
+        self.button.animateableContent.viewIndex = min(playCount - 1, self.button.animateableContent.maxViewIndex)
     }
     
     @objc override func sliderDidChange(_ sender: SDKSlider) {
-        var soundPrefs = Controllers.preferencesController.soundPreferences
+        var soundPrefs = Controllers.preferences.soundPreferences
         let value = sender.doubleValue
         if value == sender.maxValue {
             soundPrefs.playCount = SoundPreferences.RepeatEndlessly
         } else {
             soundPrefs.playCount = Int(value.rounded())
         }
-        Controllers.preferencesController.soundPreferences = soundPrefs
+        Controllers.preferences.soundPreferences = soundPrefs
         self.updateVolumeSliderImage()
     }
     
     @objc override func preferencesDidChange(_ sender: Notification) {
-        self.value = min(self.maximumValue, Double(Controllers.preferencesController.soundPreferences.playCount))
+        self.value = min(self.maximumValue, Double(Controllers.preferences.soundPreferences.playCount))
         self.updateVolumeSliderImage()
     }
 

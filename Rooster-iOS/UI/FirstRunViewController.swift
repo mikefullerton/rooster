@@ -33,25 +33,25 @@ class FirstRunViewController: UIViewController {
         self.preferredContentSize = CGSize(width: 500, height: 500)
     }
     
-    @IBAction @objc func dismissSelf(_ sender: Any) {
+    @IBAction func dismissSelf(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShouldDismiss(self)
         }
     }
 
-    @IBAction @objc func showMoreInfo(_ sender: Any) {
+    @IBAction func showMoreInfo(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShowHelp(self)
         }
     }
 
-    @IBAction @objc func showSettings(_ sender: Any) {
+    @IBAction func showSettings(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShowSettings(self)
         }
     }
 
-    @IBAction @objc func showCalendars(_ sender: Any) {
+    @IBAction func showCalendars(_ sender: Any) {
         if let delegate = self.delegate {
             delegate.firstRunViewControllerShowCalendars(self)
         }

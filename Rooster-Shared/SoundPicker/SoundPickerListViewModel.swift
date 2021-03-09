@@ -30,7 +30,7 @@ struct SoundPickerListViewModel : ListViewModelProtocol {
         soundFolder.visitEach { item in
             if let soundFolder = item as? SoundFolder {
                 let rows = soundFolder.soundFiles.map { SoundFileRowType(withContent: $0) }
-                if rows.count > 0 {
+                if !rows.isEmpty {
                     var elements = soundFolder.pathComponents
                     elements.remove(at: 0)
                     

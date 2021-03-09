@@ -27,12 +27,10 @@ extension SoundFolder {
     }
 
     private func addContentsWithCreatingDescriptors(inDirectory directory: DirectoryIterator) throws {
-        for file in directory.files {
-            if file.isSoundFile {
-                let fileDescriptor = try SoundFileDescriptor.writeNewSoundFolderItemsDescriptor(forDirectoryItem: file, withID: String.guid)
-                let soundFile = SoundFile(withDescriptor: fileDescriptor, atPath: file.url)
-                self.addSoundFile(soundFile)
-            }
+        for file in directory.files where file.isSoundFile {
+            let fileDescriptor = try SoundFileDescriptor.writeNewSoundFolderItemsDescriptor(forDirectoryItem: file, withID: String.guid)
+            let soundFile = SoundFile(withDescriptor: fileDescriptor, atPath: file.url)
+            self.addSoundFile(soundFile)
         }
 
         for directory in directory.directories {
@@ -47,7 +45,6 @@ extension DirectoryItem {
         return self.url.isSoundFile
     }
 }
-
 
 extension SoundFolderItemDescriptor {
     
@@ -136,4 +133,5 @@ extension SoundFolderItemDescriptor {
         return newFile
     }
 }
+
 

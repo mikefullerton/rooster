@@ -28,17 +28,18 @@ public struct PlayListRandomizer: Loggable, Codable, CustomStringConvertible, Eq
         """
     }
 
-    public static func == (lhs: PlayListRandomizer, rhs: PlayListRandomizer) -> Bool {
-        return  lhs.behavior == rhs.behavior
-    }
+//    public static func == (lhs: PlayListRandomizer, rhs: PlayListRandomizer) -> Bool {
+//        return  lhs.behavior == rhs.behavior
+//    }
 }
 
 extension PlayListRandomizer {
     
-    public struct Behavior: OptionSet, CustomStringConvertible, Codable, Equatable {
-        
+    public struct Behavior: DescribeableOptionSet {
+
         public let rawValue: Int
         
+        public static var zero                                      = Behavior([])
         public static let randomizeOrder                            = Behavior(rawValue: 1 << 1)
         public static let regenerateEachPlay                        = Behavior(rawValue: 1 << 2)
 
@@ -54,15 +55,6 @@ extension PlayListRandomizer {
             (.randomizeOrder, "randomizeOrder"),
             (.regenerateEachPlay, "regenerateEachPaly"),
         ]
-
-        public var description: String {
-            let result: [String] = Self.descriptions.filter { contains($0.0) }.map { $0.1 }
-            return "\(type(of:self)): (rawValue: \(self.rawValue)) [\(result.joined(separator:", "))]"
-        }
-        
-        public static func == (lhs: Self, rhs: Self) -> Bool {
-            return lhs.rawValue == rhs.rawValue
-        }
 
     }
 }

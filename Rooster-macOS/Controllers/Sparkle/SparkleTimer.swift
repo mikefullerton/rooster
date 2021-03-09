@@ -63,7 +63,7 @@ public class SparkleTimer : Loggable {
 
     public func startNextCheckTimer() {
         self.logger.log("Starting next check timer at \(Date().shortDateAndTimeString), will check again at \(self.nextCheckDate.shortDateAndTimeString)")
-        self.timer.start(withDate: self.nextCheckDate) { [weak self] timer in
+        self.timer.start(withDate: self.nextCheckDate) { [weak self] _ in
             if let strongSelf = self {
                 strongSelf.logger.log("Timer expired, will check for updates if needed")
                 strongSelf.delegate?.sparkleTimerCheckForUpdates(strongSelf)

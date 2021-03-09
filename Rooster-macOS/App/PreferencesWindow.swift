@@ -6,6 +6,8 @@
 //
 
 import Cocoa
+import RoosterCore
+
 
 class PreferencesWindow: WindowController {
     
@@ -19,12 +21,6 @@ class PreferencesWindow: WindowController {
         
         if let viewController = self.viewController {
             self.setContentViewController(viewController)
-            
-//            if let window = self.window {
-//                let preferredContentSize = viewController.preferredContentSize
-//                self.logger.log("Updating prefs window size: \(NSStringFromSize(preferredContentSize))")
-//                window.setContentSize(preferredContentSize)
-//            }
         }
     }
         
@@ -40,9 +36,4 @@ class PreferencesWindow: WindowController {
             
         }
     }
-    
-//    @IBAction @objc close(_ sender: Any?) {
-//        
-//        self.cl
-//    }
 }

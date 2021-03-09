@@ -23,7 +23,7 @@ class SoundVolumeView : PreferenceSlider {
         
         self.minimumValue = 0
         self.maximumValue = 1.0
-        self.value = Double(Controllers.preferencesController.soundPreferences.volume)
+        self.value = Double(Controllers.preferences.soundPreferences.volume)
         
         self.setViews(minValueView: self.label,
                       maxValueView: self.button,
@@ -44,7 +44,7 @@ class SoundVolumeView : PreferenceSlider {
     lazy var button: FancyButton = {
         let imageButton = FancyButton()
         imageButton.contentViewAlignment = .left
-        imageButton.contentViews = [
+        imageButton.animateableContent.contentViews = [
             self.imageView(withName: "speaker.slash"),
             self.imageView(withName: "speaker"),
             self.imageView(withName: "speaker.wave.1"),
@@ -55,7 +55,7 @@ class SoundVolumeView : PreferenceSlider {
         imageButton.setTarget(self, action: #selector(setMaxValue(_:)))
         
         return imageButton
-    } ()
+    }()
 
     private func imageView(withName name: String) -> SDKImageView {
         guard let image = SDKImage(systemSymbolName: name, accessibilityDescription: name) else {
@@ -68,31 +68,59 @@ class SoundVolumeView : PreferenceSlider {
         return imageView
     }
 
+    private lazy var sound: SoundFile = {
+        let sound = SoundFolder.instance.findSoundFiles(forName: "Rooster Crowing")
+        return sound[0]
+    }()
+    
+    private var mute: Bool = false
+    
+    private func playSound() {
+        if !self.mute && !self.sound.soundPlayer.isPlaying {
+            self.sound.soundPlayer.play(withBehavior: SoundBehavior(playCount: 1, timeBetweenPlays: 0, fadeInTime: 0))
+        }
+    }
+    
     private func updateVolumeSliderImage() {
-        let soundPrefs = Controllers.preferencesController.soundPreferences
+        let soundPrefs = Controllers.preferences.soundPreferences
 
+        var viewIndex = self.button.animateableContent.viewIndex
+        
         if soundPrefs.volume <= 0.02 {
-            self.button.contentViewIndex = 0
+            viewIndex = 0
         } else if soundPrefs.volume < 0.20 {
-            self.button.contentViewIndex = 1
+            viewIndex = 1
         } else if soundPrefs.volume < 0.50 {
-            self.button.contentViewIndex = 2
+            viewIndex = 2
         } else if soundPrefs.volume < 0.95 {
-            self.button.contentViewIndex = 3
+            viewIndex = 3
         } else {
-            self.button.contentViewIndex = 4
+            viewIndex = 4
+        }
+        
+        if self.button.animateableContent.viewIndex != viewIndex {
+            self.button.animateableContent.viewIndex = viewIndex
         }
     }
     
     @objc override func sliderDidChange(_ sender: SDKSlider) {
-        var soundPrefs = Controllers.preferencesController.soundPreferences
+        var soundPrefs = Controllers.preferences.soundPreferences
         soundPrefs.volume = sender.floatValue
-        Controllers.preferencesController.soundPreferences = soundPrefs
+        Controllers.preferences.soundPreferences = soundPrefs
         self.updateVolumeSliderImage()
+        
+        if soundPrefs.volume > 0.02 {
+            self.playSound()
+        } else {
+            self.sound.soundPlayer.stop()
+        }
     }
     
     @objc override func preferencesDidChange(_ sender: Notification) {
-        self.value = Double(Controllers.preferencesController.soundPreferences.volume)
+        self.mute = true
+        self.value = Double(Controllers.preferences.soundPreferences.volume)
+        self.mute = false
+        
         self.updateVolumeSliderImage()
     }
 

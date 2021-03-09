@@ -11,9 +11,9 @@ import RoosterCore
 struct SavedState {
     
     enum SavedStateKey: String, CodingKey {
-        case lookedForCalendarOnFirstRun = "lookedForCalendarOnFirstRun"
-        case firstRunWasPresented = "firstRunWasPresented"
-        case applicationStateVersion = "applicationStateVersion"
+        case lookedForCalendarOnFirstRun
+        case firstRunWasPresented
+        case applicationStateVersion
     }
     
     private var storage: UserDefaults.IdentifierDictionary

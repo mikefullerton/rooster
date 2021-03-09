@@ -8,29 +8,32 @@
 import Foundation
 import RoosterCore
 
-class CalendarPreferencePanel : SDKViewController, PreferencePanel {
+class CalendarPreferencePanel : PreferencePanel {
     
-    let calendarChooser = CalendarChooserViewController()
-    
-    let boxView = GroupBoxView(frame: CGRect.zero,
-                               title: "Choose calendars or delegate calendars to show events and reminders in Rooster",
-                               groupBoxInsets: SDKEdgeInsets.zero,
-                               groupBoxSpacing: SDKOffset.zero)
-    
-    func resetButtonPressed() {
-        Controllers.dataModelController.enableAllPersonalCalendars()
-    }
+    lazy var stackView = SimpleStackView(direction: .vertical,
+                                         insets: SDKEdgeInsets.ten,
+                                         spacing: SDKOffset.zero)
     
     override func loadView() {
-        self.view = SDKView()
-        self.view.addSubview(self.boxView)
-        self.view.setFillInParentConstraints(forSubview: self.boxView)
-        self.addChild(self.calendarChooser)
-        self.boxView.setContainedViews([self.calendarChooser.view])
+        self.view = self.stackView
+        
+        let boxView = GroupBoxView(title: "How many calendar days to show")
+        boxView.setContainedViews([
+            
+            SinglePreferenceChoiceView(withTitle: "Show Calendar Name on Events and Reminders",
+                                       refresh: { Controllers.preferences.calendar.options.contains( .showCalendarName ) },
+                                       update: { Controllers.preferences.calendar.options.set(.showCalendarName, to:$0) }),
+
+            DayCountSlider()
+        ])
+        
+        self.stackView.setContainedViews( [
+            boxView
+        ])
     }
     
-    var toolbarButtonIdentifier: NSToolbarItem.Identifier {
-        return NSToolbarItem.Identifier(rawValue: "calendars")
+    open override var toolbarButtonIdentifier: String {
+        return "calendars"
     }
 
 }

@@ -27,7 +27,7 @@ class MainViewController : UIViewController, UIPopoverPresentationControllerDele
     
     private var contentViewController: UIViewController?
     private var loadingView: LoadingView?
-    private var reloader: DataModelReloader? = nil
+    private var reloader: DataModelReloader?
    
     private func setToolbarItemsEnabled(_ enabled: Bool) {
         for item in self.toolbar.items {

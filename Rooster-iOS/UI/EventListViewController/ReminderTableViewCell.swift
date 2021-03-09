@@ -12,7 +12,7 @@ class ReminderTableViewCell : CalendarItemTableViewCell, TableViewRowCell {
     
     typealias ContentType = RCReminder
     
-    private var reminder: RCReminder? = nil
+    private var reminder: RCReminder?
         
     static var viewHeight: CGFloat {
         return (EventListTableViewCell.labelHeight + EventListTableViewCell.verticalPadding) * 3 + 20

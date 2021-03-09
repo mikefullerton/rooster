@@ -74,15 +74,15 @@ class MenuBarMenuChoiceView : ListViewRowController<MenuBarMenuChoice>, MenuBarI
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 32),
             view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         ])
     }
 
-    override class var preferredHeight: CGFloat {
-        return 40
+    open class override func preferredSize(forContent content: Any?) -> CGSize {
+        return CGSize(width: -1, height:40)
     }
 
-    var choice: MenuBarMenuChoice? = nil
+    var choice: MenuBarMenuChoice?
     
     override func viewWillAppear(withContent content: MenuBarMenuChoice) {
         

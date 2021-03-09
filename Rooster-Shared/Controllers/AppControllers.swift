@@ -86,8 +86,8 @@ import RoosterCore
 //}
 
 extension Controllers {
-    static let preferencesController = PreferencesController()
-    static let menuBarController = MenuBarController()
+    static let preferences = PreferencesController()
+    static let menuBar = MenuBarController()
     
     static func setupRoosterCore() {
         AlarmNotification.setAlarmStartActionsFactory()

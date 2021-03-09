@@ -39,12 +39,12 @@ extension AppDelegate {
         return developerMenuItem
     }
     
-//    @IBAction @objc func updateSoundMetaData(_ sender: Any) {
+//    @IBAction func updateSoundMetaData(_ sender: Any) {
 //        let action = SoundMetaDataUpdater()
 //        action.run()
 //    }
 
-    @IBAction @objc func testSendAppleEventToNotes(_ sender: Any) {
+    @IBAction func testSendAppleEventToNotes(_ sender: Any) {
         
         let date = Date().shortDateAndTimeString
         
@@ -58,7 +58,7 @@ extension AppDelegate {
         
         let applescript = NSAppleScript(source: script)
         
-        var errorInfo: NSDictionary? = nil
+        var errorInfo: NSDictionary?
         let descriptor = applescript?.executeAndReturnError(&errorInfo)
         
         print("\(String(describing: descriptor)))")
@@ -80,7 +80,7 @@ extension AppDelegate {
         
     }
     
-    @IBAction @objc func regenerateSideCars(_ sender: Any) {
+    @IBAction func regenerateSideCars(_ sender: Any) {
         if let roosterURL = NSOpenPanel.findRoosterProjectDirectory() {
             
             do {
@@ -89,7 +89,7 @@ extension AppDelegate {
                 let iterator = DirectoryIterator(withURL: soundsURL)
                 try iterator.scan()
                 
-                iterator.visitEach { item, level in
+                iterator.visitEach { item, _ in
                     
                     do {
                         if  item.exists,

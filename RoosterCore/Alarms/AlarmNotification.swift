@@ -10,90 +10,126 @@ import Foundation
 public protocol AlarmNotificationDelegate : AnyObject {
     func alarmNotificationDidStart(_ alarmNotification: AlarmNotification)
     func alarmNotificationDidFinish(_ alarmNotification: AlarmNotification)
+    func alarmNotification(_ alarmNotification: AlarmNotification, didUpdateState state: AlarmNotificationController.AlarmState)
 }
 
-public protocol AlarmNotificationStartAction {
-    func alarmNotificationStartAction(_ alarmNotification: AlarmNotification)
-    func alarmNotificationStopAction(_ alarmNotification: AlarmNotification)
-}
-
-public class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible, SoundDelegate, Identifiable {
+public class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConvertible, Identifiable {
     
-    enum State: String {
-        case none = "None"
-        case starting = "Starting"
-        case started = "Started"
-        case finished = "Finished"
-        case aborted = "Aborted"
-    }
+    public var alarmState: AlarmNotificationController.AlarmState = .zero
+
     
     public weak var delegate : AlarmNotificationDelegate?
     
-    private var state: State
-    
     public let id: String
-    public let itemID: String
+    public private(set) var itemID: String
     
     private static var idCounter:Int = 0
     
-    private var startActions: [AlarmNotificationStartAction] = []
+    private var alarmNotificationActions: [AlarmNotificationAction] = []
     
     deinit {
-        self.performStopActions()
+        self.didStop()
     }
     
-    public static var startActionsFactory: () -> [AlarmNotificationStartAction] = {
+    public var calendarItem: RCCalendarItem? {
+        if  let dataModel = Controllers.dataModel.dataModel {
+            return dataModel.item(forIdentifier: self.itemID)
+        }
+        
+        return nil
+    }
+    
+    public static var actionsFactoryBlock: () -> [AlarmNotificationAction] = {
         return []
     }
     
-    public init(withItemIdentifier itemIdentifier: String) {
+    public func createActions() -> [AlarmNotificationAction] {
+        return Self.actionsFactoryBlock()
+    }
+    
+    public init(withItemIdentifier itemIdentifier: String, alarmState: AlarmNotificationController.AlarmState) {
         AlarmNotification.idCounter += 1
 
         self.id = "\(AlarmNotification.idCounter)"
-        self.state = .none
+        self.alarmState = alarmState
         self.itemID = itemIdentifier
     }
    
-    public var item: RCCalendarItem? {
-        let dataModel = Controllers.dataModelController.dataModel
-        return dataModel.item(forIdentifier: self.itemID)
-    }
-    
     private func performStartActions() {
-       self.startActions.forEach { $0.alarmNotificationStartAction(self) }
+        self.alarmNotificationActions.forEach { action in
+            self.logger.log("Performing alarm action: \(action.description)")
+            action.willStartAction(withItemID: itemID, alarmNotification: self)
+            action.startAction()
+        }
     }
 
     private func performStopActions() {
-       self.startActions.forEach { $0.alarmNotificationStopAction(self) }
+        self.alarmNotificationActions.forEach { action in
+            action.stopAction()
+            self.logger.log("Stopped alarm action: \(action.description)")
+        }
     }
 
     public func start() {
         
-        self.startActions = Self.startActionsFactory()
+        guard !self.alarmState.contains(.started) else {
+            self.logger.error("alarm already started: \(self.description)")
+            return
+        }
         
-        self.state = .starting
+        self.alarmState = .started
+        
+        self.alarmNotificationActions = self.createActions()
+        
         self.logger.log("starting alarm for \(self.description)")
 
         self.performStartActions()
-        
-        self.state = .started
 
         if let delegate = self.delegate {
             delegate.alarmNotificationDidStart(self)
         }
     }
     
-    public func stop() {
-        self.logger.log("stopping alarm for \(self.description)")
-        self.state = .aborted
+    public func finish() {
         
-        self.performStopActions()
+        guard !self.alarmState.contains(.finished) else {
+            self.logger.error("alarm already finished: \(self.description)")
+            return
+        }
+       
+        self.alarmState += .finished
+        self.logger.log("finished alarm for \(self.description)")
+        self.didStop()
+    }
     
-        self.startActions = []
+    public func stop() {
+        self.alarmState += .aborted
+        self.logger.log("stopping alarm for \(self.description)")
+        self.didStop()
+    }
+    
+    private func didStop() {
+            
+        self.performStopActions()
+        self.alarmNotificationActions = []
+        
+        if var calendarItem = self.calendarItem,
+            !calendarItem.alarm.isFinished {
+            calendarItem.alarm.isFinished = true
+                
+            Controllers.dataModel.update(calendarItem: calendarItem)
+        }
         
         if let delegate = self.delegate {
             delegate.alarmNotificationDidFinish(self)
         }
+        
+        self.alarmState += [ .finished ]
+        
+    }
+    
+    func actionDidFinish(_ action: AlarmNotificationAction) {
+        // TODO:???
     }
     
     public static func == (lhs: AlarmNotification, rhs: AlarmNotification) -> Bool {
@@ -105,28 +141,17 @@ public class AlarmNotification: Equatable, Hashable, Loggable, CustomStringConve
     }
 
     public var description: String {
-        return "\(type(of:self)): \(self.id), itemID: \(self.itemID), state: \(self.state.rawValue)"
+        return "\(type(of:self)): \(self.id), itemID: \(self.itemID), alarmState: \(self.alarmState.description)"
     }
     
-    public func soundWillStartPlaying(_ sound: SoundPlayerProtocol) {
+    public func shouldStop(ifNotContainedIn dataModelIdentifiers: Set<String>) -> Bool {
+        return !dataModelIdentifiers.contains(itemID)
     }
     
-    public func soundDidStartPlaying(_ sound: SoundPlayerProtocol) {
-    }
-
-    public func soundDidUpdate(_ sound: SoundPlayerProtocol) {
-    }
-
-    public func soundDidStopPlaying(_ sound: SoundPlayerProtocol) {
-        self.logger.log("alarm stopped playing sound: \(self.description)")
-        self.state = .finished
-        if let delegate = self.delegate {
-            delegate.alarmNotificationDidFinish(self)
+    public func bringLocationAppsForward() {
+        if let item = self.calendarItem {
+            item.bringLocationAppsToFront()
         }
-    }
-    
-    func shouldStop(ifNotContainedIn dataModelIdentifiers: Set<String>) -> Bool {
-        return !dataModelIdentifiers.contains(self.itemID)
     }
 }
 

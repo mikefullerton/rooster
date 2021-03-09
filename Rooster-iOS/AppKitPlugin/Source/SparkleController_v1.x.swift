@@ -12,7 +12,7 @@ import Sparkle
     
 //    public weak var delegate: AppKitInstallationUpdaterDelegate?
     
-    private var updater: SUUpdater? = nil
+    private var updater: SUUpdater?
     private var error: Error?
     private var showErrorDialog = false
     

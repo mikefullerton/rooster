@@ -15,30 +15,25 @@ import UIKit
 
 struct MenuBarItemViewModel : ListViewModelProtocol {
     
-    
     let sections: [ListViewSectionDescriptor]
     
     init(withEvents events: [RCEvent],
          reminders: [RCReminder]) {
         
-        var sortedList:[RCCalendarItem] = events + reminders
+        let sortedList = RCCalendarDataModel.sortCalendarItems(events + reminders)
         
-        sortedList.sort { lhs, rhs in
-            return lhs.alarm.startDate.isBeforeDate(rhs.alarm.startDate)
-        }
-       
         var rows:[AbstractListViewRowDescriptor] = []
         
-        if sortedList.count == 0 {
+        if sortedList.isEmpty {
             rows.append(ListViewRowDescriptor<NoMeetingsModelObject, MenuBarNoMeetingsListViewCell>(withContent: NoMeetingsModelObject()))
         } else {
             for item in sortedList {
                 if let event = item as? RCEvent {
-                    rows.append(ListViewRowDescriptor<RCEvent, MenuBarEventListListViewCell>(withContent: event))
+                    rows.append(ListViewRowDescriptor<RCCalendarItem, MenuBarEventListListViewCell>(withContent: event))
                 }
                 
                 if let reminder = item as? RCReminder {
-                    rows.append(ListViewRowDescriptor<RCReminder, MenuBarReminderListViewCell>(withContent: reminder))
+                    rows.append(ListViewRowDescriptor<RCCalendarItem, MenuBarReminderListViewCell>(withContent: reminder))
                 }
             }
         }
@@ -54,4 +49,3 @@ struct MenuBarItemViewModel : ListViewModelProtocol {
         self.sections = [ ListViewSectionDescriptor(withRows: rows) ]
     }
 }
-

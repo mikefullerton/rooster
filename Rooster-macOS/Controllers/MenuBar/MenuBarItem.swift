@@ -8,6 +8,6 @@
 import Foundation
 import RoosterCore
 
-protocol MenuBarItem  {
+protocol MenuBarItem {
     func menuItemWasSelected()
 }

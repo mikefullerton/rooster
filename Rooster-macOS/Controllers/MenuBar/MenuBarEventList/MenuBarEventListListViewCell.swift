@@ -10,7 +10,7 @@ import RoosterCore
 import Cocoa
 
 class MenuBarEventListListViewCell: EventListListViewCell, MenuBarItem {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateForMenuBar()

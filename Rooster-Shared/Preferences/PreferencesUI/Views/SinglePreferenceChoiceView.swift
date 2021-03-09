@@ -15,20 +15,24 @@ import UIKit
 
 public class SinglePreferenceChoiceView : SDKView {
     
-    let title: String
+    private let updateCallback: (_ newValue: Bool) -> Void
+    private let refreshCallback: () -> Bool
     
-    public init(frame: CGRect,
-         title: String) {
+    public init(withTitle title: String,
+                refresh refreshCallback: @escaping () -> Bool,
+                update updateCallback: @escaping (_ newValue: Bool) -> Void) {
         
-        self.title = title
-        super.init(frame: frame)
+        self.refreshCallback = refreshCallback
+        self.updateCallback = updateCallback
         
-        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
-
+        super.init(frame: CGRect.zero)
+        
         self.checkbox.title = title
+        
         self.addSubview(self.checkbox)
         
-        self.needsUpdateConstraints = true
+        NotificationCenter.default.addObserver(self, selector: #selector(preferencesDidChange(_:)), name: PreferencesController.DidChangeEvent, object: nil)
+    
         self.refresh()
     }
     
@@ -41,24 +45,16 @@ public class SinglePreferenceChoiceView : SDKView {
         self.layout.setViews([ self.checkbox ])
     }
     
-    @objc func preferencesDidChange(_ sender: Notification) {
-        self.refresh()
-    }
-
-    public func refresh() {
-        self.checkbox.intValue = self.value ? 1 : 0
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func checkboxChanged(_ sender: SDKButton) {
+    @objc func checkboxChanged(_ sender: SDKSwitch) {
+        self.updateCallback(sender.isOn)
     }
     
-    public lazy var checkbox : SDKButton = {
-        let view = SDKButton(checkboxWithTitle: "", target: self, action: #selector(checkboxChanged(_:)))
-        view.intValue = self.value ? 1 : 0
+    public lazy var checkbox : SDKSwitch = {
+        let view = SDKSwitch(title: "", target: self, action: #selector(checkboxChanged(_:)))
         return view
     }()
     
@@ -69,11 +65,24 @@ public class SinglePreferenceChoiceView : SDKView {
         
     }()
     
-    public var value: Bool {
-        return false
+    public var isOne: Bool {
+        get {
+            return self.checkbox.isOn
+        }
+        set(value) {
+            self.checkbox.isOn = value
+        }
     }
 
     public override var intrinsicContentSize: CGSize {
         return CGSize(width: SDKView.noIntrinsicMetric, height: self.layout.intrinsicContentSize.height)
+    }
+    
+    @objc func preferencesDidChange(_ sender: Notification) {
+        self.refresh()
+    }
+    
+    open func refresh() {
+        self.checkbox.isOn = self.refreshCallback()
     }
 }
