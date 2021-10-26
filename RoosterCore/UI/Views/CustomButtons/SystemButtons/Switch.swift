@@ -12,25 +12,10 @@ import Foundation
 
 open class Switch: SystemButton {
     public enum State: Int {
+        case unknown = -1
         case off = 0
         case on = 1
         case mixed = 2
-
-        public init?(withControlStateValue state: NSControl.StateValue) {
-            switch state {
-            case .off:
-                self.init(rawValue: 0)
-
-            case .on:
-                self.init(rawValue: 1)
-
-            case .mixed:
-                self.init(rawValue: 2)
-
-            default:
-                return nil
-            }
-        }
     }
 
     override open func createMouseEventSource() -> MouseEventSource {
@@ -50,19 +35,36 @@ open class Switch: SystemButton {
 
     public var state: State {
         get {
-            State(withControlStateValue: self.systemButton.state)!
+            switch self.systemButton.state {
+            case NSControl.StateValue.off:
+                return Switch.State.off
+
+            case NSControl.StateValue.on:
+                return Switch.State.on
+
+            case NSControl.StateValue.mixed:
+                return Switch.State.mixed
+
+            default:
+                return Switch.State.unknown
+            }
         }
         set {
             switch newValue {
-            case .on:
-                self.systemButton.state = .on
+            case Switch.State.on:
+                self.systemButton.state = NSControl.StateValue.on
 
-            case .off:
-                self.systemButton.state = .off
+            case Switch.State.off:
+                self.systemButton.state = NSControl.StateValue.off
 
-            case .mixed:
-                self.systemButton.state = .mixed
+            case Switch.State.mixed:
+                self.systemButton.state = NSControl.StateValue.mixed
+
+            case Switch.State.unknown:
+                self.systemButton.state = NSControl.StateValue.off
             }
+
+//            print("Switch \(self.title ?? "no title") set to \(String(describing: self.state))")
         }
     }
 
@@ -72,11 +74,11 @@ open class Switch: SystemButton {
     }
 
     public var isOn: Bool {
-        get { self.state == .on }
-        set { self.state = newValue == true ? .on : .off }
+        get { self.state == Switch.State.on }
+        set { self.state = newValue == true ? Switch.State.on : Switch.State.off }
     }
 
     public var isMixed: Bool {
-        self.state == .mixed
+        self.state == Switch.State.mixed
     }
 }

@@ -39,6 +39,8 @@ public class CalenderListViewModel: ListViewModel {
                 toggle.state = .mixed
             }
 
+//            print("Group: \(group.source), count: \(group.calendars.count), enabled count: \(enabledCount), toggle state = \(String(describing: toggle.state))")
+
             let header = Adornment(withCustomView: toggle)
 
             let sortedCalendars = group.calendars.sorted { lhs, rhs -> Bool in
