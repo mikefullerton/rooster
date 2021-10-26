@@ -8,7 +8,7 @@
 import EventKit
 import Foundation
 
-public struct EventKitCalendarSource: Identifiable, CustomStringConvertible, Equatable, CalendarSource {
+public struct EventKitCalendarSource: Identifiable, CustomStringConvertible, Equatable, CalendarSource, Hashable {
     public typealias ID = String
 
     public let id: String
@@ -36,5 +36,9 @@ public struct EventKitCalendarSource: Identifiable, CustomStringConvertible, Equ
 
     public static func == (lhs: EventKitCalendarSource, rhs: EventKitCalendarSource) -> Bool {
         lhs.id == rhs.id
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.title)
     }
 }

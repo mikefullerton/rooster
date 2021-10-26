@@ -10,6 +10,11 @@ import Foundation
 import RoosterCore
 
 public class UnscheduledRemindersBanner: AbstractBannerRow {
+    public struct ContentType {
+        let preferences: ValueProvider<SchedulePreferences>
+        let calendarReference: CalendarReference?
+    }
+
     lazy var disclosureButton: AnimateableButton = {
         let button = AnimateableButton()
 
@@ -76,9 +81,9 @@ public class UnscheduledRemindersBanner: AbstractBannerRow {
         ])
     }
 
-    func updatePriorityButton(schedulePreferences: ValueProvider<SchedulePreferences>) {
+    func updatePriorityButton(withContent content: ContentType) {
         var itemIndex = -1
-        switch schedulePreferences.value.remindersPriorityFilter {
+        switch content.preferences.value.remindersPriorityFilter {
         case .none:
             itemIndex = 0
 
@@ -97,19 +102,19 @@ public class UnscheduledRemindersBanner: AbstractBannerRow {
         let button = self.priorityMenuButton
         button.menuItems = [
             MenuItem(title: "None") { _ in
-                schedulePreferences.value.remindersPriorityFilter = .none
+                content.preferences.value.remindersPriorityFilter = .none
             },
 
             MenuItem(title: "!") { _ in
-                schedulePreferences.value.remindersPriorityFilter = .low
+                content.preferences.value.remindersPriorityFilter = .low
             },
 
             MenuItem(title: "!!") { _ in
-                schedulePreferences.value.remindersPriorityFilter = .medium
+                content.preferences.value.remindersPriorityFilter = .medium
             },
 
             MenuItem(title: "!!!") { _ in
-                schedulePreferences.value.remindersPriorityFilter = .high
+                content.preferences.value.remindersPriorityFilter = .high
             }
         ]
         button.menuItems[itemIndex].state = .on
@@ -118,24 +123,49 @@ public class UnscheduledRemindersBanner: AbstractBannerRow {
         self.addPriorityButton()
     }
 
-    func updateDisclosureButton(schedulePreferences: ValueProvider<SchedulePreferences>) {
+    func updateDisclosureButton(withContent content: ContentType) {
         self.disclosureButton.callback = { _ in
-            schedulePreferences.value.remindersDisclosed.toggle()
+            content.preferences.value.remindersDisclosed.toggle()
         }
-        self.disclosureButton.viewIndex = schedulePreferences.value.remindersDisclosed ? 0 : 1
+        self.disclosureButton.viewIndex = content.preferences.value.remindersDisclosed ? 0 : 1
     }
 
     override public func willDisplay(withContent content: Any?) {
-        guard let prefs = content as? ValueProvider<SchedulePreferences> else {
+        guard let content = content as? ContentType else {
             assertionFailure("didn't find correct content for UnscheduledRemindersBannerData")
             return
         }
 
-        self.updateDisclosureButton(schedulePreferences: prefs)
-        self.updatePriorityButton(schedulePreferences: prefs)
+        self.updateDisclosureButton(withContent: content)
+        self.updatePriorityButton(withContent: content)
+
+        if let calendarRef = content.calendarReference {
+            self.setBanner("Reminders - \(calendarRef.calendar.title) (\(calendarRef.calendar.source.title))")
+        } else {
+            self.setBanner("Unscheduled Reminders")
+        }
     }
 
     override public class func preferredSize(forContent content: Any?) -> CGSize {
         self.bannerSize(forBanner: "Unscheduled Reminders")
+    }
+
+    override public func updateContstraints() {
+        self.headlineLabel.deactivatePositionalContraints()
+        self.label.deactivatePositionalContraints()
+
+        if self.headlineLabel.isHidden == false && self.label.isHidden == false {
+            NSLayoutConstraint.activate([
+                self.headlineLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0),
+                self.headlineLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -8),
+
+                self.label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0),
+                self.label.topAnchor.constraint(equalTo: self.headlineLabel.bottomAnchor, constant: 0)
+            ])
+        } else if self.label.isHidden == false {
+            self.label.activate(constraints: [Constraint(.afterSibling, siblingView: self.disclosureButton, constant: 10), Constraint(.centerY)])
+        } else if self.headlineLabel.isHidden == false {
+            self.headlineLabel.activateCenteredInSuperviewConstraints()
+        }
     }
 }

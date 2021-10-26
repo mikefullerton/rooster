@@ -25,7 +25,11 @@ public class ErrorController {
 
     public func showUnableToAuthenticateError(_ error: Error?) {
         let alert = NSAlert()
+        #if REMINDERS
         alert.messageText = "Rooster was unable to gain access to your Calendars and Reminders."
+        #else
+        alert.messageText = "Rooster was unable to gain access to your Calendars."
+        #endif
 
         var moreInfo = error?.localizedDescription
         if moreInfo != nil && !moreInfo!.isEmpty {

@@ -82,6 +82,46 @@ extension Schedule {
         }
         return items
     }
+
+    public var scheduleItemsByCalendarSource: [String: [ScheduleItem]] {
+        Self.scheduleItemsByCalendarSource(self.items)
+    }
+
+    public static func scheduleItemsByCalendarSource(_ items: [ScheduleItem]) -> [String: [ScheduleItem]] {
+        var result: [String: [ScheduleItem]] = [:]
+
+        for item in items {
+            let calendarSource = item.calendar.source
+
+            if result[calendarSource.id] == nil {
+                result[calendarSource.id] = [ item ]
+            } else {
+                result[calendarSource.id]!.append(item)
+            }
+        }
+
+        return result
+    }
+
+    public var scheduleItemsByCalendar: [CalendarReference: [ScheduleItem]] {
+        Self.scheduleItemsByCalendar(self.items)
+    }
+
+    public static func scheduleItemsByCalendar(_ items: [ScheduleItem]) -> [CalendarReference: [ScheduleItem]] {
+        var result: [CalendarReference: [ScheduleItem]] = [:]
+
+        for item in items {
+            let calendarRef = CalendarReference(item.calendar)
+
+            if result[calendarRef] == nil {
+                result[calendarRef] = [ item ]
+            } else {
+                result[calendarRef]!.append(item)
+            }
+        }
+
+        return result
+    }
  }
 
 extension Schedule {

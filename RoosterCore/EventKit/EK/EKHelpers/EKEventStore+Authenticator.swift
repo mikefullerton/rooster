@@ -83,13 +83,16 @@ extension EKEventStore {
             }
 
             store.requestAccess(to: EKEntityType.event, completion: completion)
+#if REMINDERS
             store.requestAccess(to: EKEntityType.reminder, completion: completion)
+#endif
         }
 
         private func requestAccess(toStore store: EKEventStore, completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
             self.logger.log("requesting access to events in eventStore: \(store.eventStoreIdentifier)")
             store.requestAccess(to: EKEntityType.event) { success, error in
                 if success {
+#if REMINDERS
                     self.logger.log("""
                         granted access to events in user eventStore, \
                         requesting access to reminders in eventStore: \(store.eventStoreIdentifier)
@@ -104,6 +107,14 @@ extension EKEventStore {
                             completion(success, error)
                         }
                     }
+
+#else
+                    self.logger.log("""
+                        granted access to events in user eventStore: \(store.eventStoreIdentifier)
+                        """)
+
+                    completion(success, error)
+#endif
                 } else {
                     self.logger.error("""
                         failed to be granted access to store: \(store.eventStoreIdentifier) with error: \(String(describing: error))

@@ -87,13 +87,7 @@ extension NSView {
                            constraints: [Constraint],
                            insets: SDKEdgeInsets? = nil) {
         self.addSubview(view, positioned: positioned, relativeTo: otherView)
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        let constraints = view.layoutConstraints(withConstraints: constraints,
-                                                 insets: insets)
-        if !constraints.isEmpty {
-            NSLayoutConstraint.activate(constraints)
-        }
+        view.activate(constraints: constraints)
     }
 
     public func addSubview(_ view: NSView,
@@ -112,13 +106,7 @@ extension NSView {
                            constraints: [Constraint],
                            insets: SDKEdgeInsets? = nil) {
         self.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        let constraints = view.layoutConstraints(withConstraints: constraints,
-                                                 insets: insets)
-        if !constraints.isEmpty {
-            NSLayoutConstraint.activate(constraints)
-        }
+        view.activate(constraints: constraints, insets: insets)
     }
 
     public func addSubview(_ view: NSView,
@@ -127,6 +115,28 @@ extension NSView {
         self.addSubview(view,
                         constraints: constraints.map { Constraint($0) },
                         insets: insets)
+    }
+
+    public func activate(constraints: [Constraint],
+                         insets: SDKEdgeInsets? = nil) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+
+        let constraints = self.layoutConstraints(withConstraints: constraints,
+                                                 insets: insets)
+        if !constraints.isEmpty {
+            NSLayoutConstraint.activate(constraints)
+        }
+    }
+
+    public func activate(constraints: [Constraint.ID],
+                         insets: SDKEdgeInsets? = nil) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+
+        let constraints = self.layoutConstraints(withConstraints: constraints.map { Constraint($0) },
+                                                 insets: insets)
+        if !constraints.isEmpty {
+            NSLayoutConstraint.activate(constraints)
+        }
     }
 
     // swiftlint:disable cyclomatic_complexity function_body_length

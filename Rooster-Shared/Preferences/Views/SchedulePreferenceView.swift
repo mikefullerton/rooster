@@ -25,11 +25,18 @@ public class SchedulePreferenceView: SimpleStackView {
                    insets: SDKEdgeInsets.zero,
                    spacing: SDKOffset.zero)
 
+        #if REMINDERS
         self.setContainedViews( [
             self.createCalendarSection(),
             self.createEventsSection(),
             self.createUnscheduledRemindersSection()
         ])
+        #else
+        self.setContainedViews( [
+            self.createCalendarSection(),
+            self.createEventsSection()
+        ])
+        #endif
 
         self.preferencesUpdateHandler.handler = { [weak self] _, _ in
             guard let self = self else {
@@ -78,9 +85,13 @@ public class SchedulePreferenceView: SimpleStackView {
 
     func createCalendarSection() -> GroupBoxView {
         let boxView = GroupBoxView(title: "Calendar")
-
+#if REMINDERS
+        let prompt = "Show Calendar Name on Events and Reminders"
+#else
+        let prompt = "Show Calendar Name on Events"
+#endif
         boxView.setContainedViews([
-            SinglePreferenceChoiceView(withTitle: "Show Calendar Name on Events and Reminders",
+            SinglePreferenceChoiceView(withTitle: prompt,
                                        updater: { view in
                                             view.checkbox.isOn = self.prefs.displayOptions.contains(.showCalendarName)
                                        },

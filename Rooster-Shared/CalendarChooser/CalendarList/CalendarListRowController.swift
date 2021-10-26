@@ -35,15 +35,7 @@ open class CalendarListRowController: ListViewRowController {
     private lazy var checkBox: SDKSwitch = {
         let view = SDKSwitch(title: "", target: self, action: #selector(checkBoxChecked(_:)))
         self.view.addSubview(view)
-
         view.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
-            view.widthAnchor.constraint(greaterThanOrEqualToConstant: view.intrinsicContentSize.width),
-            view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        ])
-
         return view
     }()
 
@@ -197,9 +189,25 @@ open class CalendarListRowController: ListViewRowController {
 
         icons.append(self.colorPickerButton)
 
+        self.checkBox.deactivatePositionalContraints()
+
         if !icons.isEmpty {
             self.iconsStackView.setContainedViews(icons)
             self.addIconsStackView()
+
+            NSLayoutConstraint.activate([
+                self.checkBox.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
+                self.checkBox.trailingAnchor.constraint(equalTo: self.iconsStackView.leadingAnchor, constant: self.padding),
+                self.checkBox.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            ])
+        } else {
+            self.removeIconStack()
+
+            NSLayoutConstraint.activate([
+                self.checkBox.leadingAnchor.constraint(equalTo: self.calendarColorBar.trailingAnchor, constant: self.padding),
+                self.checkBox.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: self.padding),
+                self.checkBox.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            ])
         }
     }
 

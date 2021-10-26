@@ -14,8 +14,12 @@ open class Switch: SystemButton {
             button.isBordered = true
             button.setButtonType(.switch)
             button.bezelStyle = .rounded
+        }
+
+        if let button = button as? Button {
             button.contentTintColor = Theme(for: self).labelColor
         }
+
         return button
     }
 

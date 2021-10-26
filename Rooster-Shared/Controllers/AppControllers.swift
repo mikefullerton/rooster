@@ -5,9 +5,11 @@
 //  Created by Mike Fullerton on 1/15/21.
 //
 
+import Cocoa
 import Foundation
 import RoosterCore
 import ServiceManagement
+
 // swiftlint:disable implicitly_unwrapped_optional
 
 public class AppControllers: Loggable {

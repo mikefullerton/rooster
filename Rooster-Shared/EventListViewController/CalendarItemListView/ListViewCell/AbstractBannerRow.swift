@@ -107,7 +107,7 @@ public class AbstractBannerRow: ListViewRowController {
         view.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    private func updateContstraints() {
+    public func updateContstraints() {
         self.headlineLabel.deactivatePositionalContraints()
         self.label.deactivatePositionalContraints()
 

@@ -21,6 +21,7 @@ public class PreferencesViewController: SDKViewController {
     @IBOutlet private var toolbar: NSToolbar!
     @IBOutlet private var customToolbarSpacer: NSToolbarItem?
 
+#if REMINDERS
     private lazy var preferencePanels: [PreferencePanel] = {
         [
             GeneralPreferencePanel(),
@@ -32,6 +33,18 @@ public class PreferencesViewController: SDKViewController {
             KeyboardShortcutsPanel()
         ]
     }()
+#else
+    private lazy var preferencePanels: [PreferencePanel] = {
+        [
+            GeneralPreferencePanel(),
+            TodayWindowPreferencesPanel(),
+            MenuBarPreferencesPanel(),
+            SoundsPreferencePanel(),
+            NotificationsPreferencePanel(),
+            KeyboardShortcutsPanel()
+        ]
+    }()
+#endif
 
     private var currentPreferencePanel: PreferencePanel?
 

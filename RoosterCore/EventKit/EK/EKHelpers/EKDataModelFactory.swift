@@ -25,10 +25,12 @@ internal struct EKDataModelFactory: Loggable {
         var calendars: [EKCalendar] = []
 
         let eventCalendars = self.store.calendars(for: .event)
-        let remindersCalendars = self.store.calendars(for: .reminder)
-
         calendars += eventCalendars
+
+        #if REMINDERS
+        let remindersCalendars = self.store.calendars(for: .reminder)
         calendars += remindersCalendars
+        #endif
 
         return calendars
     }
@@ -37,12 +39,19 @@ internal struct EKDataModelFactory: Loggable {
                         completion: @escaping (_ dataModel: EKEventStoreDataModel) -> Void) {
         let events = self.fetchEvents(withCalendars: calendars)
 
+        #if REMINDERS
         self.fetchReminders(withCalendars: calendars) { reminders in
             completion(EKEventStoreDataModel(eventStore: self.store,
                                              calendars: calendars,
                                              events: events,
                                              reminders: reminders))
         }
+        #else
+        completion(EKEventStoreDataModel(eventStore: self.store,
+                                         calendars: calendars,
+                                         events: events,
+                                         reminders: []))
+        #endif
     }
 
     // MARK: private

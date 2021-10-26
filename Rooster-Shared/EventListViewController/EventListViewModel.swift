@@ -104,13 +104,49 @@ extension EventListViewModel {
             return sections
         }
 
+        public func createRemindersRowsSortedByCalendar(forSchedule schedule: Schedule) -> Section? {
+            var rows: [Row] = []
+
+            var reminders = schedule.items.filter { $0 as? ReminderScheduleItem != nil }
+
+            if !reminders.isEmpty {
+                reminders.sort(by: self.customSorter)
+
+                let priority = self.prefs.remindersPriorityFilter
+
+                let itemsByCalendar = Schedule.scheduleItemsByCalendar(reminders)
+
+                let calendars = itemsByCalendar.keys.sorted()
+
+                for calendar in calendars {
+                    guard let items = itemsByCalendar[calendar] else {
+                        continue
+                    }
+
+                    rows.append(Row(withContent: UnscheduledRemindersBanner.ContentType(preferences: self.preferencesProvider,
+                                                                                        calendarReference: calendar),
+                                                                                        rowControllerClass: UnscheduledRemindersBanner.self))
+                    if self.prefs.remindersDisclosed {
+                        for item in items {
+                            if let reminder = item as? ReminderScheduleItem,
+                               reminder.priority >= priority,
+                               let row = self.createRow(forScheduleItem: item) {
+                                rows.append(row)
+                            }
+                        }
+                    }
+                }
+            }
+            return rows.isEmpty ? nil : Section(withRows: rows)
+        }
+
         public func createUnscheduledRows(forSchedule schedule: Schedule) -> Section? {
             var rows: [Row] = []
             var itemsWithoutDays = schedule.scheduleItemsWithoutDays
             if !itemsWithoutDays.isEmpty {
                 itemsWithoutDays.sort(by: self.customSorter)
 
-                rows.append(Row(withContent: self.preferencesProvider,
+                rows.append(Row(withContent: UnscheduledRemindersBanner.ContentType(preferences: self.preferencesProvider, calendarReference: nil),
                                 rowControllerClass: UnscheduledRemindersBanner.self))
 
                 let priority = self.prefs.remindersPriorityFilter
@@ -131,7 +167,7 @@ extension EventListViewModel {
         public func createSections(withSchedule schedule: Schedule) -> [Section] {
             var sections: [Section] = self.createScheduledRows(forSchedule: schedule)
 
-            if let unscheduled = self.createUnscheduledRows(forSchedule: schedule) {
+            if let unscheduled = self.createRemindersRowsSortedByCalendar(forSchedule: schedule) {
                 sections.append(unscheduled)
             }
 

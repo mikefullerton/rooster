@@ -113,6 +113,10 @@ open class Button: AnimateableView, Loggable {
     public var contentTintColor: SDKColor? {
         didSet {
             if oldValue != self.contentTintColor {
+                if let textField = self.textField {
+                    textField.textColor = self.contentTintColor
+                }
+
                 if let image = self.image,
                    let color = self.contentTintColor {
                     self.image = image.tint(color: color)
