@@ -14,11 +14,15 @@ import UIKit
 #endif
 
 open class SectionHeaderView: ListViewAdornmentView {
+    var contentView: SDKView?
+
+    lazy var blurView = BlurView()
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
 
         self.addBlurView()
-        self.addTitleView()
+        self.contentView = nil
     }
 
     @available(*, unavailable)
@@ -26,41 +30,35 @@ open class SectionHeaderView: ListViewAdornmentView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    lazy var blurView = BlurView()
-
     func addBlurView() {
         let view = self.blurView
         self.addSubview(view)
         view.activateFillInParentConstraints()
     }
 
-    public lazy var titleView: SDKTextField = {
-        let titleView = SDKTextField()
-        titleView.isEditable = false
-        titleView.textColor = Theme(for: self).secondaryLabelColor
-        titleView.alignment = .left
-        titleView.font = SDKFont.boldSystemFont(ofSize: SDKFont.systemFontSize)
-        titleView.drawsBackground = false
-        titleView.isBordered = false
-        return titleView
-    }()
+    open func set(contentView newContentView: SDKView?) {
+        if let contentView = self.contentView {
+            contentView.removeFromSuperview()
+        }
 
-    public func addTitleView() {
-        let titleView = self.titleView
+        self.contentView = newContentView
 
-        self.addSubview(titleView)
+        if let contentView = self.contentView {
+            self.addSubview(contentView)
 
-        titleView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            titleView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ])
+            NSLayoutConstraint.activate([
+                contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+                contentView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            ])
+        }
     }
 
     override open func adornmentWillAppear(withContent content: Any?) {
-        if let title = content as? String {
-            self.titleView.stringValue = title
+        if let title = content as? String,
+           let contentView = self.contentView as? SDKTextField {
+            contentView .stringValue = title
         }
     }
 

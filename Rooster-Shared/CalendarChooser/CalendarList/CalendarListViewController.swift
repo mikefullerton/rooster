@@ -128,4 +128,7 @@ open class CalendarListViewController: ListViewController,
             calendarRow.delegate = self
         }
     }
+
+    open func toggleAll() {
+    }
 }

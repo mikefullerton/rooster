@@ -59,7 +59,7 @@ extension CalendarItemListViewCell {
 
         // MARK: Views
 
-        lazy var dividerView = DividerView()
+//        lazy var dividerView = DividerView()
 
         lazy var infoBar = SimpleStackView(direction: .horizontal,
                                            insets: SDKEdgeInsets.zero,
@@ -347,20 +347,20 @@ extension CalendarItemListViewCell {
             ])
         }
 
-        func addDividerView() {
-            let dividerView = self.dividerView
-            self.view.addSubview(dividerView)
-            dividerView.translatesAutoresizingMaskIntoConstraints = false
-
-            NSLayoutConstraint.activate([
-                dividerView.heightAnchor.constraint(equalToConstant: 1),
-                dividerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                dividerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-                dividerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            ])
-
-            self.dividerView = dividerView
-        }
+//        func addDividerView() {
+//            let dividerView = self.dividerView
+//            self.view.addSubview(dividerView)
+//            dividerView.translatesAutoresizingMaskIntoConstraints = false
+//
+//            NSLayoutConstraint.activate([
+//                dividerView.heightAnchor.constraint(equalToConstant: 1),
+//                dividerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//                dividerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+//                dividerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+//            ])
+//
+//            self.dividerView = dividerView
+//        }
 
         static var timeInset: CGFloat {
             6.0

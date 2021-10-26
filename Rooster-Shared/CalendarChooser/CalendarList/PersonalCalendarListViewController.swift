@@ -17,4 +17,8 @@ public class PersonalCalendarListViewController: CalendarListViewController {
     override public func provideDataModel() -> CalenderListViewModel? {
         CalenderListViewModel(withCalendarGroups: CoreControllers.shared.scheduleController.schedule.calendars.calendarGroups)
     }
+
+    override public func toggleAll() {
+        CoreControllers.shared.scheduleController.toggleAllPersonalCalendars()
+    }
 }

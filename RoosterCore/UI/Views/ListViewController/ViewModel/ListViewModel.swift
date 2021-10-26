@@ -18,14 +18,22 @@ public protocol ListViewModelItem {
 }
 
 open class ListViewModel {
-    public let sections: [Section]
+    public var sections: [Section] {
+        didSet {
+            self.sections.forEach { $0.model = self }
+        }
+    }
+
     public var preferredSize = CGSize(width: NSView.noIntrinsicMetric, height: NSView.noIntrinsicMetric)
     public var verticalSectionSpacing: CGFloat = 0
 
-    public init(withSections sections: [Section]) {
+    public init(withSections sections: [Section] = []) {
         self.sections = sections
-        self.sections.forEach { $0.model = self }
     }
+
+//    public init() {
+//        self.sections = []
+//    }
 
     public var sectionCount: Int {
         self.sections.count

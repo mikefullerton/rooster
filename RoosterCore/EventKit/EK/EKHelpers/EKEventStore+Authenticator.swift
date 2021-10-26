@@ -87,6 +87,7 @@ extension EKEventStore {
             store.requestAccess(to: EKEntityType.reminder, completion: completion)
 #endif
         }
+        // swiftlint:disable closure_body_length
 
         private func requestAccess(toStore store: EKEventStore, completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
             self.logger.log("requesting access to events in eventStore: \(store.eventStoreIdentifier)")
@@ -126,6 +127,7 @@ extension EKEventStore {
                 }
             }
         }
+        // swiftlint:enable closure_body_length
 
         public func requestAccess(toEventStore eventStore: EKEventStore, completion: @escaping CompletionBlock) {
             self.logger.log("requesting access to events and reminders in user eventStore: \(eventStore.eventStoreIdentifier)")

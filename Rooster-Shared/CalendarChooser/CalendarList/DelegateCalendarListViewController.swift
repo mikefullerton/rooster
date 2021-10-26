@@ -17,4 +17,8 @@ public class DelegateCalendarListViewController: CalendarListViewController {
     override public func provideDataModel() -> CalenderListViewModel? {
         CalenderListViewModel(withCalendarGroups: CoreControllers.shared.scheduleController.schedule.calendars.delegateCalendarGroups)
     }
+
+    override public func toggleAll() {
+        CoreControllers.shared.scheduleController.toggleAllDelegateCalendars()
+    }
 }

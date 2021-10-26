@@ -15,7 +15,7 @@ import UIKit
 extension ListViewModel {
     public class DividerAdornment: Adornment {
         public init(withHeight height: CGFloat) {
-            super.init(withContent: height, withViewClass: DividerView.self)
+            super.init(withCustomView: DividerView(withHeight: height))
         }
     }
 }

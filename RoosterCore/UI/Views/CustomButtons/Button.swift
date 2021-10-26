@@ -127,6 +127,8 @@ open class Button: AnimateableView, Loggable {
         }
     }
 
+    public var userInfo: Any?
+
     public func setTarget(_ target: AnyObject?, action: Selector?) {
         self.target = target
         self.action = action

@@ -17,7 +17,7 @@ public class CalendarChooserViewController: SDKViewController, CalendarToolbarVi
     private static let minSize = CGSize(width: 300, height: 100)
     private lazy var calendarsViewController = PersonalCalendarListViewController()
     private lazy var delegateCalendarsViewController = DelegateCalendarListViewController()
-    private var activeViewController: SDKViewController?
+    private var activeViewController: CalendarListViewController?
 
     private lazy var topBar = CalendarToolbarView()
     private lazy var bottomBar = BottomBar()
@@ -117,7 +117,7 @@ public class CalendarChooserViewController: SDKViewController, CalendarToolbarVi
     }
 
     @objc func resetButtonPressed(_ sender: SDKButton) {
-        CoreControllers.shared.scheduleController.enableAllPersonalCalendars()
+        self.activeViewController?.toggleAll()
     }
 
     @objc func doneButtonPressed(_ sender: SDKButton) {

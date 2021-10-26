@@ -16,6 +16,8 @@ import UIKit
 
 public class CalenderListViewModel: ListViewModel {
     public init(withCalendarGroups calendarGroups: [CalendarGroup]) {
+        super.init()
+
         var sections: [Section] = []
 
         let sortedGroups = calendarGroups.sorted { lhs, rhs -> Bool in
@@ -23,7 +25,21 @@ public class CalenderListViewModel: ListViewModel {
         }
 
         for group in sortedGroups {
-            let header = Adornment(withTitle: group.source)
+            let toggle = Switch(title: group.source, target: self, action: #selector(checkBoxChecked(_:)))
+            toggle.userInfo = group
+            toggle.allowsMixedState = true
+
+            let enabledCount = group.enabledCount
+
+            if enabledCount == group.calendars.count {
+                toggle.state = .on
+            } else if enabledCount == 0 {
+                toggle.state = .off
+            } else {
+                toggle.state = .mixed
+            }
+
+            let header = Adornment(withCustomView: toggle)
 
             let sortedCalendars = group.calendars.sorted { lhs, rhs -> Bool in
                 lhs.title.compare(rhs.title, options: .caseInsensitive) == ComparisonResult.orderedAscending
@@ -38,8 +54,34 @@ public class CalenderListViewModel: ListViewModel {
             sections.append(section)
         }
 
-        super.init(withSections: sections)
+        self.sections = sections
 
         self.preferredSize = CGSize(width: 500, height: NSView.noIntrinsicMetric)
+    }
+
+    @objc func checkBoxChecked(_ checkbox: SDKButton) {
+        if let calendarGroup = checkbox.userInfo as? CalendarGroup {
+            var foundEnabled = false
+
+            for calendar in calendarGroup.calendars where calendar.isEnabled {
+                foundEnabled = true
+                break
+            }
+
+            let newEnabled = !foundEnabled
+
+            var newCalendars: [ScheduleCalendar] = []
+            for oldCalendar in calendarGroup.calendars where oldCalendar.isEnabled != newEnabled {
+                var newCalendar = oldCalendar
+                newCalendar.isEnabled = newEnabled
+
+                newCalendars.append(newCalendar)
+            }
+
+            if !newCalendars.isEmpty {
+                CoreControllers.shared.scheduleController.update(calendars: newCalendars) { _, _, _ in
+                }
+            }
+        }
     }
 }

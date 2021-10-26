@@ -242,13 +242,74 @@ extension ScheduleController {
         }
     }
 
-    public func update(calendar: ScheduleCalendar,
-                       completion: ((_ success: Bool, _ calendar: ScheduleCalendar?, _ error: Error?) -> Void)? = nil) {
+    public func update(calendars: [ScheduleCalendar],
+                       completion: ((_ success: Bool, _ calendars: [ScheduleCalendar]?, _ error: Error?) -> Void)? = nil) {
         self.operationQueue.addOperation { [weak self] in
             guard let self = self else { return }
 
             guard let scheduleBehavior = self.scheduleBehavior else {
                 self.logger.error("schedule behavior is nil")
+                return
+            }
+
+            let oldSchedule = self.schedule
+            var newSchedule = oldSchedule
+
+            for calendar in calendars {
+                do {
+                    guard let eventKitCalendar = calendar.calendar as? EventKitCalendar else {
+                        self.logger.error("eventKitCalendar is nil")
+                        return
+                    }
+
+                    if eventKitCalendar.hasChanges {
+                        try eventKitCalendar.saveEventKitObject()
+                    }
+                } catch {
+                    self.logger.error("failed to save calendar \(String(describing: error))")
+                    completion?(false, nil, error)
+                }
+
+                if let newGroups = self.updateCalendarGroups(withNewCalendar: calendar, calendarGroups: newSchedule.calendars.calendarGroups) {
+                    newSchedule.calendars.calendarGroups = newGroups
+                } else if let newGroups = self.updateCalendarGroups(withNewCalendar: calendar,
+                                                                    calendarGroups: newSchedule.calendars.delegateCalendarGroups) {
+                    newSchedule.calendars.delegateCalendarGroups = newGroups
+                }
+            }
+
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+
+            self.writeScheduleWithReload(true,
+                                         newSchedule: newSchedule,
+                                         oldSchedule: oldSchedule,
+                                         scheduleBehavior: scheduleBehavior) { [weak self] success, _, error in
+                defer { dispatchGroup.leave() }
+                guard let self = self else { return }
+
+                if success {
+                    completion?(true, calendars, nil)
+
+                    self.logger.log("updated calendar ok")
+                } else {
+                    self.logger.error("updating calendar failed with error: \(String(describing: error))")
+                    completion?(false, nil, error)
+                }
+            }
+
+            dispatchGroup.wait()
+            self.logger.log("Exited update calendar operation")
+        }
+    }
+
+    public func update(calendar: ScheduleCalendar,
+                       completion: ((_ success: Bool, _ calendars: ScheduleCalendar?, _ error: Error?) -> Void)? = nil) {
+        self.operationQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            guard let scheduleBehavior = self.scheduleBehavior else {
+                self.logger.error("eventKitCalendar is nil")
                 return
             }
 
@@ -332,6 +393,67 @@ extension ScheduleController {
         }
     }
 
+    public func toggleAllPersonalCalendars(completion: ((_ success: Bool, _ schedule: Schedule?, _ error: Error?) -> Void)? = nil) {
+        self.operationQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+
+            let oldSchedule = self.schedule
+            var newSchedule = oldSchedule
+            newSchedule.calendars.toggleAllPersonalCalendars()
+
+            self.writeSchedule(newSchedule: newSchedule,
+                               oldSchedule: oldSchedule) { [weak self] success, _, error in
+                defer { dispatchGroup.leave() }
+                guard let self = self else { return }
+
+                if success {
+                    completion?(true, newSchedule, nil)
+
+                    self.logger.log("updated calendar ok")
+                } else {
+                    self.logger.error("updating calendar failed with error: \(String(describing: error))")
+                    completion?(false, nil, error)
+                }
+            }
+
+            dispatchGroup.wait()
+            self.logger.log("Exited update all personal calendars operation")
+        }
+    }
+
+    public func toggleAllDelegateCalendars(completion: ((_ success: Bool, _ schedule: Schedule?, _ error: Error?) -> Void)? = nil) {
+        self.operationQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+
+            let oldSchedule = self.schedule
+            var newSchedule = oldSchedule
+            newSchedule.calendars.toggleAllDelegateCalendars()
+
+            self.writeSchedule(newSchedule: newSchedule,
+                               oldSchedule: oldSchedule) { [weak self] success, _, error in
+                defer { dispatchGroup.leave() }
+                guard let self = self else { return }
+
+                if success {
+                    completion?(true, newSchedule, nil)
+
+                    self.logger.log("updated calendar ok")
+                } else {
+                    self.logger.error("updating calendar failed with error: \(String(describing: error))")
+                    completion?(false, nil, error)
+                }
+            }
+
+            dispatchGroup.wait()
+            self.logger.log("Exited update all personal calendars operation")
+        }
+    }
     fileprivate func updateCalendarGroups(withNewCalendar updatedCalendar: ScheduleCalendar,
                                           calendarGroups: [CalendarGroup]) -> [CalendarGroup]? {
         var newGroupList: [CalendarGroup] = []

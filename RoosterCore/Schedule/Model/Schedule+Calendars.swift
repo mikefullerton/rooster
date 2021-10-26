@@ -82,6 +82,35 @@ extension Schedule {
             self.calendarGroups = groups
         }
 
+        public mutating func toggleAllPersonalCalendars() {
+            self.calendarGroups = self.toggleAll(calendarGroups: self.calendarGroups)
+        }
+
+        public mutating func toggleAllDelegateCalendars() {
+            self.delegateCalendarGroups = self.toggleAll(calendarGroups: self.delegateCalendarGroups)
+        }
+
+        public mutating func toggleAll(calendarGroups: [CalendarGroup]) -> [CalendarGroup] {
+            var groups = calendarGroups
+
+            var enabledCount = 0
+            for group in groups {
+                for calendar in group.calendars where calendar.isEnabled {
+                    enabledCount += 1
+                }
+            }
+
+            let newValue = enabledCount > 0 ? false : true
+
+            for outer in 0..<groups.count {
+                for inner in 0..<groups[outer].calendars.count {
+                    groups[outer].calendars[inner].isEnabled = newValue
+                }
+            }
+
+            return groups
+        }
+
         private func enabledCalendars(inGroups groups: [CalendarGroup]) -> [ScheduleCalendar] {
             var subscribedCalendars: [ScheduleCalendar] = []
 

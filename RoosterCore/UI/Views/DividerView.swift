@@ -14,7 +14,11 @@ import UIKit
 #endif
 
 public class DividerView: ListViewAdornmentView {
-    public init() {
+    public let height: CGFloat
+
+    public init(withHeight height: CGFloat) {
+        self.height = height
+
         super.init(frame: CGRect.zero)
 
         let view = SDKView()
@@ -46,5 +50,9 @@ public class DividerView: ListViewAdornmentView {
         }
 
         return CGSize(width: -1, height: 1)
+    }
+
+    override public var intrinsicContentSize: NSSize {
+        NSSize(width: SDKView.noIntrinsicMetric, height: self.height)
     }
 }

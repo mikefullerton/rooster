@@ -15,7 +15,7 @@ import UIKit
 extension ListViewModel {
     public class SpacerAdornment: Adornment {
         public init(withHeight height: CGFloat) {
-            super.init(withContent: height, withViewClass: SpacerView.self)
+            super.init(withCustomView: SpacerView(withHeight: height))
         }
     }
 }

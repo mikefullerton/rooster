@@ -24,4 +24,14 @@ public struct CalendarGroup: Equatable, CustomStringConvertible {
         calendars: \(self.calendars.map { $0.description }.joined(separator: ", "))
         """
     }
+
+    public var enabledCount: Int {
+        var count = 0
+        self.calendars.forEach { calendar in
+            if calendar.isEnabled {
+                count += 1
+            }
+        }
+        return count
+    }
 }
