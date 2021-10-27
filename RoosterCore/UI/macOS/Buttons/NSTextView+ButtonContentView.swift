@@ -10,17 +10,20 @@ import Foundation
 import Cocoa
 
 extension NSTextView: AbstractButtonContentView {
-    public func updateForPosition(_ position: SDKView.Position,
+    public func updateForPosition(_ position: ConstraintDescriptor,
                                   inButton button: Button) {
-        switch position {
-        case .left:
+        switch position.horizontalAlignment.position {
+        case .leading:
             self.alignment = .left
 
         case .center:
             self.alignment = .center
 
-        case .right:
+        case .trailing:
             self.alignment = .right
+
+        case .none:
+            break
         }
     }
 
@@ -39,5 +42,9 @@ extension NSTextView: AbstractButtonContentView {
             self.heightAnchor.constraint(equalToConstant: self.intrinsicContentSize.height),
             self.centerYAnchor.constraint(equalTo: button.centerYAnchor)
         ])
+    }
+
+    public func update() {
+        // TODO: ???
     }
 }

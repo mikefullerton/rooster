@@ -13,7 +13,9 @@ import Cocoa
 import UIKit
 #endif
 
-open class ButtonContentsView: AnimateableView, AbstractButtonContentView, Highlightable {
+open class ButtonContentsView: AnimateableView, AbstractButtonContentView {
+    private weak var button: Button?
+
     public private(set) var imageView: NSImageView? = nil {
         didSet { oldValue?.removeFromSuperview() }
     }
@@ -22,68 +24,94 @@ open class ButtonContentsView: AnimateableView, AbstractButtonContentView, Highl
         didSet { oldValue?.removeFromSuperview() }
     }
 
-    private var imagePosition: SDKView.Position = .center
-
-    private var textPosition: SDKView.Position = .center
-
-    public var spacing: CGFloat = 0 {
-        didSet { self.updateContentViews() }
+    public var imagePosition: ConstraintDescriptor {
+        self.button?.imagePosition ?? .center
     }
 
-    public private(set) var title: String?
-
-    public private(set) var attributedTitle: NSAttributedString?
-
-    public private(set) var image: NSImage?
-
-    public var isHighlighted = false {
-        didSet {
-            if self.isHighlighted != oldValue {
-                self.updateContentViews()
-            }
-        }
+    public var textPosition: ConstraintDescriptor {
+        self.button?.textPosition ?? .center
     }
 
-    public var isEnabled = true {
-        didSet {
-            if self.isEnabled != oldValue {
-                self.updateContentViews()
-            }
-        }
+    public var spacing: CGFloat {
+        self.button?.spacing ?? 0
     }
 
-    public func setContent(image: NSImage?,
-                           title: String?,
-                           attributedTitle: NSAttributedString?,
-                           imagePosition: SDKView.Position,
-                           textPosition: SDKView.Position) {
-        self.textPosition = textPosition
-        self.imagePosition = imagePosition
-
-        if image != self.image {
-            self.image = image
-        }
-
-        if let attributedTitle = attributedTitle {
-            self.attributedTitle = attributedTitle
-        } else if let title = title {
-            self.title = title
-        }
-
-        self.updateContentViews()
+    public var title: String? {
+        self.button?.title ?? ""
     }
 
-    public init(withImage image: NSImage?,
-                title: String?,
-                imagePosition: SDKView.Position = .center,
-                spacing: CGFloat = 0) {
+    public var attributedTitle: NSAttributedString? {
+        self.button?.attributedTitle
+    }
+
+    public var image: NSImage? {
+        self.button?.image
+    }
+
+    public var isHighlighted: Bool {
+        if let button = self.button {
+            return (button.toggled || button.isHighlighted) && button.isEnabled
+        }
+
+        return false
+    }
+
+    public var isEnabled: Bool {
+        self.button?.isEnabled ?? false
+    }
+
+//    public var isHighlighted = false {
+//        didSet {
+//            if self.isHighlighted != oldValue {
+//                self.updateContentViews()
+//            }
+//        }
+//    }
+//
+//    public var isEnabled = true {
+//        didSet {
+//            if self.isEnabled != oldValue {
+//                self.updateContentViews()
+//            }
+//        }
+//    }
+
+//    public func setContent(withButton button: Button) {
+//        self.button = button
+//
+// //        self.textPosition = textPosition
+// //        self.imagePosition = imagePosition
+// //
+// //        if image != self.image {
+// //            self.image = image
+// //        }
+// //
+// //        if let attributedTitle = attributedTitle {
+// //            self.attributedTitle = attributedTitle
+// //        } else if let title = title {
+// //            self.title = title
+// //        }
+//
+//        self.updateContentViews()
+//    }
+
+//    public init(withImage image: NSImage?,
+//                title: String?,
+//                imagePosition: SDKView.Position = .center,
+//                spacing: CGFloat = 0) {
+//        super.init(frame: CGRect.zero)
+//        self.imagePosition = imagePosition
+//        self.title = title
+//        self.attributedTitle = nil
+//        self.image = image
+//        self.spacing = spacing
+//        self.updateContentViews()
+//    }
+
+    public init(withButton button: Button) {
         super.init(frame: CGRect.zero)
-        self.imagePosition = imagePosition
-        self.title = title
-        self.attributedTitle = nil
-        self.image = image
-        self.spacing = spacing
-        self.updateContentViews()
+        self.button = button
+        self.update()
     }
 
     public required init?(coder: NSCoder) {
@@ -112,14 +140,10 @@ open class ButtonContentsView: AnimateableView, AbstractButtonContentView, Highl
         }
     }
 
-    // swiftlint:disable function_body_length
-    private func updateContentViews() {
+    public func update() {
         self.updateAndAddViewsIfNeeded()
 
         if let imageView = self.imageView {
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.deactivatePositionalContraints()
-
             if self.isEnabled {
                 imageView.isEnabled = true
                 imageView.isHighlighted = self.isHighlighted
@@ -130,18 +154,18 @@ open class ButtonContentsView: AnimateableView, AbstractButtonContentView, Highl
         }
 
         if let textField = self.textField {
-            textField.translatesAutoresizingMaskIntoConstraints = false
-            textField.deactivatePositionalContraints()
-
-            switch self.textPosition {
+            switch self.textPosition.horizontalAlignment.position {
             case .center:
                 textField.alignment = .center
 
-            case .right:
+            case .trailing:
                 textField.alignment = .right
 
-            case .left:
+            case .leading:
                 textField.alignment = .left
+
+            case .none:
+                break
             }
 
             if self.isEnabled {
@@ -153,17 +177,24 @@ open class ButtonContentsView: AnimateableView, AbstractButtonContentView, Highl
             }
         }
 
-        if  let imageView = self.imageView,
-            let textView = self.textField,
-            !textView.stringValue.isEmpty {
-            imageView.activateConstraint(forPosition: self.imagePosition)
-            textView.activateConstraint(forPosition: self.imagePosition.opposite)
+        self.resetConstraints()
+    }
+
+    private func resetConstraints() {
+        if  let imageView = self.imageView, let textField = self.textField, !textField.stringValue.isEmpty {
+            imageView.deactivatePositionalContraints()
+            textField.deactivatePositionalContraints()
+
+            imageView.activateConstraints(self.imagePosition)
+            textField.activateConstraints(self.textPosition)
         } else if let imageView = self.imageView, imageView.image != nil {
+            imageView.deactivatePositionalContraints()
             imageView.activateCenteredInSuperviewConstraints()
         } else if let textField = self.textField, !textField.stringValue.isEmpty {
+            textField.deactivatePositionalContraints()
             textField.activateCenteredInSuperviewConstraints()
         } else {
-            assertionFailure("no content!")
+//            assertionFailure("no content!")
         }
 
         self.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -178,33 +209,46 @@ open class ButtonContentsView: AnimateableView, AbstractButtonContentView, Highl
     override open var intrinsicContentSize: NSSize {
         var size = CGSize.zero
 
-        if let imageView = self.imageView {
+        if  let imageView = self.imageView,
+            let textView = self.textField {
+            let imageSize = imageView.intrinsicContentSize
+            let textSize = textView.intrinsicContentSize
+
+            if self.imagePosition.verticalAlignment.position == .center && self.textPosition.verticalAlignment.position == .center {
+                size.height = max(imageSize.height, textSize.height)
+            } else {
+                size.height += imageSize.height + textSize.height + self.spacing
+            }
+
+            if self.imagePosition.horizontalAlignment.position == .center && self.textPosition.horizontalAlignment.position == .center {
+                size.width += imageSize.width + textSize.width + self.spacing
+            } else {
+                size.width += max(imageSize.width, textSize.width)
+            }
+        } else if let imageView = self.imageView {
             size.width += imageView.intrinsicContentSize.width
             size.height = max(size.height, imageView.intrinsicContentSize.height)
-        }
-
-        if let textField = self.textField {
+        } else if let textField = self.textField {
             size.width += textField.intrinsicContentSize.width
             size.height = max(size.height, textField.intrinsicContentSize.height)
         }
-
-        if self.imageView != nil && self.textField != nil {
-            size.width += self.spacing
-        }
-
         return size
     }
 
-    public func updateForPosition(_ position: SDKView.Position,
+    public func updateForPosition(_ position: ConstraintDescriptor,
                                   inButton button: Button) {
         if  let imageView = self.imageView,
             let textView = self.textField {
             imageView.updateForPosition(self.imagePosition, inButton: button)
-            textView.updateForPosition(self.imagePosition.opposite, inButton: button)
+
+            var opposite = self.imagePosition
+            opposite.horizontalAlignment.position = opposite.horizontalAlignment.position.opposite
+
+            textView.updateForPosition(opposite, inButton: button)
         } else if let imageView = self.imageView {
             imageView.updateForPosition(.center, inButton: button)
         } else if let textField = self.textField {
-            textField.updateForPosition(.left, inButton: button)
+            textField.updateForPosition(.leading, inButton: button)
         }
     }
 

@@ -2,7 +2,6 @@
 
 opt_in_rules:
   - empty_count
-  - expiring_todo
   - capture_variable
   - convenience_type
   - empty_string
@@ -99,6 +98,7 @@ opt_in_rules:
   - explicit_top_level_acl
 #  - force_unwrapping # TODO TURN THIS ON!
 #  - type_contents_order # turn on later??
+#  - expiring_todo
 
 
 # rejected rules
@@ -129,6 +129,8 @@ opt_in_rules:
 #  - Rooster-macOS
 #  - Rooster-Shared
 #  - Rooster-Core
+disabled_rules:
+- todo
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Sparkle*

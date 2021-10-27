@@ -59,7 +59,7 @@ public class DayCountSlider: PreferenceSlider {
 
     lazy var rhsButton: AnimateableButton = {
         let button = AnimateableButton()
-        button.contentViewPosition = .left
+        button.contentViewPosition = .leading
         button.contentViews = [
             self.label(withTitle: "1 Day"),
             self.label(withTitle: "2 Days"),

@@ -18,8 +18,22 @@ public class PreferencesViewController: SDKViewController {
 
     private static let windowSize = CGSize(width: 800, height: 600)
 
-    @IBOutlet private var toolbar: NSToolbar!
-    @IBOutlet private var customToolbarSpacer: NSToolbarItem?
+    private lazy var toolbar: SimpleStackView = {
+        let view = SimpleStackView(direction: .horizontal, insets: SDKEdgeInsets.ten, spacing: SDKOffset.zero) // SDKOffset(horizontal: 4, vertical: 4)
+        var buttons: [Button] = []
+
+        for prefPanel in self.preferencePanels {
+            buttons.append(prefPanel.toolbarButton)
+
+            prefPanel.callback = { [weak self] panel in
+                self?.setCurrentPanel(panel)
+            }
+        }
+
+        view.setContainedViews(buttons)
+
+        return view
+    }()
 
 #if REMINDERS
     private lazy var preferencePanels: [PreferencePanel] = {
@@ -57,37 +71,27 @@ public class PreferencesViewController: SDKViewController {
         self.init()
     }
 
-//    func panel(forName panelName: String) -> PreferencePanel? {
-//        if let index = self.preferencePanels.firstIndex(where: { $0.buttonTitle == panelName }) {
-//            return self.preferencePanels[index]
-//        }
-//
-//        return nil
-//    }
-//
-//    func toolbarItem(forName panelName: String) -> NSToolbarItem? {
-//        if let items = self.toolbar?.items {
-//            for item in items where item.itemIdentifier.rawValue == panelName {
-//                return item
-//            }
-//        }
-//
-//        return nil
-//    }
-
     func setCurrentPanel(_ panel: PreferencePanel) {
+
+
         if let currentViewController = self.currentPreferencePanel {
+            if panel == currentViewController {
+                return
+            }
+
             currentViewController.view.removeFromSuperview()
+            currentViewController.isSelected = false
             self.currentPreferencePanel = nil
         }
 
         self.currentPreferencePanel = panel
 
         if let currentViewController = self.currentPreferencePanel {
+            panel.isSelected = true
             self.setCurrentView(currentViewController.view)
         }
 
-        self.toolbar!.selectedItemIdentifier = panel.toolBarItem.itemIdentifier
+//        self.toolbar!.selectedItemIdentifier = panel.toolBarItem.itemIdentifier
         self.setTitle(panel.buttonTitle)
     }
 
@@ -107,21 +111,7 @@ public class PreferencesViewController: SDKViewController {
 
         self.view = view
 
-        self.toolbar.delegate = self
-
-        for prefPanel in self.preferencePanels.reversed() {
-            let toolbarItem = prefPanel.toolBarItem
-
-            self.toolbar.insertItem(withItemIdentifier: toolbarItem.itemIdentifier, at: 0)
-
-            prefPanel.callback = { [weak self] panel in
-                self?.setCurrentPanel(panel)
-            }
-            self.addChild(prefPanel)
-        }
-
-        assert(self.toolbar.items.count == self.preferencePanels.count, "didn't insert")
-
+        self.addTopBar()
         self.addBottomBar()
         self.setCurrentPanel(self.preferencePanels[0])
         self.preferredContentSize = Self.windowSize
@@ -135,6 +125,11 @@ public class PreferencesViewController: SDKViewController {
         if let currentPanel = self.currentPreferencePanel {
             currentPanel.resetButtonPressed()
         }
+    }
+
+    private func addTopBar() {
+        self.view.addSubview(self.toolbar)
+        self.toolbar.activateConstraints(.centerTop)
     }
 
     private func addBottomBar() {
@@ -156,7 +151,7 @@ public class PreferencesViewController: SDKViewController {
         self.view.addSubview(view, positioned: .below, relativeTo: self.bottomBar)
 
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.insets.top),
+            view.topAnchor.constraint(equalTo: self.toolbar.bottomAnchor, constant: self.insets.top),
             view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.insets.left),
 
 //            view.bottomAnchor.constraint(equalTo: self.bottomBar.topAnchor),
@@ -178,7 +173,8 @@ extension PreferencesViewController: NSToolbarDelegate {
                         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
                         willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         if let index = self.preferencePanels.firstIndex(where: { $0.toolBarItem.itemIdentifier == itemIdentifier }) {
-            return self.preferencePanels[index].toolBarItem
+            let item = self.preferencePanels[index].toolBarItem
+            return item
         }
         return nil
     }

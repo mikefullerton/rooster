@@ -14,25 +14,6 @@ import UIKit
 #endif
 
 extension SDKView {
-    public enum Position {
-        case left
-        case right
-        case center
-
-        var opposite: Position {
-            switch self {
-            case .left:
-                return .right
-
-            case .right:
-                return .left
-
-            case .center:
-                return .center
-            }
-        }
-    }
-
     public var debugConstraintDescriptions: [String] {
         var outList: [String] = []
 
@@ -58,12 +39,14 @@ extension SDKView {
     }
 
     public func deactivateConstraint<AnchorType: AnyObject>(forAnchor anchor: NSLayoutAnchor<AnchorType>) {
+        self.translatesAutoresizingMaskIntoConstraints = false
         if let constraint = self.constraint(forAnchor: anchor) {
             constraint.isActive = false
         }
     }
 
     public func deactivateConstraints(forAnchors anchors: [NSObject]) {
+        self.translatesAutoresizingMaskIntoConstraints = false
         var deactivate: [NSLayoutConstraint] = []
         for object in anchors {
             if let anchor = object as? NSLayoutXAxisAnchor {
@@ -89,6 +72,7 @@ extension SDKView {
     }
 
     public func deactivatePositionalContraints() {
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.deactivateConstraints(forAnchors: [
             self.centerYAnchor,
             self.centerXAnchor,
@@ -97,42 +81,6 @@ extension SDKView {
             self.topAnchor,
             self.bottomAnchor
         ])
-    }
-
-    public func activateConstraint(forPosition position: Position) {
-        assert(self.superview != nil)
-        guard let superview = self.superview else { return }
-
-        var activate: [NSLayoutConstraint] = []
-
-        self.translatesAutoresizingMaskIntoConstraints = false
-
-        assert(self.intrinsicContentSize.width > 0, "no intrinsic content width")
-        assert(self.intrinsicContentSize.height > 0, "no intrinsic content height")
-
-        switch position {
-        case .left:
-            activate = [
-                self.centerYAnchor.constraint(equalTo: superview.centerYAnchor),
-                self.leadingAnchor.constraint(equalTo: superview.leadingAnchor)
-            ]
-
-        case .right:
-            activate = [
-                self.centerYAnchor.constraint(equalTo: superview.centerYAnchor),
-                self.trailingAnchor.constraint(equalTo: superview.trailingAnchor)
-            ]
-
-        case .center:
-            activate = [
-                self.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
-                self.centerYAnchor.constraint(equalTo: superview.centerYAnchor)
-            ]
-        }
-
-//        constraints.forEach { $0.priority = .required }
-
-        NSLayoutConstraint.activate(activate)
     }
 
     public func activateIntrinsicSizeConstraints() {

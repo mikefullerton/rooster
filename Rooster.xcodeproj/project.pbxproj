@@ -499,6 +499,10 @@
 		B294932425B5F5D400FCCF9E /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = B298C44825AB8C430085BBA0 /* Sounds */; };
 		B294932525B5F5D400FCCF9E /* About in Resources */ = {isa = PBXBuildFile; fileRef = B20C4D5325B3A052000A3981 /* About */; };
 		B294933625B5F62F00FCCF9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2E15122255EED2B002672EC /* Assets.xcassets */; };
+		B297B2F52729A3D0007C5AF9 /* CustomToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B297B2F42729A3D0007C5AF9 /* CustomToolbarButton.swift */; };
+		B297B2F62729A3D0007C5AF9 /* CustomToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B297B2F42729A3D0007C5AF9 /* CustomToolbarButton.swift */; };
+		B297B2F82729B2BB007C5AF9 /* ConstraintDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B297B2F72729B2BB007C5AF9 /* ConstraintDescriptor.swift */; };
+		B297B2F92729B2BB007C5AF9 /* ConstraintDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B297B2F72729B2BB007C5AF9 /* ConstraintDescriptor.swift */; };
 		B298A082267BA5CA00EE0783 /* ReminderWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298A081267BA5CA00EE0783 /* ReminderWindowController.swift */; };
 		B298A084267BA62300EE0783 /* ReminderWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B298A083267BA62300EE0783 /* ReminderWindowViewController.swift */; };
 		B298C44925AB8C430085BBA0 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = B298C44825AB8C430085BBA0 /* Sounds */; };
@@ -1082,6 +1086,8 @@
 		B2966F0425F7E1C500886FF8 /* RCDemoEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCDemoEvent.swift; sourceTree = "<group>"; };
 		B2966F0725F7E50C00886FF8 /* RCDemoReminder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCDemoReminder.swift; sourceTree = "<group>"; };
 		B2966F0B25F7F8AB00886FF8 /* SizedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizedImageView.swift; sourceTree = "<group>"; };
+		B297B2F42729A3D0007C5AF9 /* CustomToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolbarButton.swift; sourceTree = "<group>"; };
+		B297B2F72729B2BB007C5AF9 /* ConstraintDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintDescriptor.swift; sourceTree = "<group>"; };
 		B298A081267BA5CA00EE0783 /* ReminderWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderWindowController.swift; sourceTree = "<group>"; };
 		B298A083267BA62300EE0783 /* ReminderWindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderWindowViewController.swift; sourceTree = "<group>"; };
 		B298C44825AB8C430085BBA0 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
@@ -1800,7 +1806,6 @@
 				B20AACFB259530CB00F9B50C /* Sounds */,
 				B2AC486B2604E3B900ED4135 /* UI */,
 				B2866263258EC1C500D3A538 /* Utilities */,
-				B2D93892262F20B30073AB81 /* Preferences */,
 			);
 			path = RoosterCore;
 			sourceTree = "<group>";
@@ -2250,7 +2255,6 @@
 				B2CEF19425B8BAE600CA01E2 /* CountDownTextField.swift */,
 				B2E224FD25B637BE0052758C /* DividerView.swift */,
 				B26F6B8625B7C6EB00EA2057 /* GroupBoxView.swift */,
-				B25C374325E2C12C00D45251 /* SDKView+Constraints.swift */,
 				B26F6B8D25B7C6EC00EA2057 /* SimpleStackView.swift */,
 				B274EFB025BA191700F9D473 /* SliderView.swift */,
 				B26F6B2825B7BFA000EA2057 /* SpacerView.swift */,
@@ -2261,6 +2265,7 @@
 				B2AC486D2604E94800ED4135 /* Buttons */,
 				B2E2251025B640BE0052758C /* ListViewController */,
 				B274EFC125BA1D0300F9D473 /* VerticalTabView */,
+				B297B2F42729A3D0007C5AF9 /* CustomToolbarButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2274,13 +2279,6 @@
 				B2D08EB926176BFA00DBF092 /* String+Carbon.swift */,
 			);
 			path = HotKeys;
-			sourceTree = "<group>";
-		};
-		B2D93892262F20B30073AB81 /* Preferences */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Preferences;
 			sourceTree = "<group>";
 		};
 		B2E1511A255EED2A002672EC = {
@@ -2323,7 +2321,9 @@
 		B2E2250A25B640BE0052758C /* ViewLayout */ = {
 			isa = PBXGroup;
 			children = (
+				B25C374325E2C12C00D45251 /* SDKView+Constraints.swift */,
 				B20B038B2631C361001723CA /* Constraint.swift */,
+				B297B2F72729B2BB007C5AF9 /* ConstraintDescriptor.swift */,
 				B2E2250B25B640BE0052758C /* HorizontalViewLayout.swift */,
 				B2E2250C25B640BE0052758C /* HorizontallyOpposedLayout.swift */,
 				B2E2250D25B640BE0052758C /* ViewLayout.swift */,
@@ -3008,6 +3008,7 @@
 				B2E968212603949B002D9955 /* EventKitParticipant.swift in Sources */,
 				B2AC49002604E9FC00ED4135 /* HorizontalViewLayout.swift in Sources */,
 				B2AC49332604E9FC00ED4135 /* SliderView.swift in Sources */,
+				B297B2F52729A3D0007C5AF9 /* CustomToolbarButton.swift in Sources */,
 				B26D1CF225EAA2A700B158C5 /* String+Localized.swift in Sources */,
 				B2AC493B2604E9FC00ED4135 /* ContentAwareView.swift in Sources */,
 				B26D1CFA25EAA2A700B158C5 /* ScheduleItem+LocationURL.swift in Sources */,
@@ -3017,6 +3018,7 @@
 				B26D1CD325EAA2A700B158C5 /* UserDefaults+IdentifierDictionary.swift in Sources */,
 				B22AC1C1261CE5AB00FA043C /* CalculatedTimes.swift in Sources */,
 				B29A5357260BC8CF002A111A /* ScheduleItemAlarm.swift in Sources */,
+				B297B2F82729B2BB007C5AF9 /* ConstraintDescriptor.swift in Sources */,
 				B21E7BE525EE9DF100FCA802 /* SoundFileCollection.swift in Sources */,
 				B26D1D1725EAA2A800B158C5 /* EKEventStoreDataModel.swift in Sources */,
 				B2725A012623A04D0091878C /* HighlightableImageView.swift in Sources */,
@@ -3072,6 +3074,7 @@
 				B29FA8952618B69200238562 /* Schedule+Calendars.swift in Sources */,
 				B2AC495A2604E9FD00ED4135 /* ListViewController.swift in Sources */,
 				B26D1D2F25EAA2A800B158C5 /* SoundFolder+Visitor.swift in Sources */,
+				B297B2F62729A3D0007C5AF9 /* CustomToolbarButton.swift in Sources */,
 				B259BD6E262DC30800AC75C2 /* ListViewController+Extensions.swift in Sources */,
 				B259BCE7262C92B900AC75C2 /* EventKitCalendarSource.swift in Sources */,
 				B28DD410263B012C00D3BF26 /* CalendarReference.swift in Sources */,
@@ -3182,6 +3185,7 @@
 				B26D1D5625EAA2A900B158C5 /* SoundPlayerProtocol.swift in Sources */,
 				B2725A052623A0620091878C /* Highlightable.swift in Sources */,
 				B26D1D3725EAA2A800B158C5 /* PlayListIteratorProtocol.swift in Sources */,
+				B297B2F92729B2BB007C5AF9 /* ConstraintDescriptor.swift in Sources */,
 				B27B4DE72613789200DE5028 /* ScheduleController.swift in Sources */,
 				B27259FC26237C540091878C /* ConstrainedInt.swift in Sources */,
 				B261874A2603FB1F000B49BA /* AlarmNotificationAction.swift in Sources */,

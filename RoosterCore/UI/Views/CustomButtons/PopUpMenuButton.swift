@@ -24,6 +24,7 @@ open class PopUpMenuButton: Button {
                    attributedTitle: nil,
                    image: image,
                    imagePosition: .center,
+                   textPosition: .center,
                    spacing: 0,
                    target: nil,
                    action: nil,
@@ -37,6 +38,7 @@ open class PopUpMenuButton: Button {
                    attributedTitle: nil,
                    image: nil,
                    imagePosition: .center,
+                   textPosition: .center,
                    spacing: 0,
                    target: nil,
                    action: nil,
@@ -51,6 +53,7 @@ open class PopUpMenuButton: Button {
                    attributedTitle: nil,
                    image: image,
                    imagePosition: .center,
+                   textPosition: .center,
                    spacing: 0,
                    target: nil,
                    action: nil,
@@ -128,7 +131,7 @@ open class PopUpMenuButton: Button {
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
 
-        self.contentViewPosition = .right
+        self.contentViewPosition = .trailing
 
         self.label = label
 

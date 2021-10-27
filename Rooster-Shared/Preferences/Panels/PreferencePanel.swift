@@ -61,6 +61,35 @@ open class PreferencePanel: SDKViewController, Loggable {
         ""
     }
 
+    public var isSelected: Bool {
+        get { self.toolbarButton.toggled }
+        set {
+            if newValue != self.toolbarButton.toggled {
+                self.toolbarButton.toggled = newValue
+
+                if newValue == true, let callback = self.callback {
+                    callback(self)
+                }
+            }
+        }
+    }
+
+    @objc func buttonPressed(_ sender: Any?) {
+        self.isSelected = true
+    }
+
+    public lazy var toolbarButton: Button = {
+        Button(title: self.buttonTitle,
+               attributedTitle: nil,
+               image: self.buttonImage,
+               imagePosition: .centerTop,
+               textPosition: .centerBottom,
+               spacing: 4,
+               target: self,
+               action: #selector(buttonPressed(_:)),
+               callback: nil)
+    }()
+
     public lazy var toolBarItem: NSToolbarItem = {
         let item = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier(self.buttonTitle))
         item.image = self.buttonImage

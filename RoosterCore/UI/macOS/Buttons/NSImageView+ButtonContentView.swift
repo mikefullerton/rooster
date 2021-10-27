@@ -9,17 +9,20 @@ import Cocoa
 import Foundation
 
 extension NSImageView: AbstractButtonContentView {
-    public func updateForPosition(_ position: SDKView.Position,
+    public func updateForPosition(_ position: ConstraintDescriptor,
                                   inButton button: Button) {
-        switch position {
-        case .left:
+        switch position.horizontalAlignment.position {
+        case .leading:
             self.imageAlignment = .alignLeft
 
         case .center:
             self.imageAlignment = .alignCenter
 
-        case .right:
+        case .trailing:
             self.imageAlignment = .alignRight
+
+        case .none:
+            break
         }
     }
 
@@ -29,5 +32,9 @@ extension NSImageView: AbstractButtonContentView {
 
     public func updateConstraints(forLayoutInButton button: Button) {
         self.activateFillInParentConstraints()
+    }
+
+    public func update() {
+        // TODO: ???
     }
 }

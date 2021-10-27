@@ -44,7 +44,7 @@ public  class PlaySoundButton: AnimateableButton, SoundDelegate {
             "speaker.wave.3"
         ]
 
-        self.contentViewPosition = .left
+        self.contentViewPosition = .leading
 
         var views: [SDKView] = []
 

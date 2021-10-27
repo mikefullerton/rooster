@@ -54,7 +54,7 @@ public class StartDelayView: PreferenceSlider {
 
     lazy var rhsButton: AnimateableButton = {
         let button = AnimateableButton()
-        button.contentViewPosition = .left
+        button.contentViewPosition = .leading
         button.contentViews = [
             self.label(withTitle: "None"),
             self.label(withTitle: "1 second"),

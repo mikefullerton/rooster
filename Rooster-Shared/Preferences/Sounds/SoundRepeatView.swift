@@ -53,7 +53,7 @@ public class SoundRepeatView: PreferenceSlider {
 
     lazy var button: AnimateableButton = {
         let button = AnimateableButton()
-        button.contentViewPosition = .left
+        button.contentViewPosition = .leading
         button.contentViews = [
             HighlightableTextField(withButtonTitle: "Once"),
             HighlightableTextField(withButtonTitle: "Twice"),

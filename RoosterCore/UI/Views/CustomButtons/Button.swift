@@ -15,9 +15,11 @@ import UIKit
 
 public protocol AbstractButtonContentView {
     func wasAdded(toButton button: Button)
-    func updateForPosition(_ position: SDKView.Position,
+    func updateForPosition(_ position: ConstraintDescriptor,
                            inButton button: Button)
     func updateConstraints(forLayoutInButton button: Button)
+
+    func update()
 }
 
 open class Button: AnimateableView, Loggable {
@@ -35,15 +37,19 @@ open class Button: AnimateableView, Loggable {
 
     public private(set) var contentView: NSView?
 
-    public var toggled = false {
+    public var toggled: Bool = false {
         didSet { self.contentsDidChange() }
     }
 
-    public var imagePosition: SDKView.Position {
+    public var imagePosition: ConstraintDescriptor {
         didSet { self.contentsDidChange() }
     }
 
-    public var contentViewPosition: Position {
+    public var textPosition: ConstraintDescriptor {
+        didSet { self.contentsDidChange() }
+    }
+
+    public var contentViewPosition: ConstraintDescriptor {
         didSet { self.contentsDidChange() }
     }
 
@@ -99,6 +105,12 @@ open class Button: AnimateableView, Loggable {
         }
     }
 
+    public var spacing: CGFloat = 0 {
+        didSet {
+            self.contentsDidChange()
+        }
+    }
+
     public var keyEquivalent: String {
         get { self.mouseEventSource?.keyEquivalent ?? "" }
         set { self.mouseEventSource?.keyEquivalent = newValue }
@@ -146,7 +158,8 @@ open class Button: AnimateableView, Loggable {
     public init(title: String?,
                 attributedTitle: NSAttributedString?,
                 image: NSImage?,
-                imagePosition: SDKView.Position,
+                imagePosition: ConstraintDescriptor,
+                textPosition: ConstraintDescriptor,
                 spacing: CGFloat,
                 target: AnyObject?,
                 action: Selector?,
@@ -156,17 +169,16 @@ open class Button: AnimateableView, Loggable {
         self.callback = callback
         self.attributedTitle = attributedTitle
         self.imagePosition = imagePosition
+        self.textPosition = textPosition
         self.contentViewPosition = .center
         self.isHighlighted = false
         self.isEnabled = true
         self.target = target
         self.action = action
+        self.spacing = spacing
         super.init(frame: CGRect.zero)
 
-        if let contentView = Self.createContentView(withImage: image,
-                                                    title: title,
-                                                    imagePosition: imagePosition,
-                                                    spacing: spacing) {
+        if let contentView = self.createContentView() {
             self.setContentView(contentView)
         }
 
@@ -178,6 +190,7 @@ open class Button: AnimateableView, Loggable {
         self.title = nil
         self.attributedTitle = nil
         self.imagePosition = .center
+        self.textPosition = .center
         self.contentViewPosition = .center
         self.isHighlighted = false
         self.isEnabled = true
@@ -193,6 +206,7 @@ open class Button: AnimateableView, Loggable {
         self.attributedTitle = nil
         self.imagePosition = .center
         self.contentViewPosition = .center
+        self.textPosition = .center
         self.isHighlighted = false
         self.isEnabled = true
 
@@ -223,14 +237,11 @@ open class Button: AnimateableView, Loggable {
 
     open func contentsDidChange() {
         if let contentView = self.buttonContentsContainerView {
-            contentView.setContent(image: self.image,
-                                   title: self.title,
-                                   attributedTitle: self.attributedTitle,
-                                   imagePosition: self.imagePosition,
-                                   textPosition: self.contentViewPosition)
+            contentView.update()
+        } else {
+            self.updateContentsLayout()
+            self.updateContentViewForDisplay()
         }
-        self.updateContentsLayout()
-        self.updateContentViewForDisplay()
     }
 
     public func removeContentView() {
@@ -259,8 +270,7 @@ open class Button: AnimateableView, Loggable {
         }
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
-        self.updateContentViewConstraints()
+        self.contentsDidChange()
     }
 
     open func updateContentViewConstraints() {
@@ -269,7 +279,7 @@ open class Button: AnimateableView, Loggable {
         }
 
         view.deactivatePositionalContraints()
-        view.activateConstraint(forPosition: self.contentViewPosition)
+        view.activateConstraints(self.contentViewPosition)
 
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -304,9 +314,8 @@ open class Button: AnimateableView, Loggable {
     }
 
     public func updateContentViewForDisplay() {
-        if var highlightable = self.contentView as? Highlightable {
-            highlightable.isEnabled = self.isEnabled
-            highlightable.isHighlighted = (self.toggled || self.isHighlighted) && self.isEnabled
+        if let contentView = self.contentView as? AbstractButtonContentView {
+            contentView.update()
         }
     }
 
@@ -318,15 +327,8 @@ open class Button: AnimateableView, Loggable {
         self.invalidateIntrinsicContentSize()
     }
 
-    open class func createContentView(withImage image: NSImage?,
-                                      title: String?,
-                                      imagePosition: SDKView.Position = .center,
-                                      spacing: CGFloat = 0) -> SDKView? {
-        guard image != nil || (title != nil && title!.isEmpty == false) else {
-            return nil
-        }
-
-        return ButtonContentsView(withImage: image, title: title, imagePosition: imagePosition, spacing: spacing)
+    open func createContentView() -> SDKView? {
+        ButtonContentsView(withButton: self)
     }
 
     open func createMouseEventSource() -> MouseEventSource {

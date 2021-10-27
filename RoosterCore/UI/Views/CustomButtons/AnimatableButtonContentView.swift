@@ -21,7 +21,7 @@ open class AnimatableButtonContentView: AnimateableView, AbstractButtonContentVi
         self.button = button
     }
 
-    public func updateForPosition(_ position: SDKView.Position, inButton button: Button) {
+    public func updateForPosition(_ position: ConstraintDescriptor, inButton button: Button) {
         if let currentView = self.currentView {
             self.updateCurrentViewConstraints(currentView)
         }
@@ -86,10 +86,9 @@ open class AnimatableButtonContentView: AnimateableView, AbstractButtonContentVi
     }
 
     private func updateCurrentViewConstraints(_ view: SDKView) {
-        view.translatesAutoresizingMaskIntoConstraints = false
         if let button = self.button {
             view.deactivatePositionalContraints()
-            view.activateConstraint(forPosition: button.contentViewPosition)
+            view.activateConstraints(button.contentViewPosition)
         }
     }
 
@@ -132,5 +131,9 @@ open class AnimatableButtonContentView: AnimateableView, AbstractButtonContentVi
         }
 
         self.viewIndex = index
+    }
+
+    public func update() {
+        // TODO: ???
     }
 }

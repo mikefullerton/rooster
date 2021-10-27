@@ -32,10 +32,7 @@ open class SystemButton: Button {
         return button
     }
 
-    override open class func createContentView(withImage image: NSImage?,
-                                               title: String?,
-                                               imagePosition: SDKView.Position = .center,
-                                               spacing: CGFloat = 0) -> SDKView? {
+    override open func createContentView() -> SDKView? {
         nil
     }
 

@@ -73,7 +73,7 @@ public class MainWindowToolbar: NSTitlebarAccessoryViewController, Loggable {
         frame.size.width = (windowFrame.size.width + frameInWindow.origin.x) // origin is negative
         view.frame = frame
 
-        self.view.deactivateConstraint(forAnchor: self.titleViewContainer.centerXAnchor)
+        self.titleViewContainer.deactivateConstraint(forAnchor: self.titleViewContainer.centerXAnchor)
         NSLayoutConstraint.activate([
             self.titleViewContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -self.centerOffset)
         ])
@@ -106,7 +106,7 @@ public class MainWindowToolbar: NSTitlebarAccessoryViewController, Loggable {
     private func addRightSideButtons() {
         let view = self.rightSizeButtons
         self.view.addSubview(view)
-        view.activateConstraint(forPosition: .right)
+        view.activateConstraints(.trailing)
     }
 
     public lazy var titleView: SDKTextField = {

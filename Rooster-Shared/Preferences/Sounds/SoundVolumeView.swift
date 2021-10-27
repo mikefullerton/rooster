@@ -52,7 +52,7 @@ public class SoundVolumeView: PreferenceSlider {
 
     lazy var button: AnimateableButton = {
         let imageButton = AnimateableButton()
-        imageButton.contentViewPosition = .left
+        imageButton.contentViewPosition = .leading
         imageButton.contentViews = [
             self.imageView(withName: "speaker.slash"),
             self.imageView(withName: "speaker"),

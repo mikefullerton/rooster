@@ -47,7 +47,7 @@ public class MenuBarButtonView: MouseTrackingView, Loggable {
         super.init(frame: frame)
 
         self.addSubview(self.imageView)
-        self.imageView.activateConstraint(forPosition: .left)
+        self.imageView.activateConstraints(.leading)
 
         self.contentDidChange()
 
@@ -73,7 +73,7 @@ public class MenuBarButtonView: MouseTrackingView, Loggable {
         if !self.textField.stringValue.isEmpty {
             if self.textField.superview == nil {
                 self.addSubview(self.textField)
-                self.textField.activateConstraint(forPosition: .right)
+                self.textField.activateConstraints(.trailing)
             }
         } else if self.textField.superview != nil {
             self.textField.removeFromSuperview()

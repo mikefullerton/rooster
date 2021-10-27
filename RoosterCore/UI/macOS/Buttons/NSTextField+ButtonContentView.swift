@@ -9,7 +9,7 @@ import Cocoa
 import Foundation
 
 extension NSTextField: AbstractButtonContentView {
-    public func updateForPosition(_ position: SDKView.Position,
+    public func updateForPosition(_ position: ConstraintDescriptor,
                                   inButton button: Button) {
 //        switch(button.contentViewPosition) {
 //            case .left:
@@ -49,5 +49,9 @@ extension NSTextField: AbstractButtonContentView {
             self.heightAnchor.constraint(equalToConstant: self.intrinsicContentSize.height),
             self.centerYAnchor.constraint(equalTo: button.centerYAnchor)
         ])
+    }
+
+    public func update() {
+        // TODO: ???
     }
 }
