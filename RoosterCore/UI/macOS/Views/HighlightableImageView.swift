@@ -10,18 +10,20 @@ import Foundation
 
 open class HighlightableImageView: SizedImageView {
     private var originalImage: NSImage? {
-        didSet {
-            self.needsLayout = true
-            self.needsDisplay = true
-            self.invalidateIntrinsicContentSize()
-        }
+        didSet { self.updateImage() }
     }
 
-    public var highlightedColor: NSColor?
+    public var highlightedColor: NSColor? {
+        didSet { self.updateImage() }
+    }
 
-    public var disabledColor: NSColor?
+    public var disabledColor: NSColor? {
+        didSet { self.updateImage() }
+    }
 
-    public var normalColor: NSColor?
+    public var normalColor: NSColor? {
+        didSet { self.updateImage() }
+    }
 
     public var hightlightedImage: NSImage? {
         self.originalImage?.tint(color: self.highlightedColor ?? Theme(for: self).userChosenHighlightColor)

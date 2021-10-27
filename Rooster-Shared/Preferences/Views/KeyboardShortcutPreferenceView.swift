@@ -154,7 +154,7 @@ public class KeyboardListenerView: NSView, Highlightable {
 
     let fontSize = NSFont.labelFontSize * 2
 
-    private lazy var config = NSImage.SymbolConfiguration(pointSize: self.fontSize, weight: .regular, scale: .small)
+    private lazy var config = NSImage.SymbolConfiguration(pointSize: self.fontSize, weight: .semibold, scale: .small)
 
     lazy var commandImage = NSImage.image(withSystemSymbolName: "command", accessibilityDescription: "Command Key", symbolConfiguration: config)!
     lazy var optionImage = NSImage.image(withSystemSymbolName: "option", accessibilityDescription: "Option Key", symbolConfiguration: config)!
@@ -190,10 +190,18 @@ public class KeyboardListenerView: NSView, Highlightable {
         HighlightableImageView(image: self.shiftKey)
     ]
 
+    public var highlightedColor: SDKColor {
+        NSColor(calibratedWhite: 0.8, alpha: 1)
+    }
+
+    public var normalColor: SDKColor {
+        NSColor(calibratedWhite: 0.2, alpha: 0.8)
+    }
+
     public lazy var textField: HighlightableTextField = {
         let view = HighlightableTextField()
         view.isEditable = false
-        view.textColor = NSColor.selectedControlColor
+        view.textColor = self.highlightedColor
         view.font = NSFont.systemFont(ofSize: self.fontSize)
         view.alignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -237,7 +245,10 @@ public class KeyboardListenerView: NSView, Highlightable {
     private func setup() {
         self.sdkLayer.cornerRadius = 2.0
 
-        self.imageViews.forEach { $0.normalColor = NSColor.controlColor }
+        self.imageViews.forEach {
+            $0.highlightedColor = self.highlightedColor
+            $0.normalColor = self.normalColor
+        }
 
         self.addSubview(self.stackView, constraints: [ .center ])
         self.isFirstResponder = false
