@@ -14,12 +14,16 @@ import UIKit
 #endif
 
 public struct ConstraintDescriptor {
-    public static let leading = ConstraintDescriptor(withHorizontalAlignment: .leading, verticalAlignment: .center)
     public static let center = ConstraintDescriptor(withHorizontalAlignment: .center, verticalAlignment: .center)
-    public static let trailing = ConstraintDescriptor(withHorizontalAlignment: .trailing, verticalAlignment: .center)
-
     public static let centerTop = ConstraintDescriptor(withHorizontalAlignment: .center, verticalAlignment: .leading)
     public static let centerBottom = ConstraintDescriptor(withHorizontalAlignment: .center, verticalAlignment: .trailing)
+
+    public static let fill = ConstraintDescriptor(withHorizontalAlignment: .fill, verticalAlignment: .fill)
+    public static let fillTop = ConstraintDescriptor(withHorizontalAlignment: .fill, verticalAlignment: .leading)
+    public static let fillBottom = ConstraintDescriptor(withHorizontalAlignment: .fill, verticalAlignment: .trailing)
+
+    public static let leading = ConstraintDescriptor(withHorizontalAlignment: .leading, verticalAlignment: .center)
+    public static let trailing = ConstraintDescriptor(withHorizontalAlignment: .trailing, verticalAlignment: .center)
 
     public var horizontalAlignment: Alignment
     public var verticalAlignment: Alignment
@@ -52,12 +56,14 @@ extension ConstraintDescriptor {
         public static let leading = Alignment(withPosition: .leading)
         public static let center = Alignment(withPosition: .center)
         public static let trailing = Alignment(withPosition: .trailing)
+        public static let fill = Alignment(withPosition: .fill)
 
         public enum Position {
             case none
             case leading
             case center
             case trailing
+            case fill
 
             var opposite: Position {
                 switch self {
@@ -69,6 +75,9 @@ extension ConstraintDescriptor {
 
                 case .center:
                     return .center
+
+                case .fill:
+                    return .fill
 
                 case .none:
                     return .none
@@ -132,6 +141,10 @@ extension ConstraintDescriptor {
 
         case .center:
             constraints.append(view.centerXAnchor.constraint(equalTo: superview.centerXAnchor, constant: self.horizontalAlignment.constant))
+
+        case .fill:
+            constraints.append(view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: self.horizontalAlignment.constant))
+            constraints.append(view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: self.horizontalAlignment.constant))
         }
 
         switch self.verticalAlignment.position {
@@ -146,6 +159,10 @@ extension ConstraintDescriptor {
 
         case .trailing:
             constraints.append(view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: self.verticalAlignment.constant))
+
+        case .fill:
+            constraints.append(view.topAnchor.constraint(equalTo: superview.topAnchor, constant: self.horizontalAlignment.constant))
+            constraints.append(view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: self.horizontalAlignment.constant))
         }
 
         return constraints

@@ -13,25 +13,16 @@ import Cocoa
 import UIKit
 #endif
 
-public class PreferencesViewController: SDKViewController {
+public class PreferencesViewController: SDKViewController, PreferencesToolbarDelegate {
+    let insets = SDKEdgeInsets.ten
+
     private lazy var bottomBar = BottomBar(frame: CGRect.zero)
 
-    private static let windowSize = CGSize(width: 800, height: 600)
+    private static let windowSize = CGSize(width: 800, height: 800)
 
-    private lazy var toolbar: SimpleStackView = {
-        let view = SimpleStackView(direction: .horizontal, insets: SDKEdgeInsets.ten, spacing: SDKOffset.zero) // SDKOffset(horizontal: 4, vertical: 4)
-        var buttons: [Button] = []
-
-        for prefPanel in self.preferencePanels {
-            buttons.append(prefPanel.toolbarButton)
-
-            prefPanel.callback = { [weak self] panel in
-                self?.setCurrentPanel(panel)
-            }
-        }
-
-        view.setContainedViews(buttons)
-
+    private lazy var toolbar: PreferencesToolbar = {
+        let view = PreferencesToolbar(withPreferencePanels: self.preferencePanels)
+        view.delegate = self
         return view
     }()
 
@@ -71,9 +62,11 @@ public class PreferencesViewController: SDKViewController {
         self.init()
     }
 
+    public func preferencesToolbar(_ toolbar: PreferencesToolbar, panelDidChange panel: PreferencePanel) {
+        self.setCurrentPanel(panel)
+    }
+
     func setCurrentPanel(_ panel: PreferencePanel) {
-
-
         if let currentViewController = self.currentPreferencePanel {
             if panel == currentViewController {
                 return
@@ -129,7 +122,7 @@ public class PreferencesViewController: SDKViewController {
 
     private func addTopBar() {
         self.view.addSubview(self.toolbar)
-        self.toolbar.activateConstraints(.centerTop)
+        self.toolbar.activateConstraints(.fillTop)
     }
 
     private func addBottomBar() {
@@ -138,12 +131,10 @@ public class PreferencesViewController: SDKViewController {
         self.bottomBar.doneButton.target = self
         self.bottomBar.doneButton.action = #selector(doneButtonPressed(_:))
 
-        let leftButton = self.bottomBar.addLeftButton(title: "RESET".localized)
+        let leftButton = self.bottomBar.addLeftButton(title: "RESET_TO_DEFAULTS".localized)
         leftButton.target = self
         leftButton.action = #selector(resetButtonPressed(_:))
     }
-
-    let insets = SDKEdgeInsets.ten
 
     private func setCurrentView(_ view: SDKView) {
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -165,29 +156,5 @@ public class PreferencesViewController: SDKViewController {
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
         view.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         view.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-    }
-}
-
-extension PreferencesViewController: NSToolbarDelegate {
-    public func toolbar(_ toolbar: NSToolbar,
-                        itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
-                        willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-        if let index = self.preferencePanels.firstIndex(where: { $0.toolBarItem.itemIdentifier == itemIdentifier }) {
-            let item = self.preferencePanels[index].toolBarItem
-            return item
-        }
-        return nil
-    }
-
-    public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        self.preferencePanels.map { $0.toolBarItem.itemIdentifier }
-    }
-
-    public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        self.preferencePanels.map { $0.toolBarItem.itemIdentifier }
-    }
-
-    public func toolbarSelectableItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        self.preferencePanels.map { $0.toolBarItem.itemIdentifier }
     }
 }

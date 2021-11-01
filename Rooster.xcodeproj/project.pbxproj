@@ -669,6 +669,9 @@
 		B2E968292603A2A5002D9955 /* EKEvent+NullableOccurenceDate.h in Headers */ = {isa = PBXBuildFile; fileRef = B2E968262603A2A5002D9955 /* EKEvent+NullableOccurenceDate.h */; };
 		B2E9682A2603A2A5002D9955 /* EKEvent+NullableOccurenceDate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E968272603A2A5002D9955 /* EKEvent+NullableOccurenceDate.m */; };
 		B2E9682B2603A2A5002D9955 /* EKEvent+NullableOccurenceDate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E968272603A2A5002D9955 /* EKEvent+NullableOccurenceDate.m */; };
+		B2EE1D7E273054070013B520 /* PreferencesToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EE1D7D273054070013B520 /* PreferencesToolbar.swift */; };
+		B2EE1D7F273054070013B520 /* PreferencesToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EE1D7D273054070013B520 /* PreferencesToolbar.swift */; };
+		B2EE1D80273054070013B520 /* PreferencesToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EE1D7D273054070013B520 /* PreferencesToolbar.swift */; };
 		B2EFF9612606337D0038AE5A /* NSImageView+ButtonContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EFF9602606337C0038AE5A /* NSImageView+ButtonContentView.swift */; };
 		B2EFF963260633930038AE5A /* NSTextView+ButtonContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EFF962260633920038AE5A /* NSTextView+ButtonContentView.swift */; };
 		B2EFF965260634000038AE5A /* NSTextField+ButtonContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EFF964260634000038AE5A /* NSTextField+ButtonContentView.swift */; };
@@ -1188,6 +1191,7 @@
 		B2EB268925C86C7300906E41 /* Rooster_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rooster_macOS.entitlements; sourceTree = "<group>"; };
 		B2EB268C25C86C7300906E41 /* dsa_pub.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		B2EB268D25C86C7300906E41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B2EE1D7D273054070013B520 /* PreferencesToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesToolbar.swift; sourceTree = "<group>"; };
 		B2EFF9602606337C0038AE5A /* NSImageView+ButtonContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImageView+ButtonContentView.swift"; sourceTree = "<group>"; };
 		B2EFF962260633920038AE5A /* NSTextView+ButtonContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextView+ButtonContentView.swift"; sourceTree = "<group>"; };
 		B2EFF964260634000038AE5A /* NSTextField+ButtonContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextField+ButtonContentView.swift"; sourceTree = "<group>"; };
@@ -1325,6 +1329,7 @@
 				B26F6B4225B7C47400EA2057 /* PreferencesViewController.swift */,
 				B26F6B4325B7C47400EA2057 /* Sounds */,
 				B259A38125C9C45500CF4C95 /* Views */,
+				B2EE1D7D273054070013B520 /* PreferencesToolbar.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -2809,6 +2814,7 @@
 				B26D1AF025E972E200B158C5 /* SoundRepeatView.swift in Sources */,
 				B26D1AEE25E972E200B158C5 /* EventListViewController.swift in Sources */,
 				B26D1B2C25E972E200B158C5 /* CalendarItemListViewCell.swift in Sources */,
+				B2EE1D7F273054070013B520 /* PreferencesToolbar.swift in Sources */,
 				B26D1AE825E972E200B158C5 /* CalendarToolbarView.swift in Sources */,
 				B21E7BB425ED71EA00FCA802 /* NSOpenPanel+DeveloperUtils.swift in Sources */,
 				B26D1AD725E972E200B158C5 /* AppControllers.swift in Sources */,
@@ -3292,6 +3298,7 @@
 				B20C9A0C262F244100CAB8EC /* PreferencesStorage.swift in Sources */,
 				B22AC1D0261E05A300FA043C /* AppIconController.swift in Sources */,
 				B20C07A52609026800796685 /* DayBannerRow.swift in Sources */,
+				B2EE1D80273054070013B520 /* PreferencesToolbar.swift in Sources */,
 				B2E224EA25B62F550052758C /* MainWindowController.swift in Sources */,
 				B2A0084F261E87EA00E6707C /* BannerRow.swift in Sources */,
 				B27B4DEC2613946500DE5028 /* AppLaunchCoordinator.swift in Sources */,
@@ -3397,6 +3404,7 @@
 				B255A9C42625CF9500D3F2AF /* Assets.swift in Sources */,
 				B26D1B4C25E972E300B158C5 /* PreferenceSlider.swift in Sources */,
 				B26D1B5025E972E300B158C5 /* StartDelayView.swift in Sources */,
+				B2EE1D7E273054070013B520 /* PreferencesToolbar.swift in Sources */,
 				B26D1B4925E972E300B158C5 /* ReminderListViewCell.swift in Sources */,
 				B24ED37A25BF362100F0B809 /* CountDownHeaderView.swift in Sources */,
 				B29105232627C47200E63693 /* MenuBarToolBar.swift in Sources */,

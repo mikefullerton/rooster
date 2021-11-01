@@ -130,7 +130,7 @@ public class CalendarChooserViewController: SDKViewController, CalendarToolbarVi
         self.bottomBar.doneButton.target = self
         self.bottomBar.doneButton.action = #selector(doneButtonPressed(_:))
 
-        let leftButton = self.bottomBar.addLeftButton(title: "RESET".localized)
+        let leftButton = self.bottomBar.addLeftButton(title: "TOGGLE_ALL".localized)
         leftButton.target = self
         leftButton.action = #selector(resetButtonPressed(_:))
     }

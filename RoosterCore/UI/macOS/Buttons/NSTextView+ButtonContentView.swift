@@ -22,6 +22,9 @@ extension NSTextView: AbstractButtonContentView {
         case .trailing:
             self.alignment = .right
 
+        case .fill:
+            self.alignment = .left
+
         case .none:
             break
         }

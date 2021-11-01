@@ -45,4 +45,6 @@ public protocol ThemeProtocol {
     #endif
 
     var userChosenHighlightColor: SDKColor { get }
+
+    var seperatorColor: SDKColor { get }
 }

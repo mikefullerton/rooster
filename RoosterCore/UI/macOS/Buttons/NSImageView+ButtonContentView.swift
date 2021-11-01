@@ -21,6 +21,9 @@ extension NSImageView: AbstractButtonContentView {
         case .trailing:
             self.imageAlignment = .alignRight
 
+        case .fill:
+            self.imageAlignment = .alignCenter
+
         case .none:
             break
         }

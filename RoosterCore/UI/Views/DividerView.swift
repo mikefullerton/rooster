@@ -22,7 +22,7 @@ public class DividerView: ListViewAdornmentView {
         super.init(frame: CGRect.zero)
 
         let view = SDKView()
-        view.sdkBackgroundColor = Theme(for: view).borderColor
+        view.sdkBackgroundColor = Theme(for: self).seperatorColor
 
         self.addSubview(view)
 
@@ -31,7 +31,7 @@ public class DividerView: ListViewAdornmentView {
         let indent: CGFloat = 0
 
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(indent * 2)),
+//            view.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(indent * 2)),
             view.heightAnchor.constraint(equalToConstant: 1),
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: indent),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: indent),

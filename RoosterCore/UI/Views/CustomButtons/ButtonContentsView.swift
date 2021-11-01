@@ -164,6 +164,9 @@ open class ButtonContentsView: AnimateableView, AbstractButtonContentView {
             case .leading:
                 textField.alignment = .left
 
+            case .fill:
+                textField.alignment = .left
+
             case .none:
                 break
             }

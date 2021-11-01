@@ -37,7 +37,7 @@ open class Button: AnimateableView, Loggable {
 
     public private(set) var contentView: NSView?
 
-    public var toggled: Bool = false {
+    public var toggled = false {
         didSet { self.contentsDidChange() }
     }
 

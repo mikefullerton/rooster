@@ -45,6 +45,8 @@ public struct LightTheme: ThemeProtocol {
     public var tertiaryLabelColor: SDKColor { SDKColor.tertiaryLabelColor }
 
     public var userChosenHighlightColor: SDKColor { NSColor.selectedControlColor }
+
+    public var seperatorColor: SDKColor { SDKColor.separatorColor }
 }
 
 public struct DarkTheme: ThemeProtocol {
@@ -71,6 +73,8 @@ public struct DarkTheme: ThemeProtocol {
     public var tertiaryLabelColor: SDKColor { SDKColor.tertiaryLabelColor }
 
     public var userChosenHighlightColor: SDKColor { NSColor.selectedControlColor }
+
+    public var seperatorColor: SDKColor { SDKColor.separatorColor }
 
 //    var windowBackgroundColor: SDKColor { SDKColor.systemBackground }
 //
