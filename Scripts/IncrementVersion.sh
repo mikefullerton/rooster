@@ -118,7 +118,7 @@ function write_build_number_to_file() {
 
 function stage_git_file() {
 
-    local STAGE_FILE_PATH=$0
+    local STAGE_FILE_PATH=$1
 
     echo "# staging : '${STAGE_FILE_PATH}'"
 
