@@ -120,7 +120,7 @@ function stage_git_file() {
 
     local STAGE_FILE_PATH=$0
 
-    echo "# staging : '{$STAGE_FILE_PATH}'"
+    echo "# staging : '${STAGE_FILE_PATH}'"
 
     git add "${STAGE_FILE_PATH}" || {
         echo "Adding ${STAGE_FILE_PATH} to git failed"
