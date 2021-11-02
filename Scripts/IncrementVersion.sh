@@ -24,8 +24,7 @@ if [[ ! -d "${ROOT_PATH}/Rooster.xcodeproj" ]]; then
     exit 1
 fi
 
-echo "Found root path: ${ROOT_PATH}"
-
+echo "# Found root path: ${ROOT_PATH}"
 
 function find_rooster_core_info_file_path() {
     local ROOSTER_CORE_OTHER_FILES_PATH="`( cd "${ROOT_PATH}/RoosterCore/Other Files" && pwd )`" || {
@@ -40,18 +39,18 @@ function find_rooster_core_info_file_path() {
         exit 1
     fi
 
-    echo "Found Rooster core info file: ${ROOSTER_CORE_INFO_FILE_PATH}"
+    echo "# Found Rooster core info file: ${ROOSTER_CORE_INFO_FILE_PATH}"
 }
 
 function find_app_info_file_path() {
-    APP_INFO_FILE_PATH = "${ROOT_PATH}/Other Files/info.plist"
+    APP_INFO_FILE_PATH="${ROOT_PATH}/Rooster-macOS/Other Files/info.plist"
 
     if [[ ! -f "${APP_INFO_FILE_PATH}" ]]; then
         echo "Can't find app .info file: ${APP_INFO_FILE_PATH}"
         exit 1
     fi
 
-    echo "Found app info file: ${APP_INFO_FILE_PATH}"
+    echo "# Found app info file: ${APP_INFO_FILE_PATH}"
 }
 
 function check_git_status() {
@@ -62,7 +61,7 @@ function check_git_status() {
         exit 1
     fi
 
-    echo "Git status is ok, no pending modifications found..."
+    echo "# Git status is ok, no pending modifications found..."
 }
 
 function get_version_number() {
@@ -113,8 +112,8 @@ function write_build_number_to_file() {
         exit 1
     }
  
-    echo "Wrote ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER} to CFBundleShortVersionString in ${FILE_PATH}"
-    echo "Wrote ${REVISION_NUMBER} to CFBundleVersion in ${FILE_PATH}"
+    echo "# Wrote ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER} to CFBundleShortVersionString in ${FILE_PATH}"
+    echo "# Wrote ${REVISION_NUMBER} to CFBundleVersion in ${FILE_PATH}"
 }
 
 function update_git_repo() {
@@ -148,14 +147,14 @@ function update_git_repo() {
         exit 1
     }
 
-    echo "Tagged release ok: ${GIT_TAG}"
+    echo "# Tagged release ok: ${GIT_TAG}"
 }
 
 function update_revision_number() {
-    echo "Current Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
+    echo "# Current Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
     ((REVISION_NUMBER+=1))
 
-    echo "New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
+    echo "# New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
 
     write_build_number_to_file "${APP_INFO_FILE_PATH}"
 
