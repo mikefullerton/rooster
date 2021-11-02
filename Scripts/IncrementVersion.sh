@@ -116,20 +116,25 @@ function write_build_number_to_file() {
     echo "# Wrote CFBundleVersion='${REVISION_NUMBER}' in ${FILE_PATH}"
 }
 
+function stage_git_file() {
+
+    local STAGE_FILE_PATH=$0
+
+    echo "# staging : '{$STAGE_FILE_PATH}'"
+
+    git add "${STAGE_FILE_PATH}" || {
+        echo "Adding ${STAGE_FILE_PATH} to git failed"
+        exit 1
+    }
+}
+
 function update_git_repo() {
     set -x
 
     cd "${ROOT_DIR}"
 
-#    git add "${APP_INFO_FILE_PATH}" || {
-#        echo "Adding ${APP_INFO_FILE_PATH} to git failed"
-#        exit 1
-#    }
-
-    git add "${ROOSTER_CORE_INFO_FILE_PATH}" || {
-        echo "Adding ${ROOSTER_CORE_INFO_FILE_PATH} to git failed"
-        exit 1
-    }
+    stage_git_file "${APP_INFO_FILE_PATH}"
+    stage_git_file "${ROOSTER_CORE_INFO_FILE_PATH}"
 
     git status
 
