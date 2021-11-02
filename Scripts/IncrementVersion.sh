@@ -133,6 +133,8 @@ function update_git_repo() {
 
     git status
 
+    exit 0
+
     GIT_TAG="v${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
 
     git commit -m "Updated plist files for release: ${GIT_TAG}" || {
