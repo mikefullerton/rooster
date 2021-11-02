@@ -122,10 +122,12 @@ function stage_git_file() {
 
     echo "# staging : '${STAGE_FILE_PATH}'"
 
-    git add "${STAGE_FILE_PATH}" || {
-        echo "Adding ${STAGE_FILE_PATH} to git failed"
-        exit 1
-    }
+    git add "${STAGE_FILE_PATH}"
+
+#    git add "${STAGE_FILE_PATH}" || {
+#        echo "Adding ${STAGE_FILE_PATH} to git failed"
+#        exit 1
+#    }
 }
 
 function update_git_repo() {
