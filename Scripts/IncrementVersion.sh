@@ -138,8 +138,6 @@ function update_git_repo() {
 
     git status
 
-    exit 0
-
     GIT_TAG="v${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
 
     git commit -m "Updated plist files for release: ${GIT_TAG}" || {
@@ -157,7 +155,7 @@ function update_git_repo() {
     echo "# Tagged release ok: ${GIT_TAG}"
 }
 
-function update_revision_number() {
+function write_revision_number_to_info_files() {
     echo "# Current Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
     ((REVISION_NUMBER+=1))
 
@@ -178,10 +176,7 @@ get_version_number
 
 get_revision_number
 
-update_revision_number
-
-echo "${APP_INFO_FILE_PATH}"
-echo "${ROOSTER_CORE_INFO_FILE_PATH}"
+write_revision_number_to_info_files
 
 update_git_repo
 
