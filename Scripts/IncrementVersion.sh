@@ -121,10 +121,10 @@ function update_git_repo() {
 
     cd "${ROOT_DIR}"
 
-    git add "${APP_INFO_FILE_PATH}" || {
-        echo "Adding ${APP_INFO_FILE_PATH} to git failed"
-        exit 1
-    }
+#    git add "${APP_INFO_FILE_PATH}" || {
+#        echo "Adding ${APP_INFO_FILE_PATH} to git failed"
+#        exit 1
+#    }
 
     git add "${ROOSTER_CORE_INFO_FILE_PATH}" || {
         echo "Adding ${ROOSTER_CORE_INFO_FILE_PATH} to git failed"
