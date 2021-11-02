@@ -129,7 +129,7 @@ function stage_git_file() {
 }
 
 function update_git_repo() {
-    set -x
+#    set -x
 
     cd "${ROOT_DIR}"
 
