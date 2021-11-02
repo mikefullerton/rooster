@@ -112,8 +112,8 @@ function write_build_number_to_file() {
         exit 1
     }
  
-    echo "# Wrote ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER} to CFBundleShortVersionString in ${FILE_PATH}"
-    echo "# Wrote ${REVISION_NUMBER} to CFBundleVersion in ${FILE_PATH}"
+    echo "# Wrote CFBundleShortVersionString='${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}' in ${FILE_PATH}"
+    echo "# Wrote CFBundleVersion='${REVISION_NUMBER}' in ${FILE_PATH}"
 }
 
 function update_git_repo() {
