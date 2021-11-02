@@ -66,7 +66,7 @@ public class DeviceInspector: Loggable {
 
         repeat {
             if devices != nil {
-                free(devices)
+                free(devices!)
                 devices = nil
             }
             devices = malloc(Int(dataSize))
@@ -83,8 +83,9 @@ public class DeviceInspector: Loggable {
                 outArray.append(current.pointee)
             }
         }
-
-        free(devices)
+        if devices != nil {
+            free(devices!)
+        }
 
         return outArray
     }()
