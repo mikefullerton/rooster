@@ -180,6 +180,9 @@ get_revision_number
 
 update_revision_number
 
+echo "${APP_INFO_FILE_PATH}"
+echo "${ROOSTER_CORE_INFO_FILE_PATH}"
+
 update_git_repo
 
 
