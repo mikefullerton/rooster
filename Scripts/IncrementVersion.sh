@@ -10,19 +10,49 @@
 MY_PATH="`dirname "$0"`"
 MY_PATH="`( cd "$MY_PATH" && pwd )`"
 MY_NAME="`basename "$0"`"
+ROOT_PATH="`( cd "$MY_PATH/.." && pwd )`"
 
 VERSION_NUMBER=0
 BUILD_NUMBER=0
 REVISION_NUMBER=0
 
-INFO_FILE_PATH="${MY_PATH}/Info.plist"
+APP_INFO_FILE_PATH=""
+ROOSTER_CORE_INFO_FILE_PATH=""
 
-FRAMEWORK_PATH="`( cd "$MY_PATH/../../RoosterCore/Other Files" && pwd )`" || {
-    echo "Can't find plugin dir"
+if [[ ! -d "${ROOT_PATH}/Rooster.xcodeproj" ]]; then
+    echo "unable to find root dir of rooster repo in ${ROOT_PATH}"
     exit 1
+fi
+
+echo "Found root path: ${ROOT_PATH}"
+
+
+function find_rooster_core_info_file_path() {
+    local ROOSTER_CORE_OTHER_FILES_PATH="`( cd "${ROOT_PATH}/RoosterCore/Other Files" && pwd )`" || {
+        echo "Can't find RoosterCore 'other files' dir (contains RoosterCore .info file)"
+        exit 1
+    }
+
+    ROOSTER_CORE_INFO_FILE_PATH="${ROOSTER_CORE_OTHER_FILES_PATH}/Info.plist"
+
+    if [[ ! -f "${ROOSTER_CORE_INFO_FILE_PATH}" ]]; then
+        echo "Can't find RoosterCore info file: ${ROOSTER_CORE_INFO_FILE_PATH}"
+        exit 1
+    fi
+
+    echo "Found Rooster core info file: ${ROOSTER_CORE_INFO_FILE_PATH}"
 }
 
-FRAMEWORK_INFO_FILE_PATH="${FRAMEWORK_PATH}/Info.plist"
+function find_app_info_file_path() {
+    APP_INFO_FILE_PATH = "${ROOT_PATH}/Other Files/info.plist"
+
+    if [[ ! -f "${APP_INFO_FILE_PATH}" ]]; then
+        echo "Can't find app .info file: ${APP_INFO_FILE_PATH}"
+        exit 1
+    fi
+
+    echo "Found app info file: ${APP_INFO_FILE_PATH}"
+}
 
 function check_git_status() {
     GIT_STATUS="`( cd "$MY_PATH/.." && git status )`"
@@ -31,11 +61,13 @@ function check_git_status() {
         echo "Please commit changes before building a release!"
         exit 1
     fi
+
+    echo "Git status is ok, no pending modifications found..."
 }
 
 function get_version_number() {
-    local SHORT_VERSION="$(defaults read "${INFO_FILE_PATH}" CFBundleShortVersionString)" || {
-        echo "Unable to read CFBundleShortVersionString from file: ${INFO_FILE_PATH}"
+    local SHORT_VERSION="$(defaults read "${APP_INFO_FILE_PATH}" CFBundleShortVersionString)" || {
+        echo "Unable to read CFBundleShortVersionString from file: ${APP_INFO_FILE_PATH}"
         exit 1
     }
 
@@ -50,13 +82,16 @@ function get_version_number() {
 
     VERSION_NUMBER=${TOKENS[0]}
     BUILD_NUMBER=${TOKENS[1]}
+
+#    echo "# Found existing version number: ${VERSION_NUMBER}.${BUILD_NUMBER}"
 }
 
 function get_revision_number() {
-    REVISION_NUMBER="$(defaults read "${INFO_FILE_PATH}" CFBundleVersion)" || {
-        echo "Unable to read CFBundleVersion from file: ${INFO_FILE_PATH}"
+    REVISION_NUMBER="$(defaults read "${APP_INFO_FILE_PATH}" CFBundleVersion)" || {
+        echo "Unable to read CFBundleVersion from file: ${APP_INFO_FILE_PATH}"
         exit 1
     }
+#    echo "# Found existing revisiion number: ${REVISION_NUMBER}"
 }
 
 function write_build_number_to_file() {
@@ -82,48 +117,65 @@ function write_build_number_to_file() {
     echo "Wrote ${REVISION_NUMBER} to CFBundleVersion in ${FILE_PATH}"
 }
 
+function update_git_repo() {
+    set -x
+
+    cd "${ROOT_DIR}"
+
+    git add "${APP_INFO_FILE_PATH}" || {
+        echo "Adding ${APP_INFO_FILE_PATH} to git failed"
+        exit 1
+    }
+
+    git add "${ROOSTER_CORE_INFO_FILE_PATH}" || {
+        echo "Adding ${ROOSTER_CORE_INFO_FILE_PATH} to git failed"
+        exit 1
+    }
+
+    git status
+
+    GIT_TAG="v${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
+
+    git commit -m "Updated plist files for release: ${GIT_TAG}" || {
+        echo "Commiting updated plist files failed"
+        exit 1
+    }
+
+    echo "Committed plist files to git ok"
+
+    git tag -a "${GIT_TAG}" -m "${GIT_TAG}" || {
+        echo "Tagging release failed"
+        exit 1
+    }
+
+    echo "Tagged release ok: ${GIT_TAG}"
+}
+
+function update_revision_number() {
+    echo "Current Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
+    ((REVISION_NUMBER+=1))
+
+    echo "New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
+
+    write_build_number_to_file "${APP_INFO_FILE_PATH}"
+
+    write_build_number_to_file "${ROOSTER_CORE_INFO_FILE_PATH}"
+}
+
+find_rooster_core_info_file_path
+
+find_app_info_file_path
+
 check_git_status
 
 get_version_number
+
 get_revision_number
 
-echo "Current Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
-((REVISION_NUMBER+=1))
+update_revision_number
 
-echo "New Version: ${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
+update_git_repo
 
-write_build_number_to_file "${INFO_FILE_PATH}"
 
-write_build_number_to_file "${FRAMEWORK_INFO_FILE_PATH}"
 
-set -x
-
-cd "${MY_PATH}/.."
-git add "${INFO_FILE_PATH}" || {
-    echo "Adding ${INFO_FILE_PATH} to git failed"
-    exit 1
-}
-
-git add "${FRAMEWORK_INFO_FILE_PATH}" || {
-    echo "Adding ${PLUGIN_INFO_FILE_PATH} to git failed"
-    exit 1
-}
-
-git status
-
-GIT_TAG="v${VERSION_NUMBER}.${BUILD_NUMBER}.${REVISION_NUMBER}"
-
-git commit -m "Updated plist files for release: ${GIT_TAG}" || {
-    echo "Commiting updated plist files failed"
-    exit 1
-}
-
-echo "Committed plist files to git ok"
-
-git tag -a "${GIT_TAG}" -m "${GIT_TAG}" || {
-    echo "Tagging release failed"
-    exit 1
-}
-
-echo "Tagged release ok: ${GIT_TAG}"
 
