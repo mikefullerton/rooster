@@ -43,7 +43,7 @@ function find_rooster_core_info_file_path() {
 }
 
 function find_app_info_file_path() {
-    APP_INFO_FILE_PATH="${ROOT_PATH}/Rooster-macOS/Other Files/info.plist"
+    APP_INFO_FILE_PATH="${ROOT_PATH}/Rooster-macOS/Other Files/Info.plist"
 
     if [[ ! -f "${APP_INFO_FILE_PATH}" ]]; then
         echo "Can't find app .info file: ${APP_INFO_FILE_PATH}"
@@ -122,12 +122,10 @@ function stage_git_file() {
 
     echo "# staging : '${STAGE_FILE_PATH}'"
 
-    git add "${STAGE_FILE_PATH}"
-
-#    git add "${STAGE_FILE_PATH}" || {
-#        echo "Adding ${STAGE_FILE_PATH} to git failed"
-#        exit 1
-#    }
+    git add "${STAGE_FILE_PATH}" || {
+        echo "Adding ${STAGE_FILE_PATH} to git failed"
+        exit 1
+    }
 }
 
 function update_git_repo() {
