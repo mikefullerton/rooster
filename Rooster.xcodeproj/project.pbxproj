@@ -2748,6 +2748,7 @@
 		};
 		B239FFEA260A789B009C01C8 /* Run Swift Linter */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

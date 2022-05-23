@@ -10,7 +10,7 @@ import Foundation
 import Cocoa
 
 extension NSView {
-    open func rotate(amount: CGFloat) {
+    public func rotate(amount: CGFloat) {
         if let layer = self.layer, let animatorLayer = self.animator().layer {
             layer.position = CGPoint(x: layer.frame.midX, y: layer.frame.midY)
             layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
