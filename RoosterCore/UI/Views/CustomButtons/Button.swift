@@ -99,7 +99,7 @@ open class Button: AnimateableView, Loggable {
         self.buttonContentsContainerView?.textField
     }
 
-    public var title: String? = nil {
+    public var title: String? {
         didSet {
             self.contentsDidChange()
         }

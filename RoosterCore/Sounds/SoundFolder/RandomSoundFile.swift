@@ -18,8 +18,6 @@ public class RandomSoundFile: SoundFile {
         true
     }
 
-    // swiftlint:disable unused_setter_value
-
     // private(set) 
     override public var relativePath: URL {
         get { self.actualSoundFile.relativePath }

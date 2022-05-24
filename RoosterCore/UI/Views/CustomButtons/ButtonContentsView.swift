@@ -16,11 +16,11 @@ import UIKit
 open class ButtonContentsView: AnimateableView, AbstractButtonContentView {
     private weak var button: Button?
 
-    public private(set) var imageView: NSImageView? = nil {
+    public private(set) var imageView: NSImageView? {
         didSet { oldValue?.removeFromSuperview() }
     }
 
-    public private(set) var textField: NSTextField? = nil {
+    public private(set) var textField: NSTextField? {
         didSet { oldValue?.removeFromSuperview() }
     }
 

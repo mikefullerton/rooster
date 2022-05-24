@@ -90,8 +90,6 @@ extension ScheduleItem {
 }
 
 extension String {
-    // swiftlint:disable legacy_objc_type
-
     func detectURLs() -> [URL] {
         var urls: [URL] = []
         if let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) {

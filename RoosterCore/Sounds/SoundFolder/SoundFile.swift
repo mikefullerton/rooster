@@ -22,7 +22,6 @@ public class SoundFile: SoundFolderItem, Codable, Equatable, NSCopying {
         print("New SoundFile relative path: \(self.relativePath.path)")
     }
 
-    // swiftlint:disable unused_setter_value
     override public var absolutePath: URL? {
         get {
             if let rootFolderPath = self.rootFolder?.absolutePath {

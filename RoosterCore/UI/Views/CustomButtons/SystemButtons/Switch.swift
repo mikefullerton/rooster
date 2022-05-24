@@ -8,8 +8,6 @@
 import AppKit
 import Foundation
 
-// swiftlint: disable identifier_name
-
 open class Switch: SystemButton {
     public enum State: Int {
         case unknown = -1
