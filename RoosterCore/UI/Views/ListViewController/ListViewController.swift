@@ -59,15 +59,15 @@ open class ListViewController: SDKViewController,
         if self.sizeBehavior.contains(.modelSetsPreferredContentHeight) {
             size.height = viewModelSize.height
 
-            assert(size.height != 0, "height is zero")
-            assert(size.height != NSView.noIntrinsicMetric, "no height set in model")
+//            assert(size.height != 0, "height is zero")
+//            assert(size.height != NSView.noIntrinsicMetric, "no height set in model")
         }
 
         if self.sizeBehavior.contains(.modelSetsPreferredContentWidth) {
             size.width = viewModelSize.width
 
-            assert(size.width != 0, "width is zero")
-            assert(size.width != NSView.noIntrinsicMetric, "no width set in model")
+//            assert(size.width != 0, "width is zero")
+//            assert(size.width != NSView.noIntrinsicMetric, "no width set in model")
         }
 
         if size != self.preferredContentSize {

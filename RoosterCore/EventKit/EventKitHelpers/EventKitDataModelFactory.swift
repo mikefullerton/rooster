@@ -70,12 +70,7 @@ extension EventKitDataModelFactory {
                     continue
                 }
 
-                let event = EventKitEvent(ekEvent: ekEvent, calendar: calendar);
-                
-                if event.participationStatus.isDeclined {
-                    continue;
-                }
-                
+                let event = EventKitEvent(ekEvent: ekEvent, calendar: calendar)
                 events.append(event)
             }
 
