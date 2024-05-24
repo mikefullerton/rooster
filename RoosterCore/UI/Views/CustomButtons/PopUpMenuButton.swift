@@ -8,6 +8,7 @@
 import Foundation
 
 import Cocoa
+import AppKit
 
 open class PopUpMenuButton: Button {
     private var popupMenu: NSMenu?

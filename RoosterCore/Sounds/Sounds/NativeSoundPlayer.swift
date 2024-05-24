@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 public class NativeSoundPlayer: NSObject, SoundPlayerProtocol, NSSoundDelegate, Loggable {
     private weak var soundFile: SoundFile?

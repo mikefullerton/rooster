@@ -8,6 +8,7 @@
 import Foundation
 
 import Cocoa
+import AppKit
 
 extension NSViewController {
     public func showInModalWindow(centeredOnWindow window: NSWindow) {

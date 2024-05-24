@@ -6,6 +6,7 @@
 //
 import Cocoa
 import Foundation
+import AppKit
 
 public class KeyboardShortcutInterceptor: Loggable {
     private var eventTap: CFMachPort?

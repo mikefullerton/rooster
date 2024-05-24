@@ -8,6 +8,8 @@
 import Foundation
 #if os(macOS)
 import Cocoa
+import AppKit
+import CoreGraphics
 #else
 import UIKit
 #endif

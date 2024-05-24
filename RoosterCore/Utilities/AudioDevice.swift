@@ -8,6 +8,7 @@
 import AudioToolbox
 import Cocoa
 import Foundation
+import AppKit
 
 public class AudioDevices: Loggable {
     public init() {

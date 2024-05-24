@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 public protocol KeyUpEventTextFieldDelegate: NSTextFieldDelegate {
     func textField(_ textField: NSTextField, keyUpEvent: NSEvent)

@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 public struct SavedWindowState: Codable, Equatable, Loggable, CustomStringConvertible {
     public let windowFrame: CGRect

@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 public struct Constraint: Identifiable, CustomStringConvertible, Equatable {
     public enum ID: String {

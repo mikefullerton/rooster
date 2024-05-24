@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 open class SizedTextField: NSTextField {
     public var preferredSize = CGSize.noIntrinsicMetric

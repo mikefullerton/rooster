@@ -6,8 +6,8 @@
 //
 
 import Foundation
-
 import Cocoa
+import AppKit
 
 extension NSTextView: AbstractButtonContentView {
     public func updateForPosition(_ position: ConstraintDescriptor,

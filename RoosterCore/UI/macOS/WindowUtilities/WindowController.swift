@@ -6,6 +6,11 @@
 //
 
 import Cocoa
+import AppKit
+
+public protocol WindowConfigurator {
+    func willShow(inWindow window: NSWindow)
+}
 
 open class WindowController: NSWindowController, Loggable {
     private(set) static var visibleControllers: [NSWindowController] = []
@@ -14,7 +19,7 @@ open class WindowController: NSWindowController, Loggable {
 
     public var deferredSave = DeferredCallback()
 
-    public init() {
+    required public init() {
         super.init(window: nil)
 
         self.shouldCascadeWindows = false
@@ -101,7 +106,7 @@ open class WindowController: NSWindowController, Loggable {
     public static func show(withContentViewController viewController: NSViewController,
                             autoSaveKey: AutoSaveKey? = nil) {
         if !self.bringToFront(withContentViewController: viewController, autoSaveKey: autoSaveKey) {
-            let windowController = WindowController()
+            let windowController = Self()
             windowController.contentViewController = viewController
             windowController.autoSaveKey = autoSaveKey
             windowController.show()
@@ -111,7 +116,7 @@ open class WindowController: NSWindowController, Loggable {
     public static func show(withContentViewController viewController: NSViewController,
                             centeredOnWindow window: NSWindow) {
         if !self.bringToFront(withContentViewController: viewController) {
-            let windowController = WindowController()
+            let windowController = Self()
             windowController.contentViewController = viewController
             windowController.show(centeredOnWindow: window)
         }
@@ -151,6 +156,7 @@ open class WindowController: NSWindowController, Loggable {
         windowFrame = windowFrame.constrainHeightVerticallyFlipped(inContainingRect: screenFrame)
         windowFrame.center(in: containingFrame)
         window.setFrame(windowFrame, display: false)
+                
         self.showWindow(self)
     }
 
@@ -175,10 +181,21 @@ open class WindowController: NSWindowController, Loggable {
     }
 
     override open func showWindow(_ sender: Any?) {
-        super.showWindow(sender)
-        _ = self.window // make sure it's loaded
+        let window = self.window // make sure it's loaded
+
+        if let window = window, let configurator = self.contentViewController as? WindowConfigurator {
+            configurator.willShow(inWindow: window)
+        }
 
         Self.addWindowController(self)
+
+        super.showWindow(sender)
+
+
+        if let window = window, let configurator = self.contentViewController as? WindowConfigurator {
+            configurator.willShow(inWindow: window)
+        }
+
         self.windowStateDidUpdate()
     }
 

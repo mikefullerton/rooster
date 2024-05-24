@@ -45,7 +45,7 @@ public class SparkleProgressWindowController: WindowController {
     private var canCancel = false
     private var cancelled = false
 
-    override init() {
+    required init() {
         super.init()
     }
 

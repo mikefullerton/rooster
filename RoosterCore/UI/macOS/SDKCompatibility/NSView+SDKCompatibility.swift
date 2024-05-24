@@ -8,6 +8,7 @@
 import Foundation
 
 import Cocoa
+import AppKit
 
 extension NSView {
     public var sdkBackgroundColor: SDKColor? {

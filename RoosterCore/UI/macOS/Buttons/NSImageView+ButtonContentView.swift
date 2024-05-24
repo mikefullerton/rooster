@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 extension NSImageView: AbstractButtonContentView {
     public func updateForPosition(_ position: ConstraintDescriptor,

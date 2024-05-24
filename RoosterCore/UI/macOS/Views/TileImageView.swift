@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 open class TileImageView: AnimateableView {
     var image: NSImage

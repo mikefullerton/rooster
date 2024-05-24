@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 extension NSImage {
     public func tint(color: NSColor) -> NSImage {

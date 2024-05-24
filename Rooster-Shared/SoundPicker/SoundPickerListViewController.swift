@@ -117,14 +117,14 @@ public class SoundPickerListViewController: ListViewController {
 
         return chosenSounds
     }
-
-    override public func collectionView(_ collectionView: NSCollectionView,
-                                        didSelectItemsAt indexPaths: Set<IndexPath>) {
+    
+    @MainActor override public func collectionView(_ collectionView: NSCollectionView,
+                                                   didSelectItemsAt indexPaths: Set<IndexPath>) {
         self.soundPickerDelegate?.soundPickerListViewControllerDidChangeSelection(self)
     }
-
-    override public func collectionView(_ collectionView: NSCollectionView,
-                                        didDeselectItemsAt indexPaths: Set<IndexPath>) {
+    
+    @MainActor override public func collectionView(_ collectionView: NSCollectionView,
+                                                   didDeselectItemsAt indexPaths: Set<IndexPath>) {
         self.soundPickerDelegate?.soundPickerListViewControllerDidChangeSelection(self)
     }
 

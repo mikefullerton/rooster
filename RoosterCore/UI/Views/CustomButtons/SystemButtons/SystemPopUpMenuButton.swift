@@ -8,6 +8,7 @@
 import Foundation
 
 import Cocoa
+import AppKit
 
 open class SystemPopUpMenuButton: NSPopUpButton {
     public typealias Callback = (_ button: SystemPopUpMenuButton) -> Void

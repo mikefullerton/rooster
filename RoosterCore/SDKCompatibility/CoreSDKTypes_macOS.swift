@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 // geometry
 public typealias SDKEdgeInsets = NSEdgeInsets

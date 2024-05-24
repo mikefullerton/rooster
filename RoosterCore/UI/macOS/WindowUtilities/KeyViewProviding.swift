@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 public protocol KeyViewProviding {
     var initialKeyViewForWindow: NSView? { get }

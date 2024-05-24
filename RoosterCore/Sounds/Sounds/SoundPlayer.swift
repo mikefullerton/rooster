@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 public class SoundPlayer: SoundPlayerProtocol, SoundDelegate, Loggable, Identifiable, CustomStringConvertible {
     public typealias ID = String

@@ -8,6 +8,7 @@
 import Foundation
 
 import Cocoa
+import AppKit
 
 public protocol MenuBarScrollViewDelegate: AnyObject {
     func menuBarScrollViewWillAppear(_ scrollView: MenuBarScrollView)

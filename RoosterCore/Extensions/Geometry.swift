@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 // swiftlint:disable identifier_name file_types_order
 

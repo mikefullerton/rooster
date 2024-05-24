@@ -23,7 +23,16 @@ public class SoundPickerViewController: SDKViewController,
                                         Loggable,
                                         KeyViewProviding,
                                         PlaySoundButtonSoundProvider,
-                                        SoundPickerListViewControllerDelegate {
+                                        SoundPickerListViewControllerDelegate, WindowConfigurator {
+    public func willShow(inWindow window: NSWindow) {
+        var styleMask = window.styleMask
+        styleMask.insert(.resizable)
+        window.styleMask = styleMask
+        
+        window.minSize = window.frame.size
+        window.maxSize = NSSize(width: window.minSize.width * 2, height: window.minSize.width * 2)
+    }
+    
     weak var delegate: SoundPickerViewControllerDelegate?
 
     let soundPreferenceKey: SoundPreferences.PreferenceKey

@@ -6,8 +6,8 @@
 //
 
 import Foundation
-
 import Cocoa
+import AppKit
 
 public protocol MouseTrackingCollectionViewDelegate: AnyObject {
     func mouseTrackingCollectionView(_ collectionView: MouseTrackingCollectionView,

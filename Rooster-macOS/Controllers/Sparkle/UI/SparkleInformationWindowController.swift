@@ -30,7 +30,7 @@ public class SparkleInformationWindowController: WindowController {
         self.skipButton.isHidden = true
     }
 
-    override init() {
+    required init() {
         super.init()
     }
 

@@ -8,6 +8,7 @@
 #if os(macOS)
 import Cocoa
 import Foundation
+import AppKit
 #else
 import Foundation
 import UIKit

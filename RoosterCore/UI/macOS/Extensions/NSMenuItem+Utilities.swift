@@ -7,6 +7,7 @@
 
 import Cocoa
 import Foundation
+import AppKit
 
 extension NSMenuItem {
     public convenience init(title: String,
